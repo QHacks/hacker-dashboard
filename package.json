@@ -1,22 +1,41 @@
 {
   "name": "hacker-dashboard",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A dashboard for QHacks participants",
-  "author": "",
+  "author": "Robert Saunders, Zack Harley, Cory Crowley & Avi Ihejirika",
   "scripts": {
     "deploy": "gcloud app deploy",
     "lint": "eslint server/**.js",
-    "start": "node server"
+    "start": "node server",
+    "build": "NODE_ENV=production npm run clean && webpack -p",
+    "start-ui": "webpack-dev-server",
+    "clean": "rimraf bundle"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
     "config": "^1.26.2",
     "express": "^4.16.1",
     "lodash": "^4.17.4",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
+    "redux": "^3.7.2",
+    "redux-form": "^7.1.2",
     "winston": "^2.4.0"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.7",
     "eslint": "^4.9.0",
-    "eslint-plugin-react": "^7.4.0"
+    "eslint-plugin-react": "^7.4.0",
+    "html-webpack-plugin": "^2.30.1",
+    "style-loader": "^0.19.0",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3"
   }
 }
