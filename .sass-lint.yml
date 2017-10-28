@@ -1,4 +1,4 @@
 rules:
-	class-name-format:
-		- 2
-		- convention: hyphenatedlowercase
+  class-name-format:
+    - 2
+    - convention: hyphenatedlowercase

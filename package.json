@@ -1,12 +1,12 @@
 {
   "name": "hacker-dashboard",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Dashboard for participants, judges, mentors and partners of QHacks 2018.",
   "author": "Robert Saunders, Zack Harley, Cory Crowley & Avi Ihejirika",
   "scripts": {
     "dev": "NODE_ENV=development nodemon server",
     "start": "NODE_ENV=production node server",
-		"ui": "webpack-dev-server",
+    "ui": "webpack-dev-server",
     "build": "NODE_ENV=production npm run clean && webpack -p",
     "test": "eslint server/**.js client/**.js",
     "deploy": "gcloud app deploy",
@@ -40,6 +40,7 @@
     "html-webpack-plugin": "^2.30.1",
     "node-sass": "^4.5.3",
     "nodemon": "^1.12.1",
+    "rimraf": "^2.6.2",
     "sass-lint": "^1.12.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",

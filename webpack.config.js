@@ -29,10 +29,6 @@ const VENDOR_LIBS = [
 	'redux-form'
 ];
 
-/**
- * Webpack configuation object.
- * @type {Object}
- */
 module.exports = {
 	entry: {
 		bundle: ['babel-polyfill', CLIENT_ENTRY],
