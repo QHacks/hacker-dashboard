@@ -5,7 +5,7 @@ import style from './assets/main.scss';
 const App = () => {
   return (
 		<div>
-			<p>Bob</p>
+			<p>Nice! Looks like things are setup, lets build a UI!</p>
 		</div>
   );
 };

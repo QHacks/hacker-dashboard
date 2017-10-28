@@ -9,7 +9,7 @@ const app = express();
 let port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname, '../client/bundle')));
 app.use(routes);
 
 app.listen(port, () => winston.info(`Hacker dashboard running on port ${port}!`));
