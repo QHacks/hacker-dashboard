@@ -1,6 +1,21 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var webpack = require('webpack');
-var path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const winston = require('winston');
+const webpack = require('webpack');
+const path = require('path');
+
+const isProd = process.env.NODE_ENV === 'production';
+
+(isProd) ? winston.info("Running production build!") : winston.info("Running development build!");
+
+const CLIENT_DIR = path.resolve('client');
+const CLIENT_ENTRY = path.resolve('client/index.js');
+const CLIENT_OUTPUT = path.join(__dirname, './client/bundle');
+const CLIENT_TEMPLATE = path.resolve('client/index.html');
+
+const ASSETS_DIR = path.resolve('client/assets');
+const FONTS_DIR = path.join(ASSETS_DIR, 'fonts');
+const MODULE_DIR = path.resolve('node_modules');
 
 /**
  * Select vendor librarys to be apart of code split.
@@ -19,14 +34,14 @@ const VENDOR_LIBS = [
  * @type {Object}
  */
 module.exports = {
-  entry: {
-		bundle: './client/index.js',
+	entry: {
+		bundle: ['babel-polyfill', CLIENT_ENTRY],
 		vendor: VENDOR_LIBS
 	},
-  output: {
-    path: path.join(__dirname, './client/bundle'),
-    filename: '[name].[chunkhash].js'
-  },
+	output: {
+		path: CLIENT_OUTPUT,
+		filename: '[name].[chunkhash].js'
+	},
 	module: {
 		rules: [
 			{
@@ -35,8 +50,20 @@ module.exports = {
 				exclude: /node_modules/
 			},
 			{
-				use: ['style-loader', 'css-loader', "sass-loader"],
-				test: /\.scss$/
+				test: /\.scss$/,
+				use: ExtractTextPlugin.extract({
+					fallback: 'style-loader',
+					use: ['css-loader', 'sass-loader']
+				})
+			},
+			{
+				test: /\.(eot|svg|ttf|woff|woff2)$/,
+				use: {
+					loader: isProd ? 'file-loader' : 'url-loader',
+					options: {
+						name: 'fonts/[name].[ext]'
+					}
+				}
 			}
 		]
 	},
@@ -45,10 +72,11 @@ module.exports = {
 			names: ['vendor', 'manifest']
 		}),
 		new HtmlWebpackPlugin({
-			template: 'client/index.html'
+			template: CLIENT_TEMPLATE
 		}),
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-		})
+		}),
+		new ExtractTextPlugin('styles.css')
 	]
 };

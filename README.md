@@ -46,6 +46,9 @@ npm run start
 # build the front end
 npm run build
 
+# runs webpack-dev-server for ui development
+npm run ui
+
 # test the server code (lints code)
 npm run test
 ```
