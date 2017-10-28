@@ -1,7 +1,12 @@
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+/**
+ * Select vendor librarys to be apart of code split.
+ * Taking advantage of browser caching system here.
+ * @type {Array}
+ */
 const VENDOR_LIBS = [
 	'react',
 	'react-redux',
@@ -9,13 +14,17 @@ const VENDOR_LIBS = [
 	'redux-form'
 ];
 
+/**
+ * Webpack configuation object.
+ * @type {Object}
+ */
 module.exports = {
   entry: {
 		bundle: './client/index.js',
 		vendor: VENDOR_LIBS
 	},
   output: {
-    path: path.join(__dirname, 'bundle'),
+    path: path.join(__dirname, './client/bundle'),
     filename: '[name].[chunkhash].js'
   },
 	module: {
@@ -26,8 +35,8 @@ module.exports = {
 				exclude: /node_modules/
 			},
 			{
-				use: ['style-loader', 'css-loader'],
-				test: /\.css$/
+				use: ['style-loader', 'css-loader', "sass-loader"],
+				test: /\.scss$/
 			}
 		]
 	},
