@@ -1,7 +1,7 @@
 const dotenv = require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
-const routes = require('./routes/index.route');
+const routes = require('./routes/index.router');
 const path = require('path');
 const winston = require('winston');
 
