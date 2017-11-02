@@ -4,17 +4,18 @@
   "description": "Dashboard for participants, judges, mentors and partners of QHacks 2018.",
   "author": "Robert Saunders, Zack Harley, Cory Crowley & Avi Ihejirika",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon server",
-    "start": "NODE_ENV=production node server",
-    "ui": "webpack-dev-server",
-    "build": "NODE_ENV=production npm run clean && webpack -p",
-    "test": "eslint server/**.js client/**.js",
-    "deploy": "gcloud app deploy",
-    "clean": "rimraf ./client/bundle"
+    "dev": "cross-env NODE_ENV=development nodemon server",
+    "start": "cross-env NODE_ENV=production node server",
+    "ui": "cross-env webpack-dev-server",
+    "build": "cross-env NODE_ENV=production npm run clean && webpack -p",
+    "test": "cross-env eslint server/**.js client/**.js",
+    "deploy": "cross-env gcloud app deploy",
+    "clean": "cross-env rimraf ./client/bundle"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
     "classnames": "^2.2.5",
+    "cross-env": "^5.1.1",
     "dotenv": "^4.0.0",
     "express": "^4.16.1",
     "lodash": "^4.17.4",
@@ -37,6 +38,7 @@
     "eslint": "^4.9.0",
     "eslint-plugin-react": "^7.4.0",
     "extract-text-webpack-plugin": "^3.0.2",
+    "favicons-webpack-plugin": "0.0.7",
     "html-webpack-plugin": "^2.30.1",
     "node-sass": "^4.5.3",
     "nodemon": "^1.12.1",
