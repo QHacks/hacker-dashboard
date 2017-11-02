@@ -1,8 +1,8 @@
 const apiRouter = require('./api/index.router');
+const authorization = require('../services/authorization');
 const dbCtrl = require('../controllers/db.controller');
 const express = require('express');
 const indexCtrl = require('../controllers/index.controller');
-const authorization = require('../services/authorization');
 
 const router = express.Router();
 

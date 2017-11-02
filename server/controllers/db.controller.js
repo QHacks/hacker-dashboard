@@ -13,14 +13,9 @@ function connectToDb() {
     const mongoUri = _getMongoUri();
     const pass = process.env.MONGO_PASS;
     const user = process.env.MONGO_USER;
-    const connectionOptions = { useMongoClient: true };
+    const baseConnectionOptions = { useMongoClient: true };
 
-    if (pass) {
-        connectionOptions.pass = pass;
-    }
-    if (user) {
-        connectionOptions.user = user;
-    }
+    const connectionOptions = user && pass && Object.assign({}, baseConnectionOptions, { user, pass }) || baseConnectionOptions;
 
     mongoose.Promise = global.Promise;
     mongoose.connect(mongoUri, connectionOptions)
