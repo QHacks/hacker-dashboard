@@ -3,3 +3,4 @@ node_modules
 *.log
 .env
 client/bundle
+.DS_STORE

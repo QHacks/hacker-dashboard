@@ -16,12 +16,13 @@ See the environment variables below for the back end to operate:
 
 Name | Description | Required | Default
 --- | --- | --- | ---
-`PORT` | Port to run the Express sever on. | No | 3000
-`MONGO_HOST` | The hostname to use to access the MongoDB instance. | Yes | None
+`AUTH_SECRET` | The secret used to encrypt auth tokens | Yes | None
 `MONGO_DBNAME` | The database name to use inside the instance of MongoDB. | Yes | None
+`MONGO_HOST` | The hostname to use to access the MongoDB instance. | Yes | None
+`MONGO_PASS` | The password to access the MongoDB instance. | No | None
 `MONGO_PORT` | The port to use to access the MongoDB instance. | No | 27017
 `MONGO_USER` | The username to access the MongoDB instance. | No | None
-`MONGO_PASS` | The password to access the MongoDB instance. | No | None
+`PORT` | Port to run the Express sever on. | No | 3000
 
 ### Front End
 
