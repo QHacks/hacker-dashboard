@@ -18,11 +18,6 @@ const ASSETS_DIR = path.resolve('client/assets');
 const FONTS_DIR = path.join(ASSETS_DIR, 'fonts');
 const MODULE_DIR = path.resolve('node_modules');
 
-/**
- * Select vendor librarys to be apart of code split.
- * Taking advantage of browser caching system here.
- * @type {Array}
- */
 const VENDOR_LIBS = [
 	'react',
 	'react-redux',
@@ -39,6 +34,11 @@ module.exports = {
 		path: CLIENT_OUTPUT,
 		filename: '[name].[chunkhash].js'
 	},
+	resolve: {
+		alias: {
+				'../../theme.config$': path.join(__dirname, 'client/assets/semantic-ui/theme.config')
+		}
+	},
 	module: {
 		rules: [
 			{
@@ -47,20 +47,19 @@ module.exports = {
 				exclude: /node_modules/
 			},
 			{
-				test: /\.scss$/,
+				test: /\.less$/,
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
-					use: ['css-loader', 'sass-loader']
+					use: ['css-loader', 'less-loader']
 				})
 			},
 			{
-				test: /\.(eot|svg|ttf|woff|woff2)$/,
-				use: {
-					loader: isProd ? 'file-loader' : 'url-loader',
-					options: {
-						name: 'fonts/[name].[ext]'
-					}
-				}
+				test: /\.jpe?g$|\.gif$|\.png$|\.ttf$|\.eot$|\.svg$/,
+				use: 'file-loader?name=[name].[ext]?[hash]'
+			},
+			{
+				test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				loader: 'url-loader?limit=10000&mimetype=application/fontwoff'
 			}
 		]
 	},
@@ -74,7 +73,9 @@ module.exports = {
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
 		}),
-		new ExtractTextPlugin('styles.css'),
-        new FaviconsWebpackPlugin('./client/assets/img/qhacks_favicon.png')
+		new ExtractTextPlugin({
+			filename: '[name].[contenthash].css'
+		}),
+			new FaviconsWebpackPlugin('./client/assets/img/qhacks_favicon.png')
 	]
 };
