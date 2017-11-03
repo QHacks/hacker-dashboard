@@ -1,6 +1,6 @@
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const winston = require('winston');
 const webpack = require('webpack');
 const path = require('path');
@@ -10,9 +10,9 @@ const isProd = process.env.NODE_ENV === 'production';
 (isProd) ? winston.info("Running production build!") : winston.info("Running development build!");
 
 const CLIENT_DIR = path.resolve('client');
-const CLIENT_ENTRY = path.resolve('client/index.js');
-const CLIENT_OUTPUT = path.join(__dirname, './client/bundle');
+const CLIENT_ENTRY = path.resolve('client/Client.js');
 const CLIENT_TEMPLATE = path.resolve('client/index.html');
+const CLIENT_OUTPUT = path.join(__dirname, './client/bundle');
 
 const ASSETS_DIR = path.resolve('client/assets');
 const FONTS_DIR = path.join(ASSETS_DIR, 'fonts');
