@@ -1,5 +1,7 @@
 # QHacks Hacker Dashboard
 
+[![CircleCI](https://circleci.com/gh/qhacks/hacker-dashboard.svg?style=svg)](https://circleci.com/gh/qhacks/hacker-dashboard)
+
 This repository encapsulates a monolithic implementation of the QHacks Hacker Dashboard. This dashboard is to serve as a hub for judges, mentors, partners and hackers participating in [QHacks](http://qhacks.io/). The dashboard implements a suite of features to make the process and experience of attending a hackathon a richer and more pleasant one.
 
 The back end application is built using a Node server using Express to serve a RESTful API. The front end is implemented using [ReactJS](https://reactjs.org/), and [Redux](http://redux.js.org/docs/introduction/) for state management, all of which are bundled with [Webpack](https://webpack.github.io/). For more information about the technical specifications please refer to the [wiki](https://github.com/qhacks/hacker-dashboard/wiki).
@@ -27,7 +29,7 @@ Name | Description | Required | Default
 
 There are currently no environment variables needed for the front end, update this as necessary.
 
-However, there within the `client/assets` directory there is `main.scss` file that has variables that describe the colours used across the UIs. Feel free to modify those to alter the styling of the application, the [SASS](http://sass-lang.com/) is compiled using Webpack. Please note that we will use the [SCSS](http://sass-lang.com/guide) syntax over the SASS syntax when working with styling.
+However, within the `client/assets` directory there is `semantic-ui/` directory. This holds our themeing and customization on top of the default [Semantic UI]() framework. Webpack has been configured to bundle LESS, so we have added the `semantic-ui-less` package and configured appropriately.
 
 ## Usage
 
