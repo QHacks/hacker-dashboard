@@ -1,74 +1,34 @@
-const Router = require('express').Router();
-const jwt = require('express-jwt');
-
-
-const AUTH_API_REGEXP = /^\/api\/auth\//;
-const { AUTH_SECRET } = process.env;
-
-module.exports = () => {
-		const options = { secret: AUTH_SECRET };
-		const paths = { path: [AUTH_API_REGEXP] };
-		return jwt(options).unless(paths);
-};
-
-module.exports = authorization;
-
-const Router = require('express').Router();
-
-module.exports = ctr => {
-	const authApi = Router();
-
-	authApi.use('/signup', (req, res) => {
-
-	});
-
-	authApi.use('/refresh', (req, res) => {
-
-	});
-
-	return authApi;
-};
-
-const _ = require('lodash');
-const bcrypt = require('bcrypt');
-const customValidator = require('../../services/custom-validator');
-const tokenUtilities = require('../../services/token-utilities');
-
 const jwt = require('jsonwebtoken');
 
-const tokenUtilities = {
-		createAccessToken,
-		createRefreshToken,
-		verify
-};
-
-module.exports = tokenUtilities;
-
 const { AUTH_SECRET } = process.env;
 
-function createAccessToken(accountId) {
-		const payload = {
-				accountId
-		};
-		const options = {
-				expiresIn: '5 minutes',
-				issuer: 'QHacks authentication'
-		};
-		return jwt.sign(payload, AUTH_SECRET, options);
-}
+/**
+ * Retrieves bearer token from the request.
+ * @param {Object} req Incoming request to check for token.
+ * @return {String} The token in the request, otherwise false.
+ */
+const getBearer = req => {
+	if (!req.headers || !req.headers.authorization) return false;
+	let split = req.headers.authorization.split(' ');
+	if (split.length !== 2 || split[0] !== 'Bearer') return false;
+	return split[1];
+};
 
-function createRefreshToken(accountId) {
-		const payload = {
-				type: 'refresh',
-				accountId
-		};
-		const options = {
-				expiresIn: '60 minutes',
-				issuer: 'QHacks authentication'
-		};
-		return jwt.sign(payload, AUTH_SECRET, options);
-}
+/**
+ * Custom authentication middleware.
+ * @param {Object} req Incoming request to run through middleware.
+ * @param {Object} res Response sent back if needed.
+ * @param {Function} next Next middleware function.
+ * @return {Function} Next middlware if authenticated, otherwise invalid response.
+ */
+module.exports = (req, res, next) => {
+	let token = getBearer(req);
 
-function verify(token) {
-		return jwt.verify(token, AUTH_SECRET);
-}
+	if (!token) return res.status(400).json({ type: 'VALIDATION', message: 'Missing auth token!'});
+
+	jwt.verify(token, AUTH_SECRET, (err, decoded) => {
+		if (err) return res.status(403).json({ type: 'AUTHORIZATION', message: 'Invalid token!'});
+		req.user = decoded;
+		next();
+	});
+};

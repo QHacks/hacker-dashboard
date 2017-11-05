@@ -1,67 +1,90 @@
+const customValidator = require('../services/custom-validator');
+const auth = require('../auth/auth');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const _ = require('lodash');
 
-function _addRefreshTokenToAccount(db, accountId, refreshToken) {
-		const query = { _id: accountId };
-		const update = { refreshToken };
-		return db.models.Account.findOneAndUpdate(query, update);
+const { AUTH_SECRET } = process.env;
+
+const JWT_ISSUER = 'QHacks Authentication';
+const ACCESS_TOKEN_EXPIRE_TIME = '5 minutes';
+const REFRESH_TOKEN_EXPIRE_TIME = '60 minutes';
+const SALT_WORK_FACTOR = 10;
+
+// TODO
+const ERRORS = {
+
+};
+
+// TODO
+const ERROR_MESSAGES = {
+
+};
+
+/**
+ * Creates a user access token.
+ * @param {String} userId User identifier to encode in token.
+ * @return {String} Access token.
+ */
+function createAccessToken(userId) {
+	return jwt.sign({ userId }, AUTH_SECRET, {
+		expiresIn: ACCESS_TOKEN_EXPIRE_TIME,
+		issuer: JWT_ISSUER
+	});
 }
 
-function _createAccountTokens(accountId) {
-		const accessToken = tokenUtilities.createAccessToken(accountId);
-		const refreshToken = tokenUtilities.createRefreshToken(accountId);
-		return {
-				accessToken,
-				refreshToken
-		};
+/**
+ * Creates a user refresh token.
+ * @param {String} userId User identifier to encode in token.
+ * @return {String} Refresh token.
+ */
+function createRefreshToken(userId) {
+	return jwt.sign({
+		type: 'refresh',
+		userId
+	}, AUTH_SECRET, {
+		expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
+		issuer: JWT_ISSUER
+	});
 }
-
-function _createAndUpdateTokens(db, accountId) {
-		const tokens = _createAccountTokens(accountId);
-		return _addRefreshTokenToAccount(db, accountId, tokens.refreshToken)
-				.then(() => tokens);
-}
-
-function _hashPassword(password) {
-		const saltRounds = 10;
-		return bcrypt.hash(password, saltRounds);
-}
-
-function _insertAccount(db, signUpInfo) {
-		return db.models.Account.create(signUpInfo);
-}
-
-function _validateSignUpInfo(signUpInfo) {
-		const { dateOfBirth, email, firstName, graduationYear, lastName, phoneNumber, password } = signUpInfo;
-		return customValidator.date(dateOfBirth)
-				.then(() => customValidator.emailAddress(email))
-				.then(() => customValidator.name(firstName, lastName))
-				.then(() => customValidator.graduationYear(graduationYear))
-				.then(() => customValidator.phoneNumber(phoneNumber))
-				.then(() => customValidator.password(password));
-}
-
 
 module.exports = db => {
 	let authCtr = {};
 
-	authCtr.refresh = refreshToken => new Promise((resolve, reject) => {
-		const currentRefreshToken = tokenUtilities.verify(refreshToken);
-		const { accountId } = currentRefreshToken;
-		const tokens = _createAccountTokens(accountId);
-		return _addRefreshTokenToAccount(req.db, accountId, tokens.refreshToken)
-				.then(() => res.status(202).send(tokens))
-				.catch(next);
+	authCtr.ERRORS = ERRORS;
+	authCtr.ERROR_MESSAGES = ERROR_MESSAGES;
+
+	const models = {
+		User
+	} = require('../models');
+
+	authCtr.authenticateUser = (email, password) => new Promise((resolve, reject) => {
+		jwt.verify(token, AUTH_SECRET);
+
 	});
 
-	authCtr.signUp = signUpInfo => new Promise((resolve, reject) => {
-		// replace with Promise.all
-		const signUpInfo = _.pick(req.body, SIGN_UP_FIELDS);
-		return _validateSignUpInfo(signUpInfo)
-				.then(() => _hashPassword(signUpInfo.password))
-				.then((hash) => _insertAccount(req.db, _.assign({}, signUpInfo, { password: hash })))
-				.then((account) => _createAndUpdateTokens(req.db, account._id))
-				.then((tokens) => res.status(201).send(tokens))
-				.catch(next);
+	authCtr.refresh = refreshToken => new Promise((resolve, reject) => {
+		// verify token
+		// pluck user id from verified refresh token
+		// create new tokens for user
+		// update user
+		// resolve with user
+	});
+
+	authCtr.signup = signUpInfo => new Promise((resolve, reject) => {
+		if (!customValidator.signUpInfo(signUpInfo)) reject();
+
+		const hash = bcrypt.hash(signUpInfo.password, SALT_WORK_FACTOR);
+
+		signUpInfo.password = hash;
+		signUpInfo.refreshToken = createRefreshToken();
+		signUpInfo.accessToken = createAccessToken();
+
+		User.create(signUpInfo)
+			.then(resolve(user))
+			.catch(err => {
+				reject();
+			});
 	});
 
 	return authCtr;

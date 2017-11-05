@@ -1,6 +1,6 @@
-const _ = require('lodash');
-const moment = require('moment');
 const validator = require('validator');
+const moment = require('moment');
+const _ = require('lodash');
 
 const customValidator = {
 		date,
@@ -8,19 +8,18 @@ const customValidator = {
 		graduationYear,
 		name,
 		password,
-		phoneNumber
+		phoneNumber,
+		signUpInfo
 };
-
-module.exports = customValidator;
 
 const NAME_REGEX = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]+$/;
 const YEAR_REGEXP = /^20[0-9]{2}$/;
 
 class ValidationError extends Error {
-		constructor(message) {
-				super(message);
-				this.status = 422;
-		}
+	constructor(message) {
+		super(message);
+		this.status = 422;
+	}
 }
 
 function date(date) {
@@ -73,3 +72,15 @@ function phoneNumber(phoneNumber) {
 		const error = new ValidationError('The phone number provided is invalid.');
 		return Promise.reject(error);
 }
+
+function signUpInfo(signUpInfo) {
+		const { dateOfBirth, email, firstName, graduationYear, lastName, phoneNumber, password } = signUpInfo;
+		return customValidator.date(dateOfBirth)
+				.then(() => customValidator.emailAddress(email))
+				.then(() => customValidator.name(firstName, lastName))
+				.then(() => customValidator.graduationYear(graduationYear))
+				.then(() => customValidator.phoneNumber(phoneNumber))
+				.then(() => customValidator.password(password));
+}
+
+module.exports = customValidator;

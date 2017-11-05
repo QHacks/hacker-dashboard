@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const winston = require('winston');
 
+const noop = () => {};
+
 module.exports = () => {
 	const host = process.env.MONGO_HOST;
 	const name = process.env.MONGO_DBNAME;
@@ -22,7 +24,7 @@ module.exports = () => {
 
 	winston.info("Connecting to database:", url);
 
-	const opt = user && pass && Object.assign({}, baseConnectionOptions, { user, pass }) || baseConnectionOptions;
+	let opt = user && pass && Object.assign({}, baseConnectionOptions, { user, pass }) || baseConnectionOptions;
 
 	return (cb = noop) => mongoose.connect(url, opt, cb);
 };

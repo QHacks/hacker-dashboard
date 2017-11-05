@@ -3,7 +3,8 @@ import { actionTypes } from './HackerActions';
 export const reducerMount = 'hacker';
 
 const initialState = {
-	authToken: null
+	accessToken: null,
+	refreshToken: null
 };
 
 export const selectors = {
