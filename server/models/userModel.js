@@ -1,22 +1,5 @@
 const mongoose = require('mongoose');
-
-
-const SIGN_UP_FIELDS = [
-	'dateOfBirth',
-	'email',
-	'firstName',
-	'graduationYear',
-	'lastName',
-	'phoneNumber',
-	'password'
-];
-
-
-const GROUPS = {
-	ADMIN: 'admin',
-	PARTNER: 'partner',
-	HACKER: 'hacker'
-};
+const uuid = require('uuid');
 
 const UserSchema = new mongoose.Schema({
 		_id: {
@@ -36,11 +19,6 @@ const UserSchema = new mongoose.Schema({
 		lastName: {
 				type: String,
 				required: true
-		},
-		group: {
-			type: String,
-			default: GROUPS.HACKER,
-			enum: Object.keys(GROUPS).map(k => GROUPS[k])
 		},
 		dateOfBirth: {
 				type: Date,
@@ -65,7 +43,8 @@ const UserSchema = new mongoose.Schema({
 		modifiedAt: {
 			type: Date,
 			default: Date.now
-		}
+		},
+		refreshToken: String
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = UserSchema;

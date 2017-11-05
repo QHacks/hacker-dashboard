@@ -1,12 +1,13 @@
 const Router = require('express').Router();
+const auth = require('../auth/auth');
 const v1 = require('./v1/v1API');
 
 const V1 = 'v1';
 
 module.exports = controller => {
-	let clientAPI = Router();
+	let api = Router();
 
-	api.use(`api/${V1}/`, v1(controller));
+	api.use(`/${V1}`, auth(), v1(controller));
 
-	return clientAPI;
+	return api;
 };

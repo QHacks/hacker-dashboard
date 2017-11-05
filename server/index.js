@@ -1,16 +1,16 @@
 const dotenv = require('dotenv').config();
-const controller = require('./controller');
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const express = require('express');
 const winston = require('winston');
+const ctr = require('./ctrs');
 const path = require('path');
 
 const auth = require('./auth/auth');
-const db = require('./db/db');
+const api = require('./api/api');
+const db = require('./db/db')();
 
-const clientAPI = require('./api/client/clientAPI');
-
+// Path to static files
 const BUNDLE_DIR = path.join(__dirname, '../client/bundle');
 
 const app = express();
@@ -21,14 +21,14 @@ app.use(compression());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-db((err, database) => {
+db((err, db) => {
 	if (err) {
-		console.log("Could not connect to the database!");
+		winston.info("Could not connect to the database!");
 		return;
 	}
 
-	// API
-	app.use('/api', clientAPI(controller(database)));
+	// Core API
+	app.use('/api', api(ctr(db)));
 
 	// Static Files
 	app.use(express.static(BUNDLE_DIR));
