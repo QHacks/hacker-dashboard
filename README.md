@@ -46,6 +46,9 @@ npm run dev
 # run the server in production mode
 npm run start
 
+# run the server in debug mode
+npm run debug
+
 # build the front end
 npm run build
 

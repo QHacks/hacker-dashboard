@@ -3,12 +3,12 @@ const compression = require('compression');
 const bodyParser = require('body-parser');
 const express = require('express');
 const winston = require('winston');
-const ctr = require('./ctrs');
 const path = require('path');
 
 const auth = require('./auth/auth');
 const api = require('./api/api');
 const db = require('./db/db')();
+let ctr = require('./ctrs');
 
 // Path to static files
 const BUNDLE_DIR = path.join(__dirname, '../client/bundle');
@@ -25,10 +25,15 @@ db((err, db) => {
 	if (err) {
 		winston.info("Could not connect to the database!");
 		return;
+	} else {
+		winston.info("Successfully connected to the database!");
 	}
 
+	// Initialize controller(s)
+	ctr = ctr(db);
+
 	// Core API
-	app.use('/api', api(ctr(db)));
+	app.use('/api/', auth(), api(ctr));
 
 	// Static Files
 	app.use(express.static(BUNDLE_DIR));
