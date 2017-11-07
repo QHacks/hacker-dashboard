@@ -1,71 +1,78 @@
-// TODO
 const ERRORS = {
-
+	NOT_FOUND: {
+		code: 404,
+		type: 'MISSING'
+	},
+	DB_ERROR: {
+		code: 503,
+		type: "DB_ERROR"
+	}
 };
 
-// TODO
 const ERROR_MESSAGES = {
+	INVALID_USER_ID: "A user with this identifier not exist!",
 
+	DB_USER: "Could not retreive the user from the database!",
+	DB_USERS: "Could not retreive any users from the database!"
 };
+
+/**
+ * Creates a standard format error, see routes for usage.
+ * @param {String} message The error message.
+ * @param {Integer} status The error status code.
+ * @param {Object} [data={}] Error object.
+ * @return {Object} Error object.
+ */
+function createError(errorTpl, message, data = {}) {
+	return Object.assign({}, errorTpl, { message, data });
+}
 
 module.exports = db => {
 	let userCtr = {};
-
-	userCtr.ERRORS = ERRORS;
-	userCtr.ERROR_MESSAGES = ERROR_MESSAGES;
 
 	const models = {
 		User
 	} = require('../models');
 
-	userCtr.createUser = userInfo => new Promise((resolve, reject) => {
-		User.create(userInfo).then(resolve).catch(err => {
-			if (!err.errors) reject(); // add logging
-			else reject(); // add logging
-		});
-	});
-
 	userCtr.getUser = userId => new Promise((resolve, reject) => {
 		User.findOne({ _id: userId }).then(user => {
 			if (user) resolve(user);
-			else reject(); // add logging
+			else reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID));
 		}).catch(err => {
-			// add logging
+			reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
+		});
+	});
+
+	userCtr.getAllUsers = () => new Promise((resolve, reject) => {
+		debugger;
+		User.find().then(users => {
+			resolve({ users });
+		}).catch(err => {
+			reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USERS, err));
 		});
 	});
 
 	userCtr.deleteUser = userId => new Promise((resolve, reject) => {
 		User.findOneAndRemove({ _id: userId }).then(user => {
-			if (!user) reject(); // add logging
+			if (!user) return reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID));
 			resolve();
-		}).catch(err => {
-			// add logging
 		});
 	});
 
 	userCtr.updateUser = (userId, userInfo) => new Promise((resolve, reject) => {
-		User.findOne({ userId }).then(user => {
-			if (!user) reject(); // add logging
+		User.findOne({ _id: userId }).then(user => {
+			if (!user) reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID));
 
 			Object.keys(userInfo).forEach(key => {
 				if (user[key]) user[key] = userInfo[key];
 			});
 
 			user.save().then(resolve).catch(err => {
-				if (!err.errors) reject(); // add logging
-				else reject(); // add logging
+				reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
 			});
 
 		}).catch(err => {
-			reject(); // add logging
-		});
-	});
-
-	userCtr.getAllUsers = () => new Promise((resolve, reject) => {
-		User.find().then(users => {
-			resolve(users);
-		}).catch(err => {
-			reject(); // add logging
+			reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
 		});
 	});
 

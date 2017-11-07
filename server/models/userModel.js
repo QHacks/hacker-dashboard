@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const uuid = require('uuid');
+
+const SALT_WORK_FACTOR = 10;
 
 const UserSchema = new mongoose.Schema({
 		_id: {
@@ -47,4 +50,57 @@ const UserSchema = new mongoose.Schema({
 		refreshToken: String
 });
 
-module.exports = UserSchema;
+UserSchema.static({
+	authenticate(email, password) {
+		return new Promise((resolve, reject) => {
+			this.findOne({ email })
+				.then(user => {
+					if (!user) return reject('No user with that email!');
+
+					user.validPassword(password)
+						.then(() => {
+							resolve(user);
+						})
+						.catch(() => {
+							debugger;
+							reject("Invalid password!");
+						});
+				});
+		});
+	}
+});
+
+UserSchema.method({
+	validPassword(password) {
+		return new Promise((resolve, reject) => {
+			debugger;
+			bcrypt.compare(password, this.password, (err, valid) => {
+				if (err || !valid) return reject();
+				else return resolve();
+			});
+		});
+	}
+});
+
+/**
+ * Helper method to hash password before saving.
+ * @param {Function} next Move to next middlware.
+ * @return {Function} Next middleware.
+ */
+UserSchema.pre('save', function(next) {
+	if (!this.isModified('password')) return next();
+
+	bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
+		if (err) return next(err);
+
+		bcrypt.hash(this.password, salt, (err, hash) => {
+			if (err) next(err);
+
+			this.password = hash;
+			this.modifiedAt = Date.now();
+			next();
+		});
+	});
+});
+
+module.exports = mongoose.model("User", UserSchema);

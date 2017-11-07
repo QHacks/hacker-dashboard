@@ -1,33 +1,38 @@
-const Router = require('express').Router();
+const Router = require('express').Router;
+
+const AUTH = 'auth';
 
 module.exports = ctr => {
 	let authAPI = Router();
 
+	// get auth controller
 	const { auth } = ctr;
 
-	/**
-	 * Creates a session, returns user object.
-	 */
-	authAPI.use('/session', (req, res) => {
+	authAPI.use(`/${AUTH}/session`, (req, res) => {
 		let { email, password } = req.body;
-	});
 
-	/**
-	 * Creates a user and sends back refresh token, token and user object.
-	 */
-	authAPI.use('/signup', (req, res) => {
-		auth.signup(_.pick(req.body)).then((user, tokens) => {
-			res.code(200).json({ user, tokens });
+		auth.authenticateUser(email, password).then(userInfo => {
+			res.status(200).json(userInfo);
 		}).catch(err => {
-			// send fail error here
+			res.status(err.code).json(err);
 		});
 	});
 
-	/**
-	 * Takes a refresh token and returns a new pair of access tokens and user object.
-	 */
-	// sends back new tokens and user id
-	authAPI.use('/refresh', (req, res) => {
-		auth.refresh(req.refreshToken).then();
+	authAPI.use(`/${AUTH}/signup`, (req, res) => {
+		auth.signup(req.body).then(userInfo => {
+			res.status(200).json(userInfo);
+		}).catch(err => {
+			res.status(err.code).json(err);
+		});
 	});
+
+	authAPI.use(`/${AUTH}/refresh`, (req, res) => {
+		auth.refresh(req.body.refreshToken).then(userInfo => {
+			res.status(200).json(userInfo);
+		}).catch(err => {
+			res.status(err.code).json(err);
+		});
+	});
+
+	return authAPI;
 };
