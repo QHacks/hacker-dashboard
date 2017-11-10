@@ -32,8 +32,6 @@ module.exports = ctr => {
 	});
 
 	userAPI.delete(`/${USER}/:userId`, (req, res) => {
-		debugger;
-
 		user.deleteUser(req.params.userId).then(() => {
 			res.sendStatus(200);
 		}).catch(err => {

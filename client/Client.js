@@ -1,17 +1,18 @@
+import { BrowserRouter } from 'react-router-dom';
 import "semantic-ui-less/semantic.less";
 import { Provider } from 'react-redux';
-// import store from './ClientStore';
+import App from './components/App/App';
+import getStore from './ClientStore';
 import ReactDOM from 'react-dom';
-import App from './App/App';
 import React from 'react';
 
 const rootElement = document.getElementById('root');
 
-// ReactDOM.render(
-// 	<Provider>
-// 		<App/>
-// 	</Provider>,
-// 	rootElement
-// );
-
-ReactDOM.render(<App/>, rootElement);
+ReactDOM.render(
+	<Provider store={getStore}>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
+	</Provider>,
+	rootElement
+);

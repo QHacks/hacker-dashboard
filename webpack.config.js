@@ -1,6 +1,7 @@
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const dotenv = require('dotenv').config();
 const winston = require('winston');
 const webpack = require('webpack');
 const path = require('path');
@@ -8,6 +9,9 @@ const path = require('path');
 const isProd = process.env.NODE_ENV === 'production';
 
 (isProd) ? winston.info("Running production build!") : winston.info("Running development build!");
+
+const PORT = process.env.PORT;
+const DEV_PROXY = process.env.DEV_PROXY || `http://localhost:${PORT}`;
 
 const CLIENT_DIR = path.resolve('client');
 const CLIENT_ENTRY = path.resolve('client/Client.js');
@@ -76,6 +80,16 @@ module.exports = {
 		new ExtractTextPlugin({
 			filename: '[name].[contenthash].css'
 		}),
-			new FaviconsWebpackPlugin('./client/assets/img/qhacks_favicon.png')
-	]
+		new FaviconsWebpackPlugin('./client/assets/img/qhacks_favicon.png')
+	],
+	devServer: {
+		historyApiFallback: true,
+		compress: true,
+		proxy: {
+			'/api': {
+				target: DEV_PROXY,
+				changeOrigin: true
+			}
+		}
+	}
 };

@@ -25,6 +25,7 @@ Name | Description | Required | Default
 `MONGO_PORT` | The port to use to access the MongoDB instance. | No | 27017
 `MONGO_USER` | The username to access the MongoDB instance. | No | None
 `PORT` | Port to run the Express sever on. | No | 3000
+`DEV_PROXY` | When running the `webpack-dev-server` all API calls will be proxied to this host. | No | http://localhost:PORT
 
 ### Front End
 

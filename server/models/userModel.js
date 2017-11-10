@@ -62,7 +62,6 @@ UserSchema.static({
 							resolve(user);
 						})
 						.catch(() => {
-							debugger;
 							reject("Invalid password!");
 						});
 				});
@@ -73,7 +72,6 @@ UserSchema.static({
 UserSchema.method({
 	validPassword(password) {
 		return new Promise((resolve, reject) => {
-			debugger;
 			bcrypt.compare(password, this.password, (err, valid) => {
 				if (err || !valid) return reject();
 				else return resolve();
