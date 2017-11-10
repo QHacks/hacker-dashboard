@@ -8,8 +8,8 @@ const ERRORS = {
 		code: 400,
 		type: "VALIDATION"
 	},
-	FORBIDDEN: {
-		code: 403,
+	UNAUTHORIZED: {
+		code: 401,
 		type: "AUTHORIZATION"
 	}
 };
@@ -59,7 +59,7 @@ module.exports = () => (req, res, next) => {
 	if (!token) return res.status(ERRORS.BAD_REQUEST.code).json(createError(ERRORS.BAD_REQUEST, ERROR_MESSAGES.MISSING_TOKEN));
 
 	jwt.verify(token, AUTH_SECRET, (err, decoded) => {
-		if (err) return res.status(ERRORS.FORBIDDEN.code).json(createError(ERRORS.FORBIDDEN, ERROR_MESSAGES.INVALID_TOKEN, err));
+		if (err) return res.status(ERRORS.UNAUTHORIZED.code).json(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_TOKEN, err));
 		req.user = decoded;
 		next();
 	});

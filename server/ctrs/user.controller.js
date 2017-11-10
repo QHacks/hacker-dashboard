@@ -44,7 +44,6 @@ module.exports = db => {
 	});
 
 	userCtr.getAllUsers = () => new Promise((resolve, reject) => {
-		debugger;
 		User.find().then(users => {
 			resolve({ users });
 		}).catch(err => {

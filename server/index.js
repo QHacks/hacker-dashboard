@@ -1,3 +1,4 @@
+const history = require('connect-history-api-fallback');
 const dotenv = require('dotenv').config();
 const compression = require('compression');
 const bodyParser = require('body-parser');
@@ -34,6 +35,8 @@ db((err, db) => {
 
 	// Core API
 	app.use('/api/', auth(), api(ctr));
+
+	app.use(history());
 
 	// Static Files
 	app.use(express.static(BUNDLE_DIR));

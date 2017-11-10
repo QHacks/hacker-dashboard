@@ -23,8 +23,8 @@ const ERRORS = {
 		code: 503,
 		type: "DB_ERROR"
 	},
-	FORBIDDEN: {
-		code: 403,
+	UNAUTHORIZED: {
+		code: 401,
 		type: "AUTHORIZATION"
 	}
 };
@@ -106,13 +106,13 @@ module.exports = db => {
 					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
 				});
 			}).catch(err => {
-				reject(createError(ERRORS.FORBIDDEN, ERROR_MESSAGES.INVALID_CREDENTIALS));
+				reject(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_CREDENTIALS));
 			});
 	});
 
 	authCtr.refresh = refreshToken => new Promise((resolve, reject) => {
 		jwt.verify(refreshToken, AUTH_SECRET, (err, decoded) => {
-			if (err) reject(createError(ERRORS.FORBIDDEN, ERROR_MESSAGES.INVALID_REFRESH_TOKEN, err));
+			if (err) reject(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_REFRESH_TOKEN, err));
 			const { userId } = decoded;
 			const refreshToken = createRefreshToken(userId);
 
