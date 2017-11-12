@@ -33,13 +33,17 @@ const handleAction = action => {
 	axios({ method, url, data: body, headers: {
 		'Content-Type': 'application/json'
 	} }).then(res => {
+
 		console.log("Success type being dispatched!", res);
 		const { data } = res;
 		store.dispatch({ type: successType, data });
+
 	}).catch(err => {
+
 		console.log("Error type being dispatched!", err);
 		//check for 401, if its a 401 dispatch the api token bounce
 		store.dispatch({ type: failureType, data: err });
+
 	});
 };
 

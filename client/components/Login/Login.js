@@ -1,18 +1,12 @@
-import { actionCreators } from '../../HackerStore';
+import { actionCreators, selectors } from '../../HackerStore';
+import { Redirect, Link } from 'react-router-dom';
 import LoginForm from '../utils/LoginForm';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const { login } = actionCreators;
 
 class Login extends Component {
-
-	constructor(props) {
-		super(props);
-		
-		this.handleLogin = this.handleLogin.bind(this);
-	}
 
 	handleLogin(values) {
 		const { login } = this.props;
@@ -20,14 +14,42 @@ class Login extends Component {
 		login(values);
 	}
 
+	getRedirectPath() {
+		const locationState = this.props.location.state;
+		if (locationState && locationState.from.pathname) {
+			return locationState.from.pathname;
+		} else {
+			return '/dashboard';
+		}
+	}
+
 	render() {
-		return (
-			<div>
-				<LoginForm onSubmit={ this.handleLogin } />
-				<Link to="/apply">Need an account? Apply now!</Link>
-			</div>
-		);
+		const { authenticated } = this.props;
+
+		if (authenticated) {
+			return (
+				<Redirect to={{
+					pathname: this.getRedirectPath(), state: {
+						from: this.props.location
+					}
+				}}/>
+			);
+		} else {
+			return (
+				<div>
+					<LoginForm onSubmit={ this.handleLogin.bind(this) } />
+					<Link to="/apply">Need an account? Apply now!</Link>
+				</div>
+			);
+		}
 	}
 }
 
-export default connect(state => state, { login })(Login);
+const mapStateToProps = (state, ownProps) => {
+	return {
+		...ownProps,
+		authenticated: selectors.getAuthenticated(state)
+	};
+};
+
+export default connect(mapStateToProps, { login })(Login);

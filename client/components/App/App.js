@@ -1,35 +1,21 @@
 import { Route, Link, Switch } from 'react-router-dom';
+import PrivateRoute from '../utils/PrivateRoute';
 import Dashboard from '../Dashboard/Dashboard';
-import { selectors } from '../../HackerStore';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Login from '../Login/Login';
 import Apply from '../Apply/Apply';
 
-class App extends Component {
-
-	constructor(props) {
-		super(props);
-	}
-
+export default class App extends Component {
 	render() {
 		return (
 			<div>
 				<Switch>
-					<Route exact path="/" component={Dashboard} />
 					<Route path="/apply" component={Apply} />
 					<Route path="/login" component={Login} />
+					<PrivateRoute path="/" component={Dashboard} />
+					<Route path="*" component={() => (<div>No Match</div>)} />
 				</Switch>
 			</div>
 		);
 	}
 }
-
-const mapStateToProps = (state, ownProps) => {
-	return {
-		...ownProps,
-		authenticated: selectors.getAuthenticated(state)
-	};
-};
-
-export default connect(mapStateToProps, null)(App);
