@@ -13,6 +13,7 @@ const REFRESH_TOKEN_STORAGE = 'qhacksRefreshToken';
 export function* rootSaga(opt) {
 	yield all([
 		bootstrapSaga(opt),
+		logoutSaga(opt),
 		middlewareSaga(opt)
 	]);
 }
@@ -28,6 +29,18 @@ function* bootstrapSaga(opt) {
 	let refreshToken = yield call(opt.getValue, REFRESH_TOKEN_STORAGE);
 
 	yield put(actionCreators.bootstrapComplete({ accessToken, refreshToken }));
+}
+
+/**
+ * Logout saga, checks for logout action and removes tokens from storage.
+ * @param {Object} opt Options object passed into saga.
+ * @return {Generator} 
+ */
+function* logoutSaga(opt) {
+	yield take(actionTypes.LOGOUT);
+
+	yield call(opt.removeValue, ACCESS_TOKEN_STORAGE);
+	yield call(opt.removeValue, REFRESH_TOKEN_STORAGE);
 }
 
 /**

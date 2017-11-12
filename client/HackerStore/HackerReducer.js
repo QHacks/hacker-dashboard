@@ -58,6 +58,12 @@ const handlers = {
 			refreshToken,
 			authenticated: true
 		};
+	},
+
+	[actionTypes.LOGOUT]: (state, action) => {
+		return {
+			...initialState
+		};
 	}
 };
 

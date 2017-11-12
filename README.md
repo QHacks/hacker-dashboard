@@ -42,19 +42,19 @@ Utilize the scripts below to use the application:
 npm install
 
 # run the server in development mode with nodemon
-npm run dev
-
-# run the server in production mode
-npm run start
+npm run server-dev
 
 # run the server in debug mode
-npm run debug
+npm run server-debug
 
-# build the front end
-npm run build
+# run the server in production mode
+npm run server-prod
 
 # runs webpack-dev-server for ui development
-npm run ui
+npm run client-dev
+
+# build the front end
+npm run client-build
 
 # test the server code (lints code)
 npm run test
