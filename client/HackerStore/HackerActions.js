@@ -50,6 +50,7 @@ const apiErrorTypes = {
  * @type {Object}
  */
 const normalTypes = {
+	"LOGOUT": "@@/hacker/LOGOUT",
 	"BOOTSTRAP_COMPLETE": "@@/hacker/BOOTSTRAP_COMPLETE"
 };
 
@@ -66,6 +67,7 @@ export const actionTypes = {
  * @type {Object}
  */
 const normalActionCreators = {
+	logout: () => ({ type: actionTypes.LOGOUT }),
 	bootstrapComplete: data => ({ type: actionTypes.BOOTSTRAP_COMPLETE, data })
 };
 
