@@ -1,6 +1,6 @@
 const Router = require('express').Router;
 
-const USER = 'user';
+const USER = 'users';
 
 module.exports = ctr => {
 	let userAPI = Router();

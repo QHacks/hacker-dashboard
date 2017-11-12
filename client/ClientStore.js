@@ -32,7 +32,7 @@ const reduxOptions = {
  */
 const getStore = opt => {
 
-	const sagaMiddlware = createSagaMiddleware();
+	const sagaMiddleware = createSagaMiddleware();
 	const hackerMiddleware = createHackerMiddleware();
 
 	const store = createStore(
@@ -42,7 +42,7 @@ const getStore = opt => {
 	}),
 	compose(
 			applyMiddleware(
-				sagaMiddlware,
+				sagaMiddleware,
 				hackerMiddleware
 			),
 			!IS_PROD && window.__REDUX_DEVTOOLS_EXTENSION__ ?
@@ -50,7 +50,7 @@ const getStore = opt => {
 		)
 	);
 
-	sagaMiddlware.run(hackerSaga, opt);
+	sagaMiddleware.run(hackerSaga, opt);
 
 	return store;
 };

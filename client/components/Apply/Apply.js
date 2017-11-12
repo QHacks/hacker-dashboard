@@ -1,18 +1,12 @@
-import { actionCreators } from '../../HackerStore';
+import { actionCreators, selectors } from '../../HackerStore';
+import { Redirect, Link } from 'react-router-dom';
 import ApplyForm from '../utils/ApplyForm';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const { apply } = actionCreators;
 
 class Apply extends Component {
-
-	constructor(props) {
-		super(props);
-
-		this.handleApply = this.handleApply.bind(this);
-	}
 
 	handleApply(values) {
 		const { apply } = this.props;
@@ -20,14 +14,42 @@ class Apply extends Component {
 		apply(values);
 	}
 
+	getRedirectPath() {
+		const locationState = this.props.location.state;
+		if (locationState && locationState.from.pathname) {
+			return locationState.from.pathname;
+		} else {
+			return '/dashboard';
+		}
+	}
+
 	render() {
-		return (
-			<div>
-				<ApplyForm onSubmit={ this.handleApply } />
-				<Link to="/login">Have an account?</Link>
-			</div>
-		);
+		const { authenticated } = this.props;
+
+		if (authenticated) {
+			return (
+				<Redirect to={{
+					pathname: this.getRedirectPath(), state: {
+						from: this.props.location
+					}
+				}}/>
+			);
+		} else {
+			return (
+				<div>
+					<ApplyForm onSubmit={ this.handleApply.bind(this) } />
+					<Link to="/login">Have an account?</Link>
+				</div>
+			);
+		}
 	}
 }
 
-export default connect(null, { apply })(Apply);
+const mapStateToProps = (state, ownProps) => {
+	return {
+		...ownProps,
+		authenticated: selectors.getAuthenticated(state)
+	};
+};
+
+export default connect(mapStateToProps, { apply })(Apply);
