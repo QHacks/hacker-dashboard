@@ -1,4 +1,0 @@
-rules:
-  class-name-format:
-    - 2
-    - convention: hyphenatedlowercase
