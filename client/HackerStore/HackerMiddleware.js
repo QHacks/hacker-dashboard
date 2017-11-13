@@ -9,7 +9,9 @@ const API_TOKEN_FAIL = '@@/hacker/API_TOKEN_FAIL';
  * @param {Object} action The incoming action to be checked.
  * @return {Boolean} True if the action should be handled by middleware.
  */
-const isHackerMiddlewareAction = action => action.hasOwnProperty(INVOKE_API);
+function isHackerMiddlewareAction(action) {
+	return action.hasOwnProperty(INVOKE_API);
+}
 
 let accessToken;
 let refreshToken;
@@ -22,7 +24,7 @@ let options = {};
  * Handles a hacker middleware action.
  * @param {Object} action Middleware action.
  */
-const handleAction = action => {
+function handleAction(action) {
 
 	const requestAction = action[INVOKE_API];
 	const { url, method, body } = requestAction.data;
@@ -32,25 +34,27 @@ const handleAction = action => {
 
 	axios({ method, url, data: body, headers: {
 		'Content-Type': 'application/json'
-	} }).then(res => {
+	} }).then((res) => {
 		const { data } = res;
 		store.dispatch({ type: successType, data });
-	}).catch(err => {
+	}).catch((err) => {
 		store.dispatch({ type: failureType, data: err });
 	});
-};
+}
 
 /**
  * Creates the hacker middleware.
  * @param {Object} opt Middleware options object.
  * @return {Function} Middleware function.
  */
-export const createHackerMiddleware = opt => storeRef => {
-	store = storeRef;
-	options = opt;
+export function createHackerMiddleware(opt) {
+	return (storeRef) => {
+        store = storeRef;
+        options = opt;
 
-	return next => action => {
-		if (isHackerMiddlewareAction(action)) handleAction(action);
-		next(action);
-	};
-};
+        return (next) => (action) => {
+            if (isHackerMiddlewareAction(action)) handleAction(action);
+            next(action);
+        };
+    };
+}

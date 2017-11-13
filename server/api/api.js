@@ -4,8 +4,8 @@ const v1 = require('./v1/v1API');
 
 const V1 = 'v1';
 
-module.exports = ctr => {
-	let api = Router();
+module.exports = (ctr) => {
+	const api = Router();
 
 	api.use(`/${V1}/`, v1(ctr));
 

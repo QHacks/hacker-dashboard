@@ -86,8 +86,8 @@ function createRefreshToken(userId) {
 	});
 }
 
-module.exports = db => {
-	let authCtr = {};
+module.exports = (db) => {
+	const authCtr = {};
 
 	const models = {
 		User
@@ -95,56 +95,56 @@ module.exports = db => {
 
 	authCtr.authenticateUser = (email, password) => new Promise((resolve, reject) => {
 		User.authenticate(email, password)
-			.then(user => {
+			.then((user) => {
 				const refreshToken = createRefreshToken(user._id);
 
-				User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }).then(updatedUser => {
+				User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }).then((updatedUser) => {
 					const accessToken = createAccessToken(updatedUser._id);
 
 					resolve({ accessToken, refreshToken, user: updatedUser });
-				}).catch(err => {
+				}).catch((err) => {
 					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
 				});
-			}).catch(err => {
+			}).catch((err) => {
 				reject(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_CREDENTIALS));
 			});
 	});
 
-	authCtr.refresh = refreshToken => new Promise((resolve, reject) => {
+	authCtr.refresh = (refreshToken) => new Promise((resolve, reject) => {
 		jwt.verify(refreshToken, AUTH_SECRET, (err, decoded) => {
 			if (err) reject(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_REFRESH_TOKEN, err));
 			const { userId } = decoded;
 			const refreshToken = createRefreshToken(userId);
 
-			User.findOneAndUpdate({ _id: userId }, { refreshToken }, { new: true }).then(updatedUser => {
+			User.findOneAndUpdate({ _id: userId }, { refreshToken }, { new: true }).then((updatedUser) => {
 				const accessToken = createAccessToken(updatedUser._id);
 
 				resolve({ accessToken, refreshToken, user: updatedUser });
-			}).catch(err => {
+			}).catch((err) => {
 				reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
 			});
 
 		});
 	});
 
-	authCtr.signup = signUpInfo => new Promise((resolve, reject) => {
+	authCtr.signup = (signUpInfo) => new Promise((resolve, reject) => {
 		signUpInfo = _.pick(signUpInfo, HACKER_SIGN_UP_FIELDS);
 
 		customValidator.validateSignUpInfo(signUpInfo).then(() => {
-			User.create(signUpInfo).then(user => {
+			User.create(signUpInfo).then((user) => {
 				const refreshToken = createRefreshToken(user._id);
 
-				User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }).then(updatedUser => {
+				User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }).then((updatedUser) => {
 					const accessToken = createAccessToken(updatedUser._id);
 
 					resolve({ accessToken, refreshToken, user: updatedUser });
-				}).catch(err => {
+				}).catch((err) => {
 					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
 				});
-			}).catch(err => {
+			}).catch((err) => {
 				reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
 			});
-		}).catch(err => {
+		}).catch((err) => {
 			reject(createError(ERRORS.UNPROCESSABLE, err.message));
 		});
 	});

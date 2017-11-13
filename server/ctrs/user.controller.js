@@ -27,50 +27,50 @@ function createError(errorTpl, message, data = {}) {
 	return Object.assign({}, errorTpl, { message, data });
 }
 
-module.exports = db => {
-	let userCtr = {};
+module.exports = (db) => {
+	const userCtr = {};
 
 	const models = {
 		User
 	} = require('../models');
 
-	userCtr.getUser = userId => new Promise((resolve, reject) => {
-		User.findOne({ _id: userId }).then(user => {
+	userCtr.getUser = (userId) => new Promise((resolve, reject) => {
+		User.findOne({ _id: userId }).then((user) => {
 			if (user) resolve(user);
 			else reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID));
-		}).catch(err => {
+		}).catch((err) => {
 			reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
 		});
 	});
 
 	userCtr.getAllUsers = () => new Promise((resolve, reject) => {
-		User.find().then(users => {
+		User.find().then((users) => {
 			resolve({ users });
-		}).catch(err => {
+		}).catch((err) => {
 			reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USERS, err));
 		});
 	});
 
-	userCtr.deleteUser = userId => new Promise((resolve, reject) => {
-		User.findOneAndRemove({ _id: userId }).then(user => {
+	userCtr.deleteUser = (userId) => new Promise((resolve, reject) => {
+		User.findOneAndRemove({ _id: userId }).then((user) => {
 			if (!user) return reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID));
 			resolve();
 		});
 	});
 
 	userCtr.updateUser = (userId, userInfo) => new Promise((resolve, reject) => {
-		User.findOne({ _id: userId }).then(user => {
+		User.findOne({ _id: userId }).then((user) => {
 			if (!user) reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID));
 
-			Object.keys(userInfo).forEach(key => {
+			Object.keys(userInfo).forEach((key) => {
 				if (user[key]) user[key] = userInfo[key];
 			});
 
-			user.save().then(resolve).catch(err => {
+			user.save().then(resolve).catch((err) => {
 				reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
 			});
 
-		}).catch(err => {
+		}).catch((err) => {
 			reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
 		});
 	});

@@ -25,8 +25,8 @@ export function* rootSaga(opt) {
  * @return {Generator}
  */
 function* bootstrapSaga(opt) {
-	let accessToken = yield call(opt.getValue, ACCESS_TOKEN_STORAGE);
-	let refreshToken = yield call(opt.getValue, REFRESH_TOKEN_STORAGE);
+	const accessToken = yield call(opt.getValue, ACCESS_TOKEN_STORAGE);
+	const refreshToken = yield call(opt.getValue, REFRESH_TOKEN_STORAGE);
 
 	yield put(actionCreators.bootstrapComplete({ accessToken, refreshToken }));
 }

@@ -20,9 +20,9 @@ const IS_PROD = process.env.NODE_ENV === 'production';
  * @type {Object}
  */
 const reduxOptions = {
-	getValue: key => Promise.resolve(localStorage.getItem(key)),
+	getValue: (key) => Promise.resolve(localStorage.getItem(key)),
 	setValue: (key, value) => Promise.resolve(localStorage.setItem(key, value)),
-	removeValue: key => Promise.resolve(localStorage.removeItem(key))
+	removeValue: (key) => Promise.resolve(localStorage.removeItem(key))
 };
 
 /**
@@ -30,30 +30,30 @@ const reduxOptions = {
  * @param {Object} opt Options passed into the store.
  * @return {Store} The redux store.
  */
-const getStore = opt => {
+function getStore(opt) {
 
 	const sagaMiddleware = createSagaMiddleware();
 	const hackerMiddleware = createHackerMiddleware();
 
 	const store = createStore(
-	combineReducers({
-		[HACKER_MOUNT]: hackerReducer,
-		[FORM_MOUNT]: formReducer
-	}),
-	compose(
+        combineReducers({
+            [HACKER_MOUNT]: hackerReducer,
+            [FORM_MOUNT]: formReducer
+        }),
+        compose(
 			applyMiddleware(
 				sagaMiddleware,
 				hackerMiddleware
 			),
 			!IS_PROD && window.__REDUX_DEVTOOLS_EXTENSION__
 				? window.__REDUX_DEVTOOLS_EXTENSION__()
-				: f => f
+				: (f) => f
 		)
 	);
 
 	sagaMiddleware.run(hackerSaga, opt);
 
 	return store;
-};
+}
 
 export default getStore(reduxOptions);

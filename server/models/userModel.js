@@ -54,7 +54,7 @@ UserSchema.static({
 	authenticate(email, password) {
 		return new Promise((resolve, reject) => {
 			this.findOne({ email })
-				.then(user => {
+				.then((user) => {
 					if (!user) return reject('No user with that email!');
 
 					user.validPassword(password)
@@ -74,7 +74,7 @@ UserSchema.method({
 		return new Promise((resolve, reject) => {
 			bcrypt.compare(password, this.password, (err, valid) => {
 				if (err || !valid) return reject();
-				else return resolve();
+				return resolve();
 			});
 		});
 	}

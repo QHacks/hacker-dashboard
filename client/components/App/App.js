@@ -7,15 +7,13 @@ import Apply from '../Apply/Apply';
 
 export default class App extends Component {
 	render() {
-		return (
-			<div>
+		return <div>
 				<Switch>
 					<Route path="/apply" component={Apply} />
 					<Route path="/login" component={Login} />
 					<PrivateRoute path="/" component={Dashboard} />
 					<Route path="*" component={() => (<div>No Match</div>)} />
 				</Switch>
-			</div>
-		);
+			</div>;
 	}
 }

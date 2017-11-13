@@ -22,13 +22,13 @@ const initialState = {
  * @type {Object}
  */
 const simpleSelectors = {
-	getUser: state => state[reducerMount].user,
-	getAccessToken: state => state[reducerMount].accessToken,
-	getRefreshToken: state => state[reducerMount].refreshToken,
-	getLoginLoading: state => state[reducerMount].logingLoading,
-	getSignUpLoading: state => state[reducerMount].signUpLoading,
-	getAuthenticated: state => state[reducerMount].authenticated,
-	getBootstrapLoading: state => state[reducerMount].bootstrapLoading
+	getUser: (state) => state[reducerMount].user,
+	getAccessToken: (state) => state[reducerMount].accessToken,
+	getRefreshToken: (state) => state[reducerMount].refreshToken,
+	getLoginLoading: (state) => state[reducerMount].logingLoading,
+	getSignUpLoading: (state) => state[reducerMount].signUpLoading,
+	getAuthenticated: (state) => state[reducerMount].authenticated,
+	getBootstrapLoading: (state) => state[reducerMount].bootstrapLoading
 };
 
 
@@ -77,7 +77,7 @@ export const selectors = {
  * @param {Object} action Incoming action for reducing.
  * @return {Object} New state object after reduction.
  */
-export const reducer = (state = initialState, action) => {
+export function reducer(state = initialState, action) {
 	if (handlers[action.type]) return handlers[action.type](state, action);
 	return state;
-};
+}

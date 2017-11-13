@@ -68,7 +68,7 @@ export const actionTypes = {
  */
 const normalActionCreators = {
 	logout: () => ({ type: actionTypes.LOGOUT }),
-	bootstrapComplete: data => ({ type: actionTypes.BOOTSTRAP_COMPLETE, data })
+	bootstrapComplete: (data) => ({ type: actionTypes.BOOTSTRAP_COMPLETE, data })
 };
 
 /**
@@ -77,7 +77,7 @@ const normalActionCreators = {
  * @type {Object}
  */
 const invokeAPIActionCreators = {
-	login: credentials => ({
+	login: (credentials) => ({
 		[INVOKE_API]: {
 			types: [actionTypes.LOGIN_REQUEST, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
 			data: {
@@ -88,7 +88,7 @@ const invokeAPIActionCreators = {
 		}
 	}),
 
-	apply: signUpInfo => ({
+	apply: (signUpInfo) => ({
 		[INVOKE_API]: {
 			types: [actionTypes.SIGNUP_REQUEST, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
 			data: {
@@ -99,7 +99,7 @@ const invokeAPIActionCreators = {
 		}
 	}),
 
-	validateToken: refreshToken => ({
+	validateToken: (refreshToken) => ({
 		[INVOKE_API]: {
 			types: [actionTypes.VALIDATE_TOKENS, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
 			data: {
@@ -110,7 +110,7 @@ const invokeAPIActionCreators = {
 		}
 	}),
 
-	refresh: refreshToken => ({
+	refresh: (refreshToken) => ({
 		[INVOKE_API]: {
 			types: [actionTypes.REFRESH_TOKENS, actionTypes.TOKENS_UPDATED, actionTypes.AUTHENTICATION_ERROR],
 			data: {

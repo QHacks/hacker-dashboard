@@ -35,12 +35,12 @@ function createError(errorTpl, message, data = {}) {
  * @param {Object} req Incoming request to check for token.
  * @return {String} The token in the request, otherwise false.
  */
-const getBearer = req => {
+function getBearer(req) {
 	if (!req.headers || !req.headers.authorization) return false;
-	let split = req.headers.authorization.split(' ');
+	const split = req.headers.authorization.split(' ');
 	if (split.length !== 2 || split[0] !== 'Bearer') return false;
 	return split[1];
-};
+}
 
 /**
  * Custom authentication middleware.
@@ -54,7 +54,7 @@ module.exports = () => (req, res, next) => {
 	// don't authenticate routes /auth
 	if (req.url.match(V1_EXCEPTION_REGEX)) return next();
 
-	let token = getBearer(req);
+	const token = getBearer(req);
 
 	if (!token) return res.status(ERRORS.BAD_REQUEST.code).json(createError(ERRORS.BAD_REQUEST, ERROR_MESSAGES.MISSING_TOKEN));
 
