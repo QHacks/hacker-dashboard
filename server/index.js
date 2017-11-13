@@ -26,9 +26,9 @@ db((err, db) => {
 	if (err) {
 		winston.info("Could not connect to the database!");
 		return;
-	} else {
-		winston.info("Successfully connected to the database!");
 	}
+
+	winston.info("Successfully connected to the database!");
 
 	// Initialize controller(s)
 	ctr = ctr(db);
