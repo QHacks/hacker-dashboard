@@ -1,5 +1,13 @@
 {
   "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "rules": {
     "strict": 0,
     "semi": [2, "always"],
@@ -19,6 +27,10 @@
     "space-infix-ops": 2,
     "no-else-return": ["error", { "allowElseIf": true }],
     "multiline-ternary": ["error", "always"],
-    "key-spacing": ["error", { "mode": "strict" }]
+    "key-spacing": ["error", { "mode": "strict" }],
+    "arrow-parens": ["error", "always"],
+    "func-style": ["error", "declaration"],
+    "react/jsx-wrap-multilines": "error",
+    "prefer-const": "error"
   }
 }

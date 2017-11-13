@@ -9,7 +9,7 @@
     "server-prod": "cross-env NODE_ENV=production node server",
     "client-dev": "cross-env webpack-dev-server",
     "client-build": "cross-env NODE_ENV=production npm run clean && webpack -p",
-    "test": "cross-env eslint server/**.js client/**.js && nsp check --reporter checkstyle && ncu -e 2",
+    "test": "cross-env eslint server/*/**.js client/*/**.js && nsp check --reporter checkstyle && ncu -e 2",
     "clean": "cross-env rimraf ./client/bundle"
   },
   "dependencies": {
