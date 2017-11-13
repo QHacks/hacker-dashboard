@@ -25,13 +25,13 @@ Name | Description | Required | Default
 `MONGO_PORT` | The port to use to access the MongoDB instance. | No | 27017
 `MONGO_USER` | The username to access the MongoDB instance. | No | None
 `PORT` | Port to run the Express sever on. | No | 3000
-`DEV_PROXY` | When running the `webpack-dev-server` all API calls will be proxied to this host. | No | http://localhost:PORT
+`DEV_PROXY` | When running the `webpack-dev-server` all API calls will be proxied to this host. | No | `http://localhost:PORT`
 
 ### Front End
 
 There are currently no environment variables needed for the front end, update this as necessary.
 
-However, within the `client/assets` directory there is `semantic-ui/` directory. This holds our themeing and customization on top of the default [Semantic UI]() framework. Webpack has been configured to bundle LESS, so we have added the `semantic-ui-less` package and configured appropriately.
+However, within the `client/assets` directory there is `semantic-ui/` directory. This holds our theming and customization on top of the default [Semantic UI](https://react.semantic-ui.com/introduction) framework. Webpack has been configured to bundle LESS, so we have added the `semantic-ui-less` package and configured appropriately.
 
 ## Usage
 

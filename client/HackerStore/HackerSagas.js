@@ -34,7 +34,7 @@ function* bootstrapSaga(opt) {
 /**
  * Logout saga, checks for logout action and removes tokens from storage.
  * @param {Object} opt Options object passed into saga.
- * @return {Generator} 
+ * @return {Generator}
  */
 function* logoutSaga(opt) {
 	yield take(actionTypes.LOGOUT);
@@ -62,10 +62,13 @@ function* middlewareSaga(opt) {
 
 	console.log("You have been authenticated!");
 
-	// in loop wait for logout, api token fail (trigger refresh), api call
-	//
-	//
+	// in loop wait api token fail (trigger refresh), dispatch buffered api calls
+
 	// while (true) {
-	// 	// now do the auth stuff, as log as logout action not sent
+	// waiting for a call or fail
+	// three states
+	// 	- getting token
+	// 	- have token
+	// 	- don't have token
 	// }
 }

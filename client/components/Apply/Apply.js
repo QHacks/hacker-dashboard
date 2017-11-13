@@ -18,9 +18,8 @@ class Apply extends Component {
 		const locationState = this.props.location.state;
 		if (locationState && locationState.from.pathname) {
 			return locationState.from.pathname;
-		} else {
-			return '/dashboard';
 		}
+		return '/dashboard';
 	}
 
 	render() {
@@ -34,14 +33,13 @@ class Apply extends Component {
 					}
 				}}/>
 			);
-		} else {
-			return (
-				<div>
-					<ApplyForm onSubmit={ this.handleApply.bind(this) } />
-					<Link to="/login">Have an account?</Link>
-				</div>
-			);
 		}
+		return (
+			<div>
+				<ApplyForm onSubmit={ this.handleApply.bind(this) } />
+				<Link to="/login">Have an account?</Link>
+			</div>
+		);
 	}
 }
 

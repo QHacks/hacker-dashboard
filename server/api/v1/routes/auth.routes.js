@@ -3,7 +3,7 @@ const Router = require('express').Router;
 const AUTH = 'auth';
 
 module.exports = ctr => {
-	let authAPI = Router();
+	const authAPI = Router();
 
 	// get auth controller
 	const { auth } = ctr;

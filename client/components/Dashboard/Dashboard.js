@@ -9,9 +9,7 @@ const { logout } = actionCreators;
 class Dashboard extends Component {
 
 	handleLogoutClick() {
-		const { logout } = this.props;
-
-		logout();
+		this.props.logout();
 	}
 
 	render() {

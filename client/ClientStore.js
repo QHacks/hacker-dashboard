@@ -45,8 +45,9 @@ const getStore = opt => {
 				sagaMiddleware,
 				hackerMiddleware
 			),
-			!IS_PROD && window.__REDUX_DEVTOOLS_EXTENSION__ ?
-			window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
+			!IS_PROD && window.__REDUX_DEVTOOLS_EXTENSION__
+				? window.__REDUX_DEVTOOLS_EXTENSION__()
+				: f => f
 		)
 	);
 

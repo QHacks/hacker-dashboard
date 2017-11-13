@@ -3,7 +3,7 @@ const Router = require('express').Router;
 const USER = 'users';
 
 module.exports = ctr => {
-	let userAPI = Router();
+	const userAPI = Router();
 
 	const { user } = ctr;
 

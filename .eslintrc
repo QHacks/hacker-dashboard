@@ -16,6 +16,9 @@
     "keyword-spacing": 2,
     "no-unneeded-ternary": 2,
     "curly": [2, "multi-line"],
-    "space-infix-ops": 2
+    "space-infix-ops": 2,
+    "no-else-return": ["error", { "allowElseIf": true }],
+    "multiline-ternary": ["error", "always"],
+    "key-spacing": ["error", { "mode": "strict" }]
   }
 }

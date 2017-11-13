@@ -9,18 +9,15 @@ const { login } = actionCreators;
 class Login extends Component {
 
 	handleLogin(values) {
-		const { login } = this.props;
-
-		login(values);
+		this.props.login(values);
 	}
 
 	getRedirectPath() {
 		const locationState = this.props.location.state;
 		if (locationState && locationState.from.pathname) {
 			return locationState.from.pathname;
-		} else {
-			return '/dashboard';
 		}
+		return '/dashboard';
 	}
 
 	render() {
@@ -34,14 +31,13 @@ class Login extends Component {
 					}
 				}}/>
 			);
-		} else {
-			return (
-				<div>
-					<LoginForm onSubmit={ this.handleLogin.bind(this) } />
-					<Link to="/apply">Need an account? Apply now!</Link>
-				</div>
-			);
 		}
+		return (
+			<div>
+				<LoginForm onSubmit={ this.handleLogin.bind(this) } />
+				<Link to="/apply">Need an account? Apply now!</Link>
+			</div>
+		);
 	}
 }
 

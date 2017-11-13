@@ -3,7 +3,7 @@ const authRoutes = require('./routes/auth.routes.js');
 const userRoutes = require('./routes/user.routes.js');
 
 module.exports = ctr => {
-	let api = Router();
+	const api = Router();
 
 	// authentication routes
 	api.use('/', authRoutes(ctr));
