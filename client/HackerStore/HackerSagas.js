@@ -1,4 +1,5 @@
 import { put, take, all, call, select } from 'redux-saga/effects';
+import { hackerMiddlwareActionTypes } from './HackerMiddleware';
 import { actionCreators, actionTypes } from './HackerActions';
 import { selectors } from './HackerReducer';
 
@@ -12,8 +13,8 @@ const REFRESH_TOKEN_STORAGE = 'qhacksRefreshToken';
  */
 export function* rootSaga(opt) {
 	yield all([
-		bootstrapSaga(opt),
 		logoutSaga(opt),
+		bootstrapSaga(opt),
 		middlewareSaga(opt)
 	]);
 }
@@ -37,10 +38,25 @@ function* bootstrapSaga(opt) {
  * @return {Generator}
  */
 function* logoutSaga(opt) {
-	yield take(actionTypes.LOGOUT);
+	while (true) {
+		yield take(actionTypes.LOGOUT);
 
-	yield call(opt.removeValue, ACCESS_TOKEN_STORAGE);
-	yield call(opt.removeValue, REFRESH_TOKEN_STORAGE);
+		yield call(opt.removeValue, ACCESS_TOKEN_STORAGE);
+		yield call(opt.removeValue, REFRESH_TOKEN_STORAGE);
+	}
+}
+
+/**
+ * Refresh token saga, takes care serializing token actions.
+ * @param {Object} opt Options object passed into saga.
+ * @return {Generator}
+ */
+function* refreshTokensSaga(opt) {
+	while (true) {
+		const tokenAction = yield take([actionTypes.REFRESH_TOKENS, actionTypes.TOKENS_REFRESHED, actionTypes.TOKENS_CANNOT_REFRESH]);
+
+
+	}
 }
 
 /**
@@ -60,15 +76,22 @@ function* middlewareSaga(opt) {
 	yield call(opt.setValue, ACCESS_TOKEN_STORAGE, auth.data.accessToken);
 	yield call(opt.setValue, REFRESH_TOKEN_STORAGE, auth.data.refreshToken);
 
-	console.log("You have been authenticated!");
+	const buffer = [];
 
-	// in loop wait api token fail (trigger refresh), dispatch buffered api calls
+	while (true) {
+		const action = yield take([ hackerMiddlwareActionTypes.INVOKE_API_CALL, hackerMiddlwareActionTypes.INVOKE_API_FAIL]);
 
-	// while (true) {
-	// waiting for a call or fail
-	// three states
-	// 	- getting token
-	// 	- have token
-	// 	- don't have token
-	// }
+		while (shitsFucked()) {
+			switch (action.type) {
+				case hackerMiddlwareActionTypes.INVOKE_API_CALL:
+						// check state, if we are getting tokens buffer, if we are
+					break;
+				case hackerMiddlwareActionTypes.INVOKE_API_FAIL:
+						// buffer initialAction
+						// trigger refresh tokens
+					break;
+			}
+		}
+
+	}
 }
