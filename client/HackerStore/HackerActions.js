@@ -1,4 +1,4 @@
-import { INVOKE_API } from './HackerMiddleware';
+import { hackerMiddlwareActionTypes } from './HackerMiddleware';
 
 // Request Methods
 const POST = 'POST';
@@ -31,7 +31,7 @@ const apiRequestTypes = {
  */
 const apiSuccessTypes = {
 	"AUTHENTICATED": "@@/hacker/AUTHENTICATED",
-	"TOKENS_UPDATED": "@@/hacker/TOKENS_UPDATED"
+	"TOKENS_REFRESHED": "@@/hacker/TOKENS_UPDATED"
 };
 
 /**
@@ -41,7 +41,8 @@ const apiSuccessTypes = {
  * @type {Object}
  */
 const apiErrorTypes = {
-	"AUTHENTICATION_ERROR": "@@/hacker/AUTHENTICATION_ERROR"
+	"AUTHENTICATION_ERROR": "@@/hacker/AUTHENTICATION_ERROR",
+	"TOKENS_CANNOT_REFRESH": "@@/hacker/TOKENS_CANNOT_REFRESH"
 };
 
 /**
@@ -77,10 +78,11 @@ const normalActionCreators = {
  * @type {Object}
  */
 const invokeAPIActionCreators = {
-	login: (credentials) => ({
-		[INVOKE_API]: {
+	loing: (credentials) => ({
+		type: hackerMiddlwareActionTypes.INVOKE_API,
+		data: {
 			types: [actionTypes.LOGIN_REQUEST, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
-			data: {
+			request: {
 				url: `${API_SUFFIX}${LOGIN_ENDPOINT}`,
 				method: POST,
 				body: credentials
@@ -88,10 +90,11 @@ const invokeAPIActionCreators = {
 		}
 	}),
 
-	apply: (signUpInfo) => ({
-		[INVOKE_API]: {
+	apply: (applicationInfo) => ({
+		type: hackerMiddlwareActionTypes.INVOKE_API,
+		data: {
 			types: [actionTypes.SIGNUP_REQUEST, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
-			data: {
+			request: {
 				url: `${API_SUFFIX}${SIGNUP_ENDPOINT}`,
 				method: POST,
 				body: signUpInfo
@@ -99,10 +102,11 @@ const invokeAPIActionCreators = {
 		}
 	}),
 
-	validateToken: (refreshToken) => ({
-		[INVOKE_API]: {
+	validateToken: (refreshTokenToValidate) => ({
+		type: hackerMiddlwareActionTypes.INVOKE_API,
+		data: {
 			types: [actionTypes.VALIDATE_TOKENS, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
-			data: {
+			request: {
 				url: `${API_SUFFIX}${REFRESH_ENDPOINT}`,
 				method: POST,
 				body: { refreshToken }
@@ -111,9 +115,10 @@ const invokeAPIActionCreators = {
 	}),
 
 	refresh: (refreshToken) => ({
-		[INVOKE_API]: {
-			types: [actionTypes.REFRESH_TOKENS, actionTypes.TOKENS_UPDATED, actionTypes.AUTHENTICATION_ERROR],
-			data: {
+		type: hackerMiddlwareActionTypes.INVOKE_API,
+		data: {
+			types: [actionTypes.REFRESH_TOKENS, actionTypes.TOKENS_REFRESHED, actionTypes.TOKENS_CANNOT_REFRESH],
+			request: {
 				url: `${API_SUFFIX}${REFRESH_ENDPOINT}`,
 				method: POST,
 				body: { refreshToken }
