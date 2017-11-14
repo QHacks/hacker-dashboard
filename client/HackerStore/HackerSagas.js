@@ -1,4 +1,5 @@
 import { put, take, all, call, select } from 'redux-saga/effects';
+import { hackerMiddlwareActionTypes } from './HackerMiddleware';
 import { actionCreators, actionTypes } from './HackerActions';
 import { selectors } from './HackerReducer';
 
