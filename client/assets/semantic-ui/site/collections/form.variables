@@ -1,0 +1,2 @@
+@inputBorderRadius: @3px;
+@inputFocusBorderColor: @secondaryColor;

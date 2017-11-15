@@ -43,11 +43,11 @@ class Apply extends Component {
 	}
 }
 
-const mapStateToProps = (state, ownProps) => {
+function mapStateToProps(state, ownProps) {
 	return {
 		...ownProps,
 		authenticated: selectors.getAuthenticated(state)
 	};
-};
+}
 
 export default connect(mapStateToProps, { apply })(Apply);
