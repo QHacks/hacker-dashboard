@@ -19,6 +19,7 @@ See the environment variables below for the back end to operate:
 Name | Description | Required | Default
 --- | --- | --- | ---
 `AUTH_SECRET` | The secret used to encrypt auth tokens | Yes | None
+`MONGO_AUTH_SOURCE` | The database name used to authenticate the connection to MongoDB | No | None
 `MONGO_DBNAME` | The database name to use inside the instance of MongoDB. | Yes | None
 `MONGO_HOST` | The hostname to use to access the MongoDB instance. | Yes | None
 `MONGO_PASS` | The password to access the MongoDB instance. | No | None
