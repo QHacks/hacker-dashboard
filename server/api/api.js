@@ -1,5 +1,4 @@
 const Router = require('express').Router;
-const auth = require('../auth/auth');
 const v1 = require('./v1/v1API');
 
 const V1 = 'v1';
