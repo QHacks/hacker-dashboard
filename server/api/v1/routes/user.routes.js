@@ -2,31 +2,31 @@ const Router = require('express').Router;
 
 const USER = 'users';
 
-module.exports = ctr => {
+module.exports = (ctr) => {
 	const userAPI = Router();
 
 	const { user } = ctr;
 
 	userAPI.get('/users', (req, res) => {
-		user.getAllUsers().then(users => {
+		user.getAllUsers().then((users) => {
 			res.status(200).json(users);
-		}).catch(err => {
+		}).catch((err) => {
 			res.status(err.code).json(err);
 		});
 	});
 
 	userAPI.get(`/${USER}/:userId`, (req, res) => {
-		user.getUser(req.params.userId).then(user => {
+		user.getUser(req.params.userId).then((user) => {
 			res.status(200).json(user);
-		}).catch(err => {
+		}).catch((err) => {
 			res.status(err.code).json(err);
 		});
 	});
 
 	userAPI.post(`/${USER}/:userId`, (req, res) => {
-		user.updateUser(req.params.userId, req.body).then(updatedUser => {
+		user.updateUser(req.params.userId, req.body).then((updatedUser) => {
 			res.status(200).json(updatedUser);
-		}).catch(err => {
+		}).catch((err) => {
 			res.status(err.code).json(err);
 		});
 	});
@@ -34,7 +34,7 @@ module.exports = ctr => {
 	userAPI.delete(`/${USER}/:userId`, (req, res) => {
 		user.deleteUser(req.params.userId).then(() => {
 			res.sendStatus(200);
-		}).catch(err => {
+		}).catch((err) => {
 			res.status(err.code).json(err);
 		});
 	});

@@ -12,6 +12,10 @@ const initialState = {
 	refreshToken: null,
 	authenticated: false,
 
+	users: [],
+
+	fetchingNewTokens: false,
+
 	bootstrapLoading: true,
 	loginLoading: false,
 	signUpLoading: false
@@ -21,16 +25,17 @@ const initialState = {
  * State selectors.
  * @type {Object}
  */
-const simpleSelectors = {
+export const selectors = {
 	getUser: (state) => state[reducerMount].user,
+	getUsers: (state) => state[reducerMount].users,
 	getAccessToken: (state) => state[reducerMount].accessToken,
 	getRefreshToken: (state) => state[reducerMount].refreshToken,
 	getLoginLoading: (state) => state[reducerMount].logingLoading,
 	getSignUpLoading: (state) => state[reducerMount].signUpLoading,
 	getAuthenticated: (state) => state[reducerMount].authenticated,
-	getBootstrapLoading: (state) => state[reducerMount].bootstrapLoading
+	getBootstrapLoading: (state) => state[reducerMount].bootstrapLoading,
+	getFetchingNewTokens: (state) => state[reducerMount].fetchingNewTokens
 };
-
 
 /**
  * Reducer handlers.
@@ -60,15 +65,39 @@ const handlers = {
 		};
 	},
 
+	[actionTypes.TOKENS_REFRESHED]: (state, action) => {
+		const { refreshToken, accessToken, user } = action.data;
+
+		return {
+			...state,
+			user,
+			accessToken,
+			refreshToken,
+			authenticated: true,
+			fetchingNewTokens: false
+		};
+	},
+
+	[actionTypes.REFRESH_TOKENS]: (state, action) => {
+		return {
+			...state,
+			fetchingNewTokens: true
+		};
+	},
+
+	[actionTypes.USERS_FETCHED]: (state, action) => {
+		const { users } = action.data;
+		return {
+			...state,
+			users
+		};
+	},
+
 	[actionTypes.LOGOUT]: (state, action) => {
 		return {
 			...initialState
 		};
 	}
-};
-
-export const selectors = {
-	...simpleSelectors
 };
 
 /**

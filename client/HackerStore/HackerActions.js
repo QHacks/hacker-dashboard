@@ -1,14 +1,24 @@
-import { INVOKE_API } from './HackerMiddleware';
-
 // Request Methods
 const POST = 'POST';
 const GET = 'GET';
 
 // API Endpoint Constants
 const API_SUFFIX = '/api/v1';
+const USERS_ENDPOINT = '/users';
 const LOGIN_ENDPOINT = '/auth/session';
 const SIGNUP_ENDPOINT = '/auth/signup';
 const REFRESH_ENDPOINT = '/auth/refresh';
+const VALIDATE_ENDPOINT = '/auth/refresh';
+
+/**
+ * Specific middleware action types.
+ * NOTE: These are crucial to how sagas operate.
+ * @type {Object}
+ */
+const hackerMiddlwareActionTypes = {
+	"INVOKE_API_CALL": "@@/hackerMiddleware/INVOKE_API_CALL",
+	"INVOKE_API_FAIL": "@@/hackerMiddleware/INVOKE_API_FAIL"
+};
 
 /**
  * API Middleware request action types.
@@ -20,7 +30,9 @@ const apiRequestTypes = {
 	"LOGIN_REQUEST": "@@/hacker/LOGIN_REQUEST",
 	"SIGNUP_REQUEST": "@@/hacker/SIGNUP_REQUEST",
 	"REFRESH_TOKENS": "@@/hacker/REFRESH_TOKENS",
-	"VALIDATE_TOKENS": "@@/hacker/VALIDATE_TOKENS"
+	"VALIDATE_TOKENS": "@@/hacker/VALIDATE_TOKENS",
+
+	"GET_USERS": "@@/hacker/GET_USERS"
 };
 
 /**
@@ -31,7 +43,9 @@ const apiRequestTypes = {
  */
 const apiSuccessTypes = {
 	"AUTHENTICATED": "@@/hacker/AUTHENTICATED",
-	"TOKENS_UPDATED": "@@/hacker/TOKENS_UPDATED"
+	"TOKENS_REFRESHED": "@@/hacker/TOKENS_REFRESHED",
+
+	"USERS_FETCHED": "@@/hacker/USERS_FETCHED"
 };
 
 /**
@@ -41,7 +55,10 @@ const apiSuccessTypes = {
  * @type {Object}
  */
 const apiErrorTypes = {
-	"AUTHENTICATION_ERROR": "@@/hacker/AUTHENTICATION_ERROR"
+	"AUTHENTICATION_ERROR": "@@/hacker/AUTHENTICATION_ERROR",
+	"TOKENS_CANNOT_REFRESH": "@@/hacker/TOKENS_CANNOT_REFRESH",
+
+	"USER_FETCH_ERORR": "@@/hacker/USERS_FETCHED"
 };
 
 /**
@@ -55,6 +72,7 @@ const normalTypes = {
 };
 
 export const actionTypes = {
+	...hackerMiddlwareActionTypes,
 	...apiRequestTypes,
 	...apiSuccessTypes,
 	...apiErrorTypes,
@@ -78,9 +96,10 @@ const normalActionCreators = {
  */
 const invokeAPIActionCreators = {
 	login: (credentials) => ({
-		[INVOKE_API]: {
+		type: actionTypes.INVOKE_API_CALL,
+		data: {
 			types: [actionTypes.LOGIN_REQUEST, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
-			data: {
+			request: {
 				url: `${API_SUFFIX}${LOGIN_ENDPOINT}`,
 				method: POST,
 				body: credentials
@@ -88,10 +107,11 @@ const invokeAPIActionCreators = {
 		}
 	}),
 
-	apply: (signUpInfo) => ({
-		[INVOKE_API]: {
+	apply: (applicationInfo) => ({
+		type: actionTypes.INVOKE_API_CALL,
+		data: {
 			types: [actionTypes.SIGNUP_REQUEST, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
-			data: {
+			request: {
 				url: `${API_SUFFIX}${SIGNUP_ENDPOINT}`,
 				method: POST,
 				body: signUpInfo
@@ -99,10 +119,23 @@ const invokeAPIActionCreators = {
 		}
 	}),
 
-	validateToken: (refreshToken) => ({
-		[INVOKE_API]: {
+	validateToken: (refreshTokenToValidate) => ({
+		type: actionTypes.INVOKE_API_CALL,
+		data: {
 			types: [actionTypes.VALIDATE_TOKENS, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
-			data: {
+			request: {
+				url: `${API_SUFFIX}${VALIDATE_ENDPOINT}`,
+				method: POST,
+				body: { refreshToken: refreshTokenToValidate }
+			}
+		}
+	}),
+
+	refresh: (refreshToken) => ({
+		type: actionTypes.INVOKE_API_CALL,
+		data: {
+			types: [actionTypes.REFRESH_TOKENS, actionTypes.TOKENS_REFRESHED, actionTypes.INVOKE_API_FAIL],
+			request: {
 				url: `${API_SUFFIX}${REFRESH_ENDPOINT}`,
 				method: POST,
 				body: { refreshToken }
@@ -110,13 +143,14 @@ const invokeAPIActionCreators = {
 		}
 	}),
 
-	refresh: (refreshToken) => ({
-		[INVOKE_API]: {
-			types: [actionTypes.REFRESH_TOKENS, actionTypes.TOKENS_UPDATED, actionTypes.AUTHENTICATION_ERROR],
-			data: {
-				url: `${API_SUFFIX}${REFRESH_ENDPOINT}`,
-				method: POST,
-				body: { refreshToken }
+	getUsers: () => ({
+		type: actionTypes.INVOKE_API_CALL,
+		data: {
+			types: [actionTypes.GET_USERS, actionTypes.USERS_FETCHED, actionTypes.USER_FETCH_ERORR],
+			request: {
+				url: `${API_SUFFIX}${USERS_ENDPOINT}`,
+				method: GET,
+				tokenRequired: true
 			}
 		}
 	})
