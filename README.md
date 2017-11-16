@@ -49,15 +49,15 @@ npm run server-dev
 npm run server-debug
 
 # run the server in production mode
-npm run server-prod
+npm run start
 
 # runs webpack-dev-server for ui development
 npm run client-dev
 
-# build the front end
-npm run client-build
+# build the front end for production
+npm run client-prod
 
-# test the server code (lints code)
+# test the server code (lints code, checks for security vulnerabilities in dependencies and outdated dependencies)
 npm run test
 ```
 

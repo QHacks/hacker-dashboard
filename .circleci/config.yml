@@ -19,9 +19,21 @@ jobs:
           command: npm test
   dev-deploy:
     docker:
-      - image: google/cloud-sdk:latest
+      - image: lakoo/node-gcloud-docker:latest
     steps:
       - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install NPM dependencies
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Build React client
+          command: npm run client-prod
       - run:
           name: Create .env file
           command: |
@@ -52,6 +64,6 @@ workflows:
       - dev-deploy:
           requires:
             - test
-          filters:
-            branches:
-              only: /^dev$/
+#          filters:
+#            branches:
+#              only: /^dev$/
