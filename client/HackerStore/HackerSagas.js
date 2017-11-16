@@ -34,23 +34,9 @@ function* bootstrapSaga(opt) {
 }
 
 /**
- * Logout saga, checks for logout action and removes tokens from storage.
- * @param {Object} opt Options object passed into saga.
+ * Authentication saga, handles boostrap completion, auth and refresh token saving.
+ * @param {Object} opt Options passed into the saga.
  * @return {Generator}
- */
-function* logoutSaga(opt) {
-	while (true) {
-		yield take(actionTypes.LOGOUT);
-
-		yield call(opt.removeValue, ACCESS_TOKEN_STORAGE);
-		yield call(opt.removeValue, REFRESH_TOKEN_STORAGE);
-	}
-}
-
-/**
- * [authSaga description]
- * @param {Object} opt [description]
- * @return {Generator} [description]
  */
 function* authSaga(opt) {
 	const bootstrapComplete = yield take(actionTypes.BOOTSTRAP_COMPLETE);
@@ -70,6 +56,7 @@ function* authSaga(opt) {
 
 /**
  * Middleware saga, handles logic for refresh buffer.
+ * NOTE: This implementaion is specific to our middleware.
  * @return {Generator}
  */
 function* middlewareSaga(opt) {
@@ -79,15 +66,17 @@ function* middlewareSaga(opt) {
 	while (true) {
 		const action = yield take([ actionTypes.INVOKE_API_CALL, actionTypes.INVOKE_API_FAIL, actionTypes.TOKENS_REFRESHED]);
 
+		// when tokens have successfully been refreshed dispatch buffered actions
 		if (action.type === actionTypes.TOKENS_REFRESHED) {
 			if (buffer.length) {
 				for (const bufferedAction of buffer) {
 					yield put(bufferedAction);
 				}
 			}
-			buffer = [];
+			buffer = []; // reset buffer
 		}
 
+		// when receive an api action check if we need to buffer
 		if (action.type === actionTypes.INVOKE_API_CALL) {
 			const fetchingTokens = yield select(selectors.getFetchingNewTokens);
 
@@ -96,20 +85,38 @@ function* middlewareSaga(opt) {
 			}
 		}
 
+		// when api request fails due to a bad token, buffer initial action and begin refresh
 		if (action.type === actionTypes.INVOKE_API_FAIL) {
 			const { initialAction } = action.data;
 			const [ requestType ] = initialAction.data.types;
 
+			// if the api failed on refresh token request we know tokens are invalid, log user out immediately
 			if (requestType === actionTypes.REFRESH_TOKENS) {
 				buffer = [];
 				yield put(actionCreators.logout());
 			} else if (initialAction && requestType !== actionTypes.VALIDATE_TOKENS) {
+				// buffer initial action that caused the token bounce
 				buffer.unshift(initialAction);
 
 				const refreshToken = yield select(selectors.getRefreshToken);
 
+				// attempt to refresh tokens
 				yield put(actionCreators.refresh(refreshToken));
 			}
 		}
+	}
+}
+
+/**
+ * Logout saga, checks for logout action and removes tokens from storage.
+ * @param {Object} opt Options object passed into saga.
+ * @return {Generator}
+ */
+function* logoutSaga(opt) {
+	while (true) {
+		yield take(actionTypes.LOGOUT);
+
+		yield call(opt.removeValue, ACCESS_TOKEN_STORAGE);
+		yield call(opt.removeValue, REFRESH_TOKEN_STORAGE);
 	}
 }
