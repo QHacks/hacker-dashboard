@@ -107,7 +107,7 @@ const invokeAPIActionCreators = {
 		}
 	}),
 
-	apply: (applicationInfo) => ({
+	apply: (signUpInfo) => ({
 		type: actionTypes.INVOKE_API_CALL,
 		data: {
 			types: [actionTypes.SIGNUP_REQUEST, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
