@@ -23,6 +23,15 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Create .env file
+          command: |
+            echo "AUTH_SECRET=${AUTH_SECRET}" > .env
+            echo "MONGO_AUTH_SOURCE=${MONGO_AUTH_SOURCE}" >> .env
+            echo "MONGO_DBNAME=${MONGO_DBNAME}" >> .env
+            echo "MONGO_HOST=${MONGO_HOST}" >> .env
+            echo "MONGO_PASS=${MONGO_PASS}" >> .env
+            echo "MONGO_USER=${MONGO_USER}" >> .env
+      - run:
           name: Dump Google Cloud Credentials to file
           command: echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
       - run:
