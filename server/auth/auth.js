@@ -19,13 +19,6 @@ const ERROR_MESSAGES = {
 	INVALID_TOKEN: "Invalid token!"
 };
 
-/**
- * Creates a standard format error, see routes for usage.
- * @param {String} message The error message.
- * @param {Integer} status The error status code.
- * @param {Object} [data={}] Error object.
- * @return {Object} Error object.
- */
 function createError(errorTpl, message, data = {}) {
 	return Object.assign({}, errorTpl, { message, data });
 }
@@ -33,7 +26,7 @@ function createError(errorTpl, message, data = {}) {
 /**
  * Retrieves bearer token from the request.
  * @param {Object} req Incoming request to check for token.
- * @return {String} The token in the request, otherwise false.
+ * @return {String|Boolean} The token in the request, otherwise false.
  */
 function getBearer(req) {
 	if (!req.headers || !req.headers.authorization) return false;

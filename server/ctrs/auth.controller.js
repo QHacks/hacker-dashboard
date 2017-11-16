@@ -1,8 +1,6 @@
 const customValidator = require('../services/custom-validator');
-const auth = require('../auth/auth');
 const jwt = require('jsonwebtoken');
 const mailer = require('../mailer');
-const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const _ = require('lodash');
 
@@ -112,7 +110,6 @@ function createResetPasswordHash(user) {
         .update(`${user.email}${timeInMs}`)
         .digest('hex');
 }
-
 
 module.exports = () => {
     const authCtr = {};
