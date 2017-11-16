@@ -22,6 +22,15 @@ jobs:
       - image: gcr.io/google-appengine/nodejs:latest
     steps:
       - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install NPM dependencies
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
       - run:
           name: Build React client
           command: npm run client-prod
