@@ -19,7 +19,7 @@ jobs:
           command: npm test
   dev-deploy:
     docker:
-      - image: gcr.io/google-appengine/nodejs:latest
+      - image: qhacks/circleci:latest
     steps:
       - checkout
       - restore_cache:
