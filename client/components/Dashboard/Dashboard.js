@@ -4,9 +4,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 
-const { logout } = actionCreators;
+const { logout, getUsers } = actionCreators;
 
 class Dashboard extends Component {
+
+	handleUsersClick() {
+		this.props.getUsers();
+	}
 
 	handleLogoutClick() {
 		this.props.logout();
@@ -17,9 +21,10 @@ class Dashboard extends Component {
 			<div>
 				<p>Welcome to the QHacks Dashboard!</p>
 				<Button onClick={this.handleLogoutClick.bind(this)}>Logout</Button>
+				<Button onClick={this.handleUsersClick.bind(this)}>Get Users</Button>
 			</div>
 		);
 	}
 }
 
-export default connect(state => state, { logout })(Dashboard);
+export default connect(state => state, { logout, getUsers })(Dashboard);

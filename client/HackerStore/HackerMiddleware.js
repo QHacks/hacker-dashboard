@@ -1,5 +1,8 @@
+import { actionTypes } from './HackerActions';
+import { selectors } from './HackerReducer';
 import axios from 'axios';
 
+let accessToken;
 let options = {};
 let store;
 
@@ -7,21 +10,12 @@ let store;
 const UNAUTHORIZED_STATUS = 401;
 
 /**
- * Specific middleware action types.
- * @type {Object}
- */
-export const hackerMiddlwareActionTypes = {
-	"INVOKE_API_CALL": "@@/hackerMiddleware/INVOKE_API_CALL",
-	"INVOKE_API_FAIL": "@@/hackerMiddleware/INVOKE_API_FAIL"
-};
-
-/**
  * Checks if the action should be handled by the middleware.
  * @param {Object} action The incoming action to be checked.
  * @return {Boolean} True if the action should be handled by middleware.
  */
 function isHackerMiddlewareAction(action) {
-	return action.type === hackerMiddlwareActionTypes.INVOKE_API;
+	return action.type === actionTypes.INVOKE_API_CALL;
 }
 
 /**
@@ -37,6 +31,30 @@ function isTokenFailError(error) {
 }
 
 /**
+ * Creates request headers for the specific api request.
+ * @param {Object} requestInfo Request information object.
+ * @return {Object} The headers object for the request.
+ */
+function createHeaders(requestInfo) {
+	let headers = {
+		'Content-Type': 'application/json'
+	};
+
+	const { tokenRequired } = requestInfo;
+
+	if (tokenRequired) {
+		accessToken = selectors.getAccessToken(store.getState());
+
+		headers = {
+			...headers,
+			'Authorization': `Bearer ${accessToken}`
+		};
+	}
+
+	return headers;
+}
+
+/**
  * Makes request to server, as defined by incoming middleware action.
  * @param {Object} requestInfo Request information, url, method, body etc.
  * @return {Promise} Resultanct promise from axios request.
@@ -44,9 +62,13 @@ function isTokenFailError(error) {
 function makeAPIRequest(requestInfo) {
 	const { method, url, body } = requestInfo;
 
-	return axios({ method, url, data: body, headers: {
-		'Content-Type': 'application/json'
-	}});
+	const headers = createHeaders(requestInfo);
+
+	if (body) {
+		return axios({ method, url, data: body, headers});
+	}
+
+	return axios({ method, url, headers });
 }
 
 /**
@@ -55,17 +77,18 @@ function makeAPIRequest(requestInfo) {
  */
 function handleAction(action) {
 
+	const { request } = action.data;
 	const [ requestType, successType, failureType ] = action.data.types;
 
 	store.dispatch({ type: requestType });
 
-	makeAPIRequest(action.data.request).then((response) => {
+	makeAPIRequest(request).then((response) => {
 		store.dispatch({ type: successType, data: response.data });
 	}).catch((error) => {
 		const { response } = error;
 
 		if (isTokenFailError(response)) {
-			store.dispatch({ type: hackerMiddlwareActionTypes.INVOKE_API_FAIL, data: { response, initialAction: action }});
+			store.dispatch({ type: actionTypes.INVOKE_API_FAIL, data: { response, initialAction: action }});
 		} else {
 			store.dispatch({ type: failureType, data: response });
 		}

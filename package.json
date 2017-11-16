@@ -5,7 +5,7 @@
   "author": "Robert Saunders, Zack Harley, Cory Crowley & Avi Ihejirika",
   "scripts": {
     "server-dev": "cross-env NODE_ENV=development nodemon server",
-    "server-debug": "cross-env NODE_ENV=development nodemon --inspect server",
+    "server-debug": "cross-env NODE_ENV=development --inspect server",
     "start": "cross-env NODE_ENV=production npm run clean && npm run build && node server",
     "client-dev": "cross-env webpack-dev-server",
     "build": "cross-env NODE_ENV=production npm run clean && webpack -p",

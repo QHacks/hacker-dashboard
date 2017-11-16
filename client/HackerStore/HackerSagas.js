@@ -1,5 +1,4 @@
 import { put, take, all, call, select } from 'redux-saga/effects';
-import { hackerMiddlwareActionTypes } from './HackerMiddleware';
 import { actionCreators, actionTypes } from './HackerActions';
 import { selectors } from './HackerReducer';
 
@@ -13,6 +12,7 @@ const REFRESH_TOKEN_STORAGE = 'qhacksRefreshToken';
  */
 export function* rootSaga(opt) {
 	yield all([
+		authSaga(opt),
 		logoutSaga(opt),
 		bootstrapSaga(opt),
 		middlewareSaga(opt)
@@ -26,6 +26,7 @@ export function* rootSaga(opt) {
  * @return {Generator}
  */
 function* bootstrapSaga(opt) {
+
 	const accessToken = yield call(opt.getValue, ACCESS_TOKEN_STORAGE);
 	const refreshToken = yield call(opt.getValue, REFRESH_TOKEN_STORAGE);
 
@@ -47,15 +48,23 @@ function* logoutSaga(opt) {
 }
 
 /**
- * Refresh token saga, takes care serializing token actions.
- * @param {Object} opt Options object passed into saga.
- * @return {Generator}
+ * [authSaga description]
+ * @param {Object} opt [description]
+ * @return {Generator} [description]
  */
-function* refreshTokensSaga(opt) {
+function* authSaga(opt) {
+	const bootstrapComplete = yield take(actionTypes.BOOTSTRAP_COMPLETE);
+
+	const accessToken = bootstrapComplete.data.accessToken;
+	const refreshToken = bootstrapComplete.data.refreshToken;
+
+	if (refreshToken) yield put(actionCreators.validateToken(refreshToken));
+
 	while (true) {
-		const tokenAction = yield take([actionTypes.REFRESH_TOKENS, actionTypes.TOKENS_REFRESHED, actionTypes.TOKENS_CANNOT_REFRESH]);
+		const auth = yield take([actionTypes.AUTHENTICATED, actionTypes.TOKENS_REFRESHED]);
 
-
+		yield call(opt.setValue, ACCESS_TOKEN_STORAGE, auth.data.accessToken);
+		yield call(opt.setValue, REFRESH_TOKEN_STORAGE, auth.data.refreshToken);
 	}
 }
 
@@ -64,34 +73,43 @@ function* refreshTokensSaga(opt) {
  * @return {Generator}
  */
 function* middlewareSaga(opt) {
-	const bootstrapComplete = yield take(actionTypes.BOOTSTRAP_COMPLETE);
 
-	const accessToken = bootstrapComplete.data.accessToken;
-	const refreshToken = bootstrapComplete.data.refreshToken;
-
-	if (refreshToken) yield put(actionCreators.validateToken(refreshToken));
-
-	const auth = yield take(actionTypes.AUTHENTICATED);
-
-	yield call(opt.setValue, ACCESS_TOKEN_STORAGE, auth.data.accessToken);
-	yield call(opt.setValue, REFRESH_TOKEN_STORAGE, auth.data.refreshToken);
-
-	const buffer = [];
+	let buffer = [];
 
 	while (true) {
-		const action = yield take([ hackerMiddlwareActionTypes.INVOKE_API_CALL, hackerMiddlwareActionTypes.INVOKE_API_FAIL]);
+		const action = yield take([ actionTypes.INVOKE_API_CALL, actionTypes.INVOKE_API_FAIL, actionTypes.TOKENS_REFRESHED]);
 
-		while (shitsFucked()) {
-			switch (action.type) {
-				case hackerMiddlwareActionTypes.INVOKE_API_CALL:
-						// check state, if we are getting tokens buffer, if we are
-					break;
-				case hackerMiddlwareActionTypes.INVOKE_API_FAIL:
-						// buffer initialAction
-						// trigger refresh tokens
-					break;
+		if (action.type === actionTypes.TOKENS_REFRESHED) {
+			if (buffer.length) {
+				for (const bufferedAction of buffer) {
+					yield put(bufferedAction);
+				}
+			}
+			buffer = [];
+		}
+
+		if (action.type === actionTypes.INVOKE_API_CALL) {
+			const fetchingTokens = yield select(selectors.getFetchingNewTokens);
+
+			if (fetchingTokens) {
+				buffer.unshift(action);
 			}
 		}
 
+		if (action.type === actionTypes.INVOKE_API_FAIL) {
+			const { initialAction } = action.data;
+			const [ requestType ] = initialAction.data.types;
+
+			if (requestType === actionTypes.REFRESH_TOKENS) {
+				buffer = [];
+				yield put(actionCreators.logout());
+			} else if (initialAction && requestType !== actionTypes.VALIDATE_TOKENS) {
+				buffer.unshift(initialAction);
+
+				const refreshToken = yield select(selectors.getRefreshToken);
+
+				yield put(actionCreators.refresh(refreshToken));
+			}
+		}
 	}
 }
