@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 
 const JWT_ISSUER = 'QHacks Authentication';
-const ACCESS_TOKEN_EXPIRE_TIME = '1 minutes';
-const REFRESH_TOKEN_EXPIRE_TIME = '2 minutes';
+const ACCESS_TOKEN_EXPIRE_TIME = '5 minutes';
+const REFRESH_TOKEN_EXPIRE_TIME = '60 minutes';
 const SALT_WORK_FACTOR = 10;
 
 const { AUTH_SECRET } = process.env;
