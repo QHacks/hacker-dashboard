@@ -12,6 +12,7 @@ const VALIDATE_ENDPOINT = '/auth/refresh';
 
 /**
  * Specific middleware action types.
+ * NOTE: These are crucial to how sagas operate.
  * @type {Object}
  */
 const hackerMiddlwareActionTypes = {
