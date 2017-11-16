@@ -19,9 +19,12 @@ jobs:
           command: npm test
   dev-deploy:
     docker:
-      - image: google/cloud-sdk:latest
+      - image: gcr.io/google-appengine/nodejs:latest
     steps:
       - checkout
+      - run:
+          name: Build React client
+          command: npm run client-prod
       - run:
           name: Create .env file
           command: |
