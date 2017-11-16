@@ -8,7 +8,9 @@ const path = require('path');
 
 const isProd = process.env.NODE_ENV === 'production';
 
-(isProd) ? winston.info("Running production build!") : winston.info("Running development build!");
+(isProd)
+	? winston.info("Running production build!")
+	: winston.info("Running development build!");
 
 const PORT = process.env.PORT;
 const DEV_PROXY = process.env.DEV_PROXY || `http://localhost:${PORT}`;

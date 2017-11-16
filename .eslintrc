@@ -31,6 +31,7 @@
     "arrow-parens": ["error", "always"],
     "func-style": ["error", "declaration"],
     "react/jsx-wrap-multilines": "error",
-    "prefer-const": "error"
+    "prefer-const": "error",
+    "no-debugger": "error"
   }
 }
