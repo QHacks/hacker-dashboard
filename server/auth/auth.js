@@ -51,7 +51,6 @@ function getBearer(req) {
  */
 module.exports = () => (req, res, next) => {
 
-	// don't authenticate routes /auth
 	if (req.url.match(V1_EXCEPTION_REGEX)) return next();
 
 	const token = getBearer(req);

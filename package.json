@@ -5,11 +5,11 @@
   "author": "Robert Saunders, Zack Harley, Cory Crowley & Avi Ihejirika",
   "scripts": {
     "server-dev": "cross-env NODE_ENV=development nodemon server",
-    "server-debug": "cross-env NODE_ENV=development nodemon --inspect server",
-    "start": "cross-env NODE_ENV=production npm run clean && npm run client-build && node server",
+    "server-debug": "cross-env NODE_ENV=development --inspect server",
+    "start": "cross-env NODE_ENV=production npm run clean && npm run build && node server",
     "client-dev": "cross-env webpack-dev-server",
-    "client-build": "cross-env NODE_ENV=production npm run clean && webpack -p",
-    "test": "cross-env eslint server/**/*.js client/**/*.js && nsp check --reporter checkstyle && ncu -e 2",
+    "build": "cross-env NODE_ENV=production npm run clean && webpack -p",
+    "test": "cross-env eslint server/*/**.js client/*/**.js && nsp check --reporter checkstyle && ncu -e 2",
     "clean": "cross-env rimraf ./client/bundle"
   },
   "dependencies": {
@@ -26,9 +26,9 @@
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
     "moment": "^2.19.1",
-    "mongoose": "^4.13.2",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
+    "mongoose": "^4.13.1",
+    "react": "^16.1.0",
+    "react-dom": "^16.1.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
