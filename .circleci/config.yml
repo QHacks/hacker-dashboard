@@ -19,7 +19,7 @@ jobs:
           command: npm test
   dev-deploy:
     docker:
-      - image: qhacks/circleci:latest
+      - image: qhacks/circleci:0.0.1
     steps:
       - checkout
       - restore_cache:
