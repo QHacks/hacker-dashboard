@@ -1,6 +1,8 @@
 const customValidator = require('../services/custom-validator');
 const auth = require('../auth/auth');
 const jwt = require('jsonwebtoken');
+const mailer = require('../mailer');
+const bcrypt = require('bcrypt');
 const _ = require('lodash');
 
 const JWT_ISSUER = 'QHacks Authentication';
@@ -23,6 +25,10 @@ const ERRORS = {
 		code: 503,
 		type: "DB_ERROR"
 	},
+	INTERNAL_SERVER_ERROR: {
+		code: 500,
+		type: "INTERNAL_SERVER_ERROR"
+	},
 	UNAUTHORIZED: {
 		code: 401,
 		type: "AUTHORIZATION"
@@ -30,12 +36,15 @@ const ERRORS = {
 };
 
 const ERROR_MESSAGES = {
-	INVALID_USER_ID: "A user with this identifier not exist!",
+	INVALID_USER_ID: "A user with this identifier does not exist!",
+	INVALID_USER_EMAIL: "A user with this email does not exist!",
 	INVALID_REFRESH_TOKEN: "The refresh token provided is invalid!",
 	INVALID_CREDENTIALS: "You have provided invalid credentials!",
 
 	DB_USER: "Error creating User in the database!",
-	DB_USERS: "Error retreiving Users from the database!"
+	DB_USERS: "Error retreiving Users from the database!",
+
+	RESET_HASH_CREATE_FAIL: "Error when creating the reset hash!"
 };
 
 const HACKER_SIGN_UP_FIELDS = [
@@ -84,6 +93,10 @@ function createRefreshToken(userId) {
 		expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
 		issuer: JWT_ISSUER
 	});
+}
+
+function createResetPasswordToken(user) {
+
 }
 
 module.exports = (db) => {
@@ -146,6 +159,26 @@ module.exports = (db) => {
 			});
 		}).catch((err) => {
 			reject(createError(ERRORS.UNPROCESSABLE, err.message));
+		});
+	});
+
+	authCtr.createResetHash = (email) => new Promise((resolve, reject) => {
+		User.findOne({ email }).then((user) => {
+			bcrypt.hash(email, SALT_WORK_FACTOR, function(err, hash) {
+				if (err) reject(createError(ERRORS.INTERNAL_SERVER_ERROR, ERROR_MESSAGES.RESET_HASH_CREATE_FAIL, err));
+				User.findOneAndUpdate({ _id: user._id }, { passwordResetHash: hash }, { new: true }).then((updatedUser) => {
+					mailer.auth.sendResetPasswordEmail(updatedUser).then(() => {
+						resolve();
+					}).catch((error) => {
+						reject(error);
+					});
+					resolve();
+				}).catch((err) => {
+					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
+				});
+			});
+		}).catch((err) => {
+			reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_EMAIL, err));
 		});
 	});
 

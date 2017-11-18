@@ -34,5 +34,20 @@ module.exports = (ctr) => {
 		});
 	});
 
+	authAPI.use(`/${AUTH}/createResetHash`, (req, res) => {
+		auth.createResetHash(req.body.email).then(() => {
+			res.sendStatus(200);
+		}).catch((err) => {
+			res.status(err.code).json(err);
+		});
+	});
+
+	// add time sensitivity to reset hash
+	authAPI.use(`/${AUTH}/updatePassword`, (req, res) => {
+		// should have password and hash in request
+		// look user up based on the hash
+		// id exist then update and save user
+	});
+
 	return authAPI;
 };

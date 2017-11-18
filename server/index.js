@@ -10,6 +10,7 @@ const auth = require('./auth/auth');
 const api = require('./api/api');
 const db = require('./db/db')();
 let ctr = require('./ctrs');
+let mailer = require('./mailer');
 
 // Path to static files
 const BUNDLE_DIR = path.join(__dirname, '../client/bundle');
@@ -32,6 +33,9 @@ db((err, db) => {
 
 	// Initialize controller(s)
 	ctr = ctr(db);
+	mailer = mailer();
+
+
 
 	// Core API
 	app.use('/api/', auth(), api(ctr));

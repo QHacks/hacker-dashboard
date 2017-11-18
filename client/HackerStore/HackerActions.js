@@ -9,6 +9,8 @@ const LOGIN_ENDPOINT = '/auth/session';
 const SIGNUP_ENDPOINT = '/auth/signup';
 const REFRESH_ENDPOINT = '/auth/refresh';
 const VALIDATE_ENDPOINT = '/auth/refresh';
+const RESET_HASH_ENDPOINT = '/auth/createResetHash';
+const UPDATE_PASSWORD_ENDPOINT = '/auth/updatePassword';
 
 /**
  * Specific middleware action types.
@@ -32,6 +34,8 @@ const apiRequestTypes = {
 	"REFRESH_TOKENS": "@@/hacker/REFRESH_TOKENS",
 	"VALIDATE_TOKENS": "@@/hacker/VALIDATE_TOKENS",
 
+	"CREATE_RESET_HASH": "@@/hacker/CREATE_RESET_HASH",
+
 	"GET_USERS": "@@/hacker/GET_USERS"
 };
 
@@ -44,6 +48,8 @@ const apiRequestTypes = {
 const apiSuccessTypes = {
 	"AUTHENTICATED": "@@/hacker/AUTHENTICATED",
 	"TOKENS_REFRESHED": "@@/hacker/TOKENS_REFRESHED",
+
+	"CREATE_RESET_HASH_SUCCESS": "@@/hacker/CREATE_RESET_HASH_SUCCESS",
 
 	"USERS_FETCHED": "@@/hacker/USERS_FETCHED"
 };
@@ -58,6 +64,8 @@ const apiErrorTypes = {
 	"AUTHENTICATION_ERROR": "@@/hacker/AUTHENTICATION_ERROR",
 	"TOKENS_CANNOT_REFRESH": "@@/hacker/TOKENS_CANNOT_REFRESH",
 
+	"CREATE_RESET_HASH_FAIL": "@@/hacker/CREATE_RESET_HASH_FAIL",
+
 	"USER_FETCH_ERORR": "@@/hacker/USERS_FETCHED"
 };
 
@@ -68,7 +76,8 @@ const apiErrorTypes = {
  */
 const normalTypes = {
 	"LOGOUT": "@@/hacker/LOGOUT",
-	"BOOTSTRAP_COMPLETE": "@@/hacker/BOOTSTRAP_COMPLETE"
+	"BOOTSTRAP_COMPLETE": "@@/hacker/BOOTSTRAP_COMPLETE",
+	"CLEAR_RESET_PASSWORD": "@@/hacker/CLEAR_RESET_PASSWORD"
 };
 
 export const actionTypes = {
@@ -86,7 +95,8 @@ export const actionTypes = {
  */
 const normalActionCreators = {
 	logout: () => ({ type: actionTypes.LOGOUT }),
-	bootstrapComplete: (data) => ({ type: actionTypes.BOOTSTRAP_COMPLETE, data })
+	bootstrapComplete: (data) => ({ type: actionTypes.BOOTSTRAP_COMPLETE, data }),
+	clearResetPassword: () => ({ type: actionTypes.CLEAR_RESET_PASSWORD })
 };
 
 /**
@@ -139,6 +149,18 @@ const invokeAPIActionCreators = {
 				url: `${API_SUFFIX}${REFRESH_ENDPOINT}`,
 				method: POST,
 				body: { refreshToken }
+			}
+		}
+	}),
+
+	createResetHash: (email) => ({
+		type: actionTypes.INVOKE_API_CALL,
+		data: {
+			types: [actionTypes.CREATE_RESET_HASH, actionTypes.CREATE_RESET_HASH_SUCCESS, actionTypes.CREATE_RESET_HASH_FAIL],
+			request: {
+				url: `${API_SUFFIX}${RESET_HASH_ENDPOINT}`,
+				method: POST,
+				body: email
 			}
 		}
 	}),

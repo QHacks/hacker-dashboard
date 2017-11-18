@@ -47,7 +47,12 @@ const UserSchema = new mongoose.Schema({
 			type: Date,
 			default: Date.now
 		},
-		refreshToken: String
+		passwordResetHash: {
+			type: String
+		},
+		refreshToken: {
+			typer: String
+		}
 });
 
 UserSchema.static({

@@ -3,7 +3,6 @@ import { Button } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-
 const { logout, getUsers } = actionCreators;
 
 class Dashboard extends Component {
@@ -27,4 +26,4 @@ class Dashboard extends Component {
 	}
 }
 
-export default connect(state => state, { logout, getUsers })(Dashboard);
+export default connect((state) => state, { logout, getUsers })(Dashboard);
