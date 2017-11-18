@@ -50,24 +50,18 @@ const ERROR_MESSAGES = {
 };
 
 const HACKER_SIGN_UP_FIELDS = [
-		'firstName',
-		'lastName',
-		'email',
-		'password',
-		'phoneNumber',
-		'dateOfBirth',
-		'graduationYear'
+    'dateOfBirth',
+    'email',
+    'firstName',
+    'graduationYear',
+    'lastName',
+    'password',
+    'phoneNumber',
+    'school'
 ];
 
-/**
- * Creates a standard format error, see routes for usage.
- * @param {String} message The error message.
- * @param {Integer} status The error status code.
- * @param {Object} [data={}] Error object.
- * @return {Object} Error object.
- */
 function createError(errorTpl, message, data = {}) {
-	return Object.assign({}, errorTpl, { message, data });
+    return Object.assign({}, errorTpl, { message, data });
 }
 
 /**
@@ -76,10 +70,10 @@ function createError(errorTpl, message, data = {}) {
  * @return {String} Access token.
  */
 function createAccessToken(userId) {
-	return jwt.sign({ userId }, AUTH_SECRET, {
-		expiresIn: ACCESS_TOKEN_EXPIRE_TIME,
-		issuer: JWT_ISSUER
-	});
+    return jwt.sign({ userId }, AUTH_SECRET, {
+        expiresIn: ACCESS_TOKEN_EXPIRE_TIME,
+        issuer: JWT_ISSUER
+    });
 }
 
 /**
@@ -88,13 +82,13 @@ function createAccessToken(userId) {
  * @return {String} Refresh token.
  */
 function createRefreshToken(userId) {
-	return jwt.sign({
-		type: 'refresh',
-		userId
-	}, AUTH_SECRET, {
-		expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
-		issuer: JWT_ISSUER
-	});
+    return jwt.sign({
+        type: 'refresh',
+        userId
+    }, AUTH_SECRET, {
+        expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
+        issuer: JWT_ISSUER
+    });
 }
 
 /**
@@ -109,12 +103,10 @@ function createResetPasswordHash(user) {
 								.digest('hex');
 }
 
-module.exports = (db) => {
+module.exports = () => {
 	const authCtr = {};
 
-	const models = {
-		User
-	} = require('../models');
+	const { User } = require('../models');
 
 	authCtr.authenticateUser = (email, password) => new Promise((resolve, reject) => {
 		User.authenticate(email, password)

@@ -1,6 +1,18 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button, Form, Segment } from 'semantic-ui-react';
+import mlhSchools from './mlhSchools.json';
+
+function CustomSelect(props) {
+    const { input: { onChange } } = props;
+    return (
+        <Form.Select placeholder="School"
+                     search
+                     options={mlhSchools.map((school) => ({ key: school, text: school, value: school }))}
+                     onChange={(event, data) => onChange(data.value)}
+        />
+    );
+}
 
 function ApplyForm(props) {
     return (
@@ -9,27 +21,44 @@ function ApplyForm(props) {
             <Segment>
                 <div>
                     <label htmlFor="firstName">First Name</label>
-                    <Field name="firstName" component="input" type="text"/>
+                    <Field name="firstName"
+                           component="input"
+                           type="text"/>
                 </div>
                 <div>
                     <label htmlFor="lastName">Last Name</label>
-                    <Field name="lastName" component="input" type="text"/>
+                    <Field name="lastName"
+                           component="input"
+                           type="text"/>
                 </div>
                 <div>
                     <label htmlFor="dateOfBirth">Date of Birth</label>
-                    <Field name="dateOfBirth" component="input" type="date"/>
+                    <Field name="dateOfBirth"
+                           component="input"
+                           type="date"/>
+                </div>
+                <div>
+                    <label htmlFor="school">School</label>
+                    <Field name="school"
+                           component={CustomSelect}/>
                 </div>
                 <div>
                     <label htmlFor="graduationYear">Graduation Year</label>
-                    <Field name="graduationYear" component="input" type="number"/>
+                    <Field name="graduationYear"
+                           component="input"
+                           type="number"/>
                 </div>
                 <div>
                     <label htmlFor="phoneNumber">Phone Number</label>
-                    <Field name="phoneNumber" component="input" type="tel"/>
+                    <Field name="phoneNumber"
+                           component="input"
+                           type="tel"/>
                 </div>
                 <div>
                     <label htmlFor="email">Email</label>
-                    <Field name="email" component="input" type="email"/>
+                    <Field name="email"
+                           component="input"
+                           type="email"/>
                 </div>
                 <div>
                     <label htmlFor="password">Password</label>
