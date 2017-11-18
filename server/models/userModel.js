@@ -93,7 +93,7 @@ UserSchema.method({
 
 /**
  * Helper method to hash password before saving.
- * @param {Function} next Move to next middlware.
+ * @param {Function} next Move to next middleware.
  * @return {Function} Next middleware.
  */
 UserSchema.pre('save', function(next) {
