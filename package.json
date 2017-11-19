@@ -13,6 +13,7 @@
     "clean": "cross-env rimraf ./client/bundle"
   },
   "dependencies": {
+    "@sendgrid/mail": "^6.1.4",
     "a": "^2.1.1",
     "axios": "^0.17.1",
     "bcrypt": "^1.0.3",
@@ -37,7 +38,6 @@
     "redux-saga": "^0.16.0",
     "semantic-ui-less": "^2.2.12",
     "semantic-ui-react": "^0.76.0",
-    "sendgrid": "^5.2.3",
     "validator": "^9.1.1",
     "winston": "^2.4.0"
   },
