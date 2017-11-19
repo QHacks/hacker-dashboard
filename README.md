@@ -10,7 +10,7 @@ The back end application is built using a Node server using Express to serve a R
 
 For development this project uses `dotenv` to allow you tp specify environment variables in a static file.
 
-> NOTE: You will need to create a .env file at the root your project with the desired environment variables that are outlined below.
+> NOTE: You will need to create a .env file at the root your project with the desired environment variables that are outlined below. You can check out example.env in the project root to see a standard configuration.
 
 ### Back End
 
@@ -27,6 +27,7 @@ Name | Description | Required | Default
 `MONGO_USER` | The username to access the MongoDB instance. | No | None
 `PORT` | Port to run the Express sever on. | No | 3000
 `DEV_PROXY` | When running the `webpack-dev-server` all API calls will be proxied to this host. | No | `http://localhost:PORT`
+`SENDGRID_API_KEY` | SendGrid transactional email service api key. | No | None
 
 ### Front End
 

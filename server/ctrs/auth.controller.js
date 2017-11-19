@@ -40,6 +40,7 @@ const ERROR_MESSAGES = {
 	INVALID_USER_EMAIL: "A user with this email does not exist!",
 	INVALID_REFRESH_TOKEN: "The refresh token provided is invalid!",
 	INVALID_CREDENTIALS: "You have provided invalid credentials!",
+	INVALID_RESET_HASH: "A user with this reset hash does not exist!",
 
 	DB_USER: "Error creating User in the database!",
 	DB_USERS: "Error retreiving Users from the database!",
@@ -167,12 +168,11 @@ module.exports = (db) => {
 			bcrypt.hash(email, SALT_WORK_FACTOR, function(err, hash) {
 				if (err) reject(createError(ERRORS.INTERNAL_SERVER_ERROR, ERROR_MESSAGES.RESET_HASH_CREATE_FAIL, err));
 				User.findOneAndUpdate({ _id: user._id }, { passwordResetHash: hash }, { new: true }).then((updatedUser) => {
-					mailer.auth.sendResetPasswordEmail(updatedUser).then(() => {
+					mailer.sendResetPasswordEmail(updatedUser).then(() => {
 						resolve();
 					}).catch((error) => {
 						reject(error);
 					});
-					resolve();
 				}).catch((err) => {
 					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
 				});
@@ -181,6 +181,27 @@ module.exports = (db) => {
 			reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_EMAIL, err));
 		});
 	});
+
+	authCtr.updatePasswordForReset = (resetHash, password) => new Promise((resolve, reject) => {
+		User.findOne({ passwordResetHash: resetHash }).then((user) => {
+			if (!user) reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_RESET_HASH));
+
+			user.password = password;
+
+			user.save().then(() => {
+				mailer.sendPasswordResetSuccessfulEmail(user).then(() => {
+					resolve();
+				}).catch((error) => {
+					reject(error);
+				});
+			}).catch((err) => {
+				reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
+			});
+		}).catch((err) => {
+			reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_EMAIL, err));
+		});
+	});
+
 
 	return authCtr;
 };

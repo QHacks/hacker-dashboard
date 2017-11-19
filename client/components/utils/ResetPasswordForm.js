@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-let ResetPasswordForm = (props) => {
+function ResetPasswordForm(props) {
 	const { handleSubmit } = props;
 	return (
 		<form onSubmit={ handleSubmit }>
@@ -14,6 +14,4 @@ let ResetPasswordForm = (props) => {
 	);
 }
 
-ResetPasswordForm = reduxForm({ form: 'reset' })(ResetPasswordForm);
-
-export default ResetPasswordForm;
+export default reduxForm({ form: 'resetPassword' })(ResetPasswordForm);

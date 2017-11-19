@@ -42,11 +42,12 @@ module.exports = (ctr) => {
 		});
 	});
 
-	// add time sensitivity to reset hash
-	authAPI.use(`/${AUTH}/updatePassword`, (req, res) => {
-		// should have password and hash in request
-		// look user up based on the hash
-		// id exist then update and save user
+	authAPI.use(`/${AUTH}/updatePasswordForReset`, (req, res) => {
+		auth.updatePasswordForReset(req.body.resetHash, req.body.password).then(() => {
+			res.sendStatus(200);
+		}).catch((err) => {
+			res.status(err.code).json(err);
+		});
 	});
 
 	return authAPI;

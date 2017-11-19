@@ -10,7 +10,7 @@ const SIGNUP_ENDPOINT = '/auth/signup';
 const REFRESH_ENDPOINT = '/auth/refresh';
 const VALIDATE_ENDPOINT = '/auth/refresh';
 const RESET_HASH_ENDPOINT = '/auth/createResetHash';
-const UPDATE_PASSWORD_ENDPOINT = '/auth/updatePassword';
+const UPDATE_PASSWORD_FOR_RESET_ENDPOINT = '/auth/updatePasswordForReset';
 
 /**
  * Specific middleware action types.
@@ -35,6 +35,7 @@ const apiRequestTypes = {
 	"VALIDATE_TOKENS": "@@/hacker/VALIDATE_TOKENS",
 
 	"CREATE_RESET_HASH": "@@/hacker/CREATE_RESET_HASH",
+	"UPDATE_PASSWORD_RESET": "@@/hacker/UPDATE_PASSWORD_RESET",
 
 	"GET_USERS": "@@/hacker/GET_USERS"
 };
@@ -50,6 +51,7 @@ const apiSuccessTypes = {
 	"TOKENS_REFRESHED": "@@/hacker/TOKENS_REFRESHED",
 
 	"CREATE_RESET_HASH_SUCCESS": "@@/hacker/CREATE_RESET_HASH_SUCCESS",
+	"UPDATE_PASSWORD_RESET_SUCCESS": "@@/hacker/UPDATE_PASSWORD_RESET_SUCCESS",
 
 	"USERS_FETCHED": "@@/hacker/USERS_FETCHED"
 };
@@ -65,6 +67,7 @@ const apiErrorTypes = {
 	"TOKENS_CANNOT_REFRESH": "@@/hacker/TOKENS_CANNOT_REFRESH",
 
 	"CREATE_RESET_HASH_FAIL": "@@/hacker/CREATE_RESET_HASH_FAIL",
+	"UPDATE_PASSWORD_RESET_FAIL": "@@/hacker/UPDATE_PASSWORD_RESET_FAIL",
 
 	"USER_FETCH_ERORR": "@@/hacker/USERS_FETCHED"
 };
@@ -161,6 +164,18 @@ const invokeAPIActionCreators = {
 				url: `${API_SUFFIX}${RESET_HASH_ENDPOINT}`,
 				method: POST,
 				body: email
+			}
+		}
+	}),
+
+	updatePasswordForReset: (resetHash, newPassword) => ({
+		type: actionTypes.INVOKE_API_CALL,
+		data: {
+			types: [actionTypes.UPDATE_PASSWORD_RESET, actionTypes.UPDATE_PASSWORD_RESET_SUCCESS, actionTypes.UPDATE_PASSWORD_RESET_FAIL],
+			request: {
+				url: `${API_SUFFIX}${UPDATE_PASSWORD_FOR_RESET_ENDPOINT}`,
+				method: POST,
+				body: { resetHash, password: newPassword }
 			}
 		}
 	}),
