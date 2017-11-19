@@ -1,0 +1,46 @@
+@import (less) '../../assets/semantic-ui/site/globals/site.variables';
+
+.application-form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+}
+
+.qhacks-logo {
+  height: 100px;
+}
+
+.application-graphics {
+  position: fixed;
+  z-index: -1;
+
+  height: 100vh;
+  width: 100vw;
+}
+
+.application-graphics > .graphic {
+  height: 200px;
+  position: absolute;
+}
+
+.graphic.bottom {
+  bottom: 0;
+}
+
+.graphic.left {
+  left: 0;
+}
+
+.graphic.right {
+  right: 0;
+}
+
+.graphic.top {
+  top: 0;
+}
+
+@media (max-width: @tabletBreakpoint) {
+  .application-graphics {
+    display: none;
+  }
+}

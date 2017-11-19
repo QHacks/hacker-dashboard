@@ -28,6 +28,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.19.2",
     "mongoose": "^4.13.3",
+    "prop-types": "^15.6.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-emoji-render": "^0.4.3",

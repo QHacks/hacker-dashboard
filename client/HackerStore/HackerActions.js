@@ -69,18 +69,18 @@ const apiErrorTypes = {
 	"CREATE_RESET_HASH_FAIL": "@@/hacker/CREATE_RESET_HASH_FAIL",
 	"UPDATE_PASSWORD_RESET_FAIL": "@@/hacker/UPDATE_PASSWORD_RESET_FAIL",
 
-	"USER_FETCH_ERORR": "@@/hacker/USERS_FETCHED"
+	"USER_FETCH_ERORR": "@@/hacker/USERS_FETCHED" // TODO: Fix typo
 };
 
 /**
  * Normal action types that won't be handled by middleware.
- * NOTE: Empty for now but this is where they should be placed.
  * @type {Object}
  */
 const normalTypes = {
-	"LOGOUT": "@@/hacker/LOGOUT",
-	"BOOTSTRAP_COMPLETE": "@@/hacker/BOOTSTRAP_COMPLETE",
-	"CLEAR_RESET_PASSWORD": "@@/hacker/CLEAR_RESET_PASSWORD"
+	LOGOUT: '@@/hacker/LOGOUT',
+	BOOTSTRAP_COMPLETE: '@@/hacker/BOOTSTRAP_COMPLETE',
+	CLEAR_RESET_PASSWORD: '@@/hacker/CLEAR_RESET_PASSWORD',
+	APPLICATION_PAGE_UPDATE: '@@/hacker/APPLICATION_PAGE_UPDATE'
 };
 
 export const actionTypes = {
@@ -99,7 +99,8 @@ export const actionTypes = {
 const normalActionCreators = {
 	logout: () => ({ type: actionTypes.LOGOUT }),
 	bootstrapComplete: (data) => ({ type: actionTypes.BOOTSTRAP_COMPLETE, data }),
-	clearResetPassword: () => ({ type: actionTypes.CLEAR_RESET_PASSWORD })
+	clearResetPassword: () => ({ type: actionTypes.CLEAR_RESET_PASSWORD }),
+	applicationPageUpdate: (data) => ({ type: actionTypes.APPLICATION_PAGE_UPDATE, data })
 };
 
 /**

@@ -9,7 +9,7 @@ const _ = require('lodash');
 const JWT_ISSUER = 'QHacks Authentication';
 const ACCESS_TOKEN_EXPIRE_TIME = '5 minutes';
 const REFRESH_TOKEN_EXPIRE_TIME = '60 minutes';
-const SALT_WORK_FACTOR = 10;
+const QHACKS_2018_SLUG = 'qhacks-2018';
 
 const { AUTH_SECRET } = process.env;
 
@@ -50,14 +50,24 @@ const ERROR_MESSAGES = {
 };
 
 const HACKER_SIGN_UP_FIELDS = [
-    'dateOfBirth',
-    'email',
     'firstName',
-    'graduationYear',
     'lastName',
-    'password',
+    'email',
     'phoneNumber',
-    'school'
+    'dateOfBirth',
+    'gender',
+    'password',
+    'confirmPassword',
+    'school',
+    'degreeType',
+    'program',
+    'graduationYear',
+    'graduationMonth',
+    'travelOrigin',
+    'numberOfHackathons',
+    'whyQhacks',
+    'links',
+    'isCodeOfConductAccepted'
 ];
 
 function createError(errorTpl, message, data = {}) {
@@ -103,10 +113,11 @@ function createResetPasswordHash(user) {
 								.digest('hex');
 }
 
+
 module.exports = () => {
 	const authCtr = {};
 
-	const { User } = require('../models');
+	const { Event, User } = require('../models');
 
 	authCtr.authenticateUser = (email, password) => new Promise((resolve, reject) => {
 		User.authenticate(email, password)
@@ -145,25 +156,34 @@ module.exports = () => {
 	authCtr.signup = (signUpInfo) => new Promise((resolve, reject) => {
 		signUpInfo = _.pick(signUpInfo, HACKER_SIGN_UP_FIELDS);
 
-		customValidator.validateSignUpInfo(signUpInfo).then(() => {
-			User.create(signUpInfo).then((user) => {
+		customValidator.validateSignUpInfo(signUpInfo)
+    .then(() => Event.findOne({ slug: QHACKS_2018_SLUG }))
+	.then(() => {
+			User.create(_.assign({}, signUpInfo, { events: [event._id] }))
+	.then((user) => {
 				const refreshToken = createRefreshToken(user._id);
 
-				User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }).then((updatedUser) => {
+				User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true })
+	.then((updatedUser) => {
 					const accessToken = createAccessToken(updatedUser._id);
 
-					mailer.sendSuccessfulApplicationEmail(updatedUser).then(() => {
+					mailer.sendSuccessfulApplicationEmail(updatedUser)
+	.then(() => {
 						resolve({ accessToken, refreshToken, user: updatedUser });
-					}).catch((err) => {
+					})
+	.catch((err) => {
 						reject(err);
 					});
-				}).catch((err) => {
+				})
+	.catch((err) => {
 					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
 				});
-			}).catch((err) => {
+			})
+	.catch((err) => {
 				reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
 			});
-		}).catch((err) => {
+		})
+	.catch((err) => {
 			reject(createError(ERRORS.UNPROCESSABLE, err.message));
 		});
 	});

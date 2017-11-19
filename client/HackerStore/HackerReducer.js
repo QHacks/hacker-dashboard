@@ -21,7 +21,9 @@ const initialState = {
 
 	bootstrapLoading: true,
 	loginLoading: false,
-	signUpLoading: false
+	signUpLoading: false,
+
+    applicationPage: 1
 };
 
 /**
@@ -39,7 +41,8 @@ export const selectors = {
 	getBootstrapLoading: (state) => state[reducerMount].bootstrapLoading,
 	getFetchingNewTokens: (state) => state[reducerMount].fetchingNewTokens,
 	getIsPasswordReset: (state) => state[reducerMount].isPasswordReset,
-	getIsPasswordUpdated: (state) => state[reducerMount].isPasswordUpdated
+	getIsPasswordUpdated: (state) => state[reducerMount].isPasswordUpdated,
+	getApplicationPage: (state) => state[reducerMount].applicationPage
 };
 
 /**
@@ -122,6 +125,14 @@ const handlers = {
 	[actionTypes.LOGOUT]: (state, action) => {
 		return {
 			...initialState
+		};
+	},
+
+	[actionTypes.APPLICATION_PAGE_UPDATE]: (state, action) => {
+		const { applicationPage } = action.data;
+		return {
+			...state,
+			applicationPage
 		};
 	}
 };

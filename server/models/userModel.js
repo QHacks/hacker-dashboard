@@ -10,25 +10,30 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: uuid.v4
     },
+    dateOfBirth: {
+        type: Date,
+        required: true
+    },
     email: {
         type: String,
         required: true,
         unique: true,
         index: true
     },
+    events: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event',
+        required: true
+    }],
     firstName: {
         type: String,
         required: true
     },
-    lastName: {
+    graduationYear: {
         type: String,
         required: true
     },
-    dateOfBirth: {
-        type: Date,
-        required: true
-    },
-    graduationYear: {
+    lastName: {
         type: String,
         required: true
     },
@@ -73,7 +78,7 @@ UserSchema.static({
                             resolve(user);
                         })
                         .catch(() => {
-                            reject("Invalid password!");
+                            reject('Invalid password!');
                         });
                 });
         });
@@ -112,4 +117,4 @@ UserSchema.pre('save', function(next) {
     });
 });
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model('User', UserSchema);
