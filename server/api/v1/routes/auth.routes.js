@@ -34,5 +34,21 @@ module.exports = (ctr) => {
 		});
 	});
 
+	authAPI.use(`/${AUTH}/createResetHash`, (req, res) => {
+		auth.createResetHash(req.body.email).then(() => {
+			res.sendStatus(200);
+		}).catch((err) => {
+			res.status(err.code).json(err);
+		});
+	});
+
+	authAPI.use(`/${AUTH}/updatePasswordForReset`, (req, res) => {
+		auth.updatePasswordForReset(req.body.resetHash, req.body.password).then(() => {
+			res.sendStatus(200);
+		}).catch((err) => {
+			res.status(err.code).json(err);
+		});
+	});
+
 	return authAPI;
 };

@@ -1,6 +1,9 @@
 const customValidator = require('../services/custom-validator');
 const auth = require('../auth/auth');
 const jwt = require('jsonwebtoken');
+const mailer = require('../mailer');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const _ = require('lodash');
 
 const JWT_ISSUER = 'QHacks Authentication';
@@ -23,6 +26,10 @@ const ERRORS = {
 		code: 503,
 		type: "DB_ERROR"
 	},
+	INTERNAL_SERVER_ERROR: {
+		code: 500,
+		type: "INTERNAL_SERVER_ERROR"
+	},
 	UNAUTHORIZED: {
 		code: 401,
 		type: "AUTHORIZATION"
@@ -30,12 +37,16 @@ const ERRORS = {
 };
 
 const ERROR_MESSAGES = {
-	INVALID_USER_ID: "A user with this identifier not exist!",
+	INVALID_USER_ID: "A user with this identifier does not exist!",
+	INVALID_USER_EMAIL: "A user with this email does not exist!",
 	INVALID_REFRESH_TOKEN: "The refresh token provided is invalid!",
 	INVALID_CREDENTIALS: "You have provided invalid credentials!",
+	INVALID_RESET_HASH: "A user with this reset hash does not exist!",
 
 	DB_USER: "Error creating User in the database!",
-	DB_USERS: "Error retreiving Users from the database!"
+	DB_USERS: "Error retreiving Users from the database!",
+
+	RESET_HASH_CREATE_FAIL: "Error when creating the reset hash!"
 };
 
 const HACKER_SIGN_UP_FIELDS = [
@@ -84,6 +95,18 @@ function createRefreshToken(userId) {
 		expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
 		issuer: JWT_ISSUER
 	});
+}
+
+/**
+ * Creates a reset password hash.
+ * @param {Object} user The user to create the hash for.
+ */
+function createResetPasswordHash(user) {
+	const { AUTH_SECRET } = process.env;
+	const timeInMs = Date.now();
+	return crypto.createHmac('sha256', AUTH_SECRET)
+								.update(`${user.email}${timeInMs}`)
+								.digest('hex');
 }
 
 module.exports = (db) => {
@@ -137,7 +160,11 @@ module.exports = (db) => {
 				User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }).then((updatedUser) => {
 					const accessToken = createAccessToken(updatedUser._id);
 
-					resolve({ accessToken, refreshToken, user: updatedUser });
+					mailer.sendSuccessfulApplicationEmail(updatedUser).then(() => {
+						resolve({ accessToken, refreshToken, user: updatedUser });
+					}).catch((err) => {
+						reject(err);
+					});
 				}).catch((err) => {
 					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
 				});
@@ -148,6 +175,46 @@ module.exports = (db) => {
 			reject(createError(ERRORS.UNPROCESSABLE, err.message));
 		});
 	});
+
+	authCtr.createResetHash = (email) => new Promise((resolve, reject) => {
+		User.findOne({ email }).then((user) => {
+
+			const hash = createResetPasswordHash(user);
+
+			User.findOneAndUpdate({ _id: user._id }, { passwordResetHash: hash }, { new: true }).then((updatedUser) => {
+				mailer.sendResetPasswordEmail(updatedUser).then(() => {
+					resolve();
+				}).catch((err) => {
+					reject(err);
+				});
+			}).catch((err) => {
+				reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
+			});
+		}).catch((err) => {
+			reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_EMAIL, err));
+		});
+	});
+
+	authCtr.updatePasswordForReset = (resetHash, password) => new Promise((resolve, reject) => {
+		User.findOne({ passwordResetHash: resetHash }).then((user) => {
+			if (!user) reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_RESET_HASH));
+
+			user.password = password;
+
+			user.save().then(() => {
+				mailer.sendPasswordResetSuccessfulEmail(user).then(() => {
+					resolve();
+				}).catch((err) => {
+					reject(err);
+				});
+			}).catch((err) => {
+				reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
+			});
+		}).catch((err) => {
+			reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_EMAIL, err));
+		});
+	});
+
 
 	return authCtr;
 };

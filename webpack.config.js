@@ -38,6 +38,7 @@ module.exports = {
 	},
 	output: {
 		path: CLIENT_OUTPUT,
+		publicPath: '/',
 		filename: '[name].[chunkhash].js'
 	},
 	resolve: {
@@ -85,7 +86,10 @@ module.exports = {
 		new FaviconsWebpackPlugin('./client/assets/img/qhacks_favicon.png')
 	],
 	devServer: {
-		historyApiFallback: true,
+		historyApiFallback: {
+			disableDotRule: true,
+			index: '/'
+		},
 		compress: true,
 		proxy: {
 			'/api': {

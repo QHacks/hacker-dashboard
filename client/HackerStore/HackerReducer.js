@@ -12,6 +12,9 @@ const initialState = {
 	refreshToken: null,
 	authenticated: false,
 
+	isPasswordReset: false,
+	isPasswordUpdated: false,
+
 	users: [],
 
 	fetchingNewTokens: false,
@@ -34,7 +37,9 @@ export const selectors = {
 	getSignUpLoading: (state) => state[reducerMount].signUpLoading,
 	getAuthenticated: (state) => state[reducerMount].authenticated,
 	getBootstrapLoading: (state) => state[reducerMount].bootstrapLoading,
-	getFetchingNewTokens: (state) => state[reducerMount].fetchingNewTokens
+	getFetchingNewTokens: (state) => state[reducerMount].fetchingNewTokens,
+	getIsPasswordReset: (state) => state[reducerMount].isPasswordReset,
+	getIsPasswordUpdated: (state) => state[reducerMount].isPasswordUpdated
 };
 
 /**
@@ -90,6 +95,27 @@ const handlers = {
 		return {
 			...state,
 			users
+		};
+	},
+
+	[actionTypes.CREATE_RESET_HASH_SUCCESS]: (state, action) => {
+		return {
+			...state,
+			isPasswordReset: true
+		};
+	},
+
+	[actionTypes.CLEAR_RESET_PASSWORD]: (state, action) => {
+		return {
+			...state,
+			isPasswordReset: false
+		};
+	},
+
+	[actionTypes.UPDATE_PASSWORD_RESET_SUCCESS]: (state, action) => {
+		return {
+			...state,
+			isPasswordUpdated: true
 		};
 	},
 
