@@ -1,5 +1,5 @@
 import { actionCreators } from '../../HackerStore';
-import { Container, Divider, Dropdown, Grid, Header, Image, List, Menu, Segment } from 'semantic-ui-react';
+import { Container, Header, Segment } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import Emoji from 'react-emoji-render';
 import { connect } from 'react-redux';
