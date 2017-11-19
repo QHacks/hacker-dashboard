@@ -23,7 +23,7 @@ const initialState = {
 	loginLoading: false,
 	signUpLoading: false,
 
-    applicationPage: 1
+    applicationPage: 0
 };
 
 /**

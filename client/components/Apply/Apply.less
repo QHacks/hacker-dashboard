@@ -1,9 +1,20 @@
 @import (less) '../../assets/semantic-ui/site/globals/site.variables';
 
+.application-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-height: 100vh;
+}
+
 .application-form-container {
   display: flex;
   flex-direction: column;
   padding: 30px 20px;
+
+  max-width: 600px;
+  width: 100%;
 }
 
 .qhacks-logo {
@@ -37,6 +48,10 @@
 
 .graphic.top {
   top: 0;
+}
+
+.textAlign-center {
+  text-align: center;
 }
 
 @media (max-width: @tabletBreakpoint) {

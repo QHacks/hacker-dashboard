@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import ApplyForm from '../utils/ApplyForm';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Header } from 'semantic-ui-react';
+import { Divider, Header } from 'semantic-ui-react';
 import './Apply.less';
 
 const { apply } = actionCreators;
@@ -49,7 +49,10 @@ class Apply extends Component {
                             color="red"
                             textAlign="center"/>
                     <ApplyForm onSubmit={this.handleApply.bind(this)}/>
-                    <Link to="/login">Have an account?</Link>
+                    <Divider style={{ marginTop: '40px' }}/>
+                    <p className="fontSize-large textAlign-center">
+                        Have an account? <Link to="/login">Login here</Link>
+                    </p>
                 </div>
             </div>
         );

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { Button, Checkbox, Form, Segment } from 'semantic-ui-react';
+import { Button, Form, Segment, Step } from 'semantic-ui-react';
 import mlhSchools from './mlhSchools.json';
 import { actionCreators, selectors } from '../../HackerStore';
 import { Input, Select } from '../ReduxSemanticForm';
+import FormProgress from './FormProgress';
 import './ApplyForm.less';
 
 const { applicationPageUpdate } = actionCreators;
@@ -16,6 +17,7 @@ const DEGREE_TYPES = [
     'High School',
     'Other'
 ];
+const FORM_STEPS = ['Basic Information', 'Education', 'Hackathon Experience'];
 const GENDERS = [
     'Female',
     'Male',
@@ -196,23 +198,15 @@ function PageThree(props) {
                     MLH's Code of Conduct</a>.
                 </label>
             </div>
-            {/*<Checkbox label={{*/}
-            {/*children: (*/}
-            {/*<span>*/}
-            {/*I have read and agree to adhere to <a target="_blank" rel="noopener noreferrer"*/}
-            {/*href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH's Code of Conduct</a>.*/}
-            {/*</span>*/}
-            {/*)*/}
-            {/*}}/>*/}
         </Segment>
     );
 }
 
-const Pages = {
-    1: (props) => <PageOne {...props}/>,
-    2: (props) => <PageTwo {...props}/>,
-    3: (props) => <PageThree {...props}/>
-};
+const Pages = [
+    (props) => <PageOne {...props}/>,
+    (props) => <PageTwo {...props}/>,
+    (props) => <PageThree {...props}/>
+];
 
 function mapValueForSelect(value) {
     return {
@@ -227,6 +221,7 @@ function PreviousPageButton(props) {
         <Button content="Previous"
                 icon="left arrow"
                 labelPosition="left"
+                secondary
                 onClick={props.onClick}/>
     );
 }
@@ -236,6 +231,8 @@ function NextPageButton(props) {
         <Button content="Next"
                 icon="right arrow"
                 labelPosition="right"
+                secondary
+                floated="right"
                 onClick={props.onClick}/>
     );
 }
@@ -243,7 +240,8 @@ function NextPageButton(props) {
 function SubmitButton() {
     return (
         <Button type="submit"
-                content="apply"
+                content="Apply"
+                floated="right"
                 primary/>
     );
 
@@ -258,32 +256,43 @@ class ApplyForm extends Component {
     render() {
         const { applicationPage } = this.props;
         const Buttons = [];
+        const numberOfPages = Pages.length;
 
-        if (applicationPage > 1 && applicationPage <= Object.keys(Pages).length) {
+        if (applicationPage > 0 && applicationPage < numberOfPages) {
             Buttons.push(
-                <PreviousPageButton onClick={(e) => {
-                    e.preventDefault();
-                    this.handlePageUpdate(applicationPage - 1);
-                }}/>
+                <PreviousPageButton key="application-prev-page-button"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        this.handlePageUpdate(applicationPage - 1);
+                                    }}/>
             );
         }
-        if (applicationPage >= 1 && applicationPage < Object.keys(Pages).length) {
+        if (applicationPage >= 0 && applicationPage < numberOfPages - 1) {
             Buttons.push(
-                <NextPageButton onClick={(e) => {
-                    e.preventDefault();
-                    this.handlePageUpdate(applicationPage + 1);
-                }}/>
+                <NextPageButton key="application-next-page-button"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.handlePageUpdate(applicationPage + 1);
+                                }}/>
             );
-        } else if (applicationPage === Object.keys(Pages).length) {
-            Buttons.push(<SubmitButton/>);
+        } else if (applicationPage === numberOfPages - 1) {
+            Buttons.push(<SubmitButton key="application-submit-button"/>);
         }
 
         return (
             <Form onSubmit={this.props.handleSubmit}
                   size="large">
-                {Object.values(Pages).map((Page, index) => {
-                    return <Page className={index + 1 !== applicationPage ? 'hidden' : ''}/>;
-                })}
+                <FormProgress steps={FORM_STEPS}
+                              currentStepIndex={applicationPage}
+                              onClick={(e) => this.handlePageUpdate(Number(e.currentTarget.getAttribute('data-value')))}/>
+                {Pages.map((Page, index) => (
+                    <Page key={`application-page-${index}`}
+                          className={
+                              index !== applicationPage
+                                  ? 'hidden'
+                                  : ''
+                          }/>
+                ))}
                 {Buttons}
             </Form>
         );
