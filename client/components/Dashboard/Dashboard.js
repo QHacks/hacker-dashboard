@@ -3,6 +3,7 @@ import { Container, Divider, Dropdown, Grid, Header, Image, List, Menu, Segment 
 import React, { Component } from 'react';
 import Emoji from 'react-emoji-render';
 import { connect } from 'react-redux';
+import MenuBar from '../utils/MenuBar';
 
 const { logout, getUsers } = actionCreators;
 
@@ -19,17 +20,7 @@ class Dashboard extends Component {
 	render() {
 		return (
 			<div>
-				<Menu stackable size='large'>
-					<Menu.Item>
-						<img src={require('../../assets/img/qhacks-tricolor-logo.svg')} />
-					</Menu.Item>
-
-					<Menu.Menu position='right'>
-						<Menu.Item>
-							Logout
-						</Menu.Item>
-					</Menu.Menu>
-				</Menu>
+				<MenuBar onLogoutClick={this.handleLogoutClick.bind(this)} />
 
 				<Container text style={{ marginTop: '3em' }}>
 					<Segment raised>
@@ -45,7 +36,7 @@ class Dashboard extends Component {
 							<li>Follow us on <a href="">Instagram</a></li>
 						</ul>
 						<p>We will be having contests for free tech on our social media so do not miss out! <Emoji text=":watch: :iphone:" /></p>
-						<p>Finally, we want to say thank you for your excitement about QHacks! With the participation of people like you, we can all continue towards our goal of making Queen’s and Canada recognized for its talent and enthusiasm for innovation and creation.</p>
+						<p>Finally, we want to say thank you for your excitement about QHacks! With the participation of people like you, we can all continue towards our goal of making Queen’s and Canada as a whole recognized for its talent and enthusiasm for innovation and creation.</p>
 					</Segment>
 				</Container>
 			</div>

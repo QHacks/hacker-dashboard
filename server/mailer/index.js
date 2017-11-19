@@ -107,7 +107,7 @@ function sendResetPasswordEmail(user) {
 			toEmail: user.email,
 			subject: 'QHacks Password Reset Email',
 			textContent: `Someone has requested to reset your QHacks account password, click this link to do so: https://${EMAIL_URL_HOST}/update-password/${user.passwordResetHash}`,
-			htmlContent: `<p>Someone has requested to reset your QHacks account password, click this link to do so: http://localhost:8080/update-password/${user.passwordResetHash}</p>`
+			htmlContent: `<p>Someone has requested to reset your QHacks account password, click this link to do so: https://${EMAIL_URL_HOST}/update-password/${user.passwordResetHash}</p>`
 		});
 
 		sendgrid.send(request, (err, result) => {
