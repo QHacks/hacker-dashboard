@@ -1,62 +1,92 @@
-import React from 'react';
-import { Button, Divider, Form, Header } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Button, Divider, Form, Header, Message } from 'semantic-ui-react';
+import semanticFormField from './semanticFormField';
+import { validationHelpers } from './validation';
 import { Field, reduxForm } from 'redux-form';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './LoginForm.less';
 
-function LoginForm(props) {
-    return (
-        <div className="login-form-container">
-            <Header as="h2"
-                    color="red"
-                    textAlign="center"
-            >
-                Login to your account
-            </Header>
-            <Form size="large"
-                  onSubmit={props.handleSubmit}>
-                <Form.Field>
-                    <div className="ui fluid icon input">
-                        <Field name="email"
-                               component="input"
-                               type="email"
-                               placeholder="Email address"
-                        />
-                        <i aria-hidden="true"
-                           className="mail icon"
-                        />
-                    </div>
-                </Form.Field>
-                <Form.Field>
-                    <div className="ui fluid icon input">
-                        <Field name="password"
-                               component="input"
-                               type="password"
-                               placeholder='Password'
-                        />
-                        <i aria-hidden="true"
-                           className="lock icon"
-                        />
-                    </div>
-                </Form.Field>
-                <Button primary
-                        fluid
-                        size="large"
-                >
-                    Login
-                </Button>
-            </Form>
-            <div className="fontSize-medium"
-                 style={{ marginTop: '40px' }}
-            >
-                <Link to="/reset-password">Forgot password?</Link>
-            </div>
-            <Divider/>
-            <p className="fontSize-large">
-                Haven't applied yet? <Link to="/apply">Apply Here</Link>
-            </p>
-        </div>
-    );
+const { required } = validationHelpers;
+
+class LoginForm extends Component {
+
+	constructor(props) {
+		super(props);
+
+		this.renderLoginForm.bind(this);
+	}
+
+	renderLoginFormHeader() {
+		return (
+			<Header as="h2"
+				color="red"
+				textAlign="center">
+					Login to your account
+			</Header>
+		);
+	}
+
+	renderLoginFormErrorMessage() {
+		return (
+			<Message
+				error
+				className="error-message"
+				header='Invalid Credentials!'
+				content='Oops! We cannot authenticate you with those credentials.'
+			/>
+		);
+	}
+
+	renderLoginFormFooter() {
+		return (
+			<div>
+				<div className="fontSize-medium"
+					style={{ marginTop: '40px' }}>
+					<Link to="/reset-password">Forgot password?</Link>
+					<Divider/>
+					<p>
+						Haven't applied yet? <Link to="/apply">Apply Here</Link>
+					</p>
+				</div>
+			</div>
+		);
+	}
+
+	renderLoginForm() {
+		return (
+			<Form size="large" error={this.props.loginError}
+				loading={this.props.loginLoading}
+				onSubmit={this.props.handleSubmit}>
+				<Field name="email"
+					component={semanticFormField}
+					as={Form.Input} type="email"
+					placeholder="Email address"
+					validate={required} />
+				<Field name="password"
+					component={semanticFormField}
+					as={Form.Input} type="password"
+					placeholder="Password"
+					validate={required} />
+				{this.renderLoginFormErrorMessage()}
+				<Button primary fluid size="large">
+					Login
+				</Button>
+			</Form>
+		);
+	}
+
+	render() {
+		return (
+			<div className="login-form-container">
+				{this.renderLoginFormHeader()}
+				{this.renderLoginForm()}
+				{this.renderLoginFormFooter()}
+			</div>
+		);
+	}
 }
 
-export default reduxForm({ form: 'login' })(LoginForm);
+export default reduxForm({
+	form: 'login',
+	enableReinitialize: true
+})(LoginForm);

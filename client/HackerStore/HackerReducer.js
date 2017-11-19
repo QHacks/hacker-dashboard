@@ -15,6 +15,8 @@ const initialState = {
 	isPasswordReset: false,
 	isPasswordUpdated: false,
 
+	loginError: false,
+
 	users: [],
 
 	fetchingNewTokens: false,
@@ -32,8 +34,9 @@ export const selectors = {
 	getUser: (state) => state[reducerMount].user,
 	getUsers: (state) => state[reducerMount].users,
 	getAccessToken: (state) => state[reducerMount].accessToken,
+	getIsLoginError: (state) => state[reducerMount].loginError,
 	getRefreshToken: (state) => state[reducerMount].refreshToken,
-	getLoginLoading: (state) => state[reducerMount].logingLoading,
+	getLoginLoading: (state) => state[reducerMount].loginLoading,
 	getSignUpLoading: (state) => state[reducerMount].signUpLoading,
 	getAuthenticated: (state) => state[reducerMount].authenticated,
 	getBootstrapLoading: (state) => state[reducerMount].bootstrapLoading,
@@ -66,7 +69,17 @@ const handlers = {
 			user,
 			accessToken,
 			refreshToken,
-			authenticated: true
+			authenticated: true,
+			loginLoading: false
+
+		};
+	},
+
+	[actionTypes.AUTHENTICATION_ERROR]: (state, action) => {
+		return {
+			...state,
+			loginError: true,
+			loginLoading: false
 		};
 	},
 
@@ -116,6 +129,13 @@ const handlers = {
 		return {
 			...state,
 			isPasswordUpdated: true
+		};
+	},
+
+	[actionTypes.LOGIN_REQUEST]: (state, action) => {
+		return {
+			...state,
+			loginLoading: true
 		};
 	},
 

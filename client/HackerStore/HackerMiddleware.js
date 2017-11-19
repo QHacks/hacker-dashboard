@@ -23,8 +23,10 @@ function isHackerMiddlewareAction(action) {
  * @param {Object} error The error from the server.
  * @return {Boolean} True if error is result of token, false otherwise.
  */
-function isTokenFailError(error) {
-	if (error.status === UNAUTHORIZED_STATUS) {
+function isTokenFailError(error, incomingRequestType) {
+	if (incomingRequestType === actionTypes.LOGIN_REQUEST || incomingRequestType === actionTypes.SIGNUP_REQUEST) {
+		return false;
+	} else if (error.status === UNAUTHORIZED_STATUS) {
 		return true;
 	}
 	return false;
@@ -87,7 +89,7 @@ function handleAction(action) {
 	}).catch((error) => {
 		const { response } = error;
 
-		if (isTokenFailError(response)) {
+		if (isTokenFailError(response, requestType)) {
 			store.dispatch({ type: actionTypes.INVOKE_API_FAIL, data: { response, initialAction: action }});
 		} else {
 			store.dispatch({ type: failureType, data: response });
@@ -102,12 +104,12 @@ function handleAction(action) {
  */
 export function createHackerMiddleware(opt) {
 	return (storeRef) => {
-				store = storeRef;
-				options = opt;
+		store = storeRef;
+		options = opt;
 
-				return (next) => (action) => {
-						if (isHackerMiddlewareAction(action)) handleAction(action);
-						next(action);
-				};
+		return (next) => (action) => {
+				if (isHackerMiddlewareAction(action)) handleAction(action);
+				next(action);
 		};
+	};
 }
