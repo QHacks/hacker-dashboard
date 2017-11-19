@@ -3,6 +3,7 @@ const auth = require('../auth/auth');
 const jwt = require('jsonwebtoken');
 const mailer = require('../mailer');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const _ = require('lodash');
 
 const JWT_ISSUER = 'QHacks Authentication';
@@ -96,8 +97,16 @@ function createRefreshToken(userId) {
 	});
 }
 
-function createResetPasswordToken(user) {
-
+/**
+ * Creates a reset password hash.
+ * @param {Object} user The user to create the hash for.
+ */
+function createResetPasswordHash(user) {
+	const { AUTH_SECRET } = process.env;
+	const timeInMs = Date.now();
+	return crypto.createHmac('sha256', AUTH_SECRET)
+								.update(`${user.email}${timeInMs}`)
+								.digest('hex');
 }
 
 module.exports = (db) => {
@@ -151,7 +160,11 @@ module.exports = (db) => {
 				User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }).then((updatedUser) => {
 					const accessToken = createAccessToken(updatedUser._id);
 
-					resolve({ accessToken, refreshToken, user: updatedUser });
+					mailer.sendSuccessfulApplicationEmail(updatedUser).then(() => {
+						resolve({ accessToken, refreshToken, user: updatedUser });
+					}).catch((err) => {
+						reject(err);
+					});
 				}).catch((err) => {
 					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
 				});
@@ -165,17 +178,17 @@ module.exports = (db) => {
 
 	authCtr.createResetHash = (email) => new Promise((resolve, reject) => {
 		User.findOne({ email }).then((user) => {
-			bcrypt.hash(email, SALT_WORK_FACTOR, function(err, hash) {
-				if (err) reject(createError(ERRORS.INTERNAL_SERVER_ERROR, ERROR_MESSAGES.RESET_HASH_CREATE_FAIL, err));
-				User.findOneAndUpdate({ _id: user._id }, { passwordResetHash: hash }, { new: true }).then((updatedUser) => {
-					mailer.sendResetPasswordEmail(updatedUser).then(() => {
-						resolve();
-					}).catch((error) => {
-						reject(error);
-					});
+
+			const hash = createResetPasswordHash(user);
+
+			User.findOneAndUpdate({ _id: user._id }, { passwordResetHash: hash }, { new: true }).then((updatedUser) => {
+				mailer.sendResetPasswordEmail(updatedUser).then(() => {
+					resolve();
 				}).catch((err) => {
-					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
+					reject(err);
 				});
+			}).catch((err) => {
+				reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
 			});
 		}).catch((err) => {
 			reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_EMAIL, err));
@@ -191,8 +204,8 @@ module.exports = (db) => {
 			user.save().then(() => {
 				mailer.sendPasswordResetSuccessfulEmail(user).then(() => {
 					resolve();
-				}).catch((error) => {
-					reject(error);
+				}).catch((err) => {
+					reject(err);
 				});
 			}).catch((err) => {
 				reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
