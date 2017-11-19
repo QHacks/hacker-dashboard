@@ -31,9 +31,9 @@ class Dashboard extends Component {
 						<p>What if I don't get accepted? We'll have a waiting list that you can enter into from the dashboard and it will be a first come first serve basis. We really wish that we could accept everyone but we receive thousands of applications and just do not have the infrastructure to maintain the quality and safety of our event. Every year there are always those applicants that reach out to us asking if there is anything we can do to help them and our advice is to just make sure you are looking for that email and jump on the waiting list as soon as you can, we can't make any exceptions because it wouldn't be fair.</p>
 						<p>While you wait to hear from us there are some things you can do, such as:</p>
 						<ul>
-							<li>Like us on <a href="">Facebook</a></li>
-							<li>Follow us on <a href="">Twitter</a></li>
-							<li>Follow us on <a href="">Instagram</a></li>
+							<li>Like us on <a href="https://www.facebook.com/QHacks/">Facebook</a></li>
+							<li>Follow us on <a href="https://twitter.com/QHacks18">Twitter</a></li>
+							<li>Follow us on <a href="https://www.instagram.com/qhacks18/">Instagram</a></li>
 						</ul>
 						<p>We will be having contests for free tech on our social media so do not miss out! <Emoji text=":watch: :iphone:" /></p>
 						<p>Finally, we want to say thank you for your excitement about QHacks! With the participation of people like you, we can all continue towards our goal of making Queen’s and Canada as a whole recognized for its talent and enthusiasm for innovation and creation.</p>
