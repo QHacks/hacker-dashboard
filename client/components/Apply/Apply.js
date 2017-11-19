@@ -38,9 +38,7 @@ class Apply extends Component {
         }
         return (
             <div className="application-container">
-                <div className="application-graphics">
-                    {/*<img src={require('../../assets/img/apply/bottom-left.svg')}/>*/}
-                </div>
+                <div className="application-graphics"/>
                 <Segment className="application-form-container">
                     <img src={require('../../assets/img/qhacks-tricolor-logo.svg')}
                          className="qhacks-logo"/>

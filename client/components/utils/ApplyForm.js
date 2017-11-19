@@ -222,6 +222,7 @@ function PreviousPageButton(props) {
                 icon="left arrow"
                 labelPosition="left"
                 secondary
+                type="button"
                 onClick={props.onClick}/>
     );
 }
@@ -233,6 +234,7 @@ function NextPageButton(props) {
                 labelPosition="right"
                 secondary
                 floated="right"
+                type="button"
                 onClick={props.onClick}/>
     );
 }
