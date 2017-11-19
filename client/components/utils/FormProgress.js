@@ -2,12 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './FormProgress.less';
 
+const DEFAULT_CONTAINER_CLASSES = ['form-progress', 'container'];
 const DEFAULT_STEP_CLASSES = ['form-progress', 'step'];
 
 function FormProgress(props) {
     const { currentStepIndex, onClick, steps } = props;
     return (
-        <div className="form-progress container">
+        <div className={[
+            ...DEFAULT_CONTAINER_CLASSES,
+            props.className
+        ].join(' ')}>
             {steps.map((step, index) => {
                 const stepClassName = [
                     ...DEFAULT_STEP_CLASSES,

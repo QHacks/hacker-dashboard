@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import ApplyForm from '../utils/ApplyForm';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Divider, Header } from 'semantic-ui-react';
+import { Divider, Header, Segment } from 'semantic-ui-react';
 import './Apply.less';
 
 const { apply } = actionCreators;
@@ -39,21 +39,22 @@ class Apply extends Component {
         return (
             <div className="application-container">
                 <div className="application-graphics">
-                    <img className="graphic bottom left" src={require('../../assets/img/apply/bottom-left.svg')}/>
+                    {/*<img src={require('../../assets/img/apply/bottom-left.svg')}/>*/}
                 </div>
-                <div className="application-form-container">
+                <Segment className="application-form-container">
                     <img src={require('../../assets/img/qhacks-tricolor-logo.svg')}
                          className="qhacks-logo"/>
                     <Header as="h2"
                             content="Complete the form to apply!"
                             color="red"
-                            textAlign="center"/>
+                            textAlign="center"
+                            className="form apply header"/>
                     <ApplyForm onSubmit={this.handleApply.bind(this)}/>
                     <Divider style={{ marginTop: '40px' }}/>
                     <p className="fontSize-large textAlign-center">
                         Have an account? <Link to="/login">Login here</Link>
                     </p>
-                </div>
+                </Segment>
             </div>
         );
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { Button, Form, Segment, Step } from 'semantic-ui-react';
+import { Button, Form, Segment, Transition } from 'semantic-ui-react';
 import mlhSchools from './mlhSchools.json';
 import { actionCreators, selectors } from '../../HackerStore';
 import { Input, Select } from '../ReduxSemanticForm';
@@ -283,6 +283,7 @@ class ApplyForm extends Component {
             <Form onSubmit={this.props.handleSubmit}
                   size="large">
                 <FormProgress steps={FORM_STEPS}
+                              className="marginBottom-20"
                               currentStepIndex={applicationPage}
                               onClick={(e) => this.handlePageUpdate(Number(e.currentTarget.getAttribute('data-value')))}/>
                 {Pages.map((Page, index) => (
