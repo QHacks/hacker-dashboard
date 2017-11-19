@@ -28,6 +28,8 @@ Name | Description | Required | Default
 `PORT` | Port to run the Express sever on. | No | 3000
 `DEV_PROXY` | When running the `webpack-dev-server` all API calls will be proxied to this host. | No | `http://localhost:PORT`
 `SENDGRID_API_KEY` | SendGrid transactional email service api key. | No | None
+`EMAIL_URL_HOST` | Host to be used in the email urls. | No | None
+
 
 ### Front End
 
