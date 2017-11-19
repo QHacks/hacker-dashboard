@@ -4,7 +4,7 @@ const { SENDGRID_API_KEY, EMAIL_URL_HOST } = process.env;
 
 sendgrid.setApiKey(SENDGRID_API_KEY);
 
-const QHACKS_NO_REPLY_EMAIL = `no-reply@qhacks.io`;
+const QHACKS_NO_REPLY_EMAIL = 'no-reply@qhacks.io';
 
 const ERRORS = {
 	SENDGRID_ERROR: {
@@ -20,7 +20,7 @@ const ERROR_MESSAGES = {
 };
 
 /**
- * Creates a standard format error, see routes for usage.
+ * Creates a standard format error.
  * @param {String} message The error message.
  * @param {Integer} status The error status code.
  * @param {Object} [data={}] Error object.
@@ -57,7 +57,12 @@ function sendSuccessfulApplicationEmail(user) {
 	return new Promise((resolve, reject) => {
 		if (!SENDGRID_API_KEY) resolve();
 
-		const request = createEmailMsg({ toEmail: user.email, subject: 'QHacks Application Success!', textContent: 'Thank you for applying!', htmlContent: '<p>Thank you for applying!</p>' });
+		const request = createEmailMsg({
+			toEmail: user.email,
+			subject: 'QHacks Application Success!',
+			textContent: 'Thank you for applying!',
+			htmlContent: '<p>Thank you for applying!</p>'
+		});
 
 		sendgrid.send(request, (err, result) => {
 			if (err) reject(createError(ERRORS.SENDGRID_ERROR, ERROR_MESSAGES.SUCCESSFUL_APPLICATION_NO_SEND, err));
@@ -75,7 +80,12 @@ function sendPasswordResetSuccessfulEmail(user) {
 	return new Promise((resolve, reject) => {
 		if (!SENDGRID_API_KEY) resolve();
 
-		const request = createEmailMsg({ toEmail: user.email, subject: 'QHacks Password Reset Successful', textContent: 'Your password has been updated!', htmlContent: '<p>Your password has been updated!</p>' });
+		const request = createEmailMsg({
+			toEmail: user.email,
+			subject: 'QHacks Password Reset Successful',
+			textContent: 'Your password has been updated!',
+			htmlContent: '<p>Your password has been updated!</p>'
+		});
 
 		sendgrid.send(request, (err, result) => {
 			if (err) reject(createError(ERRORS.SENDGRID_ERROR, ERROR_MESSAGES.SUCCESSFUL_RESET_NO_SEND, err));
@@ -93,7 +103,12 @@ function sendResetPasswordEmail(user) {
 	return new Promise((resolve, reject) => {
 		if (!SENDGRID_API_KEY) resolve();
 
-		const request = createEmailMsg({ toEmail: user.email, subject: 'QHacks Password Reset Email', textContent: `Someone has requested to reset your QHacks account password, click this link to do so: https://${EMAIL_URL_HOST}/update-password/${user.passwordResetHash}`, htmlContent: `<p>Someone has requested to reset your QHacks account password, click this link to do so: http://localhost:8080/update-password/${user.passwordResetHash}</p>` });
+		const request = createEmailMsg({
+			toEmail: user.email,
+			subject: 'QHacks Password Reset Email',
+			textContent: `Someone has requested to reset your QHacks account password, click this link to do so: https://${EMAIL_URL_HOST}/update-password/${user.passwordResetHash}`,
+			htmlContent: `<p>Someone has requested to reset your QHacks account password, click this link to do so: http://localhost:8080/update-password/${user.passwordResetHash}</p>`
+		});
 
 		sendgrid.send(request, (err, result) => {
 			if (err) reject(createError(ERRORS.SENDGRID_ERROR, ERROR_MESSAGES.RESET_PASSWORD_NO_SEND, err));
