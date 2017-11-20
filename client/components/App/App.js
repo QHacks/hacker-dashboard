@@ -5,7 +5,7 @@ import PrivateRoute from '../utils/PrivateRoute';
 import Dashboard from '../Dashboard/Dashboard';
 import React, { Component } from 'react';
 import Login from '../Login/Login';
-import Apply from '../Apply/Apply';
+import Apply from '../Apply';
 
 export default class App extends Component {
 	render() {

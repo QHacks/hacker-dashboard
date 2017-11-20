@@ -1,0 +1,70 @@
+@import (less) '../../assets/semantic-ui/site/globals/site.variables';
+
+.application-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-height: 100vh;
+}
+
+.application-form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+
+  max-width: 600px;
+  width: 100%;
+}
+
+.qhacks-logo {
+  height: 100px;
+}
+
+.form.apply.header {
+  margin: 30px 0;
+}
+
+.application-graphics {
+  background-image: url('../../assets/img/apply/graphics-cover-16х9.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  position: fixed;
+  z-index: -1;
+
+  height: 100vh;
+  width: 100vw;
+}
+
+.application-graphics > .graphic {
+  height: 200px;
+  position: absolute;
+}
+
+.graphic.bottom {
+  bottom: 0;
+}
+
+.graphic.left {
+  left: 0;
+}
+
+.graphic.right {
+  right: 0;
+}
+
+.graphic.top {
+  top: 0;
+}
+
+.textAlign-center {
+  text-align: center;
+}
+
+@media (max-width: @tabletBreakpoint) {
+  .application-graphics {
+    background-image: url('../../assets/img/apply/graphics-cover-9x16.svg');
+  }
+}

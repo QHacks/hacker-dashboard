@@ -21,7 +21,9 @@ const initialState = {
 
 	bootstrapLoading: true,
 	loginLoading: false,
-	signUpLoading: false
+	signUpLoading: false,
+
+    applicationPage: 0
 };
 
 /**
@@ -33,13 +35,14 @@ export const selectors = {
 	getUsers: (state) => state[reducerMount].users,
 	getAccessToken: (state) => state[reducerMount].accessToken,
 	getRefreshToken: (state) => state[reducerMount].refreshToken,
-	getLoginLoading: (state) => state[reducerMount].logingLoading,
+	getLoginLoading: (state) => state[reducerMount].loginLoading,
 	getSignUpLoading: (state) => state[reducerMount].signUpLoading,
 	getAuthenticated: (state) => state[reducerMount].authenticated,
 	getBootstrapLoading: (state) => state[reducerMount].bootstrapLoading,
 	getFetchingNewTokens: (state) => state[reducerMount].fetchingNewTokens,
 	getIsPasswordReset: (state) => state[reducerMount].isPasswordReset,
-	getIsPasswordUpdated: (state) => state[reducerMount].isPasswordUpdated
+	getIsPasswordUpdated: (state) => state[reducerMount].isPasswordUpdated,
+	getApplicationPage: (state) => state[reducerMount].applicationPage
 };
 
 /**
@@ -122,6 +125,14 @@ const handlers = {
 	[actionTypes.LOGOUT]: (state, action) => {
 		return {
 			...initialState
+		};
+	},
+
+	[actionTypes.APPLICATION_PAGE_UPDATE]: (state, action) => {
+		const { applicationPage } = action.data;
+		return {
+			...state,
+			applicationPage
 		};
 	}
 };

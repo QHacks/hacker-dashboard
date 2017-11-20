@@ -16,13 +16,6 @@ const ERROR_MESSAGES = {
 	DB_USERS: "Could not retreive any users from the database!"
 };
 
-/**
- * Creates a standard format error, see routes for usage.
- * @param {String} message The error message.
- * @param {Integer} status The error status code.
- * @param {Object} [data={}] Error object.
- * @return {Object} Error object.
- */
 function createError(errorTpl, message, data = {}) {
 	return Object.assign({}, errorTpl, { message, data });
 }
@@ -30,9 +23,7 @@ function createError(errorTpl, message, data = {}) {
 module.exports = (db) => {
 	const userCtr = {};
 
-	const models = {
-		User
-	} = require('../models');
+	const { User } = require('../models');
 
 	userCtr.getUser = (userId) => new Promise((resolve, reject) => {
 		User.findOne({ _id: userId }).then((user) => {
