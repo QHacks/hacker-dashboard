@@ -15,17 +15,19 @@ const initialState = {
 	isPasswordReset: false,
 	isPasswordUpdated: false,
 
+	loginLoading: false,
 	loginError: false,
+	applicationError: false,
+	applicationLoading: false,
 
 	users: [],
 
 	fetchingNewTokens: false,
 
 	bootstrapLoading: true,
-	loginLoading: false,
 	signUpLoading: false,
 
-    applicationPage: 0
+	applicationPage: 0
 };
 
 /**
@@ -45,7 +47,9 @@ export const selectors = {
 	getFetchingNewTokens: (state) => state[reducerMount].fetchingNewTokens,
 	getIsPasswordReset: (state) => state[reducerMount].isPasswordReset,
 	getIsPasswordUpdated: (state) => state[reducerMount].isPasswordUpdated,
-	getApplicationPage: (state) => state[reducerMount].applicationPage
+	getApplicationPage: (state) => state[reducerMount].applicationPage,
+	getApplicationLoading: (state) => state[reducerMount].applicationLoading,
+	getApplicationError: (state) => state[reducerMount].applicationError
 };
 
 /**
@@ -73,8 +77,10 @@ const handlers = {
 			accessToken,
 			refreshToken,
 			authenticated: true,
-			loginLoading: false
-
+			loginLoading: false,
+			loginError: false,
+			applicationError: true,
+			applicationLoading: false
 		};
 	},
 
@@ -85,6 +91,15 @@ const handlers = {
 			loginLoading: false
 		};
 	},
+
+	[actionTypes.APPLICATION_ERROR]: (state, action) => {
+		return {
+			...state,
+			applicationError: true,
+			applicationLoading: false
+		};
+	},
+
 
 	[actionTypes.TOKENS_REFRESHED]: (state, action) => {
 		const { refreshToken, accessToken, user } = action.data;
@@ -139,6 +154,13 @@ const handlers = {
 		return {
 			...state,
 			loginLoading: true
+		};
+	},
+
+	[actionTypes.SIGNUP_REQUEST]: (state, action) => {
+		return {
+			...state,
+			applicationLoading: true
 		};
 	},
 

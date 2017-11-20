@@ -30,6 +30,7 @@ class LoginForm extends Component {
 		return (
 			<Message
 				error
+				size='small'
 				className="error-message"
 				header='Invalid Credentials!'
 				content='Oops! We cannot authenticate you with those credentials.'
@@ -45,7 +46,7 @@ class LoginForm extends Component {
 					<Link to="/reset-password">Forgot password?</Link>
 					<Divider/>
 					<p>
-						Haven't applied yet? <Link to="/apply">Apply Here</Link>
+						Havent applied yet? <Link to="/apply">Apply Here</Link>
 					</p>
 				</div>
 			</div>
@@ -54,20 +55,29 @@ class LoginForm extends Component {
 
 	renderLoginForm() {
 		return (
-			<Form size="large" error={this.props.loginError}
+			<Form size="large"
+				error={this.props.loginError}
 				loading={this.props.loginLoading}
 				onSubmit={this.props.handleSubmit}>
+
 				<Field name="email"
 					component={semanticFormField}
-					as={Form.Input} type="email"
+					as={Form.Input}
+					icon="mail"
+					type="email"
 					placeholder="Email address"
 					validate={required} />
+
 				<Field name="password"
 					component={semanticFormField}
-					as={Form.Input} type="password"
+					as={Form.Input}
+					icon="lock"
+					type="password"
 					placeholder="Password"
 					validate={required} />
+
 				{this.renderLoginFormErrorMessage()}
+
 				<Button primary fluid size="large">
 					Login
 				</Button>

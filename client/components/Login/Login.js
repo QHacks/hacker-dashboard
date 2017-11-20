@@ -37,7 +37,7 @@ class Login extends Component {
 		return (
 			<div className="login-form-wrapper">
 				<img src={require('../../assets/img/qhacks-tricolor-logo.svg')}
-					className="qhacks-logo" />
+					className="qhacks-logo-login" />
 				<LoginForm onSubmit={this.handleLogin.bind(this)}
 					loginLoading={loginLoading}
 					loginError={loginError} />
