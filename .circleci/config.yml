@@ -23,6 +23,9 @@ jobs:
           name: Build React client
           command: npm run client-prod
       - run:
+          name: Build MJML email templates
+          command: npm run email-prod
+      - run:
           name: Create .env file
           command: |
             echo "AUTH_SECRET=${AUTH_SECRET}" > .env
