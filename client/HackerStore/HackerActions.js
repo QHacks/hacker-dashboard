@@ -24,20 +24,20 @@ const hackerMiddlwareActionTypes = {
 
 /**
  * API Middleware request action types.
- * NOTE: This action type will be dispatched from middlware
- * upon validation from middlware, use to update status flags in reducer.
+ * NOTE: This action type will be dispatched from middleware
+ * upon validation from middleware, use to update status flags in reducer.
  * @type {Object}
  */
 const apiRequestTypes = {
-	"LOGIN_REQUEST": "@@/hacker/LOGIN_REQUEST",
-	"SIGNUP_REQUEST": "@@/hacker/SIGNUP_REQUEST",
-	"REFRESH_TOKENS": "@@/hacker/REFRESH_TOKENS",
-	"VALIDATE_TOKENS": "@@/hacker/VALIDATE_TOKENS",
+	LOGIN_REQUEST: '@@/hacker/LOGIN_REQUEST',
+	SIGNUP_REQUEST: '@@/hacker/SIGNUP_REQUEST',
+	REFRESH_TOKENS: '@@/hacker/REFRESH_TOKENS',
+	VALIDATE_TOKENS: '@@/hacker/VALIDATE_TOKENS',
 
-	"CREATE_RESET_HASH": "@@/hacker/CREATE_RESET_HASH",
-	"UPDATE_PASSWORD_RESET": "@@/hacker/UPDATE_PASSWORD_RESET",
+	CREATE_RESET_HASH: '@@/hacker/CREATE_RESET_HASH',
+	UPDATE_PASSWORD_RESET: '@@/hacker/UPDATE_PASSWORD_RESET',
 
-	"GET_USERS": "@@/hacker/GET_USERS"
+	GET_USERS: '@@/hacker/GET_USERS'
 };
 
 /**
@@ -47,13 +47,13 @@ const apiRequestTypes = {
  * @type {Object}
  */
 const apiSuccessTypes = {
-	"AUTHENTICATED": "@@/hacker/AUTHENTICATED",
-	"TOKENS_REFRESHED": "@@/hacker/TOKENS_REFRESHED",
+	AUTHENTICATED: '@@/hacker/AUTHENTICATED',
+	TOKENS_REFRESHED: '@@/hacker/TOKENS_REFRESHED',
 
-	"CREATE_RESET_HASH_SUCCESS": "@@/hacker/CREATE_RESET_HASH_SUCCESS",
-	"UPDATE_PASSWORD_RESET_SUCCESS": "@@/hacker/UPDATE_PASSWORD_RESET_SUCCESS",
+	CREATE_RESET_HASH_SUCCESS: '@@/hacker/CREATE_RESET_HASH_SUCCESS',
+	UPDATE_PASSWORD_RESET_SUCCESS: '@@/hacker/UPDATE_PASSWORD_RESET_SUCCESS',
 
-	"USERS_FETCHED": "@@/hacker/USERS_FETCHED"
+	USERS_FETCHED: '@@/hacker/USERS_FETCHED'
 };
 
 /**
@@ -63,13 +63,13 @@ const apiSuccessTypes = {
  * @type {Object}
  */
 const apiErrorTypes = {
-	"AUTHENTICATION_ERROR": "@@/hacker/AUTHENTICATION_ERROR",
-	"TOKENS_CANNOT_REFRESH": "@@/hacker/TOKENS_CANNOT_REFRESH",
+	AUTHENTICATION_ERROR: '@@/hacker/AUTHENTICATION_ERROR',
+	TOKENS_CANNOT_REFRESH: '@@/hacker/TOKENS_CANNOT_REFRESH',
 
-	"CREATE_RESET_HASH_FAIL": "@@/hacker/CREATE_RESET_HASH_FAIL",
-	"UPDATE_PASSWORD_RESET_FAIL": "@@/hacker/UPDATE_PASSWORD_RESET_FAIL",
+	CREATE_RESET_HASH_FAIL: '@@/hacker/CREATE_RESET_HASH_FAIL',
+	UPDATE_PASSWORD_RESET_FAIL: '@@/hacker/UPDATE_PASSWORD_RESET_FAIL',
 
-	"USER_FETCH_ERORR": "@@/hacker/USERS_FETCHED" // TODO: Fix typo
+	USER_FETCH_ERROR: '@@/hacker/USERS_FETCHED'
 };
 
 /**
@@ -184,7 +184,7 @@ const invokeAPIActionCreators = {
 	getUsers: () => ({
 		type: actionTypes.INVOKE_API_CALL,
 		data: {
-			types: [actionTypes.GET_USERS, actionTypes.USERS_FETCHED, actionTypes.USER_FETCH_ERORR],
+			types: [actionTypes.GET_USERS, actionTypes.USERS_FETCHED, actionTypes.USER_FETCH_ERROR],
 			request: {
 				url: `${API_SUFFIX}${USERS_ENDPOINT}`,
 				method: GET,

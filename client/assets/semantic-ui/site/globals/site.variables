@@ -734,7 +734,7 @@
 ;
 
 /*---  Colors  ---*/
-@primaryColorHover    : saturate(darken(@primaryColor, 5), 10, relative);
+@primaryColorHover    : saturate(lighten(@primaryColor, 5), 10, relative);
 @secondaryColorHover  : saturate(lighten(@secondaryColor, 5), 10, relative);
 
 @redHover             : saturate(darken(@red, 5), 10, relative);
