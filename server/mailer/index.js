@@ -1,10 +1,18 @@
 const sendgrid = require('@sendgrid/mail');
+const fs = require('fs');
+const path = require('path');
 
 const { SENDGRID_API_KEY, EMAIL_URL_HOST } = process.env;
 
 sendgrid.setApiKey(SENDGRID_API_KEY);
 
 const QHACKS_NO_REPLY_EMAIL = 'no-reply@qhacks.io';
+
+const APPLICATION_SUCCESSFUL = 'application-successful';
+
+const EMAIL_TEMPLATES = {
+    [APPLICATION_SUCCESSFUL]: fs.readFileSync(path.resolve(__dirname, `../../email/dist/${APPLICATION_SUCCESSFUL}.html`)).toString()
+};
 
 const ERRORS = {
 	SENDGRID_ERROR: {
@@ -59,9 +67,9 @@ function sendSuccessfulApplicationEmail(user) {
 
 		const request = createEmailMsg({
 			toEmail: user.email,
-			subject: 'QHacks Application Success!',
-			textContent: 'Thank you for applying!',
-			htmlContent: '<p>Thank you for applying!</p>'
+			subject: 'QHacks 2018 - Application Received!',
+			textContent: 'Thank you for applying to QHacks 2018! See https://qhacks.io for more details.',
+			htmlContent: EMAIL_TEMPLATES[APPLICATION_SUCCESSFUL]
 		});
 
 		sendgrid.send(request, (err, result) => {
