@@ -26,6 +26,7 @@
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
+    "mjml": "^3.3.5",
     "moment": "^2.19.2",
     "mongoose": "^4.13.3",
     "prop-types": "^15.6.0",

@@ -1,0 +1,59 @@
+<mjml>
+    <mj-head>
+        <mj-attributes>
+            <mj-all font-family="Arial"/>
+        </mj-attributes>
+    </mj-head>
+    <mj-body>
+        <mj-container>
+
+            <!-- Email Hero -->
+            <mj-section padding="0">
+                <mj-column width="600">
+                    <mj-image src="https://storage.googleapis.com/qhacks-static-files/qhacks-banner-tricolour-v1.jpg"
+                              padding="0"/>
+                </mj-column>
+            </mj-section>
+
+            <!-- CTA Section -->
+            <mj-section background-color="#fafafa">
+                <mj-column width="600">
+                    <mj-text font-weight="bold"
+                             font-size="26px"
+                             align="center">
+                        Congratulations, your application is in!
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+
+            <!-- What Next? -->
+            <mj-section>
+
+                <mj-column width="600">
+                    <mj-text font-weight="bold"
+                             font-size="26px"
+                             align="center">
+                        What's Next?
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+
+            <!-- Footer -->
+            <mj-section background-color="#fafafa">
+                <mj-column width="600">
+                    <mj-text font-weight="bold"
+                             font-size="20px"
+                             align="center">
+                        Follow QHacks
+                    </mj-text>
+                    <mj-social mode="horizontal"
+                               display="facebook instagram twitter"
+                               facebook-href="https://www.facebook.com/QHacks"
+                               instagram-href="https://www.instagram.com/qhacks18"
+                               twitter-href="https://twitter.com/QHacks18"/>
+                </mj-column>
+            </mj-section>
+
+        </mj-container>
+    </mj-body>
+</mjml>
