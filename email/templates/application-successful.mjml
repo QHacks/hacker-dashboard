@@ -1,58 +1,186 @@
 <mjml>
     <mj-head>
+        <mj-preview>We've received your application to QHacks 2018!</mj-preview>
+        <mj-font name="Encode Sans" href="https://fonts.googleapis.com/css?family=Encode+Sans:200,300,400,700"/>
         <mj-attributes>
-            <mj-all font-family="Arial"/>
+            <mj-all font-family="'Encode Sans', 'MaisonNeue','Helvetica Neue',Helvetica,Arial,sans-serif"/>
         </mj-attributes>
+        <mj-style>
+            a {
+            color: #A4A4A4;
+            }
+        </mj-style>
     </mj-head>
     <mj-body>
-        <mj-container>
+        <mj-container background-color="#f5f5f5">
 
             <!-- Email Hero -->
             <mj-section padding="0">
                 <mj-column width="600">
                     <mj-image src="https://storage.googleapis.com/qhacks-static-files/qhacks-banner-tricolour-v1.jpg"
-                              padding="0"/>
+                              padding="0"
+                              href="https://qhacks.io"/>
                 </mj-column>
             </mj-section>
 
             <!-- CTA Section -->
-            <mj-section background-color="#fafafa">
+            <mj-section background-color="white"
+                        border-bottom="10px solid #f5f5f5"
+                        padding="40px 0">
                 <mj-column width="600">
                     <mj-text font-weight="bold"
-                             font-size="26px"
-                             align="center">
-                        Congratulations, your application is in!
+                             font-size="42px"
+                             line-height="48px"
+                             align="center"
+                             padding="0">
+                        Welcome to QHacks!
+                    </mj-text>
+                    <mj-text font-size="18px"
+                             line-height="28px"
+                             padding="15px 30px"
+                             align="center"
+                             color="#383838">
+                        QHacks is more than a hackathon. It's a community of creators and innovators, and we're so happy
+                        to have you. Welcome! Now that you've applied to attend QHacks 2018, you probably have some
+                        questions. Good news, we're here to answer them.
                     </mj-text>
                 </mj-column>
             </mj-section>
 
             <!-- What Next? -->
-            <mj-section>
-
+            <mj-section background-color="white"
+                        border-top="5px solid #f5f5f5"
+                        border-bottom="10px solid #f5f5f5">
                 <mj-column width="600">
-                    <mj-text font-weight="bold"
-                             font-size="26px"
-                             align="center">
+                    <mj-text font-weight="300"
+                             font-size="30px"
+                             align="center"
+                             padding="20px 20px 60px">
                         What's Next?
+                    </mj-text>
+
+                    <mj-image
+                            src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/envelope.png"
+                            width="60px"/>
+                    <mj-text font-size="24px"
+                             font-weight="200"
+                             align="center">
+                        Application Decisions
+                    </mj-text>
+                    <mj-text font-size="18px"
+                             line-height="28px"
+                             padding="15px 30px 40px"
+                             align="center"
+                             color="#383838">
+                        We will be accepting applications until January 8th 2018 and later that week we will be sending
+                        emails to all of the applicants updating them on their application status.
+                    </mj-text>
+
+                    <mj-image
+                            src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/ticket.png"
+                            width="60px"/>
+                    <mj-text font-size="24px"
+                             font-weight="200"
+                             align="center">
+                        What If I'm Accepted?
+                    </mj-text>
+                    <mj-text font-size="18px"
+                             line-height="28px"
+                             padding="15px 30px 40px"
+                             align="center"
+                             color="#383838">
+                        If you are accepted, your next step will be to RSVP right here in the dashboard. You must
+                        complete this step <b>within one week</b> of receiving your acceptance email. The RSVP will be
+                        used to confirm your attendance to QHacks 2018.
+                    </mj-text>
+
+                    <mj-image
+                            src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/users.png"
+                            width="60px"/>
+                    <mj-text font-size="24px"
+                             font-weight="200"
+                             align="center">
+                        What If I'm Not Accepted?
+                    </mj-text>
+                    <mj-text font-size="18px"
+                             line-height="28px"
+                             padding="15px 30px 40px"
+                             align="center"
+                             color="#383838">
+                        There's a chance you may be added to the waitlist. If someone who has been accepted fails to
+                        RSVP or can't come to the event, then we will fill their spot with someone from the waitlist.
+                    </mj-text>
+
+                    <mj-image
+                            src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/trophy.png"
+                            width="60px"/>
+                    <mj-text font-size="24px"
+                             font-weight="200"
+                             align="center">
+                        Thank You!
+                    </mj-text>
+                    <mj-text font-size="18px"
+                             line-height="28px"
+                             padding="15px 30px 40px"
+                             align="center"
+                             color="#383838">
+                        Finally, we want to say thank you for your interest in QHacks! With the participation of people
+                        like you, we can continue toward our common goal of recognizing the talent and enthusiasm for
+                        innovation and creation at Queen's and throughout Canada
                     </mj-text>
                 </mj-column>
             </mj-section>
 
             <!-- Footer -->
-            <mj-section background-color="#fafafa">
-                <mj-column width="600">
-                    <mj-text font-weight="bold"
-                             font-size="20px"
-                             align="center">
-                        Follow QHacks
-                    </mj-text>
-                    <mj-social mode="horizontal"
-                               display="facebook instagram twitter"
-                               facebook-href="https://www.facebook.com/QHacks"
-                               instagram-href="https://www.instagram.com/qhacks18"
-                               twitter-href="https://twitter.com/QHacks18"/>
-                </mj-column>
-            </mj-section>
+            <mj-wrapper background-color="white"
+                        border-top="5px solid #f5f5f5"
+                        border-bottom="40px solid #f5f5f5"
+                        padding="60px 0 0">
+                <mj-section>
+                    <mj-column width="600">
+                        <mj-text font-size="24px"
+                                 color="#A4A4A4"
+                                 align="center"
+                                 padding="0">
+                            Follow QHacks
+                        </mj-text>
+                    </mj-column>
+                </mj-section>
+                <mj-section>
+                    <mj-column>
+                        <mj-image width="45px"
+                                  src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/facebook-f.png"
+                                  href="https://www.facebook.com/QHacks"/>
+                    </mj-column>
+                    <mj-column>
+                        <mj-image width="45px"
+                                  src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/instagram.png"
+                                  href="https://www.instagram.com/qhacks18"/>
+                    </mj-column>
+                    <mj-column>
+                        <mj-image width="45px"
+                                  src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/twitter.png"
+                                  href="https://twitter.com/QHacks18"/>
+                    </mj-column>
+                </mj-section>
+                <mj-section>
+                    <mj-column>
+                        <mj-text font-size="12px"
+                                 color="#A4A4A4"
+                                 align="center"
+                                 padding="10px 0 0">
+                            &copy; 2017 <a href="https://qhacks.io" rel="noopener noreferrer" target="_blank">QHacks</a>.
+                            All rights reserved.
+                        </mj-text>
+                        <mj-text font-size="12px"
+                                 color="#A4A4A4"
+                                 align="center"
+                                 padding="10px 0 0">
+                            Have questions? Email us at <a href="mailto:hello@qhacks.io">hello@qhacks.io</a>.
+                        </mj-text>
+                    </mj-column>
+                </mj-section>
+            </mj-wrapper>
 
         </mj-container>
     </mj-body>
