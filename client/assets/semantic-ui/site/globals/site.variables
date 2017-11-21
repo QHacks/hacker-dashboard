@@ -9,11 +9,11 @@
 @fontName          : 'Encode Sans';
 @fontSmoothing     : antialiased;
 
-@headerFont        : @fontName, 'Helvetica Neue', Arial, Helvetica, sans-serif;
-@pageFont          : @fontName, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+@headerFont        : @fontName, Arial, 'Helvetica Neue', Helvetica, sans-serif;
+@pageFont          : @fontName, Arial, 'Helvetica Neue', Helvetica, sans-serif;
 
-@googleFontName    : @fontName;
-@importGoogleFonts : false;
+@googleFontName    : 'Encode+Sans';
+@importGoogleFonts : true;
 @googleFontSizes   : '400,700,400italic,700italic';
 @googleSubset      : 'latin';
 
@@ -133,9 +133,9 @@
        Links
 --------------------*/
 
-@linkColor           : #4183C4;
+@linkColor           : #0a205b;
 @linkUnderline       : none;
-@linkHoverColor      : darken(saturate(@linkColor, 20), 15, relative);
+@linkHoverColor      : #c61633;
 @linkHoverUnderline  : @linkUnderline;
 
 /*-------------------
