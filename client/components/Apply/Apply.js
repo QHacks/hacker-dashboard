@@ -12,7 +12,6 @@ const { apply } = actionCreators;
 class Apply extends Component {
 
 		handleApply(values) {
-			debugger;
 			const { apply } = this.props;
 
 			apply(values);
@@ -78,6 +77,7 @@ class Apply extends Component {
 
 			return (
 				<div className="application-container">
+					<div className="application-graphics"/>
 					<div className="application-form-container">
 						{this.renderApplicationHeader()}
 						{this.renderApplicationForm()}
