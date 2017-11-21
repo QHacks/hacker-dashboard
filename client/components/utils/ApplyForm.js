@@ -1,6 +1,6 @@
 import { Button, Form, Segment, Transition, Message } from 'semantic-ui-react';
 import { actionCreators, selectors } from '../../HackerStore';
-import semanticFormField from './semanticFormField';
+import SemanticFormField from './SemanticFormField';
 import { validationHelpers } from './validation';
 import { Field, reduxForm } from 'redux-form';
 import mlhSchools from './mlhSchools.json';
@@ -54,7 +54,7 @@ function PageOne(props) {
 	return (
 		<Segment className={props.className}>
 			<Field name="firstName"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Input}
 				type="text"
 				label="First Name"
@@ -63,7 +63,7 @@ function PageOne(props) {
 			/>
 
 			<Field name="lastName"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Input}
 				type="text"
 				label="Last Name"
@@ -72,7 +72,7 @@ function PageOne(props) {
 			/>
 
 			<Field name="email"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Input}
 				type="email"
 				label="Email Address"
@@ -81,7 +81,7 @@ function PageOne(props) {
 			/>
 
 			<Field name="phoneNumber"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Input}
 				type="tel"
 				label="Phone Number"
@@ -90,7 +90,7 @@ function PageOne(props) {
 			/>
 
 			<Field name="dateOfBirth"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Input}
 				type="date"
 				label="Date of Birth"
@@ -98,7 +98,7 @@ function PageOne(props) {
 			/>
 
 			<Field name="gender"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Select}
 				label="What gender do you identify with?"
 				options={GENDERS.map(mapValueForSelect)}
@@ -108,7 +108,7 @@ function PageOne(props) {
 			/>
 
 			<Field name="password"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Input}
 				type="password"
 				label="Password"
@@ -117,7 +117,7 @@ function PageOne(props) {
 			/>
 
 			<Field name="confirmPassword"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Input}
 				type="password"
 				label="Confirm Password"
@@ -132,7 +132,7 @@ function PageTwo(props) {
 	return (
 		<Segment className={props.className}>
 			<Field name="school"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Select}
 				label="School"
 				options={mlhSchools.map(mapValueForSelect)}
@@ -142,7 +142,7 @@ function PageTwo(props) {
 			/>
 
 			<Field name="degreeType"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Select}
 				label="Degree Type"
 				options={DEGREE_TYPES.map(mapValueForSelect)}
@@ -152,7 +152,7 @@ function PageTwo(props) {
 			/>
 
 			<Field name="program"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Input}
 				type="text"
 				label="Program"
@@ -161,7 +161,7 @@ function PageTwo(props) {
 			/>
 
 			<Field name="graduationYear"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Input}
 				type="number"
 				label="Graduation year"
@@ -170,7 +170,7 @@ function PageTwo(props) {
 			/>
 
 			<Field name="graduationMonth"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Select}
 				label="Graduation Month"
 				options={MONTHS_IN_A_YEAR.map(mapValueForSelect)}
@@ -180,7 +180,7 @@ function PageTwo(props) {
 			/>
 
 			<Field name="travelOrigin"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Input}
 				type="text"
 				label="Where will you be travelling from?"
@@ -195,7 +195,7 @@ function PageThree(props) {
 	return (
 		<Segment className={props.className}>
 			<Field name="numberOfHackathons"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Select}
 				label="How many hackathons have you attended?"
 				options={NUMBER_OF_HACKATHONS.map(mapValueForSelect)}
@@ -205,14 +205,14 @@ function PageThree(props) {
 			/>
 
 			<Field name="whyQhacks"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.TextArea}
 				label="Why do you want to come to QHacks 2018? (250 words max)"
 				validate={required}
 			/>
 
 			<Field name="links"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.TextArea}
 				label="Where can we find you online? e.g. GitHub, LinkedIn, etc."
 				validate={required}
@@ -221,7 +221,7 @@ function PageThree(props) {
 			<p>By applying you agree to adhere to <a target="_blank" rel="noopener noreferrer" href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">
 			MLH's Code of Conduct</a>.</p>
 			{/*<Field name="isCodeOfConductAccepted"
-				component={semanticFormField}
+				component={SemanticFormField}
 				as={Form.Checkbox}
 				label={
 					<label>
