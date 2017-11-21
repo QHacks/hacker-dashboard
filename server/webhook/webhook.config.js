@@ -3,12 +3,10 @@ const moment = require('moment');
 const { NODE_ENV } = process.env;
 
 const config = {
-    '/api/v1/auth/signup': (body) => _toSlackMessage(body)
+    '/api/v1/auth/signup': (user) => _toSlackMessage(user)
 };
 
-function _toSlackMessage(body) {
-    console.log(Object.keys(body));
-    const user = {};
+function _toSlackMessage(user) {
     const fields = [
         {
             title: 'First Name',
@@ -31,10 +29,55 @@ function _toSlackMessage(body) {
             short: false
         },
         {
+            title: 'Gender',
+            value: user.gender,
+            short: true
+        },
+        {
+            title: 'School',
+            value: user.school,
+            short: false
+        },
+        {
+            title: 'Degree Type',
+            value: user.degreeType,
+            short: true
+        },
+        {
+            title: 'Program',
+            value: user.program,
+            short: true
+        },
+        {
             title: 'Graduation Year',
             value: user.graduationYear,
-            short: false
+            short: true
 
+        },
+        {
+            title: 'Graduation Month',
+            value: user.graduationMonth,
+            short: true
+        },
+        {
+            title: 'Travel Origin',
+            value: user.travelOrigin,
+            short: false
+        },
+        {
+            title: 'Number of Hackathons',
+            value: user.numberOfHackathons,
+            short: true
+        },
+        {
+            title: 'Why QHacks?',
+            value: user.whyQhacks,
+            short: false
+        },
+        {
+            title: 'Where can we find you online?',
+            value: user.links,
+            short: false
         }
     ];
     return {
