@@ -8,7 +8,7 @@ export default function semanticFormField({ input, type, label, placeholder, met
 	}
 
 	return (
-		<Form.Field error={touched && error }>
+		<Form.Field error={touched && !!error}>
 			<As {...props} {...input}
 				value={input.value}
 				type={type} label={label}
