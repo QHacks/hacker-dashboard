@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const winston = require('winston');
 const path = require('path');
+const errorReporting = require('@google-cloud/error-reporting')();
 
 const auth = require('./auth/auth');
 const api = require('./api/api');
@@ -40,10 +41,17 @@ db((err, db) => {
 	// Core API
 	app.use('/api/', auth(), api(ctr));
 
+	app.get('/exception', (req, res, next) => { // TODO: Remove this middleware after verifying `errorReporting.express`
+		JSON.parse('{\"malformedJson\": true');
+	});
+
 	app.use(history());
 
 	// Static Files
 	app.use(express.static(BUNDLE_DIR));
+
+	// Error handling
+	app.use(errorReporting.express);
 
 	// Start listening!
 	app.listen(port, () => winston.info(`Hacker dashboard running on port ${port}!`));

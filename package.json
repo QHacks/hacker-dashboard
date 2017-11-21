@@ -16,6 +16,7 @@
     "email-clean": "cross-env rimraf ./email/dist && mkdir ./email/dist"
   },
   "dependencies": {
+    "@google-cloud/error-reporting": "^0.2.2",
     "@sendgrid/mail": "^6.1.4",
     "a": "^2.1.1",
     "axios": "^0.17.1",
