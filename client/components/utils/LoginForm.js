@@ -46,7 +46,7 @@ class LoginForm extends Component {
 					<Link to="/reset-password">Forgot password?</Link>
 					<Divider/>
 					<p>
-						Havent applied yet? <Link to="/apply">Apply Here</Link>
+						Haven't applied yet? <Link to="/apply">Apply Here</Link>
 					</p>
 				</div>
 			</div>
