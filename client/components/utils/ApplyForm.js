@@ -146,7 +146,7 @@ function PageTwo(props) {
 				as={Form.Select}
 				label="Degree Type"
 				options={DEGREE_TYPES.map(mapValueForSelect)}
-				placeholder="'Bachelor's degree'"
+				placeholder="Bachelor's degree"
 				validate={required}
 				search={true}
 			/>
