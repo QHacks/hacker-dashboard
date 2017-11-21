@@ -1,6 +1,5 @@
 const axios = require('axios');
 const winston = require('winston');
-const { WEBHOOK: WEBHOOK_STRINGS } = require('../strings');
 const webhookConfig = require('./webhook.config');
 
 const { SLACK_WEBHOOK_URL } = process.env;
@@ -25,7 +24,7 @@ function _createWebhookMiddleware(config) {
 
 function _sendSlackNotification(notification) {
     axios.post(SLACK_WEBHOOK_URL, notification)
-        .catch((err) => winston.notice(WEBHOOK_STRINGS.FAILED_SLACK_MESSAGE));
+        .catch((err) => winston.error(err));
 }
 
 module.exports = () => _createWebhookMiddleware(webhookConfig);

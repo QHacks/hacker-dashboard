@@ -39,7 +39,7 @@ function generateSuccessfulApplicationEmail(email) {
 			htmlContent: EMAIL_TEMPLATES[APPLICATION_SUCCESSFUL]
 		}),
 		createError: (err) => createError(ERRORS.SENDGRID_ERROR, MAILER_STRINGS.ERROR.SUCCESSFUL_APPLICATION, err),
-		success: () => winston.notice(MAILER_STRINGS.SUCCESS.SUCCESSFUL_APPLICATION)
+		success: () => winston.info(MAILER_STRINGS.SUCCESS.SUCCESSFUL_APPLICATION)
 	};
 }
 
