@@ -8,7 +8,7 @@
     "server-debug": "cross-env NODE_ENV=development nodemon --inspect server",
     "start": "cross-env NODE_ENV=production node server",
     "client-dev": "cross-env webpack-dev-server",
-    "client-prod": "cross-env NODE_ENV=production npm run client-clean && webpack -p",
+    "client-prod": "cross-env NODE_ENV=production npm run client-clean && webpack",
     "client-clean": "cross-env rimraf ./client/bundle",
     "test": "cross-env eslint server/**/*.js client/**/*.js && nsp check --reporter checkstyle && ncu -e 2",
     "email-dev": "cross-env npm run email-clean && mjml ./email/templates/*.mjml -o ./email/dist/",
