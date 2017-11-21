@@ -13,7 +13,12 @@ const initialState = {
 	authenticated: false,
 
 	isPasswordReset: false,
+	isPasswordResetError: false,
+	isPasswordResetLoading: false,
+
 	isPasswordUpdated: false,
+	isPasswordUpdatedError: false,
+	isPasswordUpdatedLoading: false,
 
 	loginLoading: false,
 	loginError: false,
@@ -49,7 +54,11 @@ export const selectors = {
 	getIsPasswordUpdated: (state) => state[reducerMount].isPasswordUpdated,
 	getApplicationPage: (state) => state[reducerMount].applicationPage,
 	getApplicationLoading: (state) => state[reducerMount].applicationLoading,
-	getApplicationError: (state) => state[reducerMount].applicationError
+	getApplicationError: (state) => state[reducerMount].applicationError,
+	getIsPasswordResetError: (state) => state[reducerMount].isPasswordResetError,
+	getIsPasswordUpdatedError: (state) => state[reducerMount].isPasswordUpdatedError,
+	getIsPasswordUpdatedLoading: (state) => state[reducerMount].isPasswordUpdatedLoading,
+	getIsPasswordResetLoading: (state) => state[reducerMount].isPasswordResetLoading
 };
 
 /**
@@ -132,21 +141,54 @@ const handlers = {
 	[actionTypes.CREATE_RESET_HASH_SUCCESS]: (state, action) => {
 		return {
 			...state,
-			isPasswordReset: true
+			isPasswordResetError: false,
+			isPasswordReset: true,
+			isPasswordResetLoading: false
 		};
 	},
 
-	[actionTypes.CLEAR_RESET_PASSWORD]: (state, action) => {
+	[actionTypes.CREATE_RESET_HASH_FAIL]: (state, action) => {
 		return {
 			...state,
-			isPasswordReset: false
+			isPasswordReset: false,
+			isPasswordResetError: true,
+			isPasswordResetLoading: false
+		};
+	},
+
+	[actionTypes.CREATE_RESET_HASH]: (state, action) => {
+		return {
+			...state,
+			isPasswordReset: false,
+			isPasswordResetError: false,
+			isPasswordResetLoading: true
 		};
 	},
 
 	[actionTypes.UPDATE_PASSWORD_RESET_SUCCESS]: (state, action) => {
 		return {
 			...state,
-			isPasswordUpdated: true
+			isPasswordUpdated: true,
+			isPasswordUpdatedError: false,
+			isPasswordUpdatedLoading: false
+		};
+	},
+
+	[actionTypes.UPDATE_PASSWORD_RESET]: (state, action) => {
+		return {
+			...state,
+			isPasswordUpdated: false,
+			isPasswordUpdatedError: false,
+			isPasswordUpdatedLoading: true
+		};
+	},
+
+	[actionTypes.UPDATE_PASSWORD_RESET_FAIL]: (state, action) => {
+		return {
+			...state,
+			isPasswordUpdated: false,
+			isPasswordUpdatedError: true,
+			isPasswordUpdatedLoading: false
 		};
 	},
 
