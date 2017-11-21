@@ -1,8 +1,6 @@
 const customValidator = require('../services/custom-validator');
-const auth = require('../auth/auth');
 const jwt = require('jsonwebtoken');
 const mailer = require('../mailer');
-const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const _ = require('lodash');
 
@@ -70,8 +68,8 @@ const HACKER_SIGN_UP_FIELDS = [
     'isCodeOfConductAccepted'
 ];
 
-function createError(errorTpl, message, data = {}) {
-    return Object.assign({}, errorTpl, { message, data });
+function createError(errorTemplate, message, data = {}) {
+    return Object.assign({}, errorTemplate, { message, data });
 }
 
 /**
@@ -112,7 +110,6 @@ function createResetPasswordHash(user) {
         .update(`${user.email}${timeInMs}`)
         .digest('hex');
 }
-
 
 module.exports = () => {
     const authCtr = {};

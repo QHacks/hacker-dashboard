@@ -19,6 +19,8 @@ See the environment variables below for the back end to operate:
 Name | Description | Required | Default
 --- | --- | --- | ---
 `AUTH_SECRET` | The secret used to encrypt auth tokens | Yes | None
+`DEV_PROXY` | When running the `webpack-dev-server` all API calls will be proxied to this host. | No | `http://localhost:PORT`
+`EMAIL_URL_HOST` | Host to be used in the email urls. | No | None
 `MONGO_AUTH_SOURCE` | The database name used to authenticate the connection to MongoDB | No | None
 `MONGO_DBNAME` | The database name to use inside the instance of MongoDB. | Yes | None
 `MONGO_HOST` | The hostname to use to access the MongoDB instance. | Yes | None
@@ -26,10 +28,8 @@ Name | Description | Required | Default
 `MONGO_PORT` | The port to use to access the MongoDB instance. | No | 27017
 `MONGO_USER` | The username to access the MongoDB instance. | No | None
 `PORT` | Port to run the Express sever on. | No | 3000
-`DEV_PROXY` | When running the `webpack-dev-server` all API calls will be proxied to this host. | No | `http://localhost:PORT`
 `SENDGRID_API_KEY` | SendGrid transactional email service api key. | No | None
-`EMAIL_URL_HOST` | Host to be used in the email urls. | No | None
-
+`SLACK_WEBHOOK_URL` | The webhook URL you wish to send Slack messages to | No | None
 
 ### Front End
 
@@ -71,6 +71,10 @@ The application is deployed using the Google Cloud Platform, in order to deploy 
 ```npm run deploy```
 
 > NOTE: This assumes you have already installed the GCP SDK onto your machine and configured it to be associated with the account that we deploy the hacker dashboard from, refer the resources [here](https://cloud.google.com/sdk/docs/) to do that. You will need to contact one of the team members to get this level of access.
+
+## Slack Webhook
+
+This dashboard can send updates about completed basic applications to a Slack webhook URL. To configure this, add `SLACK_WEBHOOK_URL` to your environment variables. See [Configuration/Back End](#back-end) for more information.
 
 ## Contributing
 

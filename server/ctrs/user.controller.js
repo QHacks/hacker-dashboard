@@ -16,8 +16,8 @@ const ERROR_MESSAGES = {
 	DB_USERS: "Could not retreive any users from the database!"
 };
 
-function createError(errorTpl, message, data = {}) {
-	return Object.assign({}, errorTpl, { message, data });
+function createError(errorTemplate, message, data = {}) {
+	return Object.assign({}, errorTemplate, { message, data });
 }
 
 module.exports = (db) => {

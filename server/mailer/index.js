@@ -27,15 +27,8 @@ const ERROR_MESSAGES = {
 	SUCCESSFUL_APPLICATION_NO_SEND: "The successful application email did not send correctly!"
 };
 
-/**
- * Creates a standard format error.
- * @param {String} message The error message.
- * @param {Integer} status The error status code.
- * @param {Object} [data={}] Error object.
- * @return {Object} Error object.
- */
-function createError(errorTpl, message, data = {}) {
-	return Object.assign({}, errorTpl, { message, data });
+function createError(errorTemplate, message, data = {}) {
+	return Object.assign({}, errorTemplate, { message, data });
 }
 
 /**
