@@ -1,11 +1,14 @@
 import UpdatePasswordForm from '../utils/UpdatePasswordForm';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { Divider, Header, Message, Button } from 'semantic-ui-react';
 import { actionCreators, selectors } from '../../HackerStore';
 import { Link } from 'react-router-dom';
 
-const { getIsPasswordUpdated } = selectors;
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import './UpdatePassword.less';
+
 const { updatePasswordForReset } = actionCreators;
+const { getIsPasswordUpdated, getIsPasswordUpdatedError, getIsPasswordUpdatedLoading } = selectors;
 
 class UpdatePassword extends Component {
 
@@ -16,21 +19,66 @@ class UpdatePassword extends Component {
 		this.props.updatePasswordForReset(hash, password);
 	}
 
-	render() {
+
+	renderPasswordUpdateHeader() {
 		const { isPasswordUpdated } = this.props;
 
+		return (
+			<div className="update-header">
+				<img
+					src={require('../../assets/img/qhacks-tricolor-logo.svg')}
+					className="qhacks-logo"
+				/>
+				<Header as="h2"
+					content="Update Password"
+					color="red"
+					textAlign="center"
+					className="form apply header"
+				/>
+				{(isPasswordUpdated)
+					? null
+					: <p>Please enter your new password to complete the reset password process.</p>
+				}
+			</div>
+		);
+	}
+
+	renderPasswordUpdateForm() {
+		const { isPasswordUpdated, isPasswordUpdatedError,  isPasswordUpdatedLoading} = this.props;
 		if (isPasswordUpdated) {
 			return (
-				<div>
-					<p>Your password has been updated!</p>
-					<Link to="/login">Login now!</Link>
-				</div>
+					<Message
+						success
+						size="small"
+						header='Password Update Successful!'
+						content="Congratulations your password has been updated. Please proceed to login."
+					/>
 			);
 		}
-
 		return (
-			<div>
-				<UpdatePasswordForm onSubmit={ this.handleUpdatePasswordForReset.bind(this) } />
+			<UpdatePasswordForm onSubmit={ this.handleUpdatePasswordForReset.bind(this) } updateError={isPasswordUpdatedError} updateLoading={isPasswordUpdatedLoading} />
+		);
+	}
+
+	renderPasswordUpdateFooter() {
+		return (
+			<div className="update-footer">
+				<Divider />
+				<p className="fontSize-medium textAlign-center">
+					Wrong place? <Link to="/login">Login here</Link>
+				</p>
+			</div>
+		);
+	}
+
+	render() {
+		return (
+			<div className="update-container">
+				<div className="update-form-container">
+					{this.renderPasswordUpdateHeader()}
+					{this.renderPasswordUpdateForm()}
+					{this.renderPasswordUpdateFooter()}
+				</div>
 			</div>
 		);
 	}
@@ -39,7 +87,9 @@ class UpdatePassword extends Component {
 function mapStateToProps(state, ownProps) {
 	return {
 		...ownProps,
-		isPasswordUpdated: selectors.getIsPasswordUpdated(state)
+		isPasswordUpdated: getIsPasswordUpdated(state),
+		isPasswordUpdatedError: getIsPasswordUpdatedError(state),
+		isPasswordUpdatedLoading: getIsPasswordUpdatedLoading(state)
 	};
 }
 

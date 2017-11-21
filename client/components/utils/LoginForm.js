@@ -1,12 +1,10 @@
 import { Button, Divider, Form, Header, Message } from 'semantic-ui-react';
+import { required, email } from 'redux-form-validators';
 import SemanticFormField from './SemanticFormField';
-import { validationHelpers } from './validation';
 import { Field, reduxForm } from 'redux-form';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './LoginForm.less';
-
-const { required } = validationHelpers;
 
 class LoginForm extends Component {
 
@@ -66,7 +64,7 @@ class LoginForm extends Component {
 					icon="mail"
 					type="email"
 					placeholder="Email address"
-					validate={required} />
+					validate={[required({ msg: 'none'}), email({ msg: 'Please enter a valid email address!' })]} />
 
 				<Field name="password"
 					component={SemanticFormField}
@@ -74,7 +72,7 @@ class LoginForm extends Component {
 					icon="lock"
 					type="password"
 					placeholder="Password"
-					validate={required} />
+					validate={required({ msg: 'none'})} />
 
 				{this.renderLoginFormErrorMessage()}
 

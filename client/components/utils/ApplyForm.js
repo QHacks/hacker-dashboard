@@ -1,7 +1,7 @@
 import { Button, Form, Segment, Transition, Message } from 'semantic-ui-react';
 import { actionCreators, selectors } from '../../HackerStore';
+import { required, email, date, confirmation, length } from 'redux-form-validators';
 import SemanticFormField from './SemanticFormField';
-import { validationHelpers } from './validation';
 import { Field, reduxForm } from 'redux-form';
 import mlhSchools from './mlhSchools.json';
 import FormProgress from './FormProgress';
@@ -9,7 +9,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './ApplyForm.less';
 
-const { required, validateEmail, validatePhoneNumber, validateBirthDate } = validationHelpers;
 const { applicationPageUpdate } = actionCreators;
 
 const DEGREE_TYPES = [
@@ -59,7 +58,7 @@ function PageOne(props) {
 				type="text"
 				label="First Name"
 				placeholder="Morty"
-				validate={required}
+				validate={required({ msg: 'none'})}
 			/>
 
 			<Field name="lastName"
@@ -68,7 +67,7 @@ function PageOne(props) {
 				type="text"
 				label="Last Name"
 				placeholder="Smith"
-				validate={required}
+				validate={required({ msg: 'none'})}
 			/>
 
 			<Field name="email"
@@ -77,7 +76,7 @@ function PageOne(props) {
 				type="email"
 				label="Email Address"
 				placeholder="morty.smith@example.com"
-				validate={[required, validateEmail]}
+				validate={[required({ msg: 'none'}), email({ msg: 'Please enter a valid email address!' })]}
 			/>
 
 			<Field name="phoneNumber"
@@ -86,7 +85,7 @@ function PageOne(props) {
 				type="tel"
 				label="Phone Number"
 				placeholder="+1 (234) 567-8900"
-				validate={[required, validatePhoneNumber]}
+				validate={required({ msg: 'none'})}
 			/>
 
 			<Field name="dateOfBirth"
@@ -94,7 +93,7 @@ function PageOne(props) {
 				as={Form.Input}
 				type="date"
 				label="Date of Birth"
-				validate={[ required, validateBirthDate ]}
+				validate={[required({ msg: 'none'}), date({ format: 'YYYY-MM-DD', '<': 'today', msg: 'Please enter a date not in the future!' })]}
 			/>
 
 			<Field name="gender"
@@ -103,7 +102,7 @@ function PageOne(props) {
 				label="What gender do you identify with?"
 				options={GENDERS.map(mapValueForSelect)}
 				placeholder='Female'
-				validate={required}
+				validate={required({ msg: 'none'})}
 				search={true}
 			/>
 
@@ -113,7 +112,7 @@ function PageOne(props) {
 				type="password"
 				label="Password"
 				placeholder='Password'
-				validate={required}
+				validate={[required({ msg: 'none'}), length({ min: 8, msg: 'Your password must be at least 8 characters!' })]}
 			/>
 
 			<Field name="confirmPassword"
@@ -122,7 +121,7 @@ function PageOne(props) {
 				type="password"
 				label="Confirm Password"
 				placeholder='Confirm Password'
-				validate={required}
+				validate={[required({ msg: 'none'}), length({ min: 8, msg: 'Your password must be at least 8 characters!' }), confirmation({  field: 'password', msg: 'You passwords do not match.' })]}
 			/>
 		</Segment>
 	);
@@ -137,7 +136,7 @@ function PageTwo(props) {
 				label="School"
 				options={mlhSchools.map(mapValueForSelect)}
 				placeholder="Queen's University"
-				validate={required}
+				validate={required({ msg: 'none'})}
 				search={true}
 			/>
 
@@ -147,7 +146,7 @@ function PageTwo(props) {
 				label="Degree Type"
 				options={DEGREE_TYPES.map(mapValueForSelect)}
 				placeholder="Bachelor's degree"
-				validate={required}
+				validate={required({ msg: 'none'})}
 				search={true}
 			/>
 
@@ -157,7 +156,7 @@ function PageTwo(props) {
 				type="text"
 				label="Program"
 				placeholder='Computer Science'
-				validate={required}
+				validate={required({ msg: 'none'})}
 			/>
 
 			<Field name="graduationYear"
@@ -166,7 +165,7 @@ function PageTwo(props) {
 				type="number"
 				label="Graduation year"
 				placeholder='2018'
-				validate={required}
+				validate={required({ msg: 'none'})}
 			/>
 
 			<Field name="graduationMonth"
@@ -175,7 +174,7 @@ function PageTwo(props) {
 				label="Graduation Month"
 				options={MONTHS_IN_A_YEAR.map(mapValueForSelect)}
 				placeholder="January"
-				validate={required}
+				validate={required({ msg: 'none'})}
 				search={true}
 			/>
 
@@ -185,7 +184,7 @@ function PageTwo(props) {
 				type="text"
 				label="Where will you be travelling from?"
 				placeholder='Kingston, ON'
-				validate={required}
+				validate={required({ msg: 'none'})}
 			/>
 		</Segment>
 	);
@@ -200,22 +199,21 @@ function PageThree(props) {
 				label="How many hackathons have you attended?"
 				options={NUMBER_OF_HACKATHONS.map(mapValueForSelect)}
 				placeholder="#"
-				validate={required}
+				validate={required({ msg: 'none'})}
 				search={true}
 			/>
 
 			<Field name="whyQhacks"
 				component={SemanticFormField}
 				as={Form.TextArea}
-				label="Why do you want to come to QHacks 2018? (250 words max)"
-				validate={required}
+				label="Why do you want to come to QHacks 2018? (1000 characters max)"
+				validate={[required({ msg: 'none'}), length({ max: 1000, msg: 'Your answer cannot exceed 1000 characters!' })]}
 			/>
 
 			<Field name="links"
 				component={SemanticFormField}
 				as={Form.TextArea}
 				label="Where can we find you online? e.g. GitHub, LinkedIn, etc."
-				validate={required}
 			/>
 
 			<p>By applying you agree to adhere to <a target="_blank" rel="noopener noreferrer" href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">
@@ -229,7 +227,7 @@ function PageThree(props) {
 						MLHs Code of Conduct</a>.
 					</label>
 				}
-				validate={checkboxRequired}
+				validate={}
 			/>*/}
 		</Segment>
 	);
