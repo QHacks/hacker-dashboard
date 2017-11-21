@@ -59,4 +59,4 @@ workflows:
             - test
           filters:
             branches:
-              only: /^dev$/
+              only: /^(dev|release/.+)$/
