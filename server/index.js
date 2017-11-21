@@ -41,10 +41,6 @@ db((err, db) => {
 	// Core API
 	app.use('/api/', auth(), api(ctr));
 
-	app.get('/exception', (req, res, next) => { // TODO: Remove this middleware after verifying `errorReporting.express`
-		JSON.parse('{\"malformedJson\": true');
-	});
-
 	app.use(history());
 
 	// Static Files
