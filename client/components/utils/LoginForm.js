@@ -1,5 +1,5 @@
 import { Button, Divider, Form, Header, Message } from 'semantic-ui-react';
-import semanticFormField from './semanticFormField';
+import SemanticFormField from './SemanticFormField';
 import { validationHelpers } from './validation';
 import { Field, reduxForm } from 'redux-form';
 import React, { Component } from 'react';
@@ -61,7 +61,7 @@ class LoginForm extends Component {
 				onSubmit={this.props.handleSubmit}>
 
 				<Field name="email"
-					component={semanticFormField}
+					component={SemanticFormField}
 					as={Form.Input}
 					icon="mail"
 					type="email"
@@ -69,7 +69,7 @@ class LoginForm extends Component {
 					validate={required} />
 
 				<Field name="password"
-					component={semanticFormField}
+					component={SemanticFormField}
 					as={Form.Input}
 					icon="lock"
 					type="password"
