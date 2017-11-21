@@ -85,7 +85,7 @@ function sendPasswordResetSuccessfulEmail(user) {
 			toEmail: user.email,
 			subject: 'QHacks Password Reset Successful',
 			textContent: 'Your password has been updated!',
-			htmlContent: '<p>Your password has been updated!</p>'
+			htmlContent: '<p>Your QHacks password has been updated!</p>'
 		});
 
 		sendgrid.send(request, (err, result) => {

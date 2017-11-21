@@ -209,7 +209,7 @@ module.exports = () => {
             if (!user) reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_RESET_HASH));
 
             user.password = password;
-
+						user.passwordResetHash = null;
             user.save().then(() => {
                 mailer.sendPasswordResetSuccessfulEmail(user).then(() => {
                     resolve();

@@ -93,7 +93,7 @@ function PageOne(props) {
 				as={Form.Input}
 				type="date"
 				label="Date of Birth"
-				validate={[required({ msg: 'none'}), date({ format: 'YYYY-MM-DD', '<': 'today', msg: 'Please enter a date not in the future!' })]}
+				validate={required({ msg: 'none'})}
 			/>
 
 			<Field name="gender"
