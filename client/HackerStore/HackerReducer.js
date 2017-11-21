@@ -15,15 +15,19 @@ const initialState = {
 	isPasswordReset: false,
 	isPasswordUpdated: false,
 
+	loginLoading: false,
+	loginError: false,
+	applicationError: false,
+	applicationLoading: false,
+
 	users: [],
 
 	fetchingNewTokens: false,
 
 	bootstrapLoading: true,
-	loginLoading: false,
 	signUpLoading: false,
 
-    applicationPage: 0
+	applicationPage: 0
 };
 
 /**
@@ -34,6 +38,7 @@ export const selectors = {
 	getUser: (state) => state[reducerMount].user,
 	getUsers: (state) => state[reducerMount].users,
 	getAccessToken: (state) => state[reducerMount].accessToken,
+	getIsLoginError: (state) => state[reducerMount].loginError,
 	getRefreshToken: (state) => state[reducerMount].refreshToken,
 	getLoginLoading: (state) => state[reducerMount].loginLoading,
 	getSignUpLoading: (state) => state[reducerMount].signUpLoading,
@@ -42,7 +47,9 @@ export const selectors = {
 	getFetchingNewTokens: (state) => state[reducerMount].fetchingNewTokens,
 	getIsPasswordReset: (state) => state[reducerMount].isPasswordReset,
 	getIsPasswordUpdated: (state) => state[reducerMount].isPasswordUpdated,
-	getApplicationPage: (state) => state[reducerMount].applicationPage
+	getApplicationPage: (state) => state[reducerMount].applicationPage,
+	getApplicationLoading: (state) => state[reducerMount].applicationLoading,
+	getApplicationError: (state) => state[reducerMount].applicationError
 };
 
 /**
@@ -69,9 +76,30 @@ const handlers = {
 			user,
 			accessToken,
 			refreshToken,
-			authenticated: true
+			authenticated: true,
+			loginLoading: false,
+			loginError: false,
+			applicationError: true,
+			applicationLoading: false
 		};
 	},
+
+	[actionTypes.AUTHENTICATION_ERROR]: (state, action) => {
+		return {
+			...state,
+			loginError: true,
+			loginLoading: false
+		};
+	},
+
+	[actionTypes.APPLICATION_ERROR]: (state, action) => {
+		return {
+			...state,
+			applicationError: true,
+			applicationLoading: false
+		};
+	},
+
 
 	[actionTypes.TOKENS_REFRESHED]: (state, action) => {
 		const { refreshToken, accessToken, user } = action.data;
@@ -119,6 +147,20 @@ const handlers = {
 		return {
 			...state,
 			isPasswordUpdated: true
+		};
+	},
+
+	[actionTypes.LOGIN_REQUEST]: (state, action) => {
+		return {
+			...state,
+			loginLoading: true
+		};
+	},
+
+	[actionTypes.SIGNUP_REQUEST]: (state, action) => {
+		return {
+			...state,
+			applicationLoading: true
 		};
 	},
 

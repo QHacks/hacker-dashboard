@@ -64,6 +64,7 @@ const apiSuccessTypes = {
  */
 const apiErrorTypes = {
 	AUTHENTICATION_ERROR: '@@/hacker/AUTHENTICATION_ERROR',
+	APPLICATION_ERROR: '@@/hacker/APPLICATION_ERROR',
 	TOKENS_CANNOT_REFRESH: '@@/hacker/TOKENS_CANNOT_REFRESH',
 
 	CREATE_RESET_HASH_FAIL: '@@/hacker/CREATE_RESET_HASH_FAIL',
@@ -124,7 +125,7 @@ const invokeAPIActionCreators = {
 	apply: (signUpInfo) => ({
 		type: actionTypes.INVOKE_API_CALL,
 		data: {
-			types: [actionTypes.SIGNUP_REQUEST, actionTypes.AUTHENTICATED, actionTypes.AUTHENTICATION_ERROR],
+			types: [actionTypes.SIGNUP_REQUEST, actionTypes.AUTHENTICATED, actionTypes.APPLICATION_ERROR],
 			request: {
 				url: `${API_SUFFIX}${SIGNUP_ENDPOINT}`,
 				method: POST,

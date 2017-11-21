@@ -97,5 +97,8 @@ module.exports = {
 				changeOrigin: true
 			}
 		}
-	}
+	},
+    devtool: isProd
+		? 'source-map'
+		: 'inline-source-map'
 };
