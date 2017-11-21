@@ -15,7 +15,7 @@ export default function semanticFormField({ input, type, label, placeholder, met
 				placeholder={placeholder}
 				onChange={handleChange}
 			/>
-			{touched && ((typeof error === 'string' && <div class="ui pointing red basic label">{error}</div>) || (warning && <span><i>{warning}</i></span>))}
+			{touched && ((typeof error === 'string' && <div className="ui pointing red basic label">{error}</div>) || (warning && <span><i>{warning}</i></span>))}
 		</Form.Field>
 	);
 }

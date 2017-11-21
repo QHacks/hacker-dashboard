@@ -1,5 +1,5 @@
 import { actionCreators, selectors } from '../../HackerStore';
-import { Divider, Header, Segment } from 'semantic-ui-react';
+import { Divider, Header } from 'semantic-ui-react';
 import { Link, Redirect } from 'react-router-dom';
 import ApplyForm from '../utils/ApplyForm';
 import React, { Component } from 'react';
