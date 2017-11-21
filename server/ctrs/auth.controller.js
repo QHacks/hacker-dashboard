@@ -68,8 +68,8 @@ const HACKER_SIGN_UP_FIELDS = [
     'isCodeOfConductAccepted'
 ];
 
-function createError(errorTpl, message, data = {}) {
-    return Object.assign({}, errorTpl, { message, data });
+function createError(errorTemplate, message, data = {}) {
+    return Object.assign({}, errorTemplate, { message, data });
 }
 
 /**

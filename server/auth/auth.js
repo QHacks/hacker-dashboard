@@ -19,8 +19,8 @@ const ERROR_MESSAGES = {
 	INVALID_TOKEN: "Invalid token!"
 };
 
-function createError(errorTpl, message, data = {}) {
-	return Object.assign({}, errorTpl, { message, data });
+function createError(errorTemplate, message, data = {}) {
+	return Object.assign({}, errorTemplate, { message, data });
 }
 
 /**
