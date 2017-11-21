@@ -1,6 +1,7 @@
 const sendgrid = require('@sendgrid/mail');
 const fs = require('fs');
 const path = require('path');
+const mailer = require('./mailer');
 
 const { SENDGRID_API_KEY, EMAIL_URL_HOST } = process.env;
 
@@ -23,8 +24,7 @@ const ERRORS = {
 
 const ERROR_MESSAGES = {
 	RESET_PASSWORD_NO_SEND: "The reset password email did not send correctly!",
-	SUCCESSFUL_RESET_NO_SEND: "The successful reset password email did not send correctly!",
-	SUCCESSFUL_APPLICATION_NO_SEND: "The successful application email did not send correctly!"
+	SUCCESSFUL_RESET_NO_SEND: "The successful reset password email did not send correctly!"
 };
 
 function createError(errorTemplate, message, data = {}) {
@@ -47,29 +47,6 @@ function createEmailMsg({ toEmail, subject, textContent, htmlContent}) {
 		text: textContent,
 		html: htmlContent
 	};
-}
-
-/**
- * Sends an email to the user when they apply!
- * @param {Object} user The user who has applied.
- * @return {Promise} SendGrid request promise.
- */
-function sendSuccessfulApplicationEmail(user) {
-	return new Promise((resolve, reject) => {
-		if (!SENDGRID_API_KEY) resolve();
-
-		const request = createEmailMsg({
-			toEmail: user.email,
-			subject: 'QHacks 2018 - Application Received!',
-			textContent: 'Thank you for applying to QHacks 2018! See https://qhacks.io for more details.',
-			htmlContent: EMAIL_TEMPLATES[APPLICATION_SUCCESSFUL]
-		});
-
-		sendgrid.send(request, (err, result) => {
-			if (err) reject(createError(ERRORS.SENDGRID_ERROR, ERROR_MESSAGES.SUCCESSFUL_APPLICATION_NO_SEND, err));
-			resolve();
-		});
-	});
 }
 
 /**
@@ -119,7 +96,7 @@ function sendResetPasswordEmail(user) {
 }
 
 module.exports = {
+	mailer,
 	sendResetPasswordEmail,
-	sendSuccessfulApplicationEmail,
 	sendPasswordResetSuccessfulEmail
 };

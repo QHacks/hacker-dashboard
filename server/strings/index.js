@@ -1,5 +1,7 @@
-const WEBHOOK = require('./webhook.strings.js');
+const MAILER = require('./mailer.strings');
+const WEBHOOK = require('./webhook.strings');
 
 module.exports = {
+    MAILER,
     WEBHOOK
 };
