@@ -1,8 +1,13 @@
 const axios = require('axios');
 const winston = require('winston');
 const webhookConfig = require('./webhook.config');
+const validator = require('validator');
 
 const { SLACK_WEBHOOK_URL } = process.env;
+
+if (!SLACK_WEBHOOK_URL || typeof SLACK_WEBHOOK_URL !== 'string' || !validator.isURL(SLACK_WEBHOOK_URL)) {
+	winston.log('warn', 'No valid (or invalid) Slack webhook URL supplied');
+}
 
 function _createWebhookMiddleware(config) {
     return (req, res, next) => {
