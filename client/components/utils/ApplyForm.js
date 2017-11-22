@@ -1,6 +1,6 @@
+import { required, email, date, confirmation, length, format } from 'redux-form-validators';
 import { Button, Form, Segment, Transition, Message } from 'semantic-ui-react';
 import { actionCreators, selectors } from '../../HackerStore';
-import { required, email, date, confirmation, length } from 'redux-form-validators';
 import SemanticFormField from './SemanticFormField';
 import { Field, reduxForm } from 'redux-form';
 import mlhSchools from './mlhSchools.json';
@@ -93,8 +93,8 @@ function PageOne(props) {
 				as={Form.Input}
 				type="tel"
 				label="Phone Number"
-				placeholder="1-234-567-8900"
-				validate={required({ msg: 'none'})}
+				placeholder="+1 (234)-567-8900"
+				validate={[required({ msg: 'none'}), format({ with: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/, msg: 'Please enter a valid phone number format. (123-456-789)' })]}
 			/>
 
 			<Field name="dateOfBirth"
