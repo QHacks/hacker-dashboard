@@ -93,7 +93,7 @@ function PageOne(props) {
 				as={Form.Input}
 				type="tel"
 				label="Phone Number"
-				placeholder="+1 (234) 567-8900"
+				placeholder="1-234-567-8900"
 				validate={required({ msg: 'none'})}
 			/>
 
