@@ -5,31 +5,37 @@ const validator = require('validator');
 
 const { SLACK_WEBHOOK_URL } = process.env;
 
-if (!SLACK_WEBHOOK_URL || typeof SLACK_WEBHOOK_URL !== 'string' || !validator.isURL(SLACK_WEBHOOK_URL)) {
+if (!_isValidUrl(SLACK_WEBHOOK_URL)) {
 	winston.log('warn', 'No valid (or invalid) Slack webhook URL supplied');
 }
 
 function _createWebhookMiddleware(config) {
-    return (req, res, next) => {
-        function handleFinish() {
-            res.removeListener('finish', handleFinish);
-            if (res.statusCode === 200) {
-                const notification = typeof config[req.originalUrl] === 'function'
-                    ? config[req.originalUrl](req.body)
-                    : config[req.originalUrl];
-                _sendSlackNotification(notification);
-            }
-        }
+	return (req, res, next) => {
+		function handleFinish() {
+			res.removeListener('finish', handleFinish);
+			if (res.statusCode === 200) {
+				const notification = typeof config[req.originalUrl] === 'function'
+					? config[req.originalUrl](req.body)
+					: config[req.originalUrl];
+				_sendSlackNotification(notification);
+			}
+		}
 
-        if (config.hasOwnProperty(req.url)) res.on('finish', handleFinish);
+		if (config.hasOwnProperty(req.url) && _isValidUrl(SLACK_WEBHOOK_URL)) {
+			res.on('finish', handleFinish);
+		}
 
-        next();
-    };
+		next();
+	};
 }
 
 function _sendSlackNotification(notification) {
-    axios.post(SLACK_WEBHOOK_URL, notification)
-        .catch((err) => winston.error(err));
+	axios.post(SLACK_WEBHOOK_URL, notification)
+		.catch((err) => winston.error(err));
+}
+
+function _isValidUrl(url) {
+	return url && typeof url === 'string' && validator.isURL(url);
 }
 
 module.exports = () => _createWebhookMiddleware(webhookConfig);
