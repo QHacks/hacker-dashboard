@@ -120,7 +120,7 @@ function PageOne(props) {
                    as={Form.Select}
                    label="What gender do you identify with?"
                    options={GENDERS.map(mapValueForSelect)}
-                   placeholder='Female'
+                   placeholder='Select a gender'
                    validate={required({ msg: 'none' })}
                    search={true}
             />
@@ -163,7 +163,7 @@ function PageTwo(props) {
                    as={Form.Select}
                    label="School"
                    options={mlhSchools.map(mapValueForSelect)}
-                   placeholder="Queen's University"
+                   placeholder="Select a school"
                    validate={required({ msg: 'none' })}
                    search={true}
             />
@@ -174,7 +174,7 @@ function PageTwo(props) {
                    as={Form.Select}
                    label="Degree Type"
                    options={DEGREE_TYPES.map(mapValueForSelect)}
-                   placeholder="Bachelor's degree"
+                   placeholder="Select a degree type"
                    validate={required({ msg: 'none' })}
                    search={true}
             />
@@ -195,7 +195,7 @@ function PageTwo(props) {
                    as={Form.Select}
                    label="Graduation Year"
                    options={GRADUATION_YEARS.map(mapValueForSelect)}
-                   placeholder="2019"
+                   placeholder="Select a graduation year"
                    validate={required({ msg: 'none' })}
                    search={true}
             />
@@ -206,7 +206,7 @@ function PageTwo(props) {
                    as={Form.Select}
                    label="Graduation Month"
                    options={MONTHS_IN_A_YEAR.map(mapValueForSelect)}
-                   placeholder="January"
+                   placeholder="Select a graduation month"
                    validate={required({ msg: 'none' })}
                    search={true}
             />
