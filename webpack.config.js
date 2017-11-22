@@ -1,5 +1,7 @@
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotenv = require('dotenv').config();
 const winston = require('winston');
@@ -43,7 +45,7 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-				'../../theme.config$': path.join(__dirname, 'client/assets/semantic-ui/theme.config')
+			'../../theme.config$': path.join(__dirname, 'client/assets/semantic-ui/theme.config')
 		}
 	},
 	module: {
@@ -83,11 +85,16 @@ module.exports = {
 		new ExtractTextPlugin({
 			filename: '[name].[contenthash].css'
 		}),
-		new FaviconsWebpackPlugin('./client/assets/img/qhacks_favicon.png'),
-		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify('production')
+		new CompressionPlugin({
+			asset: "[path].gz[query]",
+			algorithm: "gzip",
+			test: /\.js$|\.css$|\.html$/,
+			threshold: 10240,
+			minRatio: 0
 		}),
-		new webpack.optimize.UglifyJsPlugin()
+		new FaviconsWebpackPlugin('./client/assets/img/qhacks_favicon.png'),
+		new webpack.optimize.AggressiveMergingPlugin(),
+		new UglifyJsPlugin()
 	],
 	devServer: {
 		historyApiFallback: {
@@ -102,7 +109,7 @@ module.exports = {
 			}
 		}
 	},
-    devtool: isProd
+	devtool: isProd
 		? 'source-map'
 		: 'inline-source-map'
 };

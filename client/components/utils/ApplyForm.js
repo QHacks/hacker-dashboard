@@ -32,6 +32,15 @@ const GENDERS = [
 	'Prefer not to say'
 ];
 
+const GRADUATION_YEARS = [
+	'2022',
+	'2021',
+	'2020',
+	'2019',
+	'2018',
+	'Other'
+];
+
 const MONTHS_IN_A_YEAR = [
 	'January',
 	'February',
@@ -161,11 +170,12 @@ function PageTwo(props) {
 
 			<Field name="graduationYear"
 				component={SemanticFormField}
-				as={Form.Input}
-				type="number"
-				label="Graduation year"
-				placeholder='2018'
+				as={Form.Select}
+				label="Graduation Year"
+				options={GRADUATION_YEARS.map(mapValueForSelect)}
+				placeholder="2019"
 				validate={required({ msg: 'none'})}
+				search={true}
 			/>
 
 			<Field name="graduationMonth"

@@ -8,7 +8,7 @@
     "server-debug": "cross-env NODE_ENV=development nodemon --inspect server",
     "start": "cross-env NODE_ENV=production node server",
     "client-dev": "cross-env webpack-dev-server",
-    "client-prod": "cross-env NODE_ENV=production npm run client-clean && webpack",
+    "client-prod": "cross-env npm run client-clean && NODE_ENV=production webpack",
     "client-clean": "cross-env rimraf ./client/bundle",
     "test": "cross-env eslint server/**/*.js client/**/*.js && nsp check --reporter checkstyle && ncu -e 2",
     "email-dev": "cross-env npm run email-clean && mjml ./email/templates/*.mjml -o ./email/dist/",
@@ -57,6 +57,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "compression-webpack-plugin": "^1.0.1",
     "css-loader": "^0.28.7",
     "eslint": "^4.11.0",
     "eslint-plugin-react": "^7.5.1",
@@ -71,8 +72,10 @@
     "nsp": "^3.1.0",
     "rimraf": "^2.6.2",
     "style-loader": "^0.19.0",
+    "uglifyjs-webpack-plugin": "^1.1.0",
     "url-loader": "^0.6.2",
     "webpack": "^3.8.1",
+    "webpack-bundle-analyzer": "^2.9.1",
     "webpack-dev-server": "^2.9.4"
   }
 }

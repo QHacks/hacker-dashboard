@@ -36,7 +36,6 @@ jobs:
             echo "MONGO_USER=${MONGO_USER}" >> .env
             echo "SENDGRID_API_KEY=${SENDGRID_API_KEY}" >> .env
             echo "EMAIL_URL_HOST=${EMAIL_URL_HOST}" >> .env
-            echo "NODE_ENV=production" >> .env
       - run:
           name: Dump Google Cloud Credentials to file
           command: echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
