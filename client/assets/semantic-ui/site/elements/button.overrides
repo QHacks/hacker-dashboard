@@ -1,0 +1,21 @@
+//.ui.primary.button {
+//  box-shadow: @darkRed 0 5px 0;
+//  transition-delay: 0s;
+//  transition-duration: 0s;
+//}
+//
+//.ui.primary.button:hover {
+//  box-shadow: @darkRed 0 3px 0;
+//  transform: translate(0px, 2px);
+//}
+//
+//.ui.secondary.button {
+//  box-shadow: @darkBlue 0 5px 0;
+//  transition-delay: 0s;
+//  transition-duration: 0s;
+//}
+//
+//.ui.secondary.button:hover {
+//  box-shadow: @darkBlue 0 3px 0;
+//  transform: translate(0px, 2px);
+//}
