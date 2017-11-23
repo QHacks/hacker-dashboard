@@ -81,7 +81,8 @@ const normalTypes = {
 	LOGOUT: '@@/hacker/LOGOUT',
 	BOOTSTRAP_COMPLETE: '@@/hacker/BOOTSTRAP_COMPLETE',
 	CLEAR_RESET_PASSWORD: '@@/hacker/CLEAR_RESET_PASSWORD',
-	APPLICATION_PAGE_UPDATE: '@@/hacker/APPLICATION_PAGE_UPDATE'
+	APPLICATION_PAGE_UPDATE: '@@/hacker/APPLICATION_PAGE_UPDATE',
+    APPLICATION_FORM_ERROR_MESSAGES_UPDATE: '@@/hacker/APPLICATION_FORM_ERROR_MESSAGES_UPDATE'
 };
 
 export const actionTypes = {
@@ -101,7 +102,9 @@ const normalActionCreators = {
 	logout: () => ({ type: actionTypes.LOGOUT }),
 	bootstrapComplete: (data) => ({ type: actionTypes.BOOTSTRAP_COMPLETE, data }),
 	clearResetPassword: () => ({ type: actionTypes.CLEAR_RESET_PASSWORD }),
-	applicationPageUpdate: (data) => ({ type: actionTypes.APPLICATION_PAGE_UPDATE, data })
+	applicationPageUpdate: (data) => ({ type: actionTypes.APPLICATION_PAGE_UPDATE, data }),
+    applicationFormErrorMessagesUpdate: (data) => ({ type: actionTypes.APPLICATION_FORM_ERROR_MESSAGES_UPDATE, data }),
+	applicationError: (data) => ({ type: actionTypes.APPLICATION_ERROR, data })
 };
 
 /**

@@ -1,15 +1,17 @@
 import { confirmation, date, email, format, length, required } from 'redux-form-validators';
 import { Button, Form, Message, Segment } from 'semantic-ui-react';
-import { actionCreators, selectors } from '../../HackerStore';
 import SemanticFormField from './SemanticFormField';
-import { Field, reduxForm } from 'redux-form';
+import { Field, getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
 import mlhSchools from './mlhSchools.json';
 import FormProgress from './FormProgress';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { flatten, isEmpty, pick } from 'lodash';
+import { actionCreators, selectors } from "../../HackerStore";
 import './ApplyForm.less';
 
-const { applicationPageUpdate } = actionCreators;
+const { applicationFormErrorMessagesUpdate, applicationError: applicationErrorUpdate } = actionCreators;
+const { getApplicationFormErrorMessages } = selectors;
 
 const DEGREE_TYPES = [
     'Bachelor\'s degree',
@@ -23,6 +25,11 @@ const FORM_STEPS = [
     'Basic Information',
     'Education',
     'Hackathon Experience'
+];
+const FORM_FIELDS_BY_PAGE = [
+    ['firstName', 'lastName', 'email', 'phoneNumber', 'dateOfBirth', 'gender', 'password', 'confirmPassword'],
+    ['school', 'degreeType', 'program', 'graduationYear', 'graduationMonth', 'travelOrigin'],
+    ['numberOfHackathons', 'whyQhacks', 'links']
 ];
 
 const GENDERS = [
@@ -63,42 +70,38 @@ function PageOne(props) {
         <Segment className={props.className}>
             <Field name="firstName"
                    component={SemanticFormField}
-                   required
                    as={Form.Input}
                    type="text"
                    label="First Name"
                    placeholder="Morty"
-                   validate={required({ msg: 'none' })}
+                   validate={required({ msg: 'Please enter your first name!' })}
             />
 
             <Field name="lastName"
                    component={SemanticFormField}
-                   required
                    as={Form.Input}
                    type="text"
                    label="Last Name"
                    placeholder="Smith"
-                   validate={required({ msg: 'none' })}
+                   validate={required({ msg: 'Please enter your last name!' })}
             />
 
             <Field name="email"
                    component={SemanticFormField}
-                   required
                    as={Form.Input}
                    type="email"
                    label="Email Address"
                    placeholder="morty.smith@example.com"
-                   validate={[required({ msg: 'none' }), email({ msg: 'Please enter a valid email address!' })]}
+                   validate={[required({ msg: 'Please enter an email address!' }), email({ msg: 'Please enter a valid email address!' })]}
             />
 
             <Field name="phoneNumber"
                    component={SemanticFormField}
-                   required
                    as={Form.Input}
                    type="tel"
                    label="Phone Number"
-                   placeholder="1-234-567-8900"
-                   validate={[required({ msg: 'none' }), format({
+                   placeholder="123-456-7890"
+                   validate={[required({ msg: 'Please enter a phone number!' }), format({
                        with: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/,
                        msg: 'Please enter a valid phone number format. (123-456-789)'
                    })]}
@@ -106,33 +109,30 @@ function PageOne(props) {
 
             <Field name="dateOfBirth"
                    component={SemanticFormField}
-                   required
                    as={Form.Input}
                    type="date"
                    label="Date of Birth"
                    placeholder="yyyy-mm-dd"
-                   validate={[required({ msg: 'none' }), date({ format: 'yyyy-mm-dd' })]}
+                   validate={[required({ msg: 'Please supply your date of birth' }), date({ format: 'yyyy-mm-dd' })]}
             />
 
             <Field name="gender"
                    component={SemanticFormField}
-                   required
                    as={Form.Select}
                    label="What gender do you identify with?"
                    options={GENDERS.map(mapValueForSelect)}
                    placeholder='Select a gender'
-                   validate={required({ msg: 'none' })}
+                   validate={required({ msg: 'Please select a gender' })}
                    search={true}
             />
 
             <Field name="password"
                    component={SemanticFormField}
-                   required
                    as={Form.Input}
                    type="password"
                    label="Password"
                    placeholder='Password'
-                   validate={[required({ msg: 'none' }), length({
+                   validate={[required({ msg: 'You must supply a password!' }), length({
                        min: 8,
                        msg: 'Your password must be at least 8 characters!'
                    })]}
@@ -140,12 +140,11 @@ function PageOne(props) {
 
             <Field name="confirmPassword"
                    component={SemanticFormField}
-                   required
                    as={Form.Input}
                    type="password"
                    label="Confirm Password"
                    placeholder='Confirm Password'
-                   validate={[required({ msg: 'none' }), length({
+                   validate={[required({ msg: 'You must confirm your password!' }), length({
                        min: 8,
                        msg: 'Your password must be at least 8 characters!'
                    }), confirmation({ field: 'password', msg: 'You passwords do not match.' })]}
@@ -159,66 +158,60 @@ function PageTwo(props) {
         <Segment className={props.className}>
             <Field name="school"
                    component={SemanticFormField}
-                   required
                    as={Form.Select}
                    label="School"
                    options={mlhSchools.map(mapValueForSelect)}
                    placeholder="Select a school"
-                   validate={required({ msg: 'none' })}
+                   validate={required({ msg: 'Please select a school!' })}
                    search={true}
             />
 
             <Field name="degreeType"
                    component={SemanticFormField}
-                   required
                    as={Form.Select}
                    label="Degree Type"
                    options={DEGREE_TYPES.map(mapValueForSelect)}
                    placeholder="Select a degree type"
-                   validate={required({ msg: 'none' })}
+                   validate={required({ msg: 'Please select a degree type!' })}
                    search={true}
             />
 
             <Field name="program"
                    component={SemanticFormField}
-                   required
                    as={Form.Input}
                    type="text"
                    label="Program"
                    placeholder='Computer Science'
-                   validate={required({ msg: 'none' })}
+                   validate={required({ msg: 'Please enter your school program!' })}
             />
 
             <Field name="graduationYear"
                    component={SemanticFormField}
-                   required
                    as={Form.Select}
                    label="Graduation Year"
                    options={GRADUATION_YEARS.map(mapValueForSelect)}
                    placeholder="Select a graduation year"
-                   validate={required({ msg: 'none' })}
+                   validate={required({ msg: 'Please select your graduation year!' })}
                    search={true}
             />
 
             <Field name="graduationMonth"
                    component={SemanticFormField}
-                   required
                    as={Form.Select}
                    label="Graduation Month"
                    options={MONTHS_IN_A_YEAR.map(mapValueForSelect)}
                    placeholder="Select a graduation month"
-                   validate={required({ msg: 'none' })}
+                   validate={required({ msg: 'Please select a graduation month!' })}
                    search={true}
             />
 
             <Field name="travelOrigin"
                    component={SemanticFormField}
-                   required
                    as={Form.Input}
                    type="text"
                    label="Where will you be travelling from?"
                    placeholder='Kingston, ON'
-                   validate={required({ msg: 'none' })}
+                   validate={required({ msg: 'Please tell us where you plan on travelling from!' })}
             />
         </Segment>
     );
@@ -229,21 +222,19 @@ function PageThree(props) {
         <Segment className={props.className}>
             <Field name="numberOfHackathons"
                    component={SemanticFormField}
-                   required
                    as={Form.Select}
                    label="How many hackathons have you attended?"
                    options={NUMBER_OF_HACKATHONS.map(mapValueForSelect)}
                    placeholder="#"
-                   validate={required({ msg: 'none' })}
+                   validate={required({ msg: 'Please select the number of hackathons that you have attended!' })}
                    search={true}
             />
 
             <Field name="whyQhacks"
                    component={SemanticFormField}
-                   required
                    as={Form.TextArea}
                    label="Why do you want to come to QHacks 2018? (1000 characters max)"
-                   validate={[required({ msg: 'none' }), length({
+                   validate={[required({ msg: 'Please tell us why you want to come to QHacks 2018!' }), length({
                        max: 1000,
                        msg: 'Your answer cannot exceed 1000 characters!'
                    })]}
@@ -251,7 +242,6 @@ function PageThree(props) {
 
             <Field name="links"
                    component={SemanticFormField}
-                   required
                    as={Form.TextArea}
                    label="Where can we find you online? e.g. GitHub, LinkedIn, etc."
             />
@@ -323,20 +313,41 @@ function SubmitButton() {
     );
 }
 
-class ApplyForm extends Component {
-
-    handlePageUpdate(applicationPage) {
-        this.props.applicationPageUpdate({ applicationPage });
+function validateFormBeforeNextPage(values, props) {
+    const { applicationPage, syncErrors } = props;
+    const errors = pick(syncErrors, flatten(FORM_FIELDS_BY_PAGE.slice(0, applicationPage + 1)));
+    if (!isEmpty(errors)) {
+        props.applicationFormErrorMessagesUpdate({ messages: Object.values(errors) });
+        props.applicationErrorUpdate();
+        return false;
     }
 
-    renderApplicationFormErrorMessage() {
+    props.applicationFormErrorMessagesUpdate({ messages: Object.values(errors) });
+    props.applicationErrorUpdate({ applicationError: false });
+    return true;
+}
+
+class ApplyForm extends Component {
+
+    handlePreviousPageUpdate(applicationPage) {
+        this.props.onPageUpdate(applicationPage);
+
+    }
+
+    handleNextPageUpdate(applicationPage) {
+        if (validateFormBeforeNextPage(this.props.values, this.props)) {
+            this.props.onPageUpdate(applicationPage);
+        }
+    }
+
+    renderApplicationFormErrorMessage(errorMessages = []) {
         return (
             <Message
                 error
                 size='small'
                 className="error-message"
-                header='Application Could Not Be Submitted!'
-                content='Please double check your application for any errors.'
+                header='Your application is invalid!'
+                list={errorMessages}
             />
         );
     }
@@ -351,7 +362,7 @@ class ApplyForm extends Component {
                 <PreviousPageButton key="application-prev-page-button"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        this.handlePageUpdate(applicationPage - 1);
+                                        this.handlePreviousPageUpdate(applicationPage - 1);
                                     }}
                 />
             );
@@ -361,7 +372,7 @@ class ApplyForm extends Component {
                 <NextPageButton key="application-next-page-button"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    this.handlePageUpdate(applicationPage + 1);
+                                    this.handleNextPageUpdate(applicationPage + 1);
                                 }}
                 />
             );
@@ -372,13 +383,13 @@ class ApplyForm extends Component {
         return (
             <Form onSubmit={this.props.handleSubmit}
                   size="large"
-                // error={this.props.applicationError}
-                  error
+                  error={this.props.applicationError}
                   loading={this.props.applicationLoading}>
 
                 <FormProgress steps={FORM_STEPS}
                               currentStepIndex={applicationPage}
-                              onClick={(e) => this.handlePageUpdate(Number(e.currentTarget.getAttribute('data-value')))}
+                              onNextStep={(e) => this.handleNextPageUpdate(Number(e.currentTarget.getAttribute('data-value')))}
+                              onPreviousStep={(e) => this.handlePreviousPageUpdate(Number(e.currentTarget.getAttribute('data-value')))}
                 />
 
                 {Pages.map((Page, index) => (
@@ -390,7 +401,7 @@ class ApplyForm extends Component {
                           }
                     />
                 ))}
-                {this.renderApplicationFormErrorMessage()}
+                {this.renderApplicationFormErrorMessage(this.props.applicationFormErrorMessage)}
                 <div className="container buttons">
                     {Buttons}
                 </div>
@@ -402,15 +413,18 @@ class ApplyForm extends Component {
 function mapStateToProps(state, ownProps) {
     return {
         ...ownProps,
-        applicationPage: selectors.getApplicationPage(state)
+        applicationFormErrorMessage: getApplicationFormErrorMessages(state),
+        syncErrors: getFormSyncErrors('apply')(state),
+        values: getFormValues('apply')(state)
     };
 }
 
-ApplyForm = connect(mapStateToProps, { applicationPageUpdate })(ApplyForm);
+ApplyForm = connect(mapStateToProps, { applicationFormErrorMessagesUpdate, applicationErrorUpdate })(ApplyForm);
 
 export default reduxForm({
     form: 'apply',
     initialValues: {
         isCodeOfConductAccepted: true
     }
+    // validate: validateForm
 })(ApplyForm);

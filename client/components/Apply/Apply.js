@@ -6,95 +6,106 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Apply.less';
 
-const { getApplicationLoading, getApplicationError, getAuthenticated } = selectors;
-const { apply } = actionCreators;
+const { getApplicationLoading, getApplicationError, getApplicationPage,  getAuthenticated } = selectors;
+const { apply, applicationPageUpdate } = actionCreators;
 
 class Apply extends Component {
 
-		handleApply(values) {
-			const { apply } = this.props;
+    handleApply(values) {
+        const { apply } = this.props;
 
-			apply(values);
-		}
+        apply(values);
+    }
 
-		getRedirectPath() {
-			const locationState = this.props.location.state;
+    handlePageUpdate(applicationPage) {
+        const { applicationPageUpdate } = this.props;
 
-			if (locationState && locationState.from.pathname) {
-				return locationState.from.pathname;
-			}
+        applicationPageUpdate({ applicationPage });
+    }
 
-			return '/dashboard';
-		}
+    getRedirectPath() {
+        const locationState = this.props.location.state;
 
-		renderApplicationForm() {
-			const { applicationError, applicationLoading } = this.props;
-			return (
-				<ApplyForm onSubmit={this.handleApply.bind(this)} applicationLoading={applicationLoading} applicationError={applicationError} />
-			);
-		}
+        if (locationState && locationState.from.pathname) {
+            return locationState.from.pathname;
+        }
 
-		renderApplicationHeader() {
-			return (
-				<div className="application-header">
-					<img
-						src={require('../../assets/img/qhacks-tricolor-logo.svg')}
-						className="qhacks-logo"
-					/>
-					<Header as="h2"
-						content="Complete the form to apply!"
-						color="red"
-						textAlign="center"
-						className="form apply header"
-					/>
-				</div>
-			);
-		}
+        return '/dashboard';
+    }
 
-		renderApplicationFooter() {
-			return (
-				<div className="application-footer">
-					<Divider />
-					<p className="fontSize-medium textAlign-center">
-						Have an account? <Link to="/login">Login here</Link>
-					</p>
-				</div>
-			);
-		}
+    renderApplicationForm() {
+        const { applicationError, applicationLoading, applicationPage } = this.props;
+        return (
+            <ApplyForm onSubmit={this.handleApply.bind(this)}
+                       applicationError={applicationError}
+                       applicationLoading={applicationLoading}
+                       applicationPage={applicationPage}
+                       onPageUpdate={this.handlePageUpdate.bind(this)}/>
+        );
+    }
 
-		render() {
-			const { authenticated } = this.props;
+    renderApplicationHeader() {
+        return (
+            <div className="application-header">
+                <img
+                    src={require('../../assets/img/qhacks-tricolor-logo.svg')}
+                    className="qhacks-logo"
+                />
+                <Header as="h2"
+                        content="Complete the form to apply!"
+                        color="red"
+                        textAlign="center"
+                        className="form apply header"
+                />
+            </div>
+        );
+    }
 
-			if (authenticated) {
-				return (
-					<Redirect to={{
-						pathname: this.getRedirectPath(), state: {
-							from: this.props.location
-						}
-					}}/>
-				);
-			}
+    renderApplicationFooter() {
+        return (
+            <div className="application-footer">
+                <Divider/>
+                <p className="fontSize-medium textAlign-center">
+                    Have an account? <Link to="/login">Login here</Link>
+                </p>
+            </div>
+        );
+    }
 
-			return (
-				<div className="application-container">
-					<div className="application-graphics"/>
-					<div className="application-form-container">
-						{this.renderApplicationHeader()}
-						{this.renderApplicationForm()}
-						{this.renderApplicationFooter()}
-					</div>
-				</div>
-			);
-		}
+    render() {
+        const { authenticated } = this.props;
+
+        if (authenticated) {
+            return (
+                <Redirect to={{
+                    pathname: this.getRedirectPath(), state: {
+                        from: this.props.location
+                    }
+                }}/>
+            );
+        }
+
+        return (
+            <div className="application-container">
+                <div className="application-graphics"/>
+                <div className="application-form-container">
+                    {this.renderApplicationHeader()}
+                    {this.renderApplicationForm()}
+                    {this.renderApplicationFooter()}
+                </div>
+            </div>
+        );
+    }
 }
 
 function mapStateToProps(state, ownProps) {
-	return {
-		...ownProps,
-		authenticated: getAuthenticated(state),
-		applicationLoading: getApplicationLoading(state),
-		applicationError: getApplicationError(state)
-	};
+    return {
+        ...ownProps,
+        applicationError: getApplicationError(state),
+        applicationLoading: getApplicationLoading(state),
+        applicationPage: getApplicationPage(state),
+        authenticated: getAuthenticated(state)
+    };
 }
 
-export default connect(mapStateToProps, { apply })(Apply);
+export default connect(mapStateToProps, { apply, applicationPageUpdate })(Apply);
