@@ -24,6 +24,7 @@ const initialState = {
 	loginError: false,
 	applicationError: false,
 	applicationLoading: false,
+    applicationFormErrorMessages: [],
 
 	users: [],
 
@@ -55,6 +56,7 @@ export const selectors = {
 	getApplicationPage: (state) => state[reducerMount].applicationPage,
 	getApplicationLoading: (state) => state[reducerMount].applicationLoading,
 	getApplicationError: (state) => state[reducerMount].applicationError,
+	getApplicationFormErrorMessages: (state) => state[reducerMount].applicationFormErrorMessages,
 	getIsPasswordResetError: (state) => state[reducerMount].isPasswordResetError,
 	getIsPasswordUpdatedError: (state) => state[reducerMount].isPasswordUpdatedError,
 	getIsPasswordUpdatedLoading: (state) => state[reducerMount].isPasswordUpdatedLoading,
@@ -102,13 +104,14 @@ const handlers = {
 	},
 
 	[actionTypes.APPLICATION_ERROR]: (state, action) => {
+        action.data = action.data || {};
+		const { applicationError = true, applicationLoading = false } = action.data;
 		return {
 			...state,
-			applicationError: true,
-			applicationLoading: false
+			applicationError,
+			applicationLoading
 		};
 	},
-
 
 	[actionTypes.TOKENS_REFRESHED]: (state, action) => {
 		const { refreshToken, accessToken, user } = action.data;
@@ -217,6 +220,14 @@ const handlers = {
 		return {
 			...state,
 			applicationPage
+		};
+	},
+
+	[actionTypes.APPLICATION_FORM_ERROR_MESSAGES_UPDATE]: (state, action) => {
+		const { messages: applicationFormErrorMessages } = action.data;
+		return {
+			...state,
+            applicationFormErrorMessages
 		};
 	}
 };

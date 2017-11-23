@@ -7,10 +7,16 @@ const winston = require('winston');
 const path = require('path');
 const errorReporting = require('@google-cloud/error-reporting')();
 
+const isProd = process.env.NODE_ENV === 'production';
+
+(isProd)
+	? winston.info("Running production build!")
+	: winston.info("Running development build!");
+
 const auth = require('./auth/auth');
 const api = require('./api/api');
-const db = require('./db/db')();
 let ctr = require('./ctrs');
+const db = require('./db/db')();
 const webhook = require('./webhook');
 const { mailer } = require('./mailer');
 
