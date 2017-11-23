@@ -18,7 +18,7 @@
             <!-- Email Hero -->
             <mj-section padding="0">
                 <mj-column width="600">
-                    <mj-image src="https://storage.googleapis.com/qhacks-static-files/qhacks-banner-tricolour-v1.jpg"
+                    <mj-image src="https://storage.googleapis.com/qhacks-static-files/qhacks-banner-tricolour-v2.jpg"
                               padding="0"
                               href="https://qhacks.io"/>
                 </mj-column>
