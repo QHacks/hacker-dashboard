@@ -6,6 +6,7 @@ const express = require('express');
 const winston = require('winston');
 const path = require('path');
 const errorReporting = require('@google-cloud/error-reporting')();
+const helmet = require('helmet');
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -27,6 +28,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Third Party Middleware
+app.use(helmet());
 app.use(compression());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
