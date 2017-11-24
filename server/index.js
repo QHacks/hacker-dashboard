@@ -60,8 +60,22 @@ db((err, db) => {
 	app.use(webhook());
 	app.use(mailer());
 
+	// Authentication
+	app.use(auth());
+
+	// HTTPS Redirect for production
+	if (IS_PROD) {
+		if (FORCE_SSL) {
+			app.enable('trust proxy');
+			app.use((req, res, next) => {
+				if (req.secure) next();
+				else res.redirect('https://' + req.headers.host + req.url);
+			});
+		}
+	}
+
 	// Core API
-	app.use('/api/', auth(), api(ctr));
+	app.use('/api/', api(ctr));
 
 	// Fallback if page reload
 	app.use(history());
