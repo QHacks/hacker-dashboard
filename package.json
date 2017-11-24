@@ -27,6 +27,7 @@
     "cross-env": "^5.1.1",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
+    "helmet": "^3.9.0",
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
     "mjml": "^3.3.5",
