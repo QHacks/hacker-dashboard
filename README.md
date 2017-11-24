@@ -30,6 +30,7 @@ Name | Description | Required | Default
 `PORT` | Port to run the Express sever on. | No | 3000
 `SENDGRID_API_KEY` | SendGrid transactional email service api key. | No | None
 `SLACK_WEBHOOK_URL` | The webhook URL you wish to send Slack messages to | No | None
+`FORCE_SSL` | If this is set to true, then any non-SSL access will be redirected to SSL. | No | 'false'
 
 ### Front End
 
