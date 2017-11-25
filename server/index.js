@@ -45,13 +45,6 @@ db((err, db) => {
 	// Initialize controller(s)
 	ctr = ctr(db);
 
-	// Res.on('finish') hooks
-	app.use(webhook());
-	app.use(mailer());
-
-	// Authentication
-	app.use(auth());
-
 	// HTTPS Redirect for production
 	if (IS_PROD) {
 		if (FORCE_SSL) {
@@ -63,8 +56,12 @@ db((err, db) => {
 		}
 	}
 
+	// Res.on('finish') hooks
+	app.use(webhook());
+	app.use(mailer());
+
 	// Core API
-	app.use('/api/', api(ctr));
+	app.use('/api/', auth(), api(ctr));
 
 	// Fallback if page reload
 	app.use(history());
