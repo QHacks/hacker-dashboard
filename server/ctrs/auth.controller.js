@@ -55,7 +55,6 @@ const HACKER_SIGN_UP_FIELDS = [
 	'dateOfBirth',
 	'gender',
 	'password',
-	'confirmPassword',
 	'school',
 	'degreeType',
 	'program',
@@ -64,8 +63,7 @@ const HACKER_SIGN_UP_FIELDS = [
 	'travelOrigin',
 	'numberOfHackathons',
 	'whyQhacks',
-	'links',
-	'isCodeOfConductAccepted'
+	'links'
 ];
 
 function createError(errorTemplate, message, data = {}) {
