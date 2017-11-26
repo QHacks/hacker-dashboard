@@ -8,9 +8,10 @@ const path = require('path');
 const errorReporting = require('@google-cloud/error-reporting')();
 const helmet = require('helmet');
 
-const isProd = process.env.NODE_ENV === 'production';
+const IS_PROD = process.env.NODE_ENV === 'production';
+const FORCE_SSL = process.env.FORCE_SSL === 'true';
 
-(isProd)
+(IS_PROD)
 	? winston.info("Running production build!")
 	: winston.info("Running development build!");
 
@@ -44,6 +45,17 @@ db((err, db) => {
 	// Initialize controller(s)
 	ctr = ctr(db);
 
+	// HTTPS Redirect for production
+	if (IS_PROD) {
+		if (FORCE_SSL) {
+			app.enable('trust proxy');
+			app.use((req, res, next) => {
+				if (req.secure) next();
+				else res.redirect('https://' + req.headers.host + req.url);
+			});
+		}
+	}
+
 	// Res.on('finish') hooks
 	app.use(webhook());
 	app.use(mailer());
@@ -51,6 +63,7 @@ db((err, db) => {
 	// Core API
 	app.use('/api/', auth(), api(ctr));
 
+	// Fallback if page reload
 	app.use(history());
 
 	// Static Files
