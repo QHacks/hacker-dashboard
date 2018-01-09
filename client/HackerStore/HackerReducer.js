@@ -1,5 +1,9 @@
 import { actionTypes } from './HackerActions';
 
+const ADMIN = 'ADMIN';
+const HACKER = 'HACKER';
+const PARTNER = 'PARTNER';
+
 export const reducerMount = 'hacker';
 
 /**
@@ -34,7 +38,11 @@ const initialState = {
 	signUpLoading: false,
 
 	applicationPage: 0,
-	applicationsStatus: process.env.APPLICATIONS_STATUS
+	applicationsStatus: process.env.APPLICATIONS_STATUS,
+
+	isAdmin: false,
+	isHacker: true,
+	isPartner: false
 };
 
 /**
@@ -62,7 +70,10 @@ export const selectors = {
 	getIsPasswordUpdatedError: (state) => state[reducerMount].isPasswordUpdatedError,
 	getIsPasswordUpdatedLoading: (state) => state[reducerMount].isPasswordUpdatedLoading,
 	getIsPasswordResetLoading: (state) => state[reducerMount].isPasswordResetLoading,
-	getApplicationsStatus: (state) => state[reducerMount].applicationsStatus
+	getApplicationsStatus: (state) => state[reducerMount].applicationsStatus,
+	getIsAdmin: (state) => state[reducerMount].isAdmin,
+	getIsHacker: (state) => state[reducerMount].isHacker,
+	getIsPartner: (state) => state[reducerMount].isPartner
 };
 
 /**
@@ -84,11 +95,18 @@ const handlers = {
 	[actionTypes.AUTHENTICATED]: (state, action) => {
 		const { refreshToken, accessToken, user } = action.data;
 
+		const isAdmin = user.role === ADMIN;
+		const isHacker = user.role === HACKER;
+		const isPartner = user.role === PARTNER;
+
 		return {
 			...state,
 			user,
 			accessToken,
 			refreshToken,
+			isAdmin,
+			isHacker,
+			isPartner,
 			authenticated: true,
 			loginLoading: false,
 			loginError: false,

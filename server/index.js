@@ -1,5 +1,4 @@
 const history = require('connect-history-api-fallback');
-const dotenv = require('dotenv').config();
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -8,6 +7,8 @@ const path = require('path');
 const errorReporting = require('@google-cloud/error-reporting')();
 const helmet = require('helmet');
 
+require('dotenv').config();
+
 const IS_PROD = process.env.NODE_ENV === 'production';
 const FORCE_SSL = process.env.FORCE_SSL === 'true';
 
@@ -15,10 +16,10 @@ const FORCE_SSL = process.env.FORCE_SSL === 'true';
 	? winston.info("Running production build!")
 	: winston.info("Running development build!");
 
-const auth = require('./auth/auth');
-const api = require('./api/api');
-let ctr = require('./ctrs');
-const db = require('./db/db')();
+const auth = require('./auth');
+const api = require('./api');
+const controllers = require('./controllers');
+const connectToDB = require('./db');
 const webhook = require('./webhook');
 const { mailer } = require('./mailer');
 
@@ -34,16 +35,13 @@ app.use(compression());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-db((err, db) => {
+connectToDB((err) => {
 	if (err) {
 		winston.info("Could not connect to the database!");
 		return;
 	}
 
 	winston.info("Successfully connected to the database!");
-
-	// Initialize controller(s)
-	ctr = ctr(db);
 
 	// HTTPS Redirect for production
 	if (IS_PROD) {
@@ -61,7 +59,7 @@ db((err, db) => {
 	app.use(mailer());
 
 	// Core API
-	app.use('/api/', auth(), api(ctr));
+	app.use('/api/', auth(), api(controllers));
 
 	// Fallback if page reload
 	app.use(history());
