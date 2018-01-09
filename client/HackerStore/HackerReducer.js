@@ -33,7 +33,8 @@ const initialState = {
 	bootstrapLoading: true,
 	signUpLoading: false,
 
-	applicationPage: 0
+	applicationPage: 0,
+	applicationsStatus: process.env.APPLICATIONS_STATUS
 };
 
 /**
@@ -60,7 +61,8 @@ export const selectors = {
 	getIsPasswordResetError: (state) => state[reducerMount].isPasswordResetError,
 	getIsPasswordUpdatedError: (state) => state[reducerMount].isPasswordUpdatedError,
 	getIsPasswordUpdatedLoading: (state) => state[reducerMount].isPasswordUpdatedLoading,
-	getIsPasswordResetLoading: (state) => state[reducerMount].isPasswordResetLoading
+	getIsPasswordResetLoading: (state) => state[reducerMount].isPasswordResetLoading,
+	getApplicationsStatus: (state) => state[reducerMount].applicationsStatus
 };
 
 /**

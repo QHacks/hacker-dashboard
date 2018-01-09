@@ -4,10 +4,20 @@ import { Link, Redirect } from 'react-router-dom';
 import ApplyForm from '../utils/ApplyForm';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ApplicationsClosed from '../utils/ApplicationsClosed';
+import { MISC } from '../strings';
 import './Apply.less';
 
-const { getApplicationLoading, getApplicationError, getApplicationPage,  getAuthenticated } = selectors;
+const {
+    getApplicationLoading,
+    getApplicationError,
+    getApplicationPage,
+    getAuthenticated,
+    getApplicationsStatus
+} = selectors;
 const { apply, applicationPageUpdate } = actionCreators;
+
+const { APPLICATION_CLOSED_STATUS } = MISC;
 
 class Apply extends Component {
 
@@ -34,7 +44,14 @@ class Apply extends Component {
     }
 
     renderApplicationForm() {
-        const { applicationError, applicationLoading, applicationPage } = this.props;
+        const { applicationError, applicationLoading, applicationPage, applicationsStatus } = this.props;
+
+        if (applicationsStatus === APPLICATION_CLOSED_STATUS) {
+            return (
+                <ApplicationsClosed/>
+            );
+        }
+
         return (
             <ApplyForm onSubmit={this.handleApply.bind(this)}
                        applicationError={applicationError}
@@ -45,6 +62,10 @@ class Apply extends Component {
     }
 
     renderApplicationHeader() {
+        const { applicationsStatus } = this.props;
+        const headerContent = applicationsStatus === APPLICATION_CLOSED_STATUS
+            ? 'Applications are now closed'
+            : 'Complete the form to apply!';
         return (
             <div className="application-header">
                 <img
@@ -52,7 +73,7 @@ class Apply extends Component {
                     className="qhacks-logo"
                 />
                 <Header as="h2"
-                        content="Complete the form to apply!"
+                        content={headerContent}
                         color="red"
                         textAlign="center"
                         className="form apply header"
@@ -73,7 +94,7 @@ class Apply extends Component {
     }
 
     render() {
-        const { authenticated } = this.props;
+        const { authenticated, applicationsStatus } = this.props;
 
         if (authenticated) {
             return (
@@ -104,7 +125,8 @@ function mapStateToProps(state, ownProps) {
         applicationError: getApplicationError(state),
         applicationLoading: getApplicationLoading(state),
         applicationPage: getApplicationPage(state),
-        authenticated: getAuthenticated(state)
+        authenticated: getAuthenticated(state),
+        applicationsStatus: getApplicationsStatus(state)
     };
 }
 
