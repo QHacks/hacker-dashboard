@@ -3,41 +3,55 @@ import { selectors } from '../../HackerStore';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-const PrivateRoute = ({component: ComposedComponent, ...rest}) => {
+const { getAuthenticated, getIsAdmin, getIsHacker, getIsPartner } = selectors;
 
-	class Authentication extends Component {
+const PrivateRoute = ({ component: ComposedComponent, type, ...rest }) => {
 
-		handleRender(props) {
-			if (!this.props.authenticated) {
-				return <Redirect to={{
-					pathname: '/login',
-					state: {
-						from: props.location,
-						message: 'You need to login!'
-					}
-				}} />;
-			} else {
-				return <ComposedComponent {...props}/>;
-			}
-		}
+    class Authentication extends Component {
 
-		render() {
-			return (
-				<Route {...rest} render={this.handleRender.bind(this)}/>
-			);
-		}
-	}
+        handleRender(props) {
+            const { authenticated, isAdmin, isHacker, isPartner } = this.props;
+            const isRole = {
+                admin: isAdmin,
+                hacker: isHacker,
+                partner: isPartner
+            };
+            const isNecessaryRole = isRole[type];
+            if (!authenticated || (type && !isNecessaryRole)) {
+                return (
+                    <Redirect to={{
+                        pathname: '/login',
+                        state: {
+                            from: props.location,
+                            message: 'You need to login!'
+                        }
+                    }}/>
+                );
+            }
 
-	function mapStateToProps(state, ownProps) {
-		return {
-			...ownProps,
-			authenticated: selectors.getAuthenticated(state)
-		};
-	}
+            return <ComposedComponent {...props}/>;
+        }
 
-	const AuthenticationContainer = connect(mapStateToProps)(Authentication);
+        render() {
+            return (
+                <Route {...rest} render={this.handleRender.bind(this)}/>
+            );
+        }
+    }
 
-	return <AuthenticationContainer />;
+    function mapStateToProps(state, ownProps) {
+        return {
+            ...ownProps,
+            authenticated: getAuthenticated(state),
+            isAdmin: getIsAdmin(state),
+            isHacker: getIsHacker(state),
+            isPartner: getIsPartner(state)
+        };
+    }
+
+    const AuthenticationContainer = connect(mapStateToProps)(Authentication);
+
+    return <AuthenticationContainer/>;
 };
 
 export default PrivateRoute;
