@@ -18,6 +18,7 @@ See the environment variables below for the back end to operate:
 
 Name | Description | Required | Default
 --- | --- | --- | ---
+`APPLICATIONS_STATUS` | Whether applications are open to new submissions. Accepts `open` or `closed` | No | closed
 `AUTH_SECRET` | The secret used to encrypt auth tokens | Yes | None
 `DEV_PROXY` | When running the `webpack-dev-server` all API calls will be proxied to this host. | No | `http://localhost:PORT`
 `EMAIL_URL_HOST` | Host to be used in the email urls. | No | None
