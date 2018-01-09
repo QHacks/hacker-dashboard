@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 const winston = require('winston');
 
-function noop() {
-}
+function noop() {}
 
-module.exports = () => {
+module.exports = function connectToDB(cb = noop) {
     const host = process.env.MONGO_HOST;
     const name = process.env.MONGO_DBNAME;
     const port = process.env.MONGO_PORT || 27017;
@@ -32,5 +31,5 @@ module.exports = () => {
         Object.assign(opt, { authSource });
     }
 
-    return (cb = noop) => mongoose.connect(url, opt, cb);
+    return mongoose.connect(url, opt, cb);
 };

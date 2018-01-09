@@ -20,15 +20,6 @@ const GENDERS = [
 	'Prefer not to say'
 ];
 
-const GRADUATION_YEARS = [
-	'2022',
-	'2021',
-	'2020',
-	'2019',
-	'2018',
-	'Other'
-];
-
 const MONTHS_IN_A_YEAR = [
 	'January',
 	'February',
@@ -65,18 +56,11 @@ const UserSchema = new mongoose.Schema({
 		unique: true,
 		index: true
 	},
-	phoneNumber: {
-		type: String,
-		required: true
-	},
-	dateOfBirth: {
-		type: Date,
-		required: true
-	},
+	phoneNumber: String,
+	dateOfBirth: Date,
 	gender: {
 		type: String,
-		enum: GENDERS,
-		required: true
+		enum: GENDERS
 	},
 	password: {
 		type: String,
@@ -84,44 +68,25 @@ const UserSchema = new mongoose.Schema({
 	},
 	school: {
 		type: String,
-		required: true,
 		enum: mlhSchools
 	},
 	degreeType: {
 		type: String,
-		required: true,
 		enum: DEGREE_TYPES
 	},
-	program: {
-		type: String,
-		required: true
-	},
-	graduationYear: {
-		type: String,
-		required: true
-	},
+	program: String,
+	graduationYear: String,
 	graduationMonth: {
 		type: String,
-		enum: MONTHS_IN_A_YEAR,
-		required: true
+		enum: MONTHS_IN_A_YEAR
 	},
-	travelOrigin: {
-		type: String,
-		required: true
-	},
+	travelOrigin: String,
 	numberOfHackathons: {
 		type: String,
-		required: true,
 		enum: NUMBER_OF_HACKATHONS
 	},
-	whyQhacks: {
-		type: String,
-		required: true
-	},
-	links: {
-		type: String,
-		required: true
-	},
+	whyQhacks: String,
+	links: String,
 	events: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Event',
@@ -150,6 +115,11 @@ const UserSchema = new mongoose.Schema({
 	},
 	refreshToken: {
 		type: String
+	},
+	role: {
+		type: String,
+		enum: ['HACKER', 'PARTNER', 'ADMIN'],
+		default: 'HACKER'
 	}
 });
 
@@ -192,7 +162,7 @@ UserSchema.pre('save', function(next) {
 	if (!this.isModified('password')) return next();
 
 	bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
-			if (err) return next(err);
+		if (err) return next(err);
 
 		bcrypt.hash(this.password, salt, (err, hash) => {
 			if (err) next(err);
