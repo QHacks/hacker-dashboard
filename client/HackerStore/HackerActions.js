@@ -1,6 +1,7 @@
 // Request Methods
-const POST = 'POST';
 const GET = 'GET';
+const POST = 'POST';
+const PUT = 'PUT';
 
 // API Endpoint Constants
 const API_SUFFIX = '/api/v1';
@@ -11,6 +12,9 @@ const REFRESH_ENDPOINT = '/auth/refresh';
 const VALIDATE_ENDPOINT = '/auth/refresh';
 const RESET_HASH_ENDPOINT = '/auth/createResetHash';
 const UPDATE_PASSWORD_FOR_RESET_ENDPOINT = '/auth/updatePasswordForReset';
+const APPLICATION_TO_REVIEW_ENDPOINT = '/admin/applications/review';
+const REVIEWERS_ENDPOINT = '/admin/applications/reviewers';
+const SETTINGS_ENDPOINT = '/admin/settings';
 
 /**
  * Specific middleware action types.
@@ -37,7 +41,13 @@ const apiRequestTypes = {
 	CREATE_RESET_HASH: '@@/hacker/CREATE_RESET_HASH',
 	UPDATE_PASSWORD_RESET: '@@/hacker/UPDATE_PASSWORD_RESET',
 
-	GET_USERS: '@@/hacker/GET_USERS'
+	GET_USERS: '@@/hacker/GET_USERS',
+    FETCH_APPLICATION_TO_REVIEW: '@@/hacker/FETCH_APPLICATION_TO_REVIEW',
+    FETCH_SETTINGS: '@@/hacker/FETCH_SETTINGS',
+    FETCH_REVIEWERS: '@@/hacker/FETCH_REVIEWERS',
+
+    REASSIGN_REVIEWERS: '@@/hacker/REASSIGN_REVIEWERS',
+    SUBMIT_APPLICATION_REVIEW: '@@/hacker/SUBMIT_APPLICATION_REVIEW'
 };
 
 /**
@@ -53,7 +63,13 @@ const apiSuccessTypes = {
 	CREATE_RESET_HASH_SUCCESS: '@@/hacker/CREATE_RESET_HASH_SUCCESS',
 	UPDATE_PASSWORD_RESET_SUCCESS: '@@/hacker/UPDATE_PASSWORD_RESET_SUCCESS',
 
-	USERS_FETCHED: '@@/hacker/USERS_FETCHED'
+	USERS_FETCHED: '@@/hacker/USERS_FETCHED',
+    APPLICATION_TO_REVIEW_FETCHED: '@@/hacker/APPLICATION_TO_REVIEW_FETCHED',
+    SETTINGS_FETCHED: '@@/hacker/SETTINGS_FETCHED',
+    REVIEWERS_FETCHED: '@@/hacker/REVIEWERS_FETCHED',
+
+    REVIEWERS_REASSIGNED: '@@/hacker/REVIEWERS_REASSIGNED',
+    APPLICATION_REVIEW_SUBMITTED: '@@/hacker/APPLICATION_REVIEW_SUBMITTED'
 };
 
 /**
@@ -70,7 +86,13 @@ const apiErrorTypes = {
 	CREATE_RESET_HASH_FAIL: '@@/hacker/CREATE_RESET_HASH_FAIL',
 	UPDATE_PASSWORD_RESET_FAIL: '@@/hacker/UPDATE_PASSWORD_RESET_FAIL',
 
-	USER_FETCH_ERROR: '@@/hacker/USERS_FETCHED'
+	USER_FETCH_ERROR: '@@/hacker/USER_FETCH_ERROR',
+    APPLICATION_TO_REVIEW_FETCH_ERROR: '@@/hacker/APPLICATION_TO_REVIEW_FETCH_ERROR',
+    SETTINGS_FETCH_ERROR: '@@/hacker/SETTINGS_FETCH_ERROR',
+    REVIEWERS_FETCH_ERROR: '@@/hacker/REVIEWERS_FETCH_ERROR',
+
+    REVIEWERS_REASSIGN_ERROR: '@@/hacker/REVIEWERS_REASSIGN_ERROR',
+    APPLICATION_REVIEW_SUBMIT_ERROR: '@@/hacker/APPLICATION_REVIEW_SUBMIT_ERROR'
 };
 
 /**
@@ -82,7 +104,10 @@ const normalTypes = {
 	BOOTSTRAP_COMPLETE: '@@/hacker/BOOTSTRAP_COMPLETE',
 	CLEAR_RESET_PASSWORD: '@@/hacker/CLEAR_RESET_PASSWORD',
 	APPLICATION_PAGE_UPDATE: '@@/hacker/APPLICATION_PAGE_UPDATE',
-    APPLICATION_FORM_ERROR_MESSAGES_UPDATE: '@@/hacker/APPLICATION_FORM_ERROR_MESSAGES_UPDATE'
+    APPLICATION_FORM_ERROR_MESSAGES_UPDATE: '@@/hacker/APPLICATION_FORM_ERROR_MESSAGES_UPDATE',
+    TOGGLE_SIDEBAR_VISIBILITY: '@@/hacker/TOGGLE_SIDEBAR_VISIBILITY',
+    CLEAR_DASHBOARD_SUCCESS_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_SUCCESS_MESSAGE',
+    CLEAR_DASHBOARD_ERROR_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_ERROR_MESSAGE'
 };
 
 export const actionTypes = {
@@ -104,7 +129,10 @@ const normalActionCreators = {
 	clearResetPassword: () => ({ type: actionTypes.CLEAR_RESET_PASSWORD }),
 	applicationPageUpdate: (data) => ({ type: actionTypes.APPLICATION_PAGE_UPDATE, data }),
     applicationFormErrorMessagesUpdate: (data) => ({ type: actionTypes.APPLICATION_FORM_ERROR_MESSAGES_UPDATE, data }),
-	applicationError: (data) => ({ type: actionTypes.APPLICATION_ERROR, data })
+	applicationError: (data) => ({ type: actionTypes.APPLICATION_ERROR, data }),
+    toggleSidebarVisibility: () => ({ type: actionTypes.TOGGLE_SIDEBAR_VISIBILITY }),
+    clearDashboardSuccessMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_SUCCESS_MESSAGE, data }),
+    clearDashboardErrorMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_ERROR_MESSAGE, data })
 };
 
 /**
@@ -195,7 +223,84 @@ const invokeAPIActionCreators = {
 				tokenRequired: true
 			}
 		}
-	})
+	}),
+
+    fetchApplicationToReview: () => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.FETCH_APPLICATION_TO_REVIEW,
+                actionTypes.APPLICATION_TO_REVIEW_FETCHED,
+                actionTypes.APPLICATION_TO_REVIEW_FETCH_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${APPLICATION_TO_REVIEW_ENDPOINT}`,
+                method: GET,
+                tokenRequired: true
+            }
+        }
+    }),
+
+    fetchSettings: () => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [actionTypes.FETCH_SETTINGS, actionTypes.SETTINGS_FETCHED, actionTypes.SETTINGS_FETCH_ERROR],
+            request: {
+                url: `${API_SUFFIX}${SETTINGS_ENDPOINT}`,
+                method: GET,
+                tokenRequired: true
+            }
+        }
+    }),
+
+    fetchReviewers: () => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.FETCH_REVIEWERS,
+                actionTypes.REVIEWERS_FETCHED,
+                actionTypes.REVIEWERS_FETCH_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${REVIEWERS_ENDPOINT}`,
+                method: GET,
+                tokenRequired: true
+            }
+        }
+    }),
+
+    reassignReviewers: () => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.REASSIGN_REVIEWERS,
+                actionTypes.REVIEWERS_REASSIGNED,
+                actionTypes.REVIEWERS_REASSIGN_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${REVIEWERS_ENDPOINT}`,
+                method: PUT,
+                tokenRequired: true
+            }
+        }
+    }),
+
+    submitApplicationReview: (userId, review) => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.SUBMIT_APPLICATION_REVIEW,
+                actionTypes.APPLICATION_REVIEW_SUBMITTED,
+                actionTypes.APPLICATION_REVIEW_SUBMIT_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${APPLICATION_TO_REVIEW_ENDPOINT}/${userId}`,
+                method: POST,
+                tokenRequired: true,
+                body: { review }
+            }
+        }
+    })
 };
 
 export const actionCreators = {

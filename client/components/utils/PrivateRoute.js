@@ -16,8 +16,8 @@ const PrivateRoute = ({ component: ComposedComponent, type, ...rest }) => {
                 hacker: isHacker,
                 partner: isPartner
             };
-            const isNecessaryRole = isRole[type];
-            if (!authenticated || (type && !isNecessaryRole)) {
+
+            if (!authenticated) {
                 return (
                     <Redirect to={{
                         pathname: '/login',
@@ -28,6 +28,10 @@ const PrivateRoute = ({ component: ComposedComponent, type, ...rest }) => {
                     }}/>
                 );
             }
+
+
+            const isNecessaryRole = isRole[type];
+            if (type && !isNecessaryRole) return null;
 
             return <ComposedComponent {...props}/>;
         }

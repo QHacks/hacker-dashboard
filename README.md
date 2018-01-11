@@ -29,6 +29,7 @@ Name | Description | Required | Default
 `MONGO_PORT` | The port to use to access the MongoDB instance. | No | 27017
 `MONGO_USER` | The username to access the MongoDB instance. | No | None
 `PORT` | Port to run the Express sever on. | No | 3000
+`REVIEWS_PER_APPLICATION` | The number of reviews that must be applied to an application before it is considered complete. | Yes | 1
 `SENDGRID_API_KEY` | SendGrid transactional email service api key. | No | None
 `SLACK_WEBHOOK_URL` | The webhook URL you wish to send Slack messages to | No | None
 `FORCE_SSL` | If this is set to true, then any non-SSL access will be redirected to SSL. | No | 'false'

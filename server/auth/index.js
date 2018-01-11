@@ -52,6 +52,7 @@ module.exports = () => (req, res, next) => {
 
 	jwt.verify(token, AUTH_SECRET, (err, decoded) => {
 		if (err) return res.status(ERRORS.UNAUTHORIZED.code).json(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_TOKEN, err));
+		// TODO: Handle admin auth
 		req.user = decoded;
 		next();
 	});

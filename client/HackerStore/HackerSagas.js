@@ -15,7 +15,8 @@ export function* rootSaga(opt) {
 		authSaga(opt),
 		logoutSaga(opt),
 		bootstrapSaga(opt),
-		middlewareSaga(opt)
+		middlewareSaga(opt),
+        reloadApplicationToReviewSaga(opt)
 	]);
 }
 
@@ -34,7 +35,7 @@ function* bootstrapSaga(opt) {
 }
 
 /**
- * Authentication saga, handles boostrap completion, auth and refresh token saving.
+ * Authentication saga, handles bootstrap completion, auth and refresh token saving.
  * @param {Object} opt Options passed into the saga.
  * @return {Generator}
  */
@@ -56,7 +57,7 @@ function* authSaga(opt) {
 
 /**
  * Middleware saga, handles logic for refresh buffer.
- * NOTE: This implementaion is specific to our middleware.
+ * NOTE: This implementation is specific to our middleware.
  * @return {Generator}
  */
 function* middlewareSaga(opt) {
@@ -119,4 +120,17 @@ function* logoutSaga(opt) {
 		yield call(opt.removeValue, ACCESS_TOKEN_STORAGE);
 		yield call(opt.removeValue, REFRESH_TOKEN_STORAGE);
 	}
+}
+
+/**
+ * Reload application to review saga attempts to fetch a new application to review from the API
+ * after an application review has been submitted.
+ * @param {Object} opt Options object passed into saga.
+ * @return {Generator}
+ */
+function* reloadApplicationToReviewSaga(opt) {
+    while (true) {
+        yield take(actionTypes.APPLICATION_REVIEW_SUBMITTED);
+        yield put(actionCreators.fetchApplicationToReview());
+    }
 }

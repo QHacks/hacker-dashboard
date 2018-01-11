@@ -4,7 +4,7 @@ import SemanticFormField from './SemanticFormField';
 import { Field, reduxForm } from 'redux-form';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { MISC } from '../strings';
+import { MISC } from '../../strings';
 import './LoginForm.less';
 
 const { APPLICATION_CLOSED_STATUS } = MISC;

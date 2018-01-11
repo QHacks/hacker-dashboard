@@ -9,7 +9,7 @@ module.exports = (controllers) => {
 	// authentication routes
 	api.use('/', authRoutes(controllers));
 
-	// user routes
+	// admin routes
 	api.use('/', adminRoutes(controllers));
 
 	// user routes
