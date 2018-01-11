@@ -1,6 +1,6 @@
 {
   "name": "hacker-dashboard",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Dashboard for participants, judges, mentors and partners of QHacks 2018.",
   "author": "Robert Saunders, Zack Harley, Cory Crowley & Avi Ihejirika",
   "scripts": {
