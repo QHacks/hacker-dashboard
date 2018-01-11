@@ -1,15 +1,19 @@
 const Router = require('express').Router;
-const authRoutes = require('./routes/auth.routes.js');
-const userRoutes = require('./routes/user.routes.js');
+const adminRoutes = require('./routes/admin.routes');
+const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
 
-module.exports = (ctr) => {
+module.exports = (controllers) => {
 	const api = Router();
 
 	// authentication routes
-	api.use('/', authRoutes(ctr));
+	api.use('/', authRoutes(controllers));
+
+	// admin routes
+	api.use('/', adminRoutes(controllers));
 
 	// user routes
-	api.use('/', userRoutes(ctr));
+	api.use('/', userRoutes(controllers));
 
 	return api;
 };

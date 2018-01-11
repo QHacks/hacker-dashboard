@@ -1,6 +1,6 @@
 {
   "name": "hacker-dashboard",
-  "version": "0.0.0",
+  "version": "1.2.0",
   "description": "Dashboard for participants, judges, mentors and partners of QHacks 2018.",
   "author": "Robert Saunders, Zack Harley, Cory Crowley & Avi Ihejirika",
   "scripts": {
@@ -45,7 +45,7 @@
     "redux-form-validators": "^2.1.2",
     "redux-saga": "^0.16.0",
     "semantic-ui-less": "^2.2.12",
-    "semantic-ui-react": "^0.77.0",
+    "semantic-ui-react": "^0.77.2",
     "uuid": "^3.1.0",
     "validator": "^9.1.2",
     "winston": "^2.4.0"
@@ -68,7 +68,7 @@
     "html-webpack-plugin": "^2.30.1",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
-    "nodemon": "^1.14.9",
+    "nodemon": "^1.14.11",
     "npm-check-updates": "^2.13.0",
     "nsp": "^3.1.0",
     "rimraf": "^2.6.2",
@@ -77,6 +77,6 @@
     "url-loader": "^0.6.2",
     "webpack": "^3.8.1",
     "webpack-bundle-analyzer": "^2.9.2",
-    "webpack-dev-server": "^2.10.0"
+    "webpack-dev-server": "^2.10.1"
   }
 }

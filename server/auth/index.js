@@ -40,7 +40,7 @@ function getBearer(req) {
  * @param {Object} req Incoming request to run through middleware.
  * @param {Object} res Response sent back if needed.
  * @param {Function} next Next middleware function.
- * @return {Function} Next middlware if authenticated, otherwise invalid response.
+ * @return {Function} Next middleware if authenticated, otherwise invalid response.
  */
 module.exports = () => (req, res, next) => {
 
@@ -52,6 +52,7 @@ module.exports = () => (req, res, next) => {
 
 	jwt.verify(token, AUTH_SECRET, (err, decoded) => {
 		if (err) return res.status(ERRORS.UNAUTHORIZED.code).json(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_TOKEN, err));
+		// TODO: Handle admin auth
 		req.user = decoded;
 		next();
 	});

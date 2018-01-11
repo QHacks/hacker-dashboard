@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
-import "semantic-ui-less/semantic.less";
+import 'semantic-ui-less/semantic.less';
 import { Provider } from 'react-redux';
-import App from './components/App/App';
+import App from './components/App';
 import getStore from './ClientStore';
 import ReactDOM from 'react-dom';
 import React from 'react';

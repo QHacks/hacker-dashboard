@@ -118,5 +118,5 @@ module.exports = {
     },
     devtool: isProd
         ? 'source-map'
-        : 'inline-source-map'
+        : 'cheap-eval-source-map'
 };
