@@ -1,47 +1,149 @@
-import { actionCreators } from '../../HackerStore';
-import { Container, Header, Segment } from 'semantic-ui-react';
+import { actionCreators, selectors } from '../../HackerStore';
 import React, { Component } from 'react';
-import Emoji from 'react-emoji-render';
 import { connect } from 'react-redux';
 import MenuBar from '../utils/MenuBar';
+import { Route, Switch } from 'react-router-dom';
+import PrivateRoute from '../utils/PrivateRoute';
+import { Landing as AdminLanding, Sidebar as AdminSidebar, Review, Settings } from '../Admin';
+import { Landing as HackerLanding, Sidebar as HackerSidebar } from '../Hacker';
+import { AuthSwitch, NotFound } from '../utils';
+import { Message, Segment, Sidebar } from 'semantic-ui-react';
+import { isEmpty } from 'lodash';
+import uuid from 'uuid/v4';
 
-const { logout, getUsers } = actionCreators;
+const { clearDashboardErrorMessage, clearDashboardSuccessMessage, logout, toggleSidebarVisibility } = actionCreators;
+const {
+    getDashboardErrorMessages,
+    getDashboardSuccessMessages,
+    getIsAdmin,
+    getIsHacker,
+    getIsPartner,
+    getIsSidebarVisible
+} = selectors;
 
 class Dashboard extends Component {
 
-	handleUsersClick() {
-		this.props.getUsers();
-	}
+    getCurrentAuthType() {
+        const { isAdmin, isHacker, isPartner } = this.props;
+        return (isAdmin && 'admin') || (isHacker && 'hacker') || (isPartner && 'partner');
+    }
 
-	handleLogoutClick() {
-		this.props.logout();
-	}
+    handleBarsClick() {
+        this.props.toggleSidebarVisibility();
+    }
 
-	render() {
-		return (
-			<div>
-				<MenuBar onLogoutClick={this.handleLogoutClick.bind(this)} />
+    handleLogoutClick() {
+        this.props.logout();
+    }
 
-				<Container text style={{ marginTop: '3em' }}>
-					<Segment raised>
-						<Header as='h2'><Emoji text="Congratulations, your application is in! :tada: :heart:" /></Header>
-						<p>Your application to attend QHacks 2018 has been submitted! So, what are the next steps? </p>
-						<p> We will be accepting applications until January 8th 2018. Later that week we will be sending emails to all of the applicants updating them on their application status.</p>
-						<p>If you are accepted, your next step will be to RSVP right here in the dashboard. You must complete this step within one week of receiving your acceptance email. The RSVP will be used to confirm your attendance to QHacks 2018.</p>
-						<p>What if I don't get accepted? There's a chance you may be added to the waitlist. If someone who has been accepted fails to RSVP or can't come to the event, then we will fill their spot with someone from the waitlist.</p>
-						<p>While you wait to hear from us there are some things you can do, such as:</p>
-						<ul>
-							<li>Like us on <a href="https://www.facebook.com/QHacks/">Facebook</a></li>
-							<li>Follow us on <a href="https://twitter.com/QHacks18">Twitter</a></li>
-							<li>Follow us on <a href="https://www.instagram.com/qhacks18/">Instagram</a></li>
-						</ul>
-						<p>We will be having contests for free tech on our social media so do not miss out! <Emoji text=":watch: :iphone:" /></p>
-						<p>Finally, we want to say thank you for your excitement about QHacks! With the participation of people like you, we can all continue towards our goal of making Queen’s and Canada as a whole recognized for its talent and enthusiasm for innovation and creation.</p>
-					</Segment>
-				</Container>
-			</div>
-		);
-	}
+    renderSidebar() {
+        const { isSidebarVisible } = this.props;
+        const authType = this.getCurrentAuthType();
+        return (
+            <AuthSwitch type={authType}>
+                <PrivateRoute path="*"
+                              type="admin"
+                              component={() => <AdminSidebar visible={isSidebarVisible}/>}/>
+                <PrivateRoute path="*"
+                              type="hacker"
+                              component={() => <HackerSidebar visible={isSidebarVisible}/>}/>
+            </AuthSwitch>
+        );
+    }
+
+    renderBody() {
+        const authType = this.getCurrentAuthType();
+        return (
+            <AuthSwitch type={authType}>
+                <PrivateRoute exact
+                              path="/"
+                              type="admin"
+                              component={AdminLanding}/>
+                <PrivateRoute exact
+                              path="/review"
+                              type="admin"
+                              component={Review}/>
+                <PrivateRoute exact
+                              path="/settings"
+                              type="admin"
+                              component={Settings}/>
+                <PrivateRoute exact
+                              path="/"
+                              type="hacker"
+                              component={HackerLanding}/>
+                <Route path="*"
+                       component={NotFound}/>
+            </AuthSwitch>
+        );
+    }
+
+    renderDashboardSuccessMessages() {
+        const { successMessages } = this.props;
+
+        if (isEmpty(successMessages)) {
+            return [];
+        }
+
+        return successMessages.map((message, index) => (
+            <Message key={uuid()}
+                     positive
+                     floating
+                     onDismiss={() => this.props.clearDashboardSuccessMessage({ index })}
+                     content={message}/>
+        ));
+    }
+
+    renderDashboardErrorMessages() {
+        const { errorMessages } = this.props;
+
+        if (isEmpty(errorMessages)) {
+            return [];
+        }
+
+        return errorMessages.map((message, index) => (
+            <Message key={uuid()}
+                     negative
+                     floating
+                     onDismiss={() => this.props.clearDashboardErrorMessage({ index })}
+                     content={message}/>
+        ));
+    }
+
+    render() {
+        return (
+            <div style={{ height: '100vh' }}>
+                <MenuBar onBarsClick={this.handleBarsClick.bind(this)}
+                         onLogoutClick={this.handleLogoutClick.bind(this)}/>
+                <Sidebar.Pushable>
+                    {this.renderSidebar()}
+                    <Sidebar.Pusher>
+                        <Segment basic>
+                            {this.renderBody()}
+                        </Segment>
+                        {this.renderDashboardSuccessMessages()}
+                        {this.renderDashboardErrorMessages()}
+                    </Sidebar.Pusher>
+                </Sidebar.Pushable>
+            </div>
+        );
+    }
 }
 
-export default connect((state) => state, { logout, getUsers })(Dashboard);
+function mapStateToProps(state, ownProps) {
+    return {
+        ...ownProps,
+        errorMessages: getDashboardErrorMessages(state),
+        isAdmin: getIsAdmin(state),
+        isHacker: getIsHacker(state),
+        isPartner: getIsPartner(state),
+        isSidebarVisible: getIsSidebarVisible(state),
+        successMessages: getDashboardSuccessMessages(state)
+    };
+}
+
+export default connect(mapStateToProps, {
+    clearDashboardErrorMessage,
+    clearDashboardSuccessMessage,
+    logout,
+    toggleSidebarVisibility
+})(Dashboard);

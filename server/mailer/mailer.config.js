@@ -34,7 +34,7 @@ function generateSuccessfulApplicationEmail(email) {
 	return {
 		message: createEmailMsg({
 			toEmail: email,
-			subject: 'QHacks 2018 - Application Received!',
+			subject: 'QHacks 2018 - HackerApplication Received!',
 			textContent: 'Thank you for applying to QHacks 2018! See https://qhacks.io for more details.',
 			htmlContent: EMAIL_TEMPLATES[APPLICATION_SUCCESSFUL]
 		}),

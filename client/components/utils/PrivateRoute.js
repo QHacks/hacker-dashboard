@@ -3,41 +3,59 @@ import { selectors } from '../../HackerStore';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-const PrivateRoute = ({component: ComposedComponent, ...rest}) => {
+const { getAuthenticated, getIsAdmin, getIsHacker, getIsPartner } = selectors;
 
-	class Authentication extends Component {
+const PrivateRoute = ({ component: ComposedComponent, type, ...rest }) => {
 
-		handleRender(props) {
-			if (!this.props.authenticated) {
-				return <Redirect to={{
-					pathname: '/login',
-					state: {
-						from: props.location,
-						message: 'You need to login!'
-					}
-				}} />;
-			} else {
-				return <ComposedComponent {...props}/>;
-			}
-		}
+    class Authentication extends Component {
 
-		render() {
-			return (
-				<Route {...rest} render={this.handleRender.bind(this)}/>
-			);
-		}
-	}
+        handleRender(props) {
+            const { authenticated, isAdmin, isHacker, isPartner } = this.props;
+            const isRole = {
+                admin: isAdmin,
+                hacker: isHacker,
+                partner: isPartner
+            };
 
-	function mapStateToProps(state, ownProps) {
-		return {
-			...ownProps,
-			authenticated: selectors.getAuthenticated(state)
-		};
-	}
+            if (!authenticated) {
+                return (
+                    <Redirect to={{
+                        pathname: '/login',
+                        state: {
+                            from: props.location,
+                            message: 'You need to login!'
+                        }
+                    }}/>
+                );
+            }
 
-	const AuthenticationContainer = connect(mapStateToProps)(Authentication);
 
-	return <AuthenticationContainer />;
+            const isNecessaryRole = isRole[type];
+            if (type && !isNecessaryRole) return null;
+
+            return <ComposedComponent {...props}/>;
+        }
+
+        render() {
+            return (
+                <Route {...rest} render={this.handleRender.bind(this)}/>
+            );
+        }
+    }
+
+    function mapStateToProps(state, ownProps) {
+        return {
+            ...ownProps,
+            authenticated: getAuthenticated(state),
+            isAdmin: getIsAdmin(state),
+            isHacker: getIsHacker(state),
+            isPartner: getIsPartner(state)
+        };
+    }
+
+    const AuthenticationContainer = connect(mapStateToProps)(Authentication);
+
+    return <AuthenticationContainer/>;
 };
 
 export default PrivateRoute;

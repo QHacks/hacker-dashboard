@@ -5,7 +5,7 @@ import ApplyForm from '../utils/ApplyForm';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ApplicationsClosed from '../utils/ApplicationsClosed';
-import { MISC } from '../strings';
+import { MISC } from '../../strings';
 import './Apply.less';
 
 const {
