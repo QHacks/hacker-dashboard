@@ -190,7 +190,7 @@ UserSchema.method({
  * @param {Function} next Move to next middleware.
  * @return {Function} Next middleware.
  */
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function(next) {
     if (!this.isModified('password')) return next();
 
     bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
