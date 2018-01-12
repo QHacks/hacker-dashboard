@@ -158,7 +158,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.static({
     authenticate(email, password) {
         return new Promise((resolve, reject) => {
-            this.findOne({ email })
+            this.findOne({ email: email.toLowerCase() })
                 .then((user) => {
                     if (!user) return reject('No user with that email!');
 
