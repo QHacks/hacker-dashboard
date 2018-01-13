@@ -26,14 +26,15 @@ const ERROR_MESSAGES = {
     DB_SETTINGS: 'Could not retrieve settings from the database!',
     DB_USER: 'Could not retrieve that user from the database!',
     DB_GOLDEN_TICKETS_REDUCE: 'Could not reduce the amount of golden tickets for the reviewer!',
-
+    DB_APPLICATIONS_WITH_REVIEWS: 'Could not retrieve any applications with reviews from the database!',
 
     NO_APPLICATION_TO_REVIEW_EXISTS: 'No application to review exists in the database!',
     NO_ADMINS_EXIST: 'No admins exist in the database!',
     NO_REVIEWERS_EXIST: 'No reviewers exist in the database!',
     NO_SETTINGS_EXIST: 'No settings exist in the database!',
     NO_GOLDEN_TICKETS: 'No golden tickets are left for this reviewer!',
-    ALREADY_HAS_GOLDEN_TICKET: 'This application already has a golden ticket!'
+    ALREADY_HAS_GOLDEN_TICKET: 'This application already has a golden ticket!',
+    NO_APPLICATIONS_WITH_REVIEWS_EXIST: 'No applications with reviews exist in the database!'
 };
 const REVIEW_FIELDS = [
     'score',
@@ -78,6 +79,21 @@ module.exports = {
         }
 
         return user;
+    },
+
+    async getApplicationsWithReviews() {
+        let applications;
+        try {
+            applications = await User.find({ reviews: { $exists: true, $not: {$size: 0} }});
+        } catch (err) {
+            throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_APPLICATIONS_WITH_REVIEWS, err);
+        }
+
+        if (_.isEmpty(applications)) {
+            throw createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.NO_APPLICATIONS_WITH_REVIEWS_EXIST);
+        }
+
+        return applications;
     },
 
     async getReviewers() {
@@ -160,7 +176,7 @@ module.exports = {
             }
 
             try {
-                hasGoldenTicket = !!(await User.finxdOne({ _id: userId, 'reviews.goldenTicket': true }));
+                hasGoldenTicket = !!(await User.findOne({ _id: userId, 'reviews.goldenTicket': true }));
             } catch (err) {
                 throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_REVIEWS_ADD, err);
             }
@@ -178,7 +194,7 @@ module.exports = {
                     { $set: { goldenTickets: numberOfGoldenTicketsRemaining } }
                 );
             } catch (err) {
-                throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_GOLDEN_TICKETS_REDUCE);
+                throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_GOLDEN_TICKETS_REDUCE, err);
             }
         }
 

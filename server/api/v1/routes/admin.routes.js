@@ -32,6 +32,15 @@ module.exports = (ctr) => {
         }
     });
 
+    adminAPI.get(`/${ADMIN}/${APPLICATIONS}/reviewed`, async (req, res) => {
+        try {
+            const applicationsWithReviews = await admin.getApplicationsWithReviews();
+            return res.status(200).json({ applicationsWithReviews });
+        } catch (err) {
+            return res.status(err.code).json(err);
+        }
+    });
+
     adminAPI.get(`/${ADMIN}/${APPLICATIONS}/reviewers`, async (req, res) => {
         try {
             const reviewers = await admin.getReviewers();

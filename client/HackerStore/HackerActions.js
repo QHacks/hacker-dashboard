@@ -13,6 +13,7 @@ const VALIDATE_ENDPOINT = '/auth/refresh';
 const RESET_HASH_ENDPOINT = '/auth/createResetHash';
 const UPDATE_PASSWORD_FOR_RESET_ENDPOINT = '/auth/updatePasswordForReset';
 const APPLICATION_TO_REVIEW_ENDPOINT = '/admin/applications/review';
+const APPLICATIONS_WITH_REVIEWS_ENDPOINT = '/admin/applications/reviewed';
 const REVIEWERS_ENDPOINT = '/admin/applications/reviewers';
 const SETTINGS_ENDPOINT = '/admin/settings';
 
@@ -45,6 +46,7 @@ const apiRequestTypes = {
     FETCH_APPLICATION_TO_REVIEW: '@@/hacker/FETCH_APPLICATION_TO_REVIEW',
     FETCH_SETTINGS: '@@/hacker/FETCH_SETTINGS',
     FETCH_REVIEWERS: '@@/hacker/FETCH_REVIEWERS',
+    FETCH_APPLICATIONS_WITH_REVIEWS: '@@/hacker/FETCH_APPLICATIONS_WITH_REVIEWS',
 
     REASSIGN_REVIEWERS: '@@/hacker/REASSIGN_REVIEWERS',
     SUBMIT_APPLICATION_REVIEW: '@@/hacker/SUBMIT_APPLICATION_REVIEW'
@@ -67,6 +69,7 @@ const apiSuccessTypes = {
     APPLICATION_TO_REVIEW_FETCHED: '@@/hacker/APPLICATION_TO_REVIEW_FETCHED',
     SETTINGS_FETCHED: '@@/hacker/SETTINGS_FETCHED',
     REVIEWERS_FETCHED: '@@/hacker/REVIEWERS_FETCHED',
+    APPLICATIONS_WITH_REVIEWS_FETCHED: '@@/hacker/APPLICATIONS_WITH_REVIEWS_FETCHED',
 
     REVIEWERS_REASSIGNED: '@@/hacker/REVIEWERS_REASSIGNED',
     APPLICATION_REVIEW_SUBMITTED: '@@/hacker/APPLICATION_REVIEW_SUBMITTED'
@@ -90,6 +93,7 @@ const apiErrorTypes = {
     APPLICATION_TO_REVIEW_FETCH_ERROR: '@@/hacker/APPLICATION_TO_REVIEW_FETCH_ERROR',
     SETTINGS_FETCH_ERROR: '@@/hacker/SETTINGS_FETCH_ERROR',
     REVIEWERS_FETCH_ERROR: '@@/hacker/REVIEWERS_FETCH_ERROR',
+    APPLICATIONS_WITH_REVIEWS_FETCH_ERROR: '@@/hacker/APPLICATIONS_WITH_REVIEWS_FETCH_ERROR',
 
     REVIEWERS_REASSIGN_ERROR: '@@/hacker/REVIEWERS_REASSIGN_ERROR',
     APPLICATION_REVIEW_SUBMIT_ERROR: '@@/hacker/APPLICATION_REVIEW_SUBMIT_ERROR'
@@ -298,6 +302,22 @@ const invokeAPIActionCreators = {
                 method: POST,
                 tokenRequired: true,
                 body: { review }
+            }
+        }
+    }),
+
+    fetchApplicationsWithReviews: () => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.FETCH_APPLICATIONS_WITH_REVIEWS,
+                actionTypes.APPLICATIONS_WITH_REVIEWS_FETCHED,
+                actionTypes.APPLICATIONS_WITH_REVIEWS_FETCH_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${APPLICATIONS_WITH_REVIEWS_ENDPOINT}`,
+                method: GET,
+                tokenRequired: true
             }
         }
     })
