@@ -1,6 +1,6 @@
-import React from 'react';
 import { isFunction, map, pick } from 'lodash';
 import moment from 'moment';
+import React from 'react';
 
 /* HackerApplication Fields */
 const FIRST_NAME = 'firstName';

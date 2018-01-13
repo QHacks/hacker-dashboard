@@ -1,10 +1,10 @@
 import { actionCreators, selectors } from '../../HackerStore';
+import ApplicationsClosed from '../utils/ApplicationsClosed';
 import { Divider, Header } from 'semantic-ui-react';
 import { Link, Redirect } from 'react-router-dom';
 import ApplyForm from '../utils/ApplyForm';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ApplicationsClosed from '../utils/ApplicationsClosed';
 import { MISC } from '../../strings';
 import './Apply.less';
 

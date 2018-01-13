@@ -1,5 +1,5 @@
 module.exports = {
-	Event: require('./eventModel'),
+    Event: require('./eventModel'),
     Settings: require('./settingsModel'),
     User: require('./userModel')
 };

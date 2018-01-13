@@ -15,7 +15,7 @@ const UNAUTHORIZED_STATUS = 401;
  * @return {Boolean} True if the action should be handled by middleware.
  */
 function isHackerMiddlewareAction(action) {
-	return action.type === actionTypes.INVOKE_API_CALL;
+    return action.type === actionTypes.INVOKE_API_CALL;
 }
 
 /**
@@ -24,12 +24,12 @@ function isHackerMiddlewareAction(action) {
  * @return {Boolean} True if error is result of token, false otherwise.
  */
 function isTokenFailError(error, incomingRequestType) {
-	if (incomingRequestType === actionTypes.LOGIN_REQUEST || incomingRequestType === actionTypes.SIGNUP_REQUEST) {
-		return false;
-	} else if (error.status === UNAUTHORIZED_STATUS) {
-		return true;
-	}
-	return false;
+    if (incomingRequestType === actionTypes.LOGIN_REQUEST || incomingRequestType === actionTypes.SIGNUP_REQUEST) {
+        return false;
+    } else if (error.status === UNAUTHORIZED_STATUS) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -38,22 +38,22 @@ function isTokenFailError(error, incomingRequestType) {
  * @return {Object} The headers object for the request.
  */
 function createHeaders(requestInfo) {
-	let headers = {
-		'Content-Type': 'application/json'
-	};
+    let headers = {
+        'Content-Type': 'application/json'
+    };
 
-	const { tokenRequired } = requestInfo;
+    const { tokenRequired } = requestInfo;
 
-	if (tokenRequired) {
-		accessToken = selectors.getAccessToken(store.getState());
+    if (tokenRequired) {
+        accessToken = selectors.getAccessToken(store.getState());
 
-		headers = {
-			...headers,
-			'Authorization': `Bearer ${accessToken}`
-		};
-	}
+        headers = {
+            ...headers,
+            'Authorization': `Bearer ${accessToken}`
+        };
+    }
 
-	return headers;
+    return headers;
 }
 
 /**
@@ -62,15 +62,15 @@ function createHeaders(requestInfo) {
  * @return {Promise} Resultanct promise from axios request.
  */
 function makeAPIRequest(requestInfo) {
-	const { method, url, body } = requestInfo;
+    const { method, url, body } = requestInfo;
 
-	const headers = createHeaders(requestInfo);
+    const headers = createHeaders(requestInfo);
 
-	if (body) {
-		return axios({ method, url, data: body, headers});
-	}
+    if (body) {
+        return axios({ method, url, data: body, headers});
+    }
 
-	return axios({ method, url, headers });
+    return axios({ method, url, headers });
 }
 
 /**
@@ -79,22 +79,22 @@ function makeAPIRequest(requestInfo) {
  */
 function handleAction(action) {
 
-	const { request } = action.data;
-	const [ requestType, successType, failureType ] = action.data.types;
+    const { request } = action.data;
+    const [ requestType, successType, failureType ] = action.data.types;
 
-	store.dispatch({ type: requestType });
+    store.dispatch({ type: requestType });
 
-	makeAPIRequest(request).then((response) => {
-		store.dispatch({ type: successType, data: response.data });
-	}).catch((error) => {
-		const { response } = error;
+    makeAPIRequest(request).then((response) => {
+        store.dispatch({ type: successType, data: response.data });
+    }).catch((error) => {
+        const { response } = error;
 
-		if (isTokenFailError(response, requestType)) {
-			store.dispatch({ type: actionTypes.INVOKE_API_FAIL, data: { response, initialAction: action }});
-		} else {
-			store.dispatch({ type: failureType, data: response });
-		}
-	});
+        if (isTokenFailError(response, requestType)) {
+            store.dispatch({ type: actionTypes.INVOKE_API_FAIL, data: { response, initialAction: action }});
+        } else {
+            store.dispatch({ type: failureType, data: response });
+        }
+    });
 }
 
 /**
@@ -103,13 +103,13 @@ function handleAction(action) {
  * @return {Function} Middleware function.
  */
 export function createHackerMiddleware(opt) {
-	return (storeRef) => {
-		store = storeRef;
-		options = opt;
+    return (storeRef) => {
+        store = storeRef;
+        options = opt;
 
-		return (next) => (action) => {
-				if (isHackerMiddlewareAction(action)) handleAction(action);
-				next(action);
-		};
-	};
+        return (next) => (action) => {
+                if (isHackerMiddlewareAction(action)) handleAction(action);
+                next(action);
+        };
+    };
 }
