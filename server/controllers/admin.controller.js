@@ -160,7 +160,7 @@ module.exports = {
             }
 
             try {
-                hasGoldenTicket = !!(await User.finxdOne({ _id: userId, 'reviews.goldenTicket': true }));
+                hasGoldenTicket = !!(await User.findOne({ _id: userId, 'reviews.goldenTicket': true }));
             } catch (err) {
                 throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_REVIEWS_ADD, err);
             }
@@ -178,7 +178,7 @@ module.exports = {
                     { $set: { goldenTickets: numberOfGoldenTicketsRemaining } }
                 );
             } catch (err) {
-                throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_GOLDEN_TICKETS_REDUCE);
+                throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_GOLDEN_TICKETS_REDUCE, err);
             }
         }
 
