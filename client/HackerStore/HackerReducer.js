@@ -51,6 +51,7 @@ const initialState = {
     isSidebarVisible: false,
 
     applicationToReview: {},
+    applicationsWithReviews: [],
     settings: {},
     reviewers: []
 };
@@ -89,7 +90,8 @@ export const selectors = {
     getSettings: (state) => state[reducerMount].settings,
     getReviewers: (state) => state[reducerMount].reviewers,
     getDashboardSuccessMessages: (state) => state[reducerMount].dashboardSuccessMessages,
-    getDashboardErrorMessages: (state) => state[reducerMount].dashboardErrorMessages
+    getDashboardErrorMessages: (state) => state[reducerMount].dashboardErrorMessages,
+    getApplicationsWithReviews: (state) => state[reducerMount].applicationsWithReviews
 };
 
 /**
@@ -363,6 +365,25 @@ const handlers = {
     },
 
     [actionTypes.APPLICATION_REVIEW_SUBMIT_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
+    },
+
+    [actionTypes.FETCH_APPLICATIONS_WITH_REVIEWS]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.APPLICATIONS_WITH_REVIEWS_FETCHED]: (state, action) => {
+        const { applicationsWithReviews } = action.data; // updated user
+        return {
+            ...state,
+            applicationsWithReviews
+        };
+    },
+
+    [actionTypes.APPLICATIONS_WITH_REVIEWS_FETCH_ERROR]: (state, action) => {
         const { message: errorMessage } = action.data.data;
         return reduceDashboardErrorMessage(state, errorMessage);
 
