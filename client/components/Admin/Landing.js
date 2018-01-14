@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-const Admin = () => (
-	<div>Admin</div>
+export default () => (
+    <div>Admin</div>
 );
-
-export default Admin;

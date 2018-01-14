@@ -1,6 +1,6 @@
-import React from 'react';
 import { Container, Header, Segment } from 'semantic-ui-react';
 import Emoji from 'react-emoji-render';
+import React from 'react';
 
 export default () => (
     <Container text style={{ marginTop: '3em' }}>

@@ -16,19 +16,19 @@ const EMAIL_TEMPLATES = {
 };
 
 const ERRORS = {
-	SENDGRID_ERROR: {
-		code: 500,
-		type: "SENDGRID_ERROR"
-	}
+    SENDGRID_ERROR: {
+        code: 500,
+        type: "SENDGRID_ERROR"
+    }
 };
 
 const ERROR_MESSAGES = {
-	RESET_PASSWORD_NO_SEND: "The reset password email did not send correctly!",
-	SUCCESSFUL_RESET_NO_SEND: "The successful reset password email did not send correctly!"
+    RESET_PASSWORD_NO_SEND: "The reset password email did not send correctly!",
+    SUCCESSFUL_RESET_NO_SEND: "The successful reset password email did not send correctly!"
 };
 
 function createError(errorTemplate, message, data = {}) {
-	return Object.assign({}, errorTemplate, { message, data });
+    return Object.assign({}, errorTemplate, { message, data });
 }
 
 /**
@@ -40,13 +40,13 @@ function createError(errorTemplate, message, data = {}) {
  * @return {Object} Sendgrid email request.
  */
 function createEmailMsg({ toEmail, subject, textContent, htmlContent}) {
-	return {
-		to: toEmail,
-		from: QHACKS_NO_REPLY_EMAIL,
-		subject: subject,
-		text: textContent,
-		html: htmlContent
-	};
+    return {
+        to: toEmail,
+        from: QHACKS_NO_REPLY_EMAIL,
+        subject: subject,
+        text: textContent,
+        html: htmlContent
+    };
 }
 
 /**
@@ -55,21 +55,21 @@ function createEmailMsg({ toEmail, subject, textContent, htmlContent}) {
  * @return {Promise} SendGrid request promise.
  */
 function sendPasswordResetSuccessfulEmail(user) {
-	return new Promise((resolve, reject) => {
-		if (!SENDGRID_API_KEY) resolve();
+    return new Promise((resolve, reject) => {
+        if (!SENDGRID_API_KEY) resolve();
 
-		const request = createEmailMsg({
-			toEmail: user.email,
-			subject: 'QHacks Password Reset Successful',
-			textContent: 'Your password has been updated!',
-			htmlContent: '<p>Your QHacks password has been updated!</p>'
-		});
+        const request = createEmailMsg({
+            toEmail: user.email,
+            subject: 'QHacks Password Reset Successful',
+            textContent: 'Your password has been updated!',
+            htmlContent: '<p>Your QHacks password has been updated!</p>'
+        });
 
-		sendgrid.send(request, (err, result) => {
-			if (err) reject(createError(ERRORS.SENDGRID_ERROR, ERROR_MESSAGES.SUCCESSFUL_RESET_NO_SEND, err));
-			resolve();
-		});
-	});
+        sendgrid.send(request, (err, result) => {
+            if (err) reject(createError(ERRORS.SENDGRID_ERROR, ERROR_MESSAGES.SUCCESSFUL_RESET_NO_SEND, err));
+            resolve();
+        });
+    });
 }
 
 /**
@@ -78,25 +78,25 @@ function sendPasswordResetSuccessfulEmail(user) {
  * @return {Promise} SendGrid request promise.
  */
 function sendResetPasswordEmail(user) {
-	return new Promise((resolve, reject) => {
-		if (!SENDGRID_API_KEY) resolve();
+    return new Promise((resolve, reject) => {
+        if (!SENDGRID_API_KEY) resolve();
 
-		const request = createEmailMsg({
-			toEmail: user.email,
-			subject: 'QHacks Password Reset Email',
-			textContent: `Someone has requested to reset your QHacks account password, click this link to do so: https://${EMAIL_URL_HOST}/update-password/${user.passwordResetHash}`,
-			htmlContent: `<p>Someone has requested to reset your QHacks account password, click this link to do so: https://${EMAIL_URL_HOST}/update-password/${user.passwordResetHash}</p>`
-		});
+        const request = createEmailMsg({
+            toEmail: user.email,
+            subject: 'QHacks Password Reset Email',
+            textContent: `Someone has requested to reset your QHacks account password, click this link to do so: https://${EMAIL_URL_HOST}/update-password/${user.passwordResetHash}`,
+            htmlContent: `<p>Someone has requested to reset your QHacks account password, click this link to do so: https://${EMAIL_URL_HOST}/update-password/${user.passwordResetHash}</p>`
+        });
 
-		sendgrid.send(request, (err, result) => {
-			if (err) reject(createError(ERRORS.SENDGRID_ERROR, ERROR_MESSAGES.RESET_PASSWORD_NO_SEND, err));
-			resolve();
-		});
-	});
+        sendgrid.send(request, (err, result) => {
+            if (err) reject(createError(ERRORS.SENDGRID_ERROR, ERROR_MESSAGES.RESET_PASSWORD_NO_SEND, err));
+            resolve();
+        });
+    });
 }
 
 module.exports = {
-	mailer,
-	sendResetPasswordEmail,
-	sendPasswordResetSuccessfulEmail
+    mailer,
+    sendResetPasswordEmail,
+    sendPasswordResetSuccessfulEmail
 };

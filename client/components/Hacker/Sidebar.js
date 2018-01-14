@@ -1,6 +1,6 @@
+import { Sidebar, SidebarItem } from '../Dashboard';
 import React, { Component } from 'react';
 import { Icon } from 'semantic-ui-react';
-import { Sidebar, SidebarItem } from '../Dashboard';
 
 export default ({ ...props }) => (
     <Sidebar {...props}>

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
+import React, { Component } from 'react';
 
 /**
  * This component is used to render a collection of of <PrivateRoute> components as children.

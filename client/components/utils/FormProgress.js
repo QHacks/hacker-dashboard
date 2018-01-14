@@ -1,6 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import './FormProgress.less';
+import React from 'react';
 
 const DEFAULT_CONTAINER_CLASSES = ['form-progress', 'container'];
 const DEFAULT_STEP_CLASSES = ['form-progress', 'step'];

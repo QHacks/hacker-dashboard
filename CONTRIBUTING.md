@@ -14,4 +14,4 @@ Everything that you work on should be attached to an issue in the repository. Th
 
 ## Gitflow
 
-Our Git worflow is [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). Please follow Gitflow when creating new features
+Our Git workflow is [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). Please follow Gitflow when creating new features

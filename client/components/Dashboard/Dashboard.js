@@ -1,13 +1,13 @@
-import { actionCreators, selectors } from '../../HackerStore';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import MenuBar from '../utils/MenuBar';
-import { Route, Switch } from 'react-router-dom';
-import PrivateRoute from '../utils/PrivateRoute';
 import { Landing as AdminLanding, Sidebar as AdminSidebar, Review, Settings } from '../Admin';
 import { Landing as HackerLanding, Sidebar as HackerSidebar } from '../Hacker';
-import { AuthSwitch, NotFound } from '../utils';
+import { actionCreators, selectors } from '../../HackerStore';
 import { Message, Segment, Sidebar } from 'semantic-ui-react';
+import { Route, Switch } from 'react-router-dom';
+import PrivateRoute from '../utils/PrivateRoute';
+import { AuthSwitch, NotFound } from '../utils';
+import React, { Component } from 'react';
+import MenuBar from '../utils/MenuBar';
+import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import uuid from 'uuid/v4';
 
