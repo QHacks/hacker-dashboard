@@ -7,8 +7,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './UpdatePassword.less';
 
-const { updatePasswordForReset } = actionCreators;
 const { getIsPasswordUpdated, getIsPasswordUpdatedError, getIsPasswordUpdatedLoading } = selectors;
+const { updatePasswordForReset } = actionCreators;
 
 class UpdatePassword extends Component {
 

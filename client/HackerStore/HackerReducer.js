@@ -27,6 +27,7 @@ const initialState = {
 
     loginLoading: false,
     loginError: false,
+
     applicationError: false,
     applicationLoading: false,
     applicationFormErrorMessages: [],
@@ -48,8 +49,6 @@ const initialState = {
     isAdmin: false,
     isHacker: true,
     isPartner: false,
-
-    isSidebarVisible: false,
 
     applicationToReview: {},
     applicationsWithReviews: [],
@@ -90,7 +89,6 @@ export const selectors = {
     getIsAdmin: (state) => state[reducerMount].isAdmin,
     getIsHacker: (state) => state[reducerMount].isHacker,
     getIsPartner: (state) => state[reducerMount].isPartner,
-    getIsSidebarVisible: (state) => state[reducerMount].isSidebarVisible,
     getApplicationToReview: (state) => state[reducerMount].applicationToReview,
     getSettings: (state) => state[reducerMount].settings,
     getReviewers: (state) => state[reducerMount].reviewers,
@@ -276,13 +274,6 @@ const handlers = {
         return {
             ...state,
             applicationFormErrorMessages
-        };
-    },
-
-    [actionTypes.TOGGLE_SIDEBAR_VISIBILITY]: (state, action) => {
-        return {
-            ...state,
-            isSidebarVisible: !state.isSidebarVisible
         };
     },
 

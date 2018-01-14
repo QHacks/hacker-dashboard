@@ -29,7 +29,6 @@ const PrivateRoute = ({ component: ComposedComponent, type, ...rest }) => {
                 );
             }
 
-
             const isNecessaryRole = isRole[type];
             if (type && !isNecessaryRole) return null;
 

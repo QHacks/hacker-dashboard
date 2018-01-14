@@ -28,27 +28,16 @@ class Dashboard extends Component {
         return (isAdmin && 'admin') || (isHacker && 'hacker') || (isPartner && 'partner');
     }
 
-    handleBarsClick() {
-        this.props.toggleSidebarVisibility();
-    }
-
     handleLogoutClick() {
         this.props.logout();
     }
 
-    renderSidebar() {
-        const { isSidebarVisible } = this.props;
-        const authType = this.getCurrentAuthType();
-        return (
-            <AuthSwitch type={authType}>
-                <PrivateRoute path="*"
-                              type="admin"
-                              component={() => <AdminSidebar visible={isSidebarVisible}/>}/>
-                <PrivateRoute path="*"
-                              type="hacker"
-                              component={() => <HackerSidebar visible={isSidebarVisible}/>}/>
-            </AuthSwitch>
-        );
+    handleDashboardClick() {
+        this.props.logout();
+    }
+
+    handleProfileClick() {
+        this.props.logout();
     }
 
     renderBody() {
@@ -112,18 +101,15 @@ class Dashboard extends Component {
     render() {
         return (
             <div style={{ height: '100vh' }}>
-                <MenuBar onBarsClick={this.handleBarsClick.bind(this)}
-                         onLogoutClick={this.handleLogoutClick.bind(this)}/>
-                <Sidebar.Pushable>
-                    {this.renderSidebar()}
-                    <Sidebar.Pusher>
-                        <Segment basic>
-                            {this.renderBody()}
-                        </Segment>
-                        {this.renderDashboardSuccessMessages()}
-                        {this.renderDashboardErrorMessages()}
-                    </Sidebar.Pusher>
-                </Sidebar.Pushable>
+                <MenuBar onLogoutClick={this.handleLogoutClick.bind(this)}
+                         onDashboardClick={this.handleDashboardClick.bind(this)}
+                         onProfileClick={this.handleProfileClick.bind(this)}
+                />
+                <Segment basic>
+                    {this.renderDashboardSuccessMessages()}
+                    {this.renderDashboardErrorMessages()}
+                    {this.renderBody()}
+                </Segment>
             </div>
         );
     }
@@ -132,11 +118,10 @@ class Dashboard extends Component {
 function mapStateToProps(state, ownProps) {
     return {
         ...ownProps,
-        errorMessages: getDashboardErrorMessages(state),
         isAdmin: getIsAdmin(state),
         isHacker: getIsHacker(state),
         isPartner: getIsPartner(state),
-        isSidebarVisible: getIsSidebarVisible(state),
+        errorMessages: getDashboardErrorMessages(state),
         successMessages: getDashboardSuccessMessages(state)
     };
 }
@@ -144,6 +129,5 @@ function mapStateToProps(state, ownProps) {
 export default connect(mapStateToProps, {
     clearDashboardErrorMessage,
     clearDashboardSuccessMessage,
-    logout,
-    toggleSidebarVisibility
+    logout
 })(Dashboard);

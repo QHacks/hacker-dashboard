@@ -7,8 +7,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './ResetPassword.less';
 
-const { createResetHash, clearResetPassword } = actionCreators;
 const { getIsPasswordReset, getIsPasswordResetError, getIsPasswordResetLoading } = selectors;
+const { createResetHash, clearResetPassword } = actionCreators;
 
 class ResetPassword extends Component {
 

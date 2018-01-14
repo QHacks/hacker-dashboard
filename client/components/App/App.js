@@ -4,6 +4,7 @@ import UpdatePassword from '../UpdatePassword';
 import ResetPassword from '../ResetPassword';
 import React, { Component } from 'react';
 import Dashboard from '../Dashboard';
+import Profile from '../Profile';
 import Login from '../Login';
 import Apply from '../Apply';
 
@@ -17,6 +18,7 @@ export default class App extends Component {
                     <Route path="/reset-password" component={ResetPassword}/>
                     <Route path="/update-password/:hash" component={UpdatePassword}/>
                     <PrivateRoute path="/" component={Dashboard}/>
+                    <PrivateRoute path="/profile" component={Profile}/>
                 </Switch>
             </div>
         );
