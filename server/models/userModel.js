@@ -2,42 +2,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const _ = require('lodash');
-const mlhSchools = require('../strings/mlhSchools.json');
-const { USER } = require('../strings');
+const { SCHOOLS, USER } = require('../strings');
 
 const SALT_WORK_FACTOR = 10;
 
-const DEGREE_TYPES = [
-    'Bachelor\'s degree',
-    'Master\'s degree',
-    'Ph.D.',
-    'High School',
-    'Other'
-];
-
-const GENDERS = [
-    'Female',
-    'Male',
-    'Other',
-    'Prefer not to say'
-];
-
-const MONTHS_IN_A_YEAR = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-];
-
-const NUMBER_OF_HACKATHONS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10+'];
+const { DEGREE_TYPES, GENDERS, MONTHS_IN_A_YEAR, NUMBER_OF_HACKATHONS } = USER;
 
 // TODO: Application specific fields should be moved here. i.e. Why QHacks? etc.
 const ApplicationSchema = new mongoose.Schema({
@@ -160,7 +129,7 @@ const UserSchema = new mongoose.Schema({
     },
     school: {
         type: String,
-        enum: mlhSchools
+        enum: SCHOOLS
     },
     degreeType: {
         type: String,
