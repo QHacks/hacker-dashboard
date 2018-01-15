@@ -27,6 +27,7 @@ const ERROR_MESSAGES = {
     DB_USER: 'Could not retrieve that user from the database!',
     DB_GOLDEN_TICKETS_REDUCE: 'Could not reduce the amount of golden tickets for the reviewer!',
     DB_APPLICATIONS_WITH_REVIEWS: 'Could not retrieve any applications with reviews from the database!',
+    DB_UPDATE_APPLICATION_STATUS: 'Could not update the application status of the supplied user for the specified event!',
 
     NO_APPLICATION_TO_REVIEW_EXISTS: 'No application to review exists in the database!',
     NO_ADMINS_EXIST: 'No admins exist in the database!',
@@ -34,7 +35,10 @@ const ERROR_MESSAGES = {
     NO_SETTINGS_EXIST: 'No settings exist in the database!',
     NO_GOLDEN_TICKETS: 'No golden tickets are left for this reviewer!',
     ALREADY_HAS_GOLDEN_TICKET: 'This application already has a golden ticket!',
-    NO_APPLICATIONS_WITH_REVIEWS_EXIST: 'No applications with reviews exist in the database!'
+    NO_APPLICATIONS_WITH_REVIEWS_EXIST: 'No applications with reviews exist in the database!',
+    INVALID_APPLICATION_STATUS: 'Invalid application status supplied!',
+    INVALID_USER_ID: 'A user with this identifier not exist!',
+    INVALID_EVENT_ID: 'An event with this identifier not exist!'
 };
 const REVIEW_FIELDS = [
     'score',
@@ -65,7 +69,7 @@ module.exports = {
                     {
                         $or: [
                             { 'reviews.goldenTicket': false },
-                            { 'reviews.goldenTicket': { $exists: false }}
+                            { 'reviews.goldenTicket': { $exists: false } }
                         ]
                     }
                 ]
@@ -84,7 +88,7 @@ module.exports = {
     async getApplicationsWithReviews() {
         let applications;
         try {
-            applications = await User.find({ reviews: { $exists: true, $not: {$size: 0} }});
+            applications = await User.find({ reviews: { $exists: true, $not: { $size: 0 } } });
         } catch (err) {
             throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_APPLICATIONS_WITH_REVIEWS, err);
         }
@@ -206,6 +210,33 @@ module.exports = {
             );
         } catch (err) {
             throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_REVIEWS_ADD, err);
+        }
+
+        return updatedUser;
+    },
+
+    async updateApplicationStatus(userId, eventId, status) {
+        if (!userId) {
+            throw createError(ERRORS.BAD_REQUEST, ERROR_MESSAGES.INVALID_USER_ID);
+        }
+
+        if (!eventId) {
+            throw createError(ERRORS.BAD_REQUEST, ERROR_MESSAGES.INVALID_EVENT_ID);
+        }
+
+        if (!status || !USER.APPLICATION.STATUSES[status]) {
+            throw createError(ERRORS.BAD_REQUEST, ERROR_MESSAGES.INVALID_APPLICATION_STATUS);
+        }
+
+        let updatedUser;
+        try {
+            updatedUser = await User.findOneAndUpdate(
+                { _id: userId, 'applications.event': eventId },
+                { $set: { 'applications.$.status': USER.APPLICATION.STATUSES[status] } },
+                DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
+            );
+        } catch (e) {
+            throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_UPDATE_APPLICATION_STATUS, e);
         }
 
         return updatedUser;

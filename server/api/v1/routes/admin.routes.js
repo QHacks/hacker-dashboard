@@ -10,6 +10,7 @@ module.exports = (ctr) => {
 
     const { admin, user } = ctr;
 
+    // TODO: Update application routes to take an eventId
     adminAPI.get(`/${ADMIN}/${APPLICATIONS}/${REVIEW}`, async (req, res) => {
         try {
             const { userId } = req.user;
@@ -21,14 +22,26 @@ module.exports = (ctr) => {
         }
     });
 
+    // TODO: Should this be a PUT?
     adminAPI.post(`/${ADMIN}/${APPLICATIONS}/${REVIEW}/:userId`, async (req, res) => {
+        const { userId } = req.params;
+        const { review } = req.body;
         try {
-            const { userId } = req.params;
-            const { review } = req.body;
             const updatedUser = await admin.submitApplicationReview(userId, review);
             return res.status(201).json({ user: updatedUser });
         } catch (err) {
             return res.status(err.code).json(err);
+        }
+    });
+
+    adminAPI.put(`/${ADMIN}/${APPLICATIONS}/:eventId/:userId`, async (req, res) => {
+        const { eventId, userId } = req.params;
+        const { status } = req.body;
+        try {
+            const updatedUser = await admin.updateApplicationStatus(userId, eventId, status);
+            return res.status(200).json({ user: updatedUser });
+        } catch (e) {
+            return res.status(e.code).json(e);
         }
     });
 
