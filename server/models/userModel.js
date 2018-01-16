@@ -1,44 +1,61 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
-const mlhSchools = require('../strings/mlhSchools.json');
-const USER = require('../strings/user.strings');
+const _ = require('lodash');
+const { SCHOOLS, USER } = require('../strings');
 
 const SALT_WORK_FACTOR = 10;
 
-const DEGREE_TYPES = [
-    'Bachelor\'s degree',
-    'Master\'s degree',
-    'Ph.D.',
-    'High School',
-    'Other'
-];
+const { DEGREE_TYPES, GENDERS, MONTHS_IN_A_YEAR, NUMBER_OF_HACKATHONS } = USER;
 
-const GENDERS = [
-    'Female',
-    'Male',
-    'Other',
-    'Prefer not to say'
-];
+// TODO: Application specific fields should be moved here. i.e. Why QHacks? etc.
+const ApplicationSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: uuid.v4
+    },
+    event: {
+        type: String,
+        ref: 'Event',
+        index: true,
+        required: true,
+        unique: true
+    },
+    rsvp: {
+        type: String,
+        enum: Object.values(USER.APPLICATION.RSVPS),
+        default: USER.APPLICATION.RSVPS.NOT_NEEDED
+    },
+    status: {
+        type: String,
+        enum: Object.values(USER.APPLICATION.STATUSES),
+        default: USER.APPLICATION.STATUSES.APPLIED
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    modifiedAt: {
+        type: Date,
+        default: Date.now
+    }
+});
 
-const MONTHS_IN_A_YEAR = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-];
+ApplicationSchema.pre('findOneAndUpdate', function(next) {
+    this.update({}, { $set: { modifiedAt: new Date() } });
+    next();
+});
+ApplicationSchema.pre('update', function(next) {
+    this.update({}, { $set: { modifiedAt: new Date() } });
+    next();
+});
 
-const NUMBER_OF_HACKATHONS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10+'];
-
+// TODO: Should be a subdocument of the ApplicationSchema
 const ReviewSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: uuid.v4
+    },
     score: {
         type: Number,
         required: true
@@ -53,15 +70,33 @@ const ReviewSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    performedAt: {
+    createdAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now
+    },
+    modifiedAt: {
+        type: Date,
+        default: Date.now
     },
     goldenTicket: {
         type: Boolean,
         default: false
     }
 });
+
+ReviewSchema.pre('findOneAndUpdate', function(next) {
+    this.update({}, { $set: { modifiedAt: new Date() } });
+    next();
+});
+ReviewSchema.pre('update', function(next) {
+    this.update({}, { $set: { modifiedAt: new Date() } });
+    next();
+});
+
+/*
+ * TODO: Leave basic information (name, email, etc.) on the root level of the object, but move event specific info
+ * (whyQhacks, applciations, etc.) to an array for each event
+ */
 
 const UserSchema = new mongoose.Schema({
     _id: {
@@ -94,7 +129,7 @@ const UserSchema = new mongoose.Schema({
     },
     school: {
         type: String,
-        enum: mlhSchools
+        enum: SCHOOLS
     },
     degreeType: {
         type: String,
@@ -106,28 +141,20 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: MONTHS_IN_A_YEAR
     },
-    travelOrigin: String,
+    travelOrigin: String, // TODO: Move to ApplicationSchema
     numberOfHackathons: {
         type: String,
         enum: NUMBER_OF_HACKATHONS
-    },
-    whyQhacks: String,
-    links: String,
+    }, // TODO: Move to ApplicationSchema
+    whyQhacks: String, // TODO: Move to ApplicationSchema
+    links: String, // TODO: Move to ApplicationSchema
     events: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Event',
         required: true
-    }],
-    applicationStatus: {
-        type: String,
-        enum: ['APPLIED', 'REJECTED', 'WAITING_LIST', 'ACCEPTED'],
-        default: 'APPLIED'
-    },
-    rsvpStatus: {
-        type: String,
-        enum: ['NOT_NEEDED', 'PENDING', 'DECLINED', 'ACCEPTED'],
-        default: 'NOT_NEEDED'
-    },
+    }], // TODO: Do we need this anymore since we require an event on an application? We could scope admin permissions
+        // by event
+    applications: [ApplicationSchema],
     createdAt: {
         type: Date,
         default: Date.now
@@ -146,13 +173,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: Object.values(USER.ROLES),
         default: USER.ROLES.HACKER
-    },
+    }, // TODO: Should be an array so a person can have different permissions each year
     reviewGroup: {
         type: Number,
         min: [0, 'Group number must be a valid array index, i.e. non-negative.']
-    },
-    reviews: [ReviewSchema],
-    goldenTickets: Number
+    }, // TODO: Move this to an AdminSchema?
+    reviews: [ReviewSchema], // TODO: Should this be a part of the ApplicationSchema?
+    goldenTickets: Number // TODO: Move this to an AdminSchema?
 });
 
 UserSchema.static({
@@ -190,6 +217,7 @@ UserSchema.method({
  * @param {Function} next Move to next middleware.
  * @return {Function} Next middleware.
  */
+// TODO: This doesn't get called on update or findOneAndUpdate
 UserSchema.pre('save', function(next) {
     if (!this.isModified('password')) return next();
 
@@ -197,13 +225,34 @@ UserSchema.pre('save', function(next) {
         if (err) return next(err);
 
         bcrypt.hash(this.password, salt, (err, hash) => {
-            if (err) next(err);
+            if (err) return next(err);
 
             this.password = hash;
             this.modifiedAt = Date.now();
-            next();
+            return next();
         });
     });
+});
+
+UserSchema.pre('findOneAndUpdate', function(next) {
+    this.update({}, { $set: { modifiedAt: new Date() } });
+    return next();
+});
+UserSchema.pre('update', function(next) {
+    this.update({}, { $set: { modifiedAt: new Date() } });
+    return next();
+});
+
+/**
+ * Helper method to automatically add an RSVP to the UserSchema
+ * when an application has had its status changed to 'ACCEPTED'
+ */
+UserSchema.pre('findOneAndUpdate', function(next) {
+    const event = this.getQuery()['applications.event'];
+    const updatedStatus = this.getUpdate().$set['applications.$.status'];
+    if (!event || !updatedStatus || !_.isEqual(updatedStatus, USER.APPLICATION.STATUSES.ACCEPTED)) return next();
+    this.update({ 'applications.event': event }, { $set: { 'applications.$.rsvp': USER.APPLICATION.RSVPS.PENDING } });
+    return next();
 });
 
 module.exports = mongoose.model('User', UserSchema);

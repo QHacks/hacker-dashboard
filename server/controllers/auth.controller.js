@@ -4,6 +4,8 @@ const mailer = require('../mailer');
 const crypto = require('crypto');
 const _ = require('lodash');
 const { Event, User } = require('../models');
+const { ERROR_TEMPLATES, createError } = require('../errors');
+const { ERROR } = require('../strings');
 
 
 const JWT_ISSUER = 'QHacks Authentication';
@@ -13,41 +15,8 @@ const QHACKS_2018_SLUG = 'qhacks-2018';
 
 const { AUTH_SECRET } = process.env;
 
-const ERRORS = {
-    UNPROCESSABLE: {
-        code: 422,
-        type: "VALIDATION"
-    },
-    NOT_FOUND: {
-        code: 404,
-        type: 'MISSING'
-    },
-    DB_ERROR: {
-        code: 503,
-        type: "DB_ERROR"
-    },
-    INTERNAL_SERVER_ERROR: {
-        code: 500,
-        type: "INTERNAL_SERVER_ERROR"
-    },
-    UNAUTHORIZED: {
-        code: 401,
-        type: "AUTHORIZATION"
-    }
-};
 
-const ERROR_MESSAGES = {
-    INVALID_USER_ID: "A user with this identifier does not exist!",
-    INVALID_USER_EMAIL: "A user with this email does not exist!",
-    INVALID_REFRESH_TOKEN: "The refresh token provided is invalid!",
-    INVALID_CREDENTIALS: "You have provided invalid credentials!",
-    INVALID_RESET_HASH: "A user with this reset hash does not exist!",
 
-    DB_USER: "Error creating User in the database!",
-    DB_USERS: "Error retreiving Users from the database!",
-
-    RESET_HASH_CREATE_FAIL: "Error when creating the reset hash!"
-};
 
 const HACKER_SIGN_UP_FIELDS = [
     'firstName',
@@ -67,10 +36,6 @@ const HACKER_SIGN_UP_FIELDS = [
     'whyQhacks',
     'links'
 ];
-
-function createError(errorTemplate, message, data = {}) {
-    return Object.assign({}, errorTemplate, { message, data });
-}
 
 /**
  * Creates a user access token.
@@ -123,10 +88,10 @@ module.exports = {
 
                         resolve({ accessToken, refreshToken, user: updatedUser });
                     }).catch((err) => {
-                        reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
+                        reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID, err));
                     });
                 }).catch((err) => {
-                reject(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_CREDENTIALS));
+                reject(createError(ERROR_TEMPLATES.UNAUTHORIZED, ERROR.INVALID_CREDENTIALS));
             });
         });
     },
@@ -134,7 +99,7 @@ module.exports = {
     refresh(refreshToken) {
         return new Promise((resolve, reject) => {
             jwt.verify(refreshToken, AUTH_SECRET, (err, decoded) => {
-                if (err) reject(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_REFRESH_TOKEN, err));
+                if (err) reject(createError(ERROR_TEMPLATES.UNAUTHORIZED, ERROR.INVALID_REFRESH_TOKEN, err));
                 const { userId } = decoded;
                 const refreshToken = createRefreshToken(userId);
 
@@ -143,7 +108,7 @@ module.exports = {
 
                     resolve({ accessToken, refreshToken, user: updatedUser });
                 }).catch((err) => {
-                    reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
+                    reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID, err));
                 });
 
             });
@@ -167,15 +132,15 @@ module.exports = {
                                     resolve({ accessToken, refreshToken, user: updatedUser });
                                 })
                                 .catch((err) => {
-                                    reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
+                                    reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID, err));
                                 });
                         })
                         .catch((err) => {
-                            reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
+                            reject(createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_CREATE, err));
                         });
                 })
                 .catch((err) => {
-                    reject(createError(ERRORS.UNPROCESSABLE, err.message));
+                    reject(createError(ERROR_TEMPLATES.UNPROCESSABLE, err.message));
                 });
         });
     },
@@ -193,10 +158,10 @@ module.exports = {
                         reject(err);
                     });
                 }).catch((err) => {
-                    reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
+                    reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID, err));
                 });
             }).catch((err) => {
-                reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_EMAIL, err));
+                reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_EMAIL, err));
             });
         });
     },
@@ -204,7 +169,7 @@ module.exports = {
     updatePasswordForReset(resetHash, password) {
         return new Promise((resolve, reject) => {
             User.findOne({ passwordResetHash: resetHash }).then((user) => {
-                if (!user) reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_RESET_HASH));
+                if (!user) reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_RESET_HASH));
 
                 user.password = password;
                 user.passwordResetHash = null;
@@ -215,10 +180,10 @@ module.exports = {
                         reject(err);
                     });
                 }).catch((err) => {
-                    reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
+                    reject(createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_CREATE, err));
                 });
             }).catch((err) => {
-                reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_EMAIL, err));
+                reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_EMAIL, err));
             });
         });
     }

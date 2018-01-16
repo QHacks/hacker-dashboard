@@ -1,4 +1,4 @@
-[
+const SCHOOLS = [
     "ABES Engineering College",
     "AGH University of Science and Technology",
     "Aalto University",
@@ -1498,4 +1498,6 @@
     "Pittsburgh Technical College - Philadelphia",
     "El Centro de Estudiantes",
     "Other"
-]
+];
+
+module.exports = SCHOOLS;

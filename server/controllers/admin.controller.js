@@ -1,41 +1,9 @@
 const _ = require('lodash');
 const { Settings, User } = require('../models');
-const { USER } = require('../strings');
+const { ERROR_TEMPLATES, createError } = require('../errors');
+const { ERROR, USER } = require('../strings');
 
 const DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS = { new: true };
-const ERRORS = {
-    BAD_REQUEST: {
-        code: 400,
-        type: 'BAD_REQUEST'
-    },
-    NOT_FOUND: {
-        code: 404,
-        type: 'MISSING'
-    },
-    DB_ERROR: {
-        code: 503,
-        type: 'DB_ERROR'
-    }
-};
-const ERROR_MESSAGES = {
-    DB_ADMINS: 'Could not retrieve admins from the database!',
-    DB_APPLICATION_TO_REVIEW: 'Could not retrieve an application to review from the database!',
-    DB_REVIEWERS: 'Could not retrieve reviewers from the database!',
-    DB_REVIEWS_ADD: 'Could not add a review to the specified application',
-    DB_REVIEWS_GET: 'Could not get a review from the specified application',
-    DB_SETTINGS: 'Could not retrieve settings from the database!',
-    DB_USER: 'Could not retrieve that user from the database!',
-    DB_GOLDEN_TICKETS_REDUCE: 'Could not reduce the amount of golden tickets for the reviewer!',
-    DB_APPLICATIONS_WITH_REVIEWS: 'Could not retrieve any applications with reviews from the database!',
-
-    NO_APPLICATION_TO_REVIEW_EXISTS: 'No application to review exists in the database!',
-    NO_ADMINS_EXIST: 'No admins exist in the database!',
-    NO_REVIEWERS_EXIST: 'No reviewers exist in the database!',
-    NO_SETTINGS_EXIST: 'No settings exist in the database!',
-    NO_GOLDEN_TICKETS: 'No golden tickets are left for this reviewer!',
-    ALREADY_HAS_GOLDEN_TICKET: 'This application already has a golden ticket!',
-    NO_APPLICATIONS_WITH_REVIEWS_EXIST: 'No applications with reviews exist in the database!'
-};
 const REVIEW_FIELDS = [
     'score',
     'group',
@@ -43,10 +11,6 @@ const REVIEW_FIELDS = [
     'performedAt',
     'goldenTicket'
 ];
-
-function createError(errorTemplate, message, data = {}) {
-    return Object.assign({}, errorTemplate, { message, data });
-}
 
 module.exports = {
     async getApplicationToReview(reviewGroup) {
@@ -65,17 +29,17 @@ module.exports = {
                     {
                         $or: [
                             { 'reviews.goldenTicket': false },
-                            { 'reviews.goldenTicket': { $exists: false }}
+                            { 'reviews.goldenTicket': { $exists: false } }
                         ]
                     }
                 ]
             });
         } catch (err) {
-            throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_APPLICATION_TO_REVIEW, err);
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_APPLICATION_TO_REVIEW_GET, err);
         }
 
         if (_.isEmpty(user)) {
-            throw createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.NO_APPLICATION_TO_REVIEW_EXISTS);
+            throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_APPLICATION_TO_REVIEW_EXISTS);
         }
 
         return user;
@@ -84,13 +48,13 @@ module.exports = {
     async getApplicationsWithReviews() {
         let applications;
         try {
-            applications = await User.find({ reviews: { $exists: true, $not: {$size: 0} }});
+            applications = await User.find({ reviews: { $exists: true, $not: { $size: 0 } } });
         } catch (err) {
-            throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_APPLICATIONS_WITH_REVIEWS, err);
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_APPLICATIONS_WITH_REVIEWS_GET, err);
         }
 
         if (_.isEmpty(applications)) {
-            throw createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.NO_APPLICATIONS_WITH_REVIEWS_EXIST);
+            throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_APPLICATIONS_WITH_REVIEWS_EXIST);
         }
 
         return applications;
@@ -102,11 +66,11 @@ module.exports = {
         try {
             reviewers = await User.find({ role: USER.ROLES.ADMIN, reviewGroup: { $exists: true } });
         } catch (err) {
-            throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_REVIEWERS, err);
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEWERS_GET, err);
         }
 
         if (_.isEmpty(reviewers)) {
-            throw createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.NO_REVIEWERS_EXIST);
+            throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_REVIEWERS_EXIST);
         }
 
         return reviewers;
@@ -118,11 +82,11 @@ module.exports = {
         try {
             settings = await Settings.findOne({});
         } catch (err) {
-            throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err);
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_GET, err);
         }
 
         if (_.isEmpty(settings)) {
-            throw createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.NO_SETTINGS_EXIST);
+            throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_SETTINGS_EXIST);
         }
 
         return settings;
@@ -134,11 +98,11 @@ module.exports = {
         try {
             admins = await User.find({ role: USER.ROLES.ADMIN });
         } catch (err) {
-            throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_REVIEWERS, err);
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEWERS_GET, err);
         }
 
         if (_.isEmpty(admins)) {
-            throw createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.NO_ADMINS_EXIST);
+            throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_ADMINS_EXIST);
         }
 
         const { numberOfReviewsRequired } = await this.getSettings();
@@ -166,23 +130,23 @@ module.exports = {
             try {
                 reviewer = await User.findOne({ _id: reviewerId });
             } catch (err) {
-                throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err);
+                throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR_MESSAGES.DB_USER, err);
             }
 
             const { goldenTickets = 0 } = reviewer;
 
             if (goldenTickets <= 0) {
-                throw createError(ERRORS.BAD_REQUEST, ERROR_MESSAGES.NO_GOLDEN_TICKETS);
+                throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR_MESSAGES.NO_GOLDEN_TICKETS);
             }
 
             try {
                 hasGoldenTicket = !!(await User.findOne({ _id: userId, 'reviews.goldenTicket': true }));
             } catch (err) {
-                throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_REVIEWS_ADD, err);
+                throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR_MESSAGES.DB_REVIEW_CREATE, err);
             }
 
             if (hasGoldenTicket) {
-                throw createError(ERRORS.BAD_REQUEST, ERROR_MESSAGES.ALREADY_HAS_GOLDEN_TICKET);
+                throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR_MESSAGES.ALREADY_HAS_GOLDEN_TICKET);
             }
 
             try {
@@ -194,18 +158,46 @@ module.exports = {
                     { $set: { goldenTickets: numberOfGoldenTicketsRemaining } }
                 );
             } catch (err) {
-                throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_GOLDEN_TICKETS_REDUCE, err);
+                throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR_MESSAGES.DB_GOLDEN_TICKETS_REDUCE, err);
             }
         }
 
         try {
             updatedUser = await User.findOneAndUpdate(
-                { _id: userId },
+                { _id: userId },  // TODO: add { 'reviews.group': { $ne: reviewToSubmit.group } } to avoid duplicate
+                                  // applications for a user
                 { $push: { reviews: reviewToSubmit } },
                 DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
             );
         } catch (err) {
-            throw createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_REVIEWS_ADD, err);
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR_MESSAGES.DB_REVIEW_CREATE, err);
+        }
+
+        return updatedUser;
+    },
+
+    async updateApplicationStatus(userId, eventId, status) {
+        if (!userId) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_USER_ID);
+        }
+
+        if (!eventId) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_EVENT_ID);
+        }
+
+        if (!status || !USER.APPLICATION.STATUSES[status]) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_APPLICATION_STATUS);
+        }
+
+        let updatedUser;
+        try {
+            updatedUser = await User.findOneAndUpdate(
+                { _id: userId, 'applications.event': eventId },
+                { $set: { 'applications.$.status': USER.APPLICATION.STATUSES[status] } },
+                DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
+            );
+        } catch (e) {
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_UPDATE_APPLICATION_STATUS, e);
         }
 
         return updatedUser;

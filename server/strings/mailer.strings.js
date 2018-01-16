@@ -1,4 +1,4 @@
-module.exports = {
+const MAILER = {
     ERROR: {
         SUCCESSFUL_APPLICATION: 'The successful application email did not send correctly!'
     },
@@ -6,3 +6,5 @@ module.exports = {
         SUCCESSFUL_APPLICATION: 'The successful application email sent correctly!'
     }
 };
+
+module.exports = MAILER;
