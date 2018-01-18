@@ -10,7 +10,7 @@
     "client-dev": "cross-env webpack-dev-server",
     "client-prod": "cross-env npm run client-clean && NODE_ENV=production webpack",
     "client-clean": "cross-env rimraf ./client/bundle",
-    "test": "cross-env eslint server/**/*.js client/**/*.js && nsp check --reporter checkstyle && ncu -e 2",
+    "test": "cross-env eslint server/**/*.js client/**/*.js && nsp check --reporter checkstyle && ncu -e 2 -x mongoose",
     "email-dev": "cross-env npm run email-clean && mjml ./email/templates/*.mjml -o ./email/dist/",
     "email-prod": "cross-env npm run email-clean && mjml --min ./email/templates/*.mjml -o ./email/dist/",
     "email-clean": "cross-env rimraf ./email/dist && mkdir ./email/dist"
