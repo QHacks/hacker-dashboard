@@ -5,7 +5,7 @@ const ERROR_TEMPLATES = {
     },
     UNAUTHORIZED: {
         code: 401,
-        type: "AUTHORIZATION"
+        type: 'AUTHORIZATION'
     },
     NOT_FOUND: {
         code: 404,
@@ -13,11 +13,15 @@ const ERROR_TEMPLATES = {
     },
     UNPROCESSABLE: {
         code: 422,
-        type: "VALIDATION"
+        type: 'VALIDATION'
     },
     INTERNAL_SERVER_ERROR: {
         code: 500,
-        type: "INTERNAL_SERVER_ERROR"
+        type: 'INTERNAL_SERVER_ERROR'
+    },
+    SENDGRID_ERROR: {
+        code: 500,
+        type: 'SENDGRID_ERROR'
     },
     DB_ERROR: {
         code: 503,

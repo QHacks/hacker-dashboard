@@ -16,6 +16,9 @@ const APPLICATION_TO_REVIEW_ENDPOINT = '/admin/applications/review';
 const APPLICATIONS_WITH_REVIEWS_ENDPOINT = '/admin/applications/reviewed';
 const REVIEWERS_ENDPOINT = '/admin/applications/reviewers';
 const SETTINGS_ENDPOINT = '/admin/settings';
+const EMAIL_ENDPOINT = '/admin/email';
+const EMAILS_ENDPOINT = '/admin/emails';
+const ADMINS_ENDPOINT = '/admins';
 
 /**
  * Specific middleware action types.
@@ -23,8 +26,8 @@ const SETTINGS_ENDPOINT = '/admin/settings';
  * @type {Object}
  */
 const hackerMiddlwareActionTypes = {
-    "INVOKE_API_CALL": "@@/hackerMiddleware/INVOKE_API_CALL",
-    "INVOKE_API_FAIL": "@@/hackerMiddleware/INVOKE_API_FAIL"
+    INVOKE_API_CALL: '@@/hackerMiddleware/INVOKE_API_CALL',
+    INVOKE_API_FAIL: '@@/hackerMiddleware/INVOKE_API_FAIL'
 };
 
 /**
@@ -43,13 +46,16 @@ const apiRequestTypes = {
     UPDATE_PASSWORD_RESET: '@@/hacker/UPDATE_PASSWORD_RESET',
 
     GET_USERS: '@@/hacker/GET_USERS',
+    FETCH_ADMINS: '@@/hacker/FETCH_ADMINS',
     FETCH_APPLICATION_TO_REVIEW: '@@/hacker/FETCH_APPLICATION_TO_REVIEW',
     FETCH_SETTINGS: '@@/hacker/FETCH_SETTINGS',
     FETCH_REVIEWERS: '@@/hacker/FETCH_REVIEWERS',
     FETCH_APPLICATIONS_WITH_REVIEWS: '@@/hacker/FETCH_APPLICATIONS_WITH_REVIEWS',
+    FETCH_EMAILS: '@@/hacker/FETCH_EMAILS',
 
     REASSIGN_REVIEWERS: '@@/hacker/REASSIGN_REVIEWERS',
-    SUBMIT_APPLICATION_REVIEW: '@@/hacker/SUBMIT_APPLICATION_REVIEW'
+    SUBMIT_APPLICATION_REVIEW: '@@/hacker/SUBMIT_APPLICATION_REVIEW',
+    SEND_EMAIL: '@@/hacker/SEND_EMAIL'
 };
 
 /**
@@ -66,17 +72,20 @@ const apiSuccessTypes = {
     UPDATE_PASSWORD_RESET_SUCCESS: '@@/hacker/UPDATE_PASSWORD_RESET_SUCCESS',
 
     USERS_FETCHED: '@@/hacker/USERS_FETCHED',
+    ADMINS_FETCHED: '@@/hacker/ADMINS_FETCHED',
     APPLICATION_TO_REVIEW_FETCHED: '@@/hacker/APPLICATION_TO_REVIEW_FETCHED',
     SETTINGS_FETCHED: '@@/hacker/SETTINGS_FETCHED',
     REVIEWERS_FETCHED: '@@/hacker/REVIEWERS_FETCHED',
     APPLICATIONS_WITH_REVIEWS_FETCHED: '@@/hacker/APPLICATIONS_WITH_REVIEWS_FETCHED',
+    EMAILS_FETCHED: '@@/hacker/EMAILS_FETCHED',
 
     REVIEWERS_REASSIGNED: '@@/hacker/REVIEWERS_REASSIGNED',
-    APPLICATION_REVIEW_SUBMITTED: '@@/hacker/APPLICATION_REVIEW_SUBMITTED'
+    APPLICATION_REVIEW_SUBMITTED: '@@/hacker/APPLICATION_REVIEW_SUBMITTED',
+    EMAIL_SENT: '@@/hacker/EMAIL_SENT'
 };
 
 /**
- * API Middlware failure action types.
+ * API Middleware failure action types.
  * NOTE: This action type will be dispatch from middleware
  * if the request fails (anything other than 2.x.x status).
  * @type {Object}
@@ -90,13 +99,16 @@ const apiErrorTypes = {
     UPDATE_PASSWORD_RESET_FAIL: '@@/hacker/UPDATE_PASSWORD_RESET_FAIL',
 
     USER_FETCH_ERROR: '@@/hacker/USER_FETCH_ERROR',
+    ADMINS_FETCH_ERROR: '@@/hacker/USER_FETCH_ERROR',
     APPLICATION_TO_REVIEW_FETCH_ERROR: '@@/hacker/APPLICATION_TO_REVIEW_FETCH_ERROR',
     SETTINGS_FETCH_ERROR: '@@/hacker/SETTINGS_FETCH_ERROR',
     REVIEWERS_FETCH_ERROR: '@@/hacker/REVIEWERS_FETCH_ERROR',
     APPLICATIONS_WITH_REVIEWS_FETCH_ERROR: '@@/hacker/APPLICATIONS_WITH_REVIEWS_FETCH_ERROR',
+    EMAILS_FETCH_ERROR: '@@/hacker/EMAILS_FETCH_ERROR',
 
     REVIEWERS_REASSIGN_ERROR: '@@/hacker/REVIEWERS_REASSIGN_ERROR',
-    APPLICATION_REVIEW_SUBMIT_ERROR: '@@/hacker/APPLICATION_REVIEW_SUBMIT_ERROR'
+    APPLICATION_REVIEW_SUBMIT_ERROR: '@@/hacker/APPLICATION_REVIEW_SUBMIT_ERROR',
+    EMAIL_SEND_ERROR: '@@/hacker/EMAIL_SEND_ERROR'
 };
 
 /**
@@ -111,7 +123,8 @@ const normalTypes = {
     APPLICATION_FORM_ERROR_MESSAGES_UPDATE: '@@/hacker/APPLICATION_FORM_ERROR_MESSAGES_UPDATE',
     TOGGLE_SIDEBAR_VISIBILITY: '@@/hacker/TOGGLE_SIDEBAR_VISIBILITY',
     CLEAR_DASHBOARD_SUCCESS_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_SUCCESS_MESSAGE',
-    CLEAR_DASHBOARD_ERROR_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_ERROR_MESSAGE'
+    CLEAR_DASHBOARD_ERROR_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_ERROR_MESSAGE',
+    SET_TEST_EMAIL_RECIPIENTS: '@@/hacker/SET_TEST_EMAIL_RECIPIENTS'
 };
 
 export const actionTypes = {
@@ -136,7 +149,8 @@ const normalActionCreators = {
     applicationError: (data) => ({ type: actionTypes.APPLICATION_ERROR, data }),
     toggleSidebarVisibility: () => ({ type: actionTypes.TOGGLE_SIDEBAR_VISIBILITY }),
     clearDashboardSuccessMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_SUCCESS_MESSAGE, data }),
-    clearDashboardErrorMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_ERROR_MESSAGE, data })
+    clearDashboardErrorMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_ERROR_MESSAGE, data }),
+    setTestEmailRecipients: (data) => ({ type: actionTypes.SET_TEST_EMAIL_RECIPIENTS, data })
 };
 
 /**
@@ -318,6 +332,58 @@ const invokeAPIActionCreators = {
                 url: `${API_SUFFIX}${APPLICATIONS_WITH_REVIEWS_ENDPOINT}`,
                 method: GET,
                 tokenRequired: true
+            }
+        }
+    }),
+
+    fetchEmails: () => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.FETCH_EMAILS,
+                actionTypes.EMAILS_FETCHED,
+                actionTypes.EMAILS_FETCH_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${EMAILS_ENDPOINT}`,
+                method: GET,
+                tokenRequired: true
+            }
+        }
+    }),
+
+    fetchAdmins: () => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.FETCH_ADMINS,
+                actionTypes.ADMINS_FETCHED,
+                actionTypes.ADMINS_FETCH_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${ADMINS_ENDPOINT}`,
+                method: GET,
+                tokenRequired: true
+            }
+        }
+    }),
+
+    sendEmail: (templateName, recipients) => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.SEND_EMAIL,
+                actionTypes.EMAIL_SENT,
+                actionTypes.EMAIL_SEND_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${EMAIL_ENDPOINT}`,
+                method: POST,
+                tokenRequired: true,
+                body: {
+                    recipients,
+                    templateName
+                }
             }
         }
     })

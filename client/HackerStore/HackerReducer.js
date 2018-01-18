@@ -35,6 +35,7 @@ const initialState = {
     dashboardErrorMessages: [],
 
     users: [],
+    admins: [],
 
     fetchingNewTokens: false,
 
@@ -53,7 +54,9 @@ const initialState = {
     applicationToReview: {},
     applicationsWithReviews: [],
     settings: {},
-    reviewers: []
+    reviewers: [],
+    emails: [],
+    testEmailRecipients: {} // keys are email template names
 };
 
 /**
@@ -91,7 +94,10 @@ export const selectors = {
     getReviewers: (state) => state[reducerMount].reviewers,
     getDashboardSuccessMessages: (state) => state[reducerMount].dashboardSuccessMessages,
     getDashboardErrorMessages: (state) => state[reducerMount].dashboardErrorMessages,
-    getApplicationsWithReviews: (state) => state[reducerMount].applicationsWithReviews
+    getApplicationsWithReviews: (state) => state[reducerMount].applicationsWithReviews,
+    getEmails: (state) => state[reducerMount].emails,
+    getAdmins: (state) => state[reducerMount].admins,
+    getTestEmailRecipients: (state) => state[reducerMount].testEmailRecipients
 };
 
 /**
@@ -355,13 +361,8 @@ const handlers = {
     [actionTypes.APPLICATION_REVIEW_SUBMITTED]: (state, action) => {
         const { user: updatedUser } = action.data; // updated user
         const { firstName, lastName } = updatedUser;
-        return {
-            ...state,
-            dashboardSuccessMessages: [
-                ...state.dashboardSuccessMessages,
-                `Application review submitted for ${firstName} ${lastName}`
-            ]
-        };
+        const message = `Application review submitted for ${firstName} ${lastName}`;
+        return reduceDashboardSuccessMessage(state, message);
     },
 
     [actionTypes.APPLICATION_REVIEW_SUBMIT_ERROR]: (state, action) => {
@@ -409,11 +410,84 @@ const handlers = {
                 ...state.dashboardErrorMessages.slice(index + 1)
             ]
         };
+    },
+
+    [actionTypes.FETCH_EMAILS]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.EMAILS_FETCHED]: (state, action) => {
+        const { emails } = action.data; // updated user
+        return {
+            ...state,
+            emails
+        };
+    },
+
+    [actionTypes.EMAILS_FETCH_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
+    },
+
+    [actionTypes.FETCH_ADMINS]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.ADMINS_FETCHED]: (state, action) => {
+        const { admins } = action.data;
+        return {
+            ...state,
+            admins
+        };
+    },
+
+    [actionTypes.ADMINS_FETCH_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
+    },
+
+    [actionTypes.SET_TEST_EMAIL_RECIPIENTS]: (state, action) => {
+        console.log(action);
+        return {
+            ...state,
+            testEmailRecipients: {
+                ...state.testEmailRecipients,
+                ...action.data.testEmailRecipients
+            }
+        };
+    },
+
+    [actionTypes.SEND_EMAIL]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.EMAIL_SENT]: (state, action) => {
+        const message = 'Email sent successfully!';
+        return reduceDashboardSuccessMessage(state, message);
+    },
+
+    [actionTypes.EMAIL_SEND_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
     }
 };
 
-function reduceDashboardErrorMessage(state, errorMessage) {
-    return { ...state, dashboardErrorMessages: [...state.dashboardErrorMessages, errorMessage] };
+function reduceDashboardErrorMessage(state, message) {
+    return reduceDashboardMessage(state, 'dashboardErrorMessages', message);
+}
+
+function reduceDashboardSuccessMessage(state, message) {
+    return reduceDashboardMessage(state, 'dashboardSuccessMessages', message);
+}
+
+function reduceDashboardMessage(state, key, message) {
+    return { ...state, [key]: [...state[key], message] };
 }
 
 /**

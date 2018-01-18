@@ -62,14 +62,14 @@ class Review extends Component {
 
         const applications = applicationsWithReviews.map((application) => {
             const { firstName, lastName, reviews } = application;
-            const score = reviews.reduce((score, review) => score + review.score, 0);
+            const score = Math.round(reviews.reduce((score, review) => score + review.score, 0) / reviews.length * numberOfReviewsRequired);
             const hasGoldenTicket = score > maxScore;
             return {
                 firstName,
                 lastName,
                 score,
                 hasGoldenTicket,
-                isApplicationComplete: hasGoldenTicket || (application.reviews.length === numberOfReviewsRequired)
+                isApplicationComplete: hasGoldenTicket || (application.reviews.length >= numberOfReviewsRequired)
             };
         }).sort((a, b) => b.score - a.score);
 
