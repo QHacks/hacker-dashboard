@@ -2,6 +2,8 @@ const Router = require('express').Router;
 
 const ADMIN = 'admin';
 const APPLICATIONS = 'applications';
+const EMAIL = 'email';
+const EMAILS = 'emails';
 const REVIEW = 'review';
 const SETTINGS = 'settings';
 
@@ -10,10 +12,19 @@ module.exports = (ctr) => {
 
     const { admin, user } = ctr;
 
+    adminAPI.get(`/admins`, async (req, res) => {
+        try {
+            const admins = await admin.getAdmins();
+            return res.status(200).json({ admins });
+        } catch (err) {
+            return res.status(err.code).json(err);
+        }
+    });
+
     // TODO: Update application routes to take an eventId
     adminAPI.get(`/${ADMIN}/${APPLICATIONS}/${REVIEW}`, async (req, res) => {
+        const { userId } = req.user;
         try {
-            const { userId } = req.user;
             const { reviewGroup } = await user.getUser(userId);
             const applicationToReview = await admin.getApplicationToReview(reviewGroup);
             return res.status(200).json(applicationToReview);
@@ -79,6 +90,20 @@ module.exports = (ctr) => {
         } catch (err) {
             return res.status(err.code).json(err);
         }
+    });
+
+    adminAPI.post(`/${ADMIN}/${EMAIL}`, async (req, res) => {
+        const { templateName, recipients} = req.body;
+        try {
+            await admin.sendEmail(templateName, recipients);
+            return res.status(201).send('Success!');
+        } catch (err) {
+            return res.status(err.code).json(err);
+        }
+    });
+
+    adminAPI.get(`/${ADMIN}/${EMAILS}`, (req, res) => {
+        return res.status(200).json({ emails: admin.getEmails() });
     });
 
     return adminAPI;

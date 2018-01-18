@@ -1,7 +1,9 @@
 const _ = require('lodash');
+const camelcase = require('camelcase');
 const { Settings, User } = require('../models');
 const { ERROR_TEMPLATES, createError } = require('../errors');
-const { ERROR, USER } = require('../strings');
+const { EMAILS, ERROR, USER } = require('../strings');
+const { sendEmail } = require('../emails');
 
 const DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS = { new: true };
 const REVIEW_FIELDS = [
@@ -13,6 +15,22 @@ const REVIEW_FIELDS = [
 ];
 
 module.exports = {
+    async getAdmins() {
+        let admins;
+
+        try {
+            admins = await User.find({ role: USER.ROLES.ADMIN });
+        } catch (err) {
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_ADMINS_GET, err);
+        }
+
+        if (_.isEmpty(admins)) {
+            throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_ADMINS_EXIST);
+        }
+
+        return admins;
+    },
+
     async getApplicationToReview(reviewGroup) {
         let user;
         try {
@@ -58,6 +76,16 @@ module.exports = {
         }
 
         return applications;
+    },
+
+    getEmails() {
+        return Object.values(EMAILS.TEMPLATES).map((template) => (
+            _.map(template, (value, key) => ({
+                [camelcase(key)]: value
+            })).reduce((accum, keyValuePair) => (
+                Object.assign(accum, keyValuePair)
+            ), {})
+        ));
     },
 
     async getReviewers() {
@@ -118,6 +146,10 @@ module.exports = {
         return await Promise.all(promises);
     },
 
+    async sendEmail(templateName, recipients) {
+        return await sendEmail(templateName, recipients);
+    },
+
     async submitApplicationReview(userId, review) {
         let updatedUser;
         let hasGoldenTicket;
@@ -165,7 +197,7 @@ module.exports = {
         try {
             updatedUser = await User.findOneAndUpdate(
                 { _id: userId },  // TODO: add { 'reviews.group': { $ne: reviewToSubmit.group } } to avoid duplicate
-                                  // applications for a user
+                // applications for a user
                 { $push: { reviews: reviewToSubmit } },
                 DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
             );

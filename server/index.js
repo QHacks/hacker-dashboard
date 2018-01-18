@@ -21,7 +21,7 @@ const api = require('./api');
 const controllers = require('./controllers');
 const connectToDB = require('./db');
 const webhook = require('./webhook');
-const { mailer } = require('./mailer');
+const { createEmailsMiddleware } = require('./emails');
 const { initSettings } = require('./settings');
 
 // Path to static files
@@ -68,7 +68,7 @@ connectToDB(async (err) => {
 
     // Res.on('finish') hooks
     app.use(webhook());
-    app.use(mailer());
+    app.use(createEmailsMiddleware());
 
     // Core API
     app.use('/api/', auth(), api(controllers));

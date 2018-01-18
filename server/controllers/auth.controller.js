@@ -1,11 +1,11 @@
 const customValidator = require('../services/custom-validator');
 const jwt = require('jsonwebtoken');
-const mailer = require('../mailer');
+const emails = require('../emails');
 const crypto = require('crypto');
 const _ = require('lodash');
 const { Event, User } = require('../models');
 const { ERROR_TEMPLATES, createError } = require('../errors');
-const { ERROR } = require('../strings');
+const { EMAILS, ERROR } = require('../strings');
 
 
 const JWT_ISSUER = 'QHacks Authentication';
@@ -152,10 +152,12 @@ module.exports = {
                 const hash = createResetPasswordHash(user);
 
                 User.findOneAndUpdate({ _id: user._id }, { passwordResetHash: hash }, { new: true }).then((updatedUser) => {
-                    mailer.sendResetPasswordEmail(updatedUser).then(() => {
+                    emails.sendEmail(EMAILS.TEMPLATES.RESET_PASSWORD.NAME, updatedUser.toObject()).then(() => {
+                        console.log('Sent!');
                         resolve();
                     }).catch((err) => {
-                        reject(err);
+                        console.log(err);
+                        reject(createError(err));
                     });
                 }).catch((err) => {
                     reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID, err));
@@ -174,7 +176,7 @@ module.exports = {
                 user.password = password;
                 user.passwordResetHash = null;
                 user.save().then(() => {
-                    mailer.sendPasswordResetSuccessfulEmail(user).then(() => {
+                    emails.sendEmail(EMAILS.TEMPLATES.RESET_PASSWORD_SUCCESS, user).then(() => {
                         resolve();
                     }).catch((err) => {
                         reject(err);

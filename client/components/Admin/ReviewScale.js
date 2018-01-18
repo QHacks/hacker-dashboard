@@ -1,8 +1,6 @@
 import React from 'react';
 import { Button, Popup } from 'semantic-ui-react';
-
-function noop() {
-}
+import { noop } from 'lodash';
 
 const NO_SCORE = 1;
 const MAYBE_SCORE = 2;

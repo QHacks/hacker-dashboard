@@ -19,6 +19,7 @@ const ERROR = {
     NO_GOLDEN_TICKETS: 'No golden tickets are left for this reviewer!',
     NO_REVIEWERS_EXIST: 'No reviewers exist in the database!',
     NO_SETTINGS_EXIST: 'No settings exist in the database!',
+    EMAIL_TEMPLATE_DOES_NOT_EXIST: 'The email template specified does not exist',
 
     INVALID_APPLICATION_STATUS: 'Invalid application status supplied!',
     INVALID_CREDENTIALS: 'You have provided invalid credentials!',
@@ -29,7 +30,14 @@ const ERROR = {
     INVALID_USER_EMAIL: 'A user with this email does not exist!',
 
     ALREADY_HAS_GOLDEN_TICKET: 'This application already has a golden ticket!',
-    RESET_HASH_CREATE_FAIL: 'Error when creating the reset hash!'
+    RESET_HASH_CREATE_FAIL: 'Error when creating the reset hash!',
+
+    APPLICATION_ACCEPTED_EMAIL_FAILED_TO_SEND: 'The application accepted email did not send correctly!',
+    APPLICATION_DECLINED_EMAIL_FAILED_TO_SEND: 'The application declined email did not send correctly!',
+    APPLICATION_SUCCESSFUL_EMAIL_FAILED_TO_SEND: 'The application successful email did not send correctly!',
+    APPLICATION_WAITLISTED_EMAIL_FAILED_TO_SEND: 'The application waitlisted email did not send correctly!',
+    RESET_PASSWORD_EMAIL_FAILED_TO_SEND: 'The reset password email did not send correctly!',
+    SUCCESSFUL_PASSWORD_RESET_EMAIL_FAILED_TO_SEND: 'The successful reset password email did not send correctly!'
 };
 
 module.exports = ERROR;
