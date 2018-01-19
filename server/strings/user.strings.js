@@ -13,6 +13,7 @@ const USER = {
             ACCEPTED: 'ACCEPTED'
         }
     },
+    TSHIRT_SIZES: ['Small', 'Medium', 'Large', 'Extra Large'],
     DEGREE_TYPES: [
         'Bachelor\'s degree',
         'Master\'s degree',
