@@ -8,12 +8,18 @@ const { EMAILS: EMAIL_STRINGS, ERROR } = require('../strings');
 const { ERROR_TEMPLATES, createError } = require('../errors');
 
 const { EMAIL_URL_HOST } = process.env;
+const HACKER_DASHBOARD_URL = 'https://app.qhacks.io';
 
 module.exports = {
-    [EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED.NAME]: (recipients) => ({
+    [EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED.NAME]: (recipients, rsvpUrl = HACKER_DASHBOARD_URL, withdrawUrl = HACKER_DASHBOARD_URL) => ({
         message: recipients.map((recipient) => (
             EMAIL_TEMPLATES[EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED.NAME].createMessage({
-                to: recipient.email
+                to: recipient.email,
+                data: {
+                    recipient,
+                    rsvpUrl,
+                    withdrawUrl
+                }
             })
         )),
         onError: (err) => createError(
@@ -26,7 +32,11 @@ module.exports = {
     [EMAIL_STRINGS.TEMPLATES.APPLICATION_DECLINED.NAME]: (recipients) => ({
         message: recipients.map((recipient) => (
             EMAIL_TEMPLATES[EMAIL_STRINGS.TEMPLATES.APPLICATION_DECLINED.NAME].createMessage({
-                to: recipient.email
+                to: recipient.email,
+                data: {
+                    recipient,
+                    isQueensStudent: recipient.school === 'Queen\'s University'
+                }
             })
         )),
         onError: (err) => createError(
@@ -39,7 +49,10 @@ module.exports = {
     [EMAIL_STRINGS.TEMPLATES.APPLICATION_SUCCESSFUL.NAME]: (recipients) => ({
         message: recipients.map((recipient) => (
             EMAIL_TEMPLATES[EMAIL_STRINGS.TEMPLATES.APPLICATION_SUCCESSFUL.NAME].createMessage({
-                to: recipient.email
+                to: recipient.email,
+                data: {
+                    recipient
+                }
             })
         )),
         onError: (err) => createError(
@@ -52,7 +65,10 @@ module.exports = {
     [EMAIL_STRINGS.TEMPLATES.APPLICATION_WAITLISTED.NAME]: (recipients) => ({
         message: recipients.map((recipient) => (
             EMAIL_TEMPLATES[EMAIL_STRINGS.TEMPLATES.APPLICATION_WAITLISTED.NAME].createMessage({
-                to: recipient.email
+                to: recipient.email,
+                data: {
+                    recipient
+                }
             })
         )),
         onError: (err) => createError(
