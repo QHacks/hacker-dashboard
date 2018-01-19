@@ -5,17 +5,12 @@ import { connect } from 'react-redux';
 
 const { getAuthenticated, getIsAdmin, getIsHacker, getIsPartner } = selectors;
 
-const PrivateRoute = ({ component: ComposedComponent, type, ...rest }) => {
+const PrivateRoute = ({ component: ComposedComponent, types, ...rest }) => {
 
     class Authentication extends Component {
 
         handleRender(props) {
-            const { authenticated, isAdmin, isHacker, isPartner } = this.props;
-            const isRole = {
-                admin: isAdmin,
-                hacker: isHacker,
-                partner: isPartner
-            };
+            const { authenticated, isAdmin, isHacker, isPartner  } = this.props;
 
             if (!authenticated) {
                 return (
@@ -29,8 +24,13 @@ const PrivateRoute = ({ component: ComposedComponent, type, ...rest }) => {
                 );
             }
 
-            const isNecessaryRole = isRole[type];
-            if (type && !isNecessaryRole) return null;
+            const authType = (isAdmin && 'admin') || (isHacker && 'hacker') || (isPartner && 'partner');
+            let isNecessaryRole;
+            if (types) {
+                isNecessaryRole = types.includes(authType);
+            }
+
+            if (types && !isNecessaryRole) return null;
 
             return <ComposedComponent {...props}/>;
         }

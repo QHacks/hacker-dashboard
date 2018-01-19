@@ -19,7 +19,6 @@ class UpdatePassword extends Component {
         this.props.updatePasswordForReset(hash, password);
     }
 
-
     renderPasswordUpdateHeader() {
         const { isPasswordUpdated } = this.props;
 

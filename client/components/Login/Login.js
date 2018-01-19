@@ -6,8 +6,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Login.less';
 
-const { login } = actionCreators;
 const { getLoginLoading, getAuthenticated, getIsLoginError, getApplicationsStatus } = selectors;
+const { login } = actionCreators;
 
 class Login extends Component {
 
@@ -29,7 +29,7 @@ class Login extends Component {
             return locationState.from.pathname;
         }
 
-        return '/dashboard';
+        return '/';
     }
 
     renderLoginForm() {
@@ -61,7 +61,7 @@ class Login extends Component {
                                 className="fontWeight-lighter"
                                 inverted
                                 size="medium">
-                            QHacks 2018, Queen's University
+                            QHacks 2018, Queens University
                         </Header>
                     </div>
                 </div>

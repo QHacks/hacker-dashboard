@@ -12,9 +12,9 @@ class AuthSwitch extends Component {
         const childs = [];
         React.Children.forEach(children, (element) => {
             if (React.isValidElement(element)) {
-                const { type: elementAuthType } = element.props;
+                const { types: elementAuthTypes } = element.props;
 
-                if (element.type !== PrivateRoute || (element.type === PrivateRoute && elementAuthType === authType)) {
+                if (element.type !== PrivateRoute || (element.type === PrivateRoute && elementAuthTypes.includes(authType))) {
                     childs.push(element);
                 }
             }

@@ -18,7 +18,6 @@ export default class App extends Component {
                     <Route path="/reset-password" component={ResetPassword}/>
                     <Route path="/update-password/:hash" component={UpdatePassword}/>
                     <PrivateRoute path="/" component={Dashboard}/>
-                    <PrivateRoute path="/profile" component={Profile}/>
                 </Switch>
             </div>
         );

@@ -1,67 +1,59 @@
-import { Landing as AdminLanding, Sidebar as AdminSidebar, Review, Settings } from '../Admin';
-import { Landing as HackerLanding, Sidebar as HackerSidebar } from '../Hacker';
+import { Landing as AdminLanding, Review, Settings } from '../Admin';
 import { actionCreators, selectors } from '../../HackerStore';
 import { Message, Segment, Sidebar } from 'semantic-ui-react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { Landing as HackerLanding } from '../Hacker';
 import PrivateRoute from '../utils/PrivateRoute';
 import { AuthSwitch, NotFound } from '../utils';
 import React, { Component } from 'react';
-import MenuBar from '../utils/MenuBar';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
+import Profile from '../Profile';
+import MenuBar from '../MenuBar';
 import uuid from 'uuid/v4';
 
-const { clearDashboardErrorMessage, clearDashboardSuccessMessage, logout, toggleSidebarVisibility } = actionCreators;
-const {
-    getDashboardErrorMessages,
-    getDashboardSuccessMessages,
-    getIsAdmin,
-    getIsHacker,
-    getIsPartner,
-    getIsSidebarVisible
-} = selectors;
+const { clearDashboardErrorMessage, clearDashboardSuccessMessage, logout } = actionCreators;
+const { getDashboardErrorMessages, getDashboardSuccessMessages, getIsAdmin, getIsHacker, getIsPartner } = selectors;
 
 class Dashboard extends Component {
-
-    getCurrentAuthType() {
-        const { isAdmin, isHacker, isPartner } = this.props;
-        return (isAdmin && 'admin') || (isHacker && 'hacker') || (isPartner && 'partner');
-    }
 
     handleLogoutClick() {
         this.props.logout();
     }
 
-    handleDashboardClick() {
-        this.props.logout();
-    }
-
-    handleProfileClick() {
-        this.props.logout();
+    renderMenuBar() {
+        const { isAdmin } = this.props;
+        return (
+            <MenuBar onLogoutClick={this.handleLogoutClick.bind(this)} isAdmin={isAdmin} />
+        );
     }
 
     renderBody() {
-        const authType = this.getCurrentAuthType();
+        const { isAdmin, isPartner, isHacker } = this.props;
+        const authType = (isAdmin && 'admin') || (isPartner && 'partner') || (isHacker && 'hacker');
         return (
             <AuthSwitch type={authType}>
                 <PrivateRoute exact
                               path="/"
-                              type="admin"
+                              types={["admin"]}
                               component={AdminLanding}/>
                 <PrivateRoute exact
                               path="/review"
-                              type="admin"
+                              types={["admin"]}
                               component={Review}/>
                 <PrivateRoute exact
                               path="/settings"
-                              type="admin"
+                              types={["admin"]}
                               component={Settings}/>
                 <PrivateRoute exact
+                              path="/profile"
+                              types={["hacker", "partner", "admin"]}
+                              component={Profile}/>
+                <PrivateRoute exact
                               path="/"
-                              type="hacker"
+                              types={["hacker"]}
                               component={HackerLanding}/>
-                <Route path="*"
-                       component={NotFound}/>
+                <Route path="*" component={NotFound}/>
             </AuthSwitch>
         );
     }
@@ -101,15 +93,10 @@ class Dashboard extends Component {
     render() {
         return (
             <div style={{ height: '100vh' }}>
-                <MenuBar onLogoutClick={this.handleLogoutClick.bind(this)}
-                         onDashboardClick={this.handleDashboardClick.bind(this)}
-                         onProfileClick={this.handleProfileClick.bind(this)}
-                />
-                <Segment basic>
-                    {this.renderDashboardSuccessMessages()}
-                    {this.renderDashboardErrorMessages()}
-                    {this.renderBody()}
-                </Segment>
+                {this.renderMenuBar()}
+                {this.renderDashboardSuccessMessages()}
+                {this.renderDashboardErrorMessages()}
+                {this.renderBody()}
             </div>
         );
     }

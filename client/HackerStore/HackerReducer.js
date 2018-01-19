@@ -57,7 +57,7 @@ const initialState = {
     settings: {},
     reviewers: [],
     emails: [],
-    testEmailRecipients: {} // keys are email template names
+    testEmailRecipients: {}
 };
 
 /**
