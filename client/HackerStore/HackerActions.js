@@ -1,3 +1,5 @@
+import queryString from 'querystring';
+
 // Request Methods
 const GET = 'GET';
 const POST = 'POST';
@@ -14,11 +16,13 @@ const RESET_HASH_ENDPOINT = '/auth/createResetHash';
 const UPDATE_PASSWORD_FOR_RESET_ENDPOINT = '/auth/updatePasswordForReset';
 const APPLICATION_TO_REVIEW_ENDPOINT = '/admin/applications/review';
 const APPLICATIONS_WITH_REVIEWS_ENDPOINT = '/admin/applications/reviewed';
+const APPLICATIONS_WITH_REVIEWS_COUNT_ENDPOINT = '/admin/applications/reviewed/count';
 const REVIEWERS_ENDPOINT = '/admin/applications/reviewers';
 const SETTINGS_ENDPOINT = '/admin/settings';
 const EMAIL_ENDPOINT = '/admin/email';
 const EMAILS_ENDPOINT = '/admin/emails';
 const ADMINS_ENDPOINT = '/admins';
+const APPLICATIONS_ENDPOINT = '/admin/applications';
 
 /**
  * Specific middleware action types.
@@ -51,11 +55,13 @@ const apiRequestTypes = {
     FETCH_SETTINGS: '@@/hacker/FETCH_SETTINGS',
     FETCH_REVIEWERS: '@@/hacker/FETCH_REVIEWERS',
     FETCH_APPLICATIONS_WITH_REVIEWS: '@@/hacker/FETCH_APPLICATIONS_WITH_REVIEWS',
+    FETCH_APPLICATIONS_WITH_REVIEWS_COUNT: '@@/hacker/FETCH_APPLICATIONS_WITH_REVIEWS_COUNT',
     FETCH_EMAILS: '@@/hacker/FETCH_EMAILS',
 
     REASSIGN_REVIEWERS: '@@/hacker/REASSIGN_REVIEWERS',
     SUBMIT_APPLICATION_REVIEW: '@@/hacker/SUBMIT_APPLICATION_REVIEW',
-    SEND_EMAIL: '@@/hacker/SEND_EMAIL'
+    SEND_EMAIL: '@@/hacker/SEND_EMAIL',
+    UPDATE_APPLICATION_STATUS: '@@/hacker/UPDATE_APPLICATION_STATUS'
 };
 
 /**
@@ -77,11 +83,13 @@ const apiSuccessTypes = {
     SETTINGS_FETCHED: '@@/hacker/SETTINGS_FETCHED',
     REVIEWERS_FETCHED: '@@/hacker/REVIEWERS_FETCHED',
     APPLICATIONS_WITH_REVIEWS_FETCHED: '@@/hacker/APPLICATIONS_WITH_REVIEWS_FETCHED',
+    APPLICATIONS_WITH_REVIEWS_COUNT_FETCHED: '@@/hacker/APPLICATIONS_WITH_REVIEWS_COUNT_FETCHED',
     EMAILS_FETCHED: '@@/hacker/EMAILS_FETCHED',
 
     REVIEWERS_REASSIGNED: '@@/hacker/REVIEWERS_REASSIGNED',
     APPLICATION_REVIEW_SUBMITTED: '@@/hacker/APPLICATION_REVIEW_SUBMITTED',
-    EMAIL_SENT: '@@/hacker/EMAIL_SENT'
+    EMAIL_SENT: '@@/hacker/EMAIL_SENT',
+    APPLICATION_STATUS_UPDATED: '@@/hacker/APPLICATION_STATUS_UPDATED'
 };
 
 /**
@@ -104,11 +112,13 @@ const apiErrorTypes = {
     SETTINGS_FETCH_ERROR: '@@/hacker/SETTINGS_FETCH_ERROR',
     REVIEWERS_FETCH_ERROR: '@@/hacker/REVIEWERS_FETCH_ERROR',
     APPLICATIONS_WITH_REVIEWS_FETCH_ERROR: '@@/hacker/APPLICATIONS_WITH_REVIEWS_FETCH_ERROR',
+    APPLICATIONS_WITH_REVIEWS_COUNT_FETCH_ERROR: '@@/hacker/APPLICATIONS_WITH_REVIEWS_COUNT_FETCH_ERROR',
     EMAILS_FETCH_ERROR: '@@/hacker/EMAILS_FETCH_ERROR',
 
     REVIEWERS_REASSIGN_ERROR: '@@/hacker/REVIEWERS_REASSIGN_ERROR',
     APPLICATION_REVIEW_SUBMIT_ERROR: '@@/hacker/APPLICATION_REVIEW_SUBMIT_ERROR',
-    EMAIL_SEND_ERROR: '@@/hacker/EMAIL_SEND_ERROR'
+    EMAIL_SEND_ERROR: '@@/hacker/EMAIL_SEND_ERROR',
+    APPLICATION_STATUS_UPDATE_ERROR: '@@/hacker/APPLICATION_STATUS_UPDATE_ERROR'
 };
 
 /**
@@ -124,7 +134,8 @@ const normalTypes = {
     TOGGLE_SIDEBAR_VISIBILITY: '@@/hacker/TOGGLE_SIDEBAR_VISIBILITY',
     CLEAR_DASHBOARD_SUCCESS_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_SUCCESS_MESSAGE',
     CLEAR_DASHBOARD_ERROR_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_ERROR_MESSAGE',
-    SET_TEST_EMAIL_RECIPIENTS: '@@/hacker/SET_TEST_EMAIL_RECIPIENTS'
+    SET_TEST_EMAIL_RECIPIENTS: '@@/hacker/SET_TEST_EMAIL_RECIPIENTS',
+    SET_REVIEW_TABLE_PAGE: '@@/hacker/SET_REVIEW_TABLE_PAGE'
 };
 
 export const actionTypes = {
@@ -150,7 +161,8 @@ const normalActionCreators = {
     toggleSidebarVisibility: () => ({ type: actionTypes.TOGGLE_SIDEBAR_VISIBILITY }),
     clearDashboardSuccessMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_SUCCESS_MESSAGE, data }),
     clearDashboardErrorMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_ERROR_MESSAGE, data }),
-    setTestEmailRecipients: (data) => ({ type: actionTypes.SET_TEST_EMAIL_RECIPIENTS, data })
+    setTestEmailRecipients: (data) => ({ type: actionTypes.SET_TEST_EMAIL_RECIPIENTS, data }),
+    setReviewTablePage: (data) => ({ type: actionTypes.SET_REVIEW_TABLE_PAGE, data })
 };
 
 /**
@@ -320,7 +332,7 @@ const invokeAPIActionCreators = {
         }
     }),
 
-    fetchApplicationsWithReviews: () => ({
+    fetchApplicationsWithReviews: (options) => ({
         type: actionTypes.INVOKE_API_CALL,
         data: {
             types: [
@@ -329,7 +341,23 @@ const invokeAPIActionCreators = {
                 actionTypes.APPLICATIONS_WITH_REVIEWS_FETCH_ERROR
             ],
             request: {
-                url: `${API_SUFFIX}${APPLICATIONS_WITH_REVIEWS_ENDPOINT}`,
+                url: `${API_SUFFIX}${APPLICATIONS_WITH_REVIEWS_ENDPOINT}?${queryString.stringify(options)}`,
+                method: GET,
+                tokenRequired: true
+            }
+        }
+    }),
+
+    fetchApplicationsWithReviewsCount: () => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.FETCH_APPLICATIONS_WITH_REVIEWS_COUNT,
+                actionTypes.APPLICATIONS_WITH_REVIEWS_COUNT_FETCHED,
+                actionTypes.APPLICATIONS_WITH_REVIEWS_COUNT_FETCH_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${APPLICATIONS_WITH_REVIEWS_COUNT_ENDPOINT}`,
                 method: GET,
                 tokenRequired: true
             }
@@ -371,11 +399,7 @@ const invokeAPIActionCreators = {
     sendEmail: (templateName, recipients) => ({
         type: actionTypes.INVOKE_API_CALL,
         data: {
-            types: [
-                actionTypes.SEND_EMAIL,
-                actionTypes.EMAIL_SENT,
-                actionTypes.EMAIL_SEND_ERROR
-            ],
+            types: [actionTypes.SEND_EMAIL, actionTypes.EMAIL_SENT, actionTypes.EMAIL_SEND_ERROR],
             request: {
                 url: `${API_SUFFIX}${EMAIL_ENDPOINT}`,
                 method: POST,
@@ -384,6 +408,23 @@ const invokeAPIActionCreators = {
                     recipients,
                     templateName
                 }
+            }
+        }
+    }),
+
+    updateApplicationStatus: (userId, eventId, status) => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.UPDATE_APPLICATION_STATUS,
+                actionTypes.APPLICATION_STATUS_UPDATED,
+                actionTypes.APPLICATION_STATUS_UPDATE_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${APPLICATIONS_ENDPOINT}/${eventId}/${userId}`,
+                method: PUT,
+                tokenRequired: true,
+                body: { status }
             }
         }
     })

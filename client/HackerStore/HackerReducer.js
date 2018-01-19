@@ -53,6 +53,8 @@ const initialState = {
 
     applicationToReview: {},
     applicationsWithReviews: [],
+    applicationsWithReviewsCount: 0,
+    reviewTablePage: 0,
     settings: {},
     reviewers: [],
     emails: [],
@@ -95,9 +97,11 @@ export const selectors = {
     getDashboardSuccessMessages: (state) => state[reducerMount].dashboardSuccessMessages,
     getDashboardErrorMessages: (state) => state[reducerMount].dashboardErrorMessages,
     getApplicationsWithReviews: (state) => state[reducerMount].applicationsWithReviews,
+    getApplicationsWithReviewsCount: (state) => state[reducerMount].applicationsWithReviewsCount,
     getEmails: (state) => state[reducerMount].emails,
     getAdmins: (state) => state[reducerMount].admins,
-    getTestEmailRecipients: (state) => state[reducerMount].testEmailRecipients
+    getTestEmailRecipients: (state) => state[reducerMount].testEmailRecipients,
+    getReviewTablePage: (state) => state[reducerMount].reviewTablePage
 };
 
 /**
@@ -390,6 +394,25 @@ const handlers = {
 
     },
 
+    [actionTypes.FETCH_APPLICATIONS_WITH_REVIEWS_COUNT]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.APPLICATIONS_WITH_REVIEWS_COUNT_FETCHED]: (state, action) => {
+        const { count: applicationsWithReviewsCount } = action.data;
+        return {
+            ...state,
+            applicationsWithReviewsCount
+        };
+    },
+
+    [actionTypes.APPLICATIONS_WITH_REVIEWS_COUNT_FETCH_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
+    },
+
     [actionTypes.CLEAR_DASHBOARD_SUCCESS_MESSAGE]: (state, action) => {
         const { index } = action.data;
         return {
@@ -472,6 +495,30 @@ const handlers = {
     },
 
     [actionTypes.EMAIL_SEND_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
+    },
+
+    [actionTypes.SET_REVIEW_TABLE_PAGE]: (state, action) => {
+        const { reviewTablePage } = action.data;
+        return {
+            ...state,
+            reviewTablePage
+        };
+    },
+
+    [actionTypes.UPDATE_APPLICATION_STATUS]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.APPLICATION_STATUS_UPDATED]: (state, action) => {
+        const message = 'Updated application status successfully!';
+        return reduceDashboardSuccessMessage(state, message);
+    },
+
+    [actionTypes.APPLICATION_STATUS_UPDATE_ERROR]: (state, action) => {
         const { message: errorMessage } = action.data.data;
         return reduceDashboardErrorMessage(state, errorMessage);
 

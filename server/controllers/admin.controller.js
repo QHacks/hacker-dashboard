@@ -63,11 +63,51 @@ module.exports = {
         return user;
     },
 
-    async getApplicationsWithReviews() {
+    async getApplicationsWithReviews({ limit = 20, skip = 0, sort = { score: -1 } }) {
         let applications;
+        const { numberOfReviewsRequired } = await this.getSettings();
+
+        const pipeline = [
+            { $match: { role: USER.ROLES.HACKER, reviews: { $exists: true, $not: { $size: 0 } } } },
+            {
+                $addFields: {
+                    score: {
+                        $multiply: [
+                            {
+                                $divide: [
+                                    { $sum: '$reviews.score' },
+                                    {
+                                        $cond: {
+                                            if: {
+                                                $gt: [{ $size: '$reviews' }, numberOfReviewsRequired]
+                                            },
+                                            then: { $size: '$reviews' },
+                                            else: 1
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                $cond: {
+                                    if: {
+                                        $gt: [{ $size: '$reviews' }, numberOfReviewsRequired]
+                                    },
+                                    then: numberOfReviewsRequired,
+                                    else: 1
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            { $sort: sort },
+            { $skip: skip },
+            { $limit: limit }
+        ];
         try {
-            applications = await User.find({ reviews: { $exists: true, $not: { $size: 0 } } });
+            applications = await User.aggregate(pipeline);
         } catch (err) {
+            console.error(err);
             throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_APPLICATIONS_WITH_REVIEWS_GET, err);
         }
 
@@ -76,6 +116,19 @@ module.exports = {
         }
 
         return applications;
+    },
+
+    async getApplicationsWithReviewsCount() {
+        let count;
+        try {
+            count = await User.count({
+                role: USER.ROLES.HACKER,
+                reviews: { $exists: true, $not: { $size: 0 } }
+            });
+        } catch (err) {
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_APPLICATIONS_WITH_REVIEWS_GET, err);
+        }
+        return count;
     },
 
     getEmails() {
@@ -209,6 +262,11 @@ module.exports = {
     },
 
     async updateApplicationStatus(userId, eventId, status) {
+        const EMAILS_BY_APPLICATION_STATUS = {
+            [USER.APPLICATION.STATUSES.ACCEPTED]: EMAILS.TEMPLATES.APPLICATION_ACCEPTED.NAME,
+            [USER.APPLICATION.STATUSES.REJECTED]: EMAILS.TEMPLATES.APPLICATION_DECLINED.NAME,
+            [USER.APPLICATION.STATUSES.WAITING_LIST]: EMAILS.TEMPLATES.APPLICATION_WAITLISTED.NAME
+        };
         if (!userId) {
             throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_USER_ID);
         }
@@ -231,6 +289,10 @@ module.exports = {
         } catch (e) {
             throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_UPDATE_APPLICATION_STATUS, e);
         }
+
+        const templateName = EMAILS_BY_APPLICATION_STATUS[status];
+        console.log(templateName);
+        await sendEmail(templateName, updatedUser);
 
         return updatedUser;
     }

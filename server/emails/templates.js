@@ -19,7 +19,7 @@ const EMAIL_TEMPLATES_DIRECTORY = '../../email/dist/';
  * @param {String} defaultFrom
  * @returns {Function}
  */
-function prepareTemplate({ templateName, text: defaultText, subject: defaultSubject, from: defaultFrom }) {
+function prepareTemplate({ templateName, text: defaultText, subject: defaultSubject, from: defaultFrom, cc, bcc }) {
     const templatePath = toPath(templateName);
     const template = fs.readFileSync(templatePath).toString();
 
@@ -36,6 +36,8 @@ function prepareTemplate({ templateName, text: defaultText, subject: defaultSubj
      */
     return ({ to, data = {}, text = defaultText, from = defaultFrom, subject = defaultSubject }) => ({
         to,
+        cc,
+        bcc,
         from,
         subject,
         text,
@@ -53,7 +55,8 @@ const EMAIL_TEMPLATES = {
             templateName: EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED.NAME,
             text: EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED.TEXT,
             subject: EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED.SUBJECT,
-            from: EMAIL_STRINGS.EMAIL_ADDRESSES.QHACKS_HELLO
+            from: EMAIL_STRINGS.EMAIL_ADDRESSES.QHACKS_HELLO,
+            bcc: EMAIL_STRINGS.EMAIL_ADDRESSES.QHACKS_HELLO
         })
     },
     [EMAIL_STRINGS.TEMPLATES.APPLICATION_DECLINED.NAME]: {
@@ -61,7 +64,8 @@ const EMAIL_TEMPLATES = {
             templateName: EMAIL_STRINGS.TEMPLATES.APPLICATION_DECLINED.NAME,
             text: EMAIL_STRINGS.TEMPLATES.APPLICATION_DECLINED.TEXT,
             subject: EMAIL_STRINGS.TEMPLATES.APPLICATION_DECLINED.SUBJECT,
-            from: EMAIL_STRINGS.EMAIL_ADDRESSES.QHACKS_HELLO
+            from: EMAIL_STRINGS.EMAIL_ADDRESSES.QHACKS_HELLO,
+            bcc: EMAIL_STRINGS.EMAIL_ADDRESSES.QHACKS_HELLO
         })
     },
     [EMAIL_STRINGS.TEMPLATES.APPLICATION_SUCCESSFUL.NAME]: {
@@ -77,7 +81,8 @@ const EMAIL_TEMPLATES = {
             templateName: EMAIL_STRINGS.TEMPLATES.APPLICATION_WAITLISTED.NAME,
             text: EMAIL_STRINGS.TEMPLATES.APPLICATION_WAITLISTED.TEXT,
             subject: EMAIL_STRINGS.TEMPLATES.APPLICATION_WAITLISTED.SUBJECT,
-            from: EMAIL_STRINGS.EMAIL_ADDRESSES.QHACKS_HELLO
+            from: EMAIL_STRINGS.EMAIL_ADDRESSES.QHACKS_HELLO,
+            bcc: EMAIL_STRINGS.EMAIL_ADDRESSES.QHACKS_HELLO
         })
     },
     [EMAIL_STRINGS.TEMPLATES.RESET_PASSWORD.NAME]: {

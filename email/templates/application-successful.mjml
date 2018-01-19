@@ -124,56 +124,7 @@
                 </mj-column>
             </mj-section>
 
-            <!-- Footer -->
-            <mj-wrapper background-color="white"
-                        border-top="5px solid #f5f5f5"
-                        border-bottom="40px solid #f5f5f5"
-                        padding="60px 0 0">
-                <mj-section>
-                    <mj-column width="600">
-                        <mj-text font-size="24px"
-                                 color="#A4A4A4"
-                                 align="center"
-                                 padding="0">
-                            Follow QHacks
-                        </mj-text>
-                    </mj-column>
-                </mj-section>
-                <mj-section>
-                    <mj-column>
-                        <mj-image width="45px"
-                                  src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/facebook-f.png"
-                                  href="https://www.facebook.com/QHacks"/>
-                    </mj-column>
-                    <mj-column>
-                        <mj-image width="45px"
-                                  src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/instagram.png"
-                                  href="https://www.instagram.com/qhacks18"/>
-                    </mj-column>
-                    <mj-column>
-                        <mj-image width="45px"
-                                  src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/twitter.png"
-                                  href="https://twitter.com/QHacks18"/>
-                    </mj-column>
-                </mj-section>
-                <mj-section>
-                    <mj-column>
-                        <mj-text font-size="12px"
-                                 color="#A4A4A4"
-                                 align="center"
-                                 padding="10px 0 0">
-                            &copy; 2017 <a href="https://qhacks.io" rel="noopener noreferrer" target="_blank">QHacks</a>.
-                            All rights reserved.
-                        </mj-text>
-                        <mj-text font-size="12px"
-                                 color="#A4A4A4"
-                                 align="center"
-                                 padding="10px 0 0">
-                            Have questions? Email us at <a href="mailto:hello@qhacks.io">hello@qhacks.io</a>.
-                        </mj-text>
-                    </mj-column>
-                </mj-section>
-            </mj-wrapper>
+            <mj-include path="../partials/footer"/>
 
         </mj-container>
     </mj-body>

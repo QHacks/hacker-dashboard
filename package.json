@@ -36,6 +36,7 @@
     "mongoose": "^4.13.9",
     "mustache": "^2.3.0",
     "prop-types": "^15.6.0",
+    "query-string": "^5.0.1",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-emoji-render": "^0.4.3",

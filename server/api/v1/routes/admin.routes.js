@@ -1,4 +1,5 @@
 const Router = require('express').Router;
+const _ = require('lodash');
 
 const ADMIN = 'admin';
 const APPLICATIONS = 'applications';
@@ -57,9 +58,21 @@ module.exports = (ctr) => {
     });
 
     adminAPI.get(`/${ADMIN}/${APPLICATIONS}/reviewed`, async (req, res) => {
+        const { sort } = req.query;
+        const skip = _.toNumber(req.query.skip) || 0;
+        const limit = _.toNumber(req.query.limit);
         try {
-            const applicationsWithReviews = await admin.getApplicationsWithReviews();
+            const applicationsWithReviews = await admin.getApplicationsWithReviews({ skip, limit, sort });
             return res.status(200).json({ applicationsWithReviews });
+        } catch (err) {
+            return res.status(err.code).json(err);
+        }
+    });
+
+    adminAPI.get(`/${ADMIN}/${APPLICATIONS}/reviewed/count`, async (req, res) => {
+        try {
+            const count = await admin.getApplicationsWithReviewsCount();
+            return res.status(200).json({ count });
         } catch (err) {
             return res.status(err.code).json(err);
         }
@@ -93,7 +106,7 @@ module.exports = (ctr) => {
     });
 
     adminAPI.post(`/${ADMIN}/${EMAIL}`, async (req, res) => {
-        const { templateName, recipients} = req.body;
+        const { templateName, recipients } = req.body;
         try {
             await admin.sendEmail(templateName, recipients);
             return res.status(201).send('Success!');
