@@ -6,7 +6,7 @@ const { SCHOOLS, USER } = require('../strings');
 
 const SALT_WORK_FACTOR = 10;
 
-const { DEGREE_TYPES, GENDERS, MONTHS_IN_A_YEAR, NUMBER_OF_HACKATHONS } = USER;
+const { DEGREE_TYPES, GENDERS, MONTHS_IN_A_YEAR, NUMBER_OF_HACKATHONS, TSHIRT_SIZES } = USER;
 
 // TODO: Application specific fields should be moved here. i.e. Why QHacks? etc.
 const ApplicationSchema = new mongoose.Schema({
@@ -30,6 +30,18 @@ const ApplicationSchema = new mongoose.Schema({
         type: String,
         enum: Object.values(USER.APPLICATION.STATUSES),
         default: USER.APPLICATION.STATUSES.APPLIED
+    },
+    emergencyContact: {
+        emailAddress: String,
+        firstName: String,
+        lastName: String,
+        phoneNumber: String,
+        relationToContact: String
+    },
+    travelOrigin: String,
+    tshirtSize: {
+        type: String,
+        enum: TSHIRT_SIZES
     },
     createdAt: {
         type: Date,
