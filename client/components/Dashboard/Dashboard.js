@@ -15,7 +15,7 @@ import MenuBar from '../MenuBar';
 import uuid from 'uuid/v4';
 
 const { clearDashboardErrorMessage, clearDashboardSuccessMessage, logout } = actionCreators;
-const { getDashboardErrorMessages, getDashboardSuccessMessages, getIsAdmin, getIsHacker, getIsPartner } = selectors;
+const { getDashboardErrorMessages, getDashboardSuccessMessages, getIsAdmin, getIsHacker, getIsPartner, getUser } = selectors;
 
 class Dashboard extends Component {
 
@@ -92,6 +92,17 @@ class Dashboard extends Component {
         ));
     }
 
+    renderConfetti() {
+        const { user } = this.props;
+        const shouldRun = (user.applicationStatus === 'ACCEPTED') && (user.rsvpStatus === 'PENDING');
+        if (shouldRun) {
+            return (
+                <Confetti {...this.props.size} numberOfPieces={400} recycle={false} />
+            );
+        }
+        return null;
+    }
+
     render() {
         const { width, height } = this.props.size;
         console.log(width, height);
@@ -99,7 +110,7 @@ class Dashboard extends Component {
             <div style={{ height: '100vh' }}>
                 {this.renderMenuBar()}
                 <Container>
-                    <Confetti {...this.props.size} run={false} />
+                    {this.renderConfetti()}
                     {this.renderDashboardSuccessMessages()}
                     {this.renderDashboardErrorMessages()}
                     {this.renderBody()}
@@ -112,6 +123,7 @@ class Dashboard extends Component {
 function mapStateToProps(state, ownProps) {
     return {
         ...ownProps,
+        user: getUser(state),
         isAdmin: getIsAdmin(state),
         isHacker: getIsHacker(state),
         isPartner: getIsPartner(state),

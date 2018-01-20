@@ -3,7 +3,7 @@ import Emoji from 'react-emoji-render';
 import React from 'react';
 
 export default () => (
-    <Segment raised>
+    <Segment>
         <Header as='h2'><Emoji text="Thank you from QHacks! :heart:"/></Header>
         <p>This years applicant pool was the best yet, making our decision-making process harder than ever. Unfortunately, we will be unable to offer you a spot at QHacks 2018.</p>
         <p>That being said, dont let this get you down! There are plenty of other great hackathons that you can attend. Check out MLH for more information. Make sure to apply again next year for QHacks 2019.</p>

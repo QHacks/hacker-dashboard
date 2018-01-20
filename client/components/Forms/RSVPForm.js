@@ -1,5 +1,5 @@
 import { Button, Divider, Form, Header, Message } from 'semantic-ui-react';
-import { required, email } from 'redux-form-validators';
+import { required, email, format } from 'redux-form-validators';
 import SemanticFormField from './SemanticFormField';
 import { Field, reduxForm } from 'redux-form';
 import React, { Component } from 'react';
@@ -10,14 +10,6 @@ const SHIRT_SIZES = [
     'Medium',
     'Large',
     'Extra Large'
-];
-
-const RELATIONSHIPS = [
-    'Mother',
-    'Father',
-    'Brother',
-    'Sister',
-    'Cousin'
 ];
 
 class RSVPForm extends Component {
@@ -43,7 +35,7 @@ class RSVPForm extends Component {
             <Form size="large"
                   error={this.props.rsvpError}
                   loading={this.props.rsvpLoading}
-                  onSubmit={this.props.onSubmitRSVP}>
+                  onSubmit={this.props.handleSubmit}>
 
                 <Field name="tshirt"
                        component={SemanticFormField}
@@ -59,9 +51,10 @@ class RSVPForm extends Component {
                        component={SemanticFormField}
                        as={Form.Input}
                        label="Favorite Snack"
-                       type="email"
+                       type="text"
                        placeholder="What's your favorite snack?"
-                       validate={[required({ msg: 'none' })]}/>
+                       validate={[required({ msg: 'none' })]}
+                />
 
                <Field name="resume"
                       component={SemanticFormField}
@@ -69,7 +62,8 @@ class RSVPForm extends Component {
                       label="Resume"
                       type="link"
                       placeholder="Please enter a link to your resume"
-                      validate={[required({ msg: 'none' })]}/>
+                      validate={[required({ msg: 'none' })]}
+                />
 
                   <Field name="emergencyFirstName"
                          component={SemanticFormField}
@@ -112,20 +106,18 @@ class RSVPForm extends Component {
 
                   <Field name="emergencyRelation"
                          component={SemanticFormField}
-                         as={Form.Select}
+                         as={Form.Input}
                          label="Emergency Contact Relationship"
-                         options={RELATIONSHIPS.map(mapValueForSelect)}
-                         placeholder='Select a relationship'
-                         validate={required({ msg: 'Please select a size' })}
-                         search={true}
-                  />
+                         type="text"
+                         placeholder="What's your relationship with your emergency contact?"
+                         validate={[required({ msg: 'none' })]}
+                    />
 
                 {this.renderRSVPFormErrorMessage()}
 
                 <Button type="submit"
                         content="RSVP"
                         primary
-                        type="button"
                         className="button right"
                 />
 
@@ -134,7 +126,6 @@ class RSVPForm extends Component {
                         type="button"
                         onClick={this.props.onWithdrawApplication}
                 />
-
             </Form>
         );
     }

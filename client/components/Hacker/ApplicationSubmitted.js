@@ -3,7 +3,7 @@ import Emoji from 'react-emoji-render';
 import React from 'react';
 
 export default () => (
-    <Segment raised>
+    <Segment>
         <Header as='h2'><Emoji text="Congratulations, your application is in! :tada: :heart:"/></Header>
         <p>Your application to attend QHacks 2018 has been submitted! So, what are the next steps? </p>
         <p> We will be accepting applications until January 8th 2018. Later that week we will be sending

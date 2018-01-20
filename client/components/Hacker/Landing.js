@@ -14,8 +14,9 @@ const { getUser, getRSVPLoading, getRSVPError, getRSVPSubmitted, getWithdrawErro
 
 class HackerLanding extends Component {
 
-    handleSubmitRSVP(formData) {
-        this.props.submitRSVP(formData);
+    handleSubmitRSVP(values) {
+        console.log(values);
+        //this.props.submitRSVP(formData);
     }
 
     handleApplicationWithdraw() {
@@ -24,6 +25,7 @@ class HackerLanding extends Component {
 
     renderCorrectStatus() {
         const { user, rsvpLoading, rsvpError } = this.props;
+
 
         switch (user.applicationStatus) {
             case 'APPLIED':
@@ -37,7 +39,7 @@ class HackerLanding extends Component {
             case 'ACCEPTED':
                 return (
                     <SuccessfulApplicant rsvpStatus={user.rsvpStatus}
-                                         onSubmitRSVP={this.handleSubmitRSVP.bind(this)}
+                                         onSubmit={this.handleSubmitRSVP.bind(this)}
                                          onWithdrawApplication={this.handleApplicationWithdraw.bind(this)}
                                          rsvpLoading={rsvpLoading}
                                          rsvpError={rsvpError}

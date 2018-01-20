@@ -1,12 +1,12 @@
 import { Header, Segment, Grid, Step, Icon, Button } from 'semantic-ui-react';
 import ArriveInformation from './ArriveInformation';
 import React,  { Component } from 'react';
-import RSVPForm from '../Forms';
+import RSVPForm from '../Forms/RSVPForm';
 
 class SuccessfulApplicant extends Component {
 
     renderStepInformation() {
-        const { rsvpStatus, rsvpError, rsvpLoading, onWithdrawApplication, onSubmitRSVP } = this.props;
+        const { rsvpStatus, rsvpError, rsvpLoading, onWithdrawApplication, onSubmit } = this.props;
         const rsvpComplete = (rsvpStatus === 'COMPLETED');
 
         if (rsvpComplete) {
@@ -16,7 +16,7 @@ class SuccessfulApplicant extends Component {
         }
         return (
             <RSVPForm onWithdrawApplication={onWithdrawApplication}
-                      onSubmitRSVP={onSubmitRSVP}
+                      onSubmit={onSubmit}
                       rsvpLoading={rsvpLoading}
                       rsvpError={rsvpError}
             />
@@ -37,11 +37,11 @@ class SuccessfulApplicant extends Component {
                     </Step.Content>
                 </Step>
 
-                <Step>
+                <Step completed>
                     <Icon name='wait' />
                     <Step.Content>
                       <Step.Title>Wait</Step.Title>
-                      <Step.Description>Wait to hear back regarding application!</Step.Description>
+                      <Step.Description>Wait to hear back from us!</Step.Description>
                     </Step.Content>
                 </Step>
 
@@ -65,14 +65,17 @@ class SuccessfulApplicant extends Component {
     }
 
     render() {
-        <Grid columns={2}>
-            <Grid.Column width={5}>
-              {this.renderStep()}
-            </Grid.Column>
-            <Grid.Column width={11}>
-              {this.renderStepInformation()}
-            </Grid.Column>
-        </Grid>;
+        return (
+            <Grid columns={2}>
+                <Grid.Column width={5}>
+                  {this.renderStep()}
+                </Grid.Column>
+                <Grid.Column width={11}>
+                  {this.renderStepInformation()}
+                </Grid.Column>
+            </Grid>
+        );
+
     }
 }
 
