@@ -29,22 +29,21 @@ class HackerLanding extends Component {
 
         switch (user.applicationStatus) {
             case 'APPLIED':
-                return <ApplicationSubmitted />;
+                return <ApplicationSubmitted/>;
             case 'REJECTED':
-                return <DeclinedApplicant />;
+                return <DeclinedApplicant/>;
             case 'WAITING_LIST':
-                return <WaitlistedApplicant />;
+                return <WaitlistedApplicant/>;
             case 'WITHDRAWN':
-                return <ApplicationWithdrawn />;
+                return <ApplicationWithdrawn/>;
             case 'ACCEPTED':
                 return (
                     <SuccessfulApplicant rsvpStatus={user.rsvpStatus}
                                          onSubmit={this.handleSubmitRSVP.bind(this)}
                                          onWithdrawApplication={this.handleApplicationWithdraw.bind(this)}
                                          rsvpLoading={rsvpLoading}
-                                         rsvpError={rsvpError}
-                    />
-                    );
+                                         rsvpError={rsvpError}/>
+                );
         }
     }
 
@@ -59,6 +58,7 @@ class HackerLanding extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
+        ...ownProps,
         user: getUser(state),
         rsvpLoading: getRSVPLoading(state),
         rsvpError: getRSVPError(state),

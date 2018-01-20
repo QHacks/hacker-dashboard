@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { MISC } from '../../strings';
-import ApplyForm from '../Forms';
+import { ApplyForm } from '../Forms';
 import './Apply.less';
 
 const {
@@ -22,15 +22,11 @@ const { APPLICATION_CLOSED_STATUS } = MISC;
 class Apply extends Component {
 
     handleApply(values) {
-        const { apply } = this.props;
-
-        apply(values);
+        this.props.apply(values);
     }
 
     handlePageUpdate(applicationPage) {
-        const { applicationPageUpdate } = this.props;
-
-        applicationPageUpdate({ applicationPage });
+        this.props.applicationPageUpdate({ applicationPage });
     }
 
     getRedirectPath() {
@@ -40,7 +36,7 @@ class Apply extends Component {
             return locationState.from.pathname;
         }
 
-        return '/dashboard';
+        return '/';
     }
 
     renderApplicationForm() {
@@ -60,7 +56,6 @@ class Apply extends Component {
                        onPageUpdate={this.handlePageUpdate.bind(this)}/>
         );
     }
-
     renderApplicationHeader() {
         const { applicationsStatus } = this.props;
         const headerContent = applicationsStatus === APPLICATION_CLOSED_STATUS
@@ -99,7 +94,8 @@ class Apply extends Component {
         if (authenticated) {
             return (
                 <Redirect to={{
-                    pathname: this.getRedirectPath(), state: {
+                    pathname: this.getRedirectPath(),
+                    state: {
                         from: this.props.location
                     }
                 }}/>

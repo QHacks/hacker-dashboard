@@ -4,7 +4,6 @@ import UpdatePassword from '../UpdatePassword';
 import ResetPassword from '../ResetPassword';
 import React, { Component } from 'react';
 import Dashboard from '../Dashboard';
-import Profile from '../Profile';
 import Login from '../Login';
 import Apply from '../Apply';
 

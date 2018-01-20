@@ -33,11 +33,11 @@ class MenuBar extends Component {
     renderLeftSideMenu() {
         return (
             <Menu.Menu position="left">
-                <Menu.Item>
+                <Menu.Item as={Link} to="/">
                     {this.renderQHacksCrown()}
                 </Menu.Item>
-                <Menu.Item>
-                    <Link to="/">Dashboard</Link>
+                <Menu.Item as={Link} to="/">
+                    Home
                 </Menu.Item>
             </Menu.Menu>
         );
@@ -48,8 +48,8 @@ class MenuBar extends Component {
         return (
             <Menu.Menu position="right">
                 {this.renderAdminMenu()}
-                <Menu.Item>
-                    <Link to="/profile">Profile</Link>
+                <Menu.Item as={Link} to="/profile">
+                    Profile
                 </Menu.Item>
                 <Menu.Item>
                     <Button primary onClick={onLogoutClick}>Logout</Button>

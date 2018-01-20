@@ -105,7 +105,6 @@ class Dashboard extends Component {
 
     render() {
         const { width, height } = this.props.size;
-        console.log(width, height);
         return (
             <div style={{ height: '100vh' }}>
                 {this.renderMenuBar()}

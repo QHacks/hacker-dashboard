@@ -1,8 +1,9 @@
-import { Segment, Divider, Container, Header } from 'semantic-ui-react';
-import { isFunction, map, pick } from 'lodash';
+import { Segment, Container, Header } from 'semantic-ui-react';
+import { map, pick } from 'lodash';
 import { selectors } from '../../HackerStore';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import uuid from 'uuid/v4';
 
 const { getUser } = selectors;
 
@@ -58,7 +59,7 @@ class Profile extends Component {
             <Segment>
                 {map(fields, (value, key) => {
                     return (
-                        <p>{FIELD_TITLES[key]}: {value}</p>
+                        <p key={uuid()}>{FIELD_TITLES[key]}: {value}</p>
                     );
                 })}
             </Segment>
@@ -80,6 +81,7 @@ class Profile extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
+        ...ownProps,
         user: getUser(state)
     };
 }
