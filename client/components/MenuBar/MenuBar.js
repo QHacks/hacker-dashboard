@@ -36,7 +36,7 @@ class MenuBar extends Component {
                 <Menu.Item>
                     {this.renderQHacksCrown()}
                 </Menu.Item>
-                <Menu.Item active={true}>
+                <Menu.Item>
                     <Link to="/">Dashboard</Link>
                 </Menu.Item>
             </Menu.Menu>
@@ -64,9 +64,12 @@ class MenuBar extends Component {
             return (
                 <Dropdown item text='Admin'>
                     <Dropdown.Menu>
-                        <Dropdown.Item>Users</Dropdown.Item>
-                        <Dropdown.Item>Applications</Dropdown.Item>
-                        <Dropdown.Item>Settings</Dropdown.Item>
+                        <Dropdown.Item>
+                            <Link to="/review">Applications</Link>
+                        </Dropdown.Item>
+                        <Dropdown.Item>
+                            <Link to="/settings">Settings</Link>
+                        </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             );

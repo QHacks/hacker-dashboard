@@ -1,12 +1,14 @@
 import { Landing as AdminLanding, Review, Settings } from '../Admin';
 import { actionCreators, selectors } from '../../HackerStore';
-import { Message, Segment, Sidebar } from 'semantic-ui-react';
+import { Message, Segment, Sidebar, Container } from 'semantic-ui-react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { Landing as HackerLanding } from '../Hacker';
 import PrivateRoute from '../utils/PrivateRoute';
 import { AuthSwitch, NotFound } from '../utils';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Confetti from 'react-confetti';
+import sizeMe from 'react-sizeme';
 import { isEmpty } from 'lodash';
 import Profile from '../Profile';
 import MenuBar from '../MenuBar';
@@ -91,12 +93,17 @@ class Dashboard extends Component {
     }
 
     render() {
+        const { width, height } = this.props.size;
+        console.log(width, height);
         return (
             <div style={{ height: '100vh' }}>
                 {this.renderMenuBar()}
-                {this.renderDashboardSuccessMessages()}
-                {this.renderDashboardErrorMessages()}
-                {this.renderBody()}
+                <Container>
+                    <Confetti {...this.props.size} run={false} />
+                    {this.renderDashboardSuccessMessages()}
+                    {this.renderDashboardErrorMessages()}
+                    {this.renderBody()}
+                </Container>
             </div>
         );
     }
@@ -113,8 +120,10 @@ function mapStateToProps(state, ownProps) {
     };
 }
 
-export default connect(mapStateToProps, {
+Dashboard = connect(mapStateToProps, {
     clearDashboardErrorMessage,
     clearDashboardSuccessMessage,
     logout
 })(Dashboard);
+
+export default sizeMe({ monitorHeight: true })(Dashboard);

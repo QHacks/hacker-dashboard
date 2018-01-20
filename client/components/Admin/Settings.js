@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import uuid from 'uuid/v4';
-import { connect } from 'react-redux';
-import { isArray, isEmpty, isString, map, pick } from 'lodash';
-import { Button, Dropdown, Header, Table } from 'semantic-ui-react';
+import { Button, Dropdown, Header, Table, Divider, Segment, Container } from 'semantic-ui-react';
 import { actionCreators } from '../../HackerStore/HackerActions';
+import { isArray, isEmpty, isString, map, pick } from 'lodash';
 import { selectors } from '../../HackerStore/HackerReducer';
-
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import uuid from 'uuid/v4';
 
 const {
     fetchAdmins,
@@ -24,6 +23,7 @@ const SETTINGS_FIELDS = [
 ];
 
 class Settings extends Component {
+
     componentDidMount() {
         this.props.fetchReviewers();
         this.props.fetchSettings();
@@ -170,21 +170,22 @@ class Settings extends Component {
 
     render() {
         return (
-            <div>
-                <div>
-                    <Header as="h2">Modify Settings</Header>
+            <Container text style={{ marginTop: '3em' }}>
+                <Header as="h1">Settings</Header>
+                <Segment>
                     {this.renderSettings()}
-                </div>
-                <div>
-                    <Header as="h2">Reviewer groups</Header>
+                </Segment>
+                <Header as="h1">Admin Actions</Header>
+                <Segment>
+                    <Header as="h2">Review Groups</Header>
                     {this.renderReviewerGroups()}
-                    <Button primary
-                            onClick={this.handleReassignClick.bind(this)}>
-                        Re-assign admins to reviewing groups
+                    <Button primary onClick={this.handleReassignClick.bind(this)}>
+                        Re-Assign Admins
                     </Button>
-                </div>
-                {this.renderEmailSettings()}
-            </div>
+                    <Divider section />
+                    {this.renderEmailSettings()}
+                </Segment>
+            </Container>
         );
     }
 }
