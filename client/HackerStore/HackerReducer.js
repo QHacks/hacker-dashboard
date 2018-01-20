@@ -57,7 +57,11 @@ const initialState = {
     settings: {},
     reviewers: [],
     emails: [],
-    testEmailRecipients: {}
+    testEmailRecipients: {},
+
+    rsvpLoading: false,
+    rsvpSubmitted: false,
+    rsvpError: false
 };
 
 /**
@@ -99,7 +103,10 @@ export const selectors = {
     getEmails: (state) => state[reducerMount].emails,
     getAdmins: (state) => state[reducerMount].admins,
     getTestEmailRecipients: (state) => state[reducerMount].testEmailRecipients,
-    getReviewTablePage: (state) => state[reducerMount].reviewTablePage
+    getReviewTablePage: (state) => state[reducerMount].reviewTablePage,
+    getRSVPLoading: (state) => state[reducerMount].rsvpLoading,
+    getRSVPSubmitted: (state) => state[reducerMount].rsvpSubmitted,
+    getRSVPError: (state) => state[reducerMount].rsvpError
 };
 
 /**
@@ -512,7 +519,34 @@ const handlers = {
     [actionTypes.APPLICATION_STATUS_UPDATE_ERROR]: (state, action) => {
         const { message: errorMessage } = action.data.data;
         return reduceDashboardErrorMessage(state, errorMessage);
+    },
 
+    [actionTypes.RSVP_REQUEST]: (state, action) => {
+        return {
+            ...state,
+            rsvpError: false,
+            rsvpLoading: true
+        };
+    },
+
+    [actionTypes.RSVP_SUCCESS]: (state, action) => {
+
+        const { user } = action.data;
+
+        return {
+            ...state,
+            user,
+            rsvpError: false,
+            rsvpLoading: false
+        };
+    },
+
+    [actionTypes.RSVP_ERROR]: (state, action) => {
+        return {
+            ...state,
+            rsvpLoading: false,
+            rsvpError: true
+        };
     }
 };
 

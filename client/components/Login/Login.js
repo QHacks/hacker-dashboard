@@ -1,9 +1,9 @@
 import { actionCreators, selectors } from '../../HackerStore';
 import { Redirect } from 'react-router-dom';
-import LoginForm from '../utils/LoginForm';
 import { Header } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import LoginForm from '../Forms/LoginForm';
 import './Login.less';
 
 const { getLoginLoading, getAuthenticated, getIsLoginError, getApplicationsStatus } = selectors;

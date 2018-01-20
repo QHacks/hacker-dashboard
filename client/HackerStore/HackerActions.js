@@ -46,6 +46,8 @@ const apiRequestTypes = {
     REFRESH_TOKENS: '@@/hacker/REFRESH_TOKENS',
     VALIDATE_TOKENS: '@@/hacker/VALIDATE_TOKENS',
 
+    RSVP_REQUEST: '@@/hacker/RSVP_REQUEST',
+
     CREATE_RESET_HASH: '@@/hacker/CREATE_RESET_HASH',
     UPDATE_PASSWORD_RESET: '@@/hacker/UPDATE_PASSWORD_RESET',
 
@@ -77,6 +79,8 @@ const apiSuccessTypes = {
     CREATE_RESET_HASH_SUCCESS: '@@/hacker/CREATE_RESET_HASH_SUCCESS',
     UPDATE_PASSWORD_RESET_SUCCESS: '@@/hacker/UPDATE_PASSWORD_RESET_SUCCESS',
 
+    RSVP_SUCCESS: '@@/hacker/RSVP_SUCCESS',
+
     USERS_FETCHED: '@@/hacker/USERS_FETCHED',
     ADMINS_FETCHED: '@@/hacker/ADMINS_FETCHED',
     APPLICATION_TO_REVIEW_FETCHED: '@@/hacker/APPLICATION_TO_REVIEW_FETCHED',
@@ -102,6 +106,8 @@ const apiErrorTypes = {
     AUTHENTICATION_ERROR: '@@/hacker/AUTHENTICATION_ERROR',
     APPLICATION_ERROR: '@@/hacker/APPLICATION_ERROR',
     TOKENS_CANNOT_REFRESH: '@@/hacker/TOKENS_CANNOT_REFRESH',
+
+    RSVP_ERROR: '@@/hacker/RSVP_ERROR',
 
     CREATE_RESET_HASH_FAIL: '@@/hacker/CREATE_RESET_HASH_FAIL',
     UPDATE_PASSWORD_RESET_FAIL: '@@/hacker/UPDATE_PASSWORD_RESET_FAIL',
@@ -417,6 +423,23 @@ const invokeAPIActionCreators = {
                 actionTypes.UPDATE_APPLICATION_STATUS,
                 actionTypes.APPLICATION_STATUS_UPDATED,
                 actionTypes.APPLICATION_STATUS_UPDATE_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}${APPLICATIONS_ENDPOINT}/${eventId}/${userId}`,
+                method: PUT,
+                tokenRequired: true,
+                body: { status }
+            }
+        }
+    }),
+
+    submitRSVP: (rsvpInfo) => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.RSVP_REQUEST,
+                actionTypes.RSVP_SUCCESS,
+                actionTypes.RSVP_ERROR
             ],
             request: {
                 url: `${API_SUFFIX}${APPLICATIONS_ENDPOINT}/${eventId}/${userId}`,

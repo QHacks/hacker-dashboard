@@ -1,8 +1,7 @@
 const USER = {
     APPLICATION: {
         RSVPS: {
-            ACCEPTED: 'ACCEPTED',
-            DECLINED: 'DECLINED',
+            COMPLETED: 'COMPLETED',
             NOT_NEEDED: 'NOT_NEEDED',
             PENDING: 'PENDING'
         },
