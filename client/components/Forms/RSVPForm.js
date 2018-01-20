@@ -32,8 +32,8 @@ class RSVPForm extends Component {
                 error
                 size='small'
                 className="error-message"
-                header='Invalid Credentials!'
-                content='Oops! We cannot authenticate you with those credentials.'
+                header='Something went wrong!'
+                content='Oops! Something has gone wrong, please try again.'
             />
         );
     }
@@ -41,9 +41,9 @@ class RSVPForm extends Component {
     renderRSVPForm() {
         return (
             <Form size="large"
-                  error={this.props.loginError}
-                  loading={this.props.loginLoading}
-                  onSubmit={this.props.handleSubmit}>
+                  error={this.props.rsvpError}
+                  loading={this.props.rsvpLoading}
+                  onSubmit={this.props.onSubmitRSVP}>
 
                 <Field name="tshirt"
                        component={SemanticFormField}
@@ -122,7 +122,8 @@ class RSVPForm extends Component {
 
                 {this.renderRSVPFormErrorMessage()}
 
-                <Button content="RSVP"
+                <Button type="submit"
+                        content="RSVP"
                         primary
                         type="button"
                         className="button right"
@@ -131,6 +132,7 @@ class RSVPForm extends Component {
                 <Button content="Withdraw Application"
                         secondary
                         type="button"
+                        onClick={this.props.onWithdrawApplication}
                 />
 
             </Form>

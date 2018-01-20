@@ -449,7 +449,7 @@ const invokeAPIActionCreators = {
                 url: ``,
                 method: PUT,
                 tokenRequired: true,
-                body: { rsvpInfo }
+                body: rsvpInfo
             }
         }
     }),

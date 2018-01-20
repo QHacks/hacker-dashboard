@@ -23,8 +23,7 @@ class HackerLanding extends Component {
     }
 
     renderCorrectStatus() {
-        const { user } = this.props;
-        console.log(user);
+        const { user, rsvpLoading, rsvpError } = this.props;
 
         switch (user.applicationStatus) {
             case 'APPLIED':
@@ -40,6 +39,8 @@ class HackerLanding extends Component {
                     <SuccessfulApplicant rsvpStatus={user.rsvpStatus}
                                          onSubmitRSVP={this.handleSubmitRSVP.bind(this)}
                                          onWithdrawApplication={this.handleApplicationWithdraw.bind(this)}
+                                         rsvpLoading={rsvpLoading}
+                                         rsvpError={rsvpError}
                     />
                     );
         }
