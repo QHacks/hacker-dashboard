@@ -10,7 +10,8 @@ const USER = {
             APPLIED: 'APPLIED',
             REJECTED: 'REJECTED',
             WAITING_LIST: 'WAITING_LIST',
-            ACCEPTED: 'ACCEPTED'
+            ACCEPTED: 'ACCEPTED',
+            WITHDRAWN: 'WITHDRAWN'
         }
     },
     TSHIRT_SIZES: ['Small', 'Medium', 'Large', 'Extra Large'],

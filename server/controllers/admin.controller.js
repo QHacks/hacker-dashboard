@@ -6,6 +6,11 @@ const { EMAILS, ERROR, USER } = require('../strings');
 const { sendEmail } = require('../emails');
 
 const DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS = { new: true };
+const EMAILS_BY_APPLICATION_STATUS = {
+    [USER.APPLICATION.STATUSES.ACCEPTED]: EMAILS.TEMPLATES.APPLICATION_ACCEPTED.NAME,
+    [USER.APPLICATION.STATUSES.REJECTED]: EMAILS.TEMPLATES.APPLICATION_DECLINED.NAME,
+    [USER.APPLICATION.STATUSES.WAITING_LIST]: EMAILS.TEMPLATES.APPLICATION_WAITLISTED.NAME
+};
 const REVIEW_FIELDS = [
     'score',
     'group',
@@ -262,11 +267,6 @@ module.exports = {
     },
 
     async updateApplicationStatus(userId, eventId, status) {
-        const EMAILS_BY_APPLICATION_STATUS = {
-            [USER.APPLICATION.STATUSES.ACCEPTED]: EMAILS.TEMPLATES.APPLICATION_ACCEPTED.NAME,
-            [USER.APPLICATION.STATUSES.REJECTED]: EMAILS.TEMPLATES.APPLICATION_DECLINED.NAME,
-            [USER.APPLICATION.STATUSES.WAITING_LIST]: EMAILS.TEMPLATES.APPLICATION_WAITLISTED.NAME
-        };
         if (!userId) {
             throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_USER_ID);
         }
@@ -291,8 +291,10 @@ module.exports = {
         }
 
         const templateName = EMAILS_BY_APPLICATION_STATUS[status];
-        console.log(templateName);
-        await sendEmail(templateName, updatedUser);
+
+        if (templateName) {
+            await sendEmail(templateName, updatedUser);
+        }
 
         return updatedUser;
     }
