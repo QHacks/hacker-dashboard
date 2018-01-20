@@ -61,7 +61,9 @@ const initialState = {
 
     rsvpLoading: false,
     rsvpSubmitted: false,
-    rsvpError: false
+    rsvpError: false,
+
+    withdrawError: false
 };
 
 /**
@@ -106,7 +108,8 @@ export const selectors = {
     getReviewTablePage: (state) => state[reducerMount].reviewTablePage,
     getRSVPLoading: (state) => state[reducerMount].rsvpLoading,
     getRSVPSubmitted: (state) => state[reducerMount].rsvpSubmitted,
-    getRSVPError: (state) => state[reducerMount].rsvpError
+    getRSVPError: (state) => state[reducerMount].rsvpError,
+    getWithdrawError: (state) => state[reducerMount].withdrawError
 };
 
 /**
@@ -546,6 +549,25 @@ const handlers = {
             ...state,
             rsvpLoading: false,
             rsvpError: true
+        };
+    },
+
+    [actionTypes.WITHDRAW_APPLICATION]: (state, action) => {
+        return {
+            ...state,
+            withdrawError: false
+        };
+    },
+
+    [actionTypes.WITHDRAW_SUCCESS]: (state, action) => {
+        const message = 'Withdrawn application successfully!';
+        return reduceDashboardSuccessMessage(state, message);
+    },
+
+    [actionTypes.WITHDRAW_FAIL]: (state, action) => {
+        return {
+            ...state,
+            withdrawError: true
         };
     }
 };

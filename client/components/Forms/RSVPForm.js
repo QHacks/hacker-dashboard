@@ -12,10 +12,17 @@ const SHIRT_SIZES = [
     'Extra Large'
 ];
 
+const RELATIONSHIPS = [
+    'Mother',
+    'Father',
+    'Brother',
+    'Sister',
+    'Cousin'
+];
+
 class RSVPForm extends Component {
     constructor(props) {
         super(props);
-
         this.renderRSVPForm.bind(this);
     }
 
@@ -54,23 +61,23 @@ class RSVPForm extends Component {
                        label="Favorite Snack"
                        type="email"
                        placeholder="What's your favorite snack?"
-                       validate={[required({ msg: 'none' }), email({ msg: 'Please enter a valid email address!' })]}/>
+                       validate={[required({ msg: 'none' })]}/>
 
                <Field name="resume"
                       component={SemanticFormField}
                       as={Form.Input}
                       label="Resume"
                       type="link"
-                      placeholder="Please enter a link to your resume!"
-                      validate={[required({ msg: 'none' }), email({ msg: 'Please enter a valid email address!' })]}/>
+                      placeholder="Please enter a link to your resume"
+                      validate={[required({ msg: 'none' })]}/>
 
                   <Field name="emergencyFirstName"
                          component={SemanticFormField}
                          as={Form.Input}
                          type="text"
                          label="Emergency Contact First Name"
-                         placeholder="Morty"
-                         validate={required({ msg: 'Please enter your first name!' })}
+                         placeholder="Gavin"
+                         validate={required({ msg: 'Please enter the first name of your emergency contact!' })}
                   />
 
                   <Field name="emergencyLastName"
@@ -78,8 +85,8 @@ class RSVPForm extends Component {
                          as={Form.Input}
                          type="text"
                          label="Emergency Contact Last Name"
-                         placeholder="Smith"
-                         validate={required({ msg: 'Please enter your last name!' })}
+                         placeholder="Belson"
+                         validate={required({ msg: 'Please enter the last name of your emergency contact!' })}
                   />
 
                   <Field name="emergencyEmail"
@@ -87,16 +94,28 @@ class RSVPForm extends Component {
                          as={Form.Input}
                          type="email"
                          label="Emergency Contact Email"
-                         placeholder="morty.smith@example.com"
-                         validate={[required({ msg: 'Please enter an email address!' }), email({ msg: 'Please enter a valid email address!' })]}
+                         placeholder="gavin@hooli.com"
+                         validate={[required({ msg: 'Please enter the email address of your emergency contact!' }), email({ msg: 'Please enter a valid email address!' })]}
+                  />
+
+                  <Field name="emergencyPhoneNumber"
+                         component={SemanticFormField}
+                         as={Form.Input}
+                         type="tel"
+                         label="Emergency Contact Phone Number"
+                         placeholder="123-456-7890"
+                         validate={[required({ msg: 'Please enter the phone number of your emergency contact!' }), format({
+                             with: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/,
+                             msg: 'Please enter a valid phone number format. (123-456-789)'
+                         })]}
                   />
 
                   <Field name="emergencyRelation"
                          component={SemanticFormField}
                          as={Form.Select}
                          label="Emergency Contact Relationship"
-                         options={SHIRT_SIZES.map(mapValueForSelect)}
-                         placeholder='Select a relationship!'
+                         options={RELATIONSHIPS.map(mapValueForSelect)}
+                         placeholder='Select a relationship'
                          validate={required({ msg: 'Please select a size' })}
                          search={true}
                   />

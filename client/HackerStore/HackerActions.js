@@ -47,6 +47,7 @@ const apiRequestTypes = {
     VALIDATE_TOKENS: '@@/hacker/VALIDATE_TOKENS',
 
     RSVP_REQUEST: '@@/hacker/RSVP_REQUEST',
+    WITHDRAW_APPLICATION: '@@/hacker/WITHDRAW_APPLICATION',
 
     CREATE_RESET_HASH: '@@/hacker/CREATE_RESET_HASH',
     UPDATE_PASSWORD_RESET: '@@/hacker/UPDATE_PASSWORD_RESET',
@@ -80,6 +81,8 @@ const apiSuccessTypes = {
     UPDATE_PASSWORD_RESET_SUCCESS: '@@/hacker/UPDATE_PASSWORD_RESET_SUCCESS',
 
     RSVP_SUCCESS: '@@/hacker/RSVP_SUCCESS',
+    WITHDRAW_SUCCESS: '@@/hacker/WITHDRAW_SUCCESS',
+
 
     USERS_FETCHED: '@@/hacker/USERS_FETCHED',
     ADMINS_FETCHED: '@@/hacker/ADMINS_FETCHED',
@@ -108,6 +111,7 @@ const apiErrorTypes = {
     TOKENS_CANNOT_REFRESH: '@@/hacker/TOKENS_CANNOT_REFRESH',
 
     RSVP_ERROR: '@@/hacker/RSVP_ERROR',
+    WITHDRAW_FAIL: '@@/hacker/WITHDRAW_FAIL',
 
     CREATE_RESET_HASH_FAIL: '@@/hacker/CREATE_RESET_HASH_FAIL',
     UPDATE_PASSWORD_RESET_FAIL: '@@/hacker/UPDATE_PASSWORD_RESET_FAIL',
@@ -442,10 +446,26 @@ const invokeAPIActionCreators = {
                 actionTypes.RSVP_ERROR
             ],
             request: {
-                url: `${API_SUFFIX}${APPLICATIONS_ENDPOINT}/${eventId}/${userId}`,
+                url: ``,
                 method: PUT,
                 tokenRequired: true,
-                body: { status }
+                body: { rsvpInfo }
+            }
+        }
+    }),
+
+    withdrawApplication: () => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.WITHDRAW_APPLICATION,
+                actionTypes.WITHDRAW_SUCCESS,
+                actionTypes.WITHDRAW_FAIL
+            ],
+            request: {
+                url: ``,
+                method: PUT,
+                tokenRequired: true
             }
         }
     })

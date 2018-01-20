@@ -9,10 +9,18 @@ import { Container } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-const { getUser, getRSVPLoading, getRSVPError, getRSVPSubmitted } = selectors;
-const { submitRSVP } = actionCreators;
+const { submitRSVP, withdrawApplication } = actionCreators;
+const { getUser, getRSVPLoading, getRSVPError, getRSVPSubmitted, getWithdrawError } = selectors;
 
 class HackerLanding extends Component {
+
+    handleSubmitRSVP(formData) {
+        this.props.submitRSVP(formData);
+    }
+
+    handleApplicationWithdraw() {
+        this.props.withdrawApplication();
+    }
 
     renderCorrectStatus() {
         const { user } = this.props;
@@ -28,7 +36,12 @@ class HackerLanding extends Component {
             case 'WITHDRAWN':
                 return <ApplicationWithdrawn />;
             case 'ACCEPTED':
-                return <SuccessfulApplicant rsvpStatus={user.rsvp} />;
+                return (
+                    <SuccessfulApplicant rsvpStatus={user.rsvpStatus}
+                                         onSubmitRSVP={this.handleSubmitRSVP.bind(this)}
+                                         onWithdrawApplication={this.handleApplicationWithdraw.bind(this)}
+                    />
+                    );
         }
     }
 
@@ -46,8 +59,9 @@ function mapStateToProps(state, ownProps) {
         user: getUser(state),
         rsvpLoading: getRSVPLoading(state),
         rsvpError: getRSVPError(state),
-        rsvpSubmitted: getRSVPSubmitted(state)
+        rsvpSubmitted: getRSVPSubmitted(state),
+        withdrawError: getWithdrawError(state)
     };
 }
 
-export default connect(mapStateToProps, { submitRSVP })(HackerLanding);
+export default connect(mapStateToProps, { submitRSVP, withdrawApplication })(HackerLanding);
