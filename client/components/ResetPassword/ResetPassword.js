@@ -1,6 +1,6 @@
 import { actionCreators, selectors } from '../../HackerStore';
 import { Divider, Header } from 'semantic-ui-react';
-import ResetPasswordForm from '../Forms';
+import { ResetPasswordForm } from '../Forms';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';

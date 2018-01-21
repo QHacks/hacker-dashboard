@@ -1,6 +1,6 @@
 import { Divider, Header, Message, Button } from 'semantic-ui-react';
 import { actionCreators, selectors } from '../../HackerStore';
-import UpdatePasswordForm from '../Forms';
+import { UpdatePasswordForm } from '../Forms';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';

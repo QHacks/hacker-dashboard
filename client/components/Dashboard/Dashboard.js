@@ -72,7 +72,9 @@ class Dashboard extends Component {
                      positive
                      floating
                      onDismiss={() => this.props.clearDashboardSuccessMessage({ index })}
-                     content={message}/>
+                     content={message}
+                     style={{ marginTop: '3em' }}
+            />
         ));
     }
 
@@ -88,13 +90,17 @@ class Dashboard extends Component {
                      negative
                      floating
                      onDismiss={() => this.props.clearDashboardErrorMessage({ index })}
-                     content={message}/>
+                     content={message}
+                     style={{ marginTop: '3em' }}
+                />
         ));
     }
 
     renderConfetti() {
         const { user } = this.props;
-        const shouldRun = (user.applicationStatus === 'ACCEPTED') && (user.rsvpStatus === 'PENDING');
+        const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
+        const application = user.applications.find((application) => application.event === eventId);
+        const shouldRun = (application.status === 'ACCEPTED') && (application.rsvp === 'PENDING');
         if (shouldRun) {
             return (
                 <Confetti {...this.props.size} numberOfPieces={400} recycle={false} />

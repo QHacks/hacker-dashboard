@@ -31,8 +31,6 @@ const USER_FIELDS = [
     GRADUATION_YEAR,
     GRADUATION_MONTH,
     TRAVEL_ORIGIN,
-    APPLICATION_STATUS,
-    RSVP_STATUS
 ];
 
 const FIELD_TITLES = {
@@ -45,9 +43,7 @@ const FIELD_TITLES = {
     [PROGRAM]: 'Program',
     [GRADUATION_YEAR]: 'Graduation Year',
     [GRADUATION_MONTH]: 'Graduation Month',
-    [TRAVEL_ORIGIN]: 'Travel Origin',
-    [APPLICATION_STATUS]: 'Application Status',
-    [RSVP_STATUS]: 'RSVP Status'
+    [TRAVEL_ORIGIN]: 'Travel Origin'
 };
 
 class Profile extends Component {

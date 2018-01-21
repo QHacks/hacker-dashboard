@@ -1,4 +1,5 @@
-import { Header, Segment, Grid, Step, Icon, Button } from 'semantic-ui-react';
+import { Header, Message, Grid, Step, Icon, Button } from 'semantic-ui-react';
+import Emoji from 'react-emoji-render';
 import ArriveInformation from './ArriveInformation';
 import React,  { Component } from 'react';
 import RSVPForm from '../Forms/RSVPForm';
@@ -15,11 +16,19 @@ class SuccessfulApplicant extends Component {
             );
         }
         return (
-            <RSVPForm onWithdrawApplication={onWithdrawApplication}
-                      onSubmit={onSubmit}
-                      rsvpLoading={rsvpLoading}
-                      rsvpError={rsvpError}
-            />
+            <div>
+
+                <Message positive>
+                    <Message.Header><Emoji text="Congratulations, you've been accepted to QHacks! :tada:"/></Message.Header>
+                    <p>Please RSVP as soon as possible to secure your spot. If you no longer wish or can come, please withdraw your application to open your spot to someone else on the waiting list.</p>
+                </Message>
+
+                <RSVPForm onWithdrawApplication={onWithdrawApplication}
+                          onSubmit={onSubmit}
+                          rsvpLoading={rsvpLoading}
+                          rsvpError={rsvpError}
+                />
+            </div>
         );
     }
 
@@ -45,7 +54,7 @@ class SuccessfulApplicant extends Component {
                     </Step.Content>
                 </Step>
 
-                <Step completed={!rsvpComplete} active={!rsvpComplete}>
+                <Step completed={rsvpComplete} active={!rsvpComplete}>
                     <Icon name='checked calendar' />
                     <Step.Content>
                       <Step.Title>RSVP</Step.Title>
@@ -53,7 +62,7 @@ class SuccessfulApplicant extends Component {
                     </Step.Content>
                 </Step>
 
-                <Step completed={rsvpComplete} active={rsvpComplete}>
+                <Step active={rsvpComplete}>
                   <Icon name='code' />
                   <Step.Content>
                     <Step.Title>Arrive and Hack</Step.Title>
