@@ -13,28 +13,50 @@ import camelcase from 'camelcase';
 const { submitRSVP, withdrawApplication } = actionCreators;
 const { getUser, getRSVPLoading, getRSVPError, getRSVPSubmitted, getWithdrawError } = selectors;
 
+const RSVP_FIELDS = [
+    'favSnack',
+    'tshirtSize',
+    'emergencyFirstName',
+    'emergencyLastName',
+    'emergencyEmail',
+    'emergencyPhoneNumber',
+    'emergencyRelationToContact'
+];
+
 class HackerLanding extends Component {
 
     handleSubmitRSVP(values) {
-        const { user } = this.props;
-        const userId = user._id;
-        const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
-        const rsvp = reduce(
-            map(values, (value, key) => {
-                const emergencyContactFieldRegExp = /^emergency/;
-                if (key.match(emergencyContactFieldRegExp)) {
-                    const newKey = camelcase(key.replace('emergency', ''));
-                    return {
-                        emergencyContact: {
-                            [newKey]: value
-                        }
-                    };
-                }
-                return { [key]: value };
-            }),
-            merge
-        );
-        this.props.submitRSVP(userId, eventId, rsvp);
+
+        // TODO: fix this bull shit
+        let formComplete = true;
+        RSVP_FIELDS.forEach((key) => {
+            if (!Object.keys(values).includes(key)) {
+                formComplete = false;
+            }
+        });
+
+        if (formComplete) {
+            const { user } = this.props;
+            const userId = user._id;
+            const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
+            const rsvp = reduce(
+                map(values, (value, key) => {
+                    const emergencyContactFieldRegExp = /^emergency/;
+                    if (key.match(emergencyContactFieldRegExp)) {
+                        const newKey = camelcase(key.replace('emergency', ''));
+                        return {
+                            emergencyContact: {
+                                [newKey]: value
+                            }
+                        };
+                    }
+                    return { [key]: value };
+                }),
+                merge
+            );
+            this.props.submitRSVP(userId, eventId, rsvp);
+        }
+
     }
 
     handleApplicationWithdraw() {

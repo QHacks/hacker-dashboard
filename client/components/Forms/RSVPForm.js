@@ -1,7 +1,8 @@
-import { Button, Form, Message } from 'semantic-ui-react';
-import { required, email, format } from 'redux-form-validators';
+import { Button, Form, Message, Popup } from 'semantic-ui-react';
 import SemanticFormField from './SemanticFormField';
 import { Field, reduxForm } from 'redux-form';
+import { required, email, format } from 'redux-form-validators';
+
 import React, { Component } from 'react';
 import './RSVPForm.less';
 
@@ -13,10 +14,6 @@ const SHIRT_SIZES = [
 ];
 
 class RSVPForm extends Component {
-    constructor(props) {
-        super(props);
-        this.renderRSVPForm.bind(this);
-    }
 
     renderRSVPFormErrorMessage() {
         return (
@@ -35,6 +32,26 @@ class RSVPForm extends Component {
             <label>
                 {label} <span className="required">*</span>
             </label>
+        );
+    }
+
+    renderWithdrawTrigger() {
+        return (
+            <Button content="Withdraw Application"
+                    secondary
+                    type="button"
+            />
+
+        );
+    }
+
+    renderWithdrawContent() {
+        return (
+            <Button color="green"
+                    content="I'm sure!"
+                    onClick={this.props.onWithdrawApplication}
+                    type="button"
+            />
         );
     }
 
@@ -121,19 +138,17 @@ class RSVPForm extends Component {
                        placeholder="Please enter a link to your resume"
                 />
 
-
                 {this.renderRSVPFormErrorMessage()}
 
-                <Button type="submit"
-                        content="RSVP"
+                <Button content="RSVP"
                         primary
-                        className="button right"
                 />
 
-                <Button content="Withdraw Application"
-                        secondary
-                        type="button"
-                        onClick={this.props.onWithdrawApplication}
+                <Popup
+                    trigger={this.renderWithdrawTrigger()}
+                    content={this.renderWithdrawContent()}
+                    on='click'
+                    position='bottom right'
                 />
             </Form>
         );

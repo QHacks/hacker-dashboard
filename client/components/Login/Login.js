@@ -61,7 +61,7 @@ class Login extends Component {
                                 className="fontWeight-lighter"
                                 inverted
                                 size="medium">
-                            QHacks 2018, Queens University
+                            QHacks 2018, Queen's University
                         </Header>
                     </div>
                 </div>
