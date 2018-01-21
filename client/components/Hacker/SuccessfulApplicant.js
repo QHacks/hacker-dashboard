@@ -20,7 +20,7 @@ class SuccessfulApplicant extends Component {
 
                 <Message positive>
                     <Message.Header><Emoji text="Congratulations, you've been accepted to QHacks! :tada:"/></Message.Header>
-                    <p>Please RSVP as soon as possible to secure your spot. If you no longer wish or can come, please withdraw your application to open your spot to someone else on the waiting list.</p>
+                    <p>Please RSVP as soon as possible to secure your spot. If you don't plan on coming, please withdraw your application to open your spot to someone else on the waiting list.</p>
                 </Message>
 
                 <RSVPForm onWithdrawApplication={onWithdrawApplication}
