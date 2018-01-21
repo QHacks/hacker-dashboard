@@ -4,10 +4,11 @@ import ApplicationWithdrawn from './ApplicationWithdrawn';
 import SuccessfulApplicant from './SuccessfulApplicant';
 import WaitlistedApplicant from './WaitlistedApplicant';
 import DeclinedApplicant from './DeclinedApplicant';
-import ArriveInformation from './ArriveInformation';
 import { Container } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { reduce, map, merge } from 'lodash';
+import camelcase from 'camelcase';
 
 const { submitRSVP, withdrawApplication } = actionCreators;
 const { getUser, getRSVPLoading, getRSVPError, getRSVPSubmitted, getWithdrawError } = selectors;
@@ -15,8 +16,25 @@ const { getUser, getRSVPLoading, getRSVPError, getRSVPSubmitted, getWithdrawErro
 class HackerLanding extends Component {
 
     handleSubmitRSVP(values) {
-        console.log(values);
-        //this.props.submitRSVP(formData);
+        const { user } = this.props;
+        const userId = user._id;
+        const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
+        const rsvp = reduce(
+            map(values, (value, key) => {
+                const emergencyContactFieldRegExp = /^emergency/;
+                if (key.match(emergencyContactFieldRegExp)) {
+                    const newKey = camelcase(key.replace('emergency', ''));
+                    return {
+                        emergencyContact: {
+                            [newKey]: value
+                        }
+                    };
+                }
+                return { [key]: value };
+            }),
+            merge
+        );
+        this.props.submitRSVP(userId, eventId, rsvp);
     }
 
     handleApplicationWithdraw() {

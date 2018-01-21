@@ -32,13 +32,14 @@ const ApplicationSchema = new mongoose.Schema({
         default: USER.APPLICATION.STATUSES.APPLIED
     },
     emergencyContact: {
-        emailAddress: String,
+        email: String,
         firstName: String,
         lastName: String,
         phoneNumber: String,
         relationToContact: String
     },
-    travelOrigin: String,
+    favSnack: String,
+    resume: String,
     tshirtSize: {
         type: String,
         enum: TSHIRT_SIZES

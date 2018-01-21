@@ -437,7 +437,7 @@ const invokeAPIActionCreators = {
         }
     }),
 
-    submitRSVP: (rsvpInfo) => ({
+    submitRSVP: (userId, eventId, rsvp) => ({
         type: actionTypes.INVOKE_API_CALL,
         data: {
             types: [
@@ -446,10 +446,10 @@ const invokeAPIActionCreators = {
                 actionTypes.RSVP_ERROR
             ],
             request: {
-                url: ``,
+                url: `${API_SUFFIX}/users/${userId}/applications/${eventId}/rsvp`,
                 method: PUT,
                 tokenRequired: true,
-                body: rsvpInfo
+                body: { rsvp }
             }
         }
     }),

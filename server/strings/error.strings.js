@@ -6,6 +6,7 @@ const ERROR = {
     DB_REVIEW_CREATE: 'Could not add a review to the specified application',
     DB_REVIEWS_GET: 'Could not get a review from the specified application',
     DB_REVIEWERS_GET: 'Could not retrieve reviewers from the database!',
+    DB_RSVP: 'Could not add RSVP information to the specified application',
     DB_SETTINGS_GET: 'Could not retrieve settings from the database!',
     DB_UPDATE_APPLICATION_STATUS: 'Could not update the application status of the supplied user for the specified event!',
     DB_USER_CREATE: 'Error creating User in the database!',
@@ -27,6 +28,7 @@ const ERROR = {
     INVALID_EVENT_ID: 'An event with this identifier not exist!',
     INVALID_REFRESH_TOKEN: 'The refresh token provided is invalid!',
     INVALID_RESET_HASH: 'A user with this reset hash does not exist!',
+    INVALID_RSVP: 'Invalid RSVP information supplied!',
     INVALID_USER_ID: 'A user with this identifier does not exist!',
     INVALID_USER_EMAIL: 'A user with this email does not exist!',
 

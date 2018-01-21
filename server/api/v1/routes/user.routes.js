@@ -1,4 +1,12 @@
 const Router = require('express').Router;
+const _ = require('lodash');
+
+const RSVP_FIELDS = [
+    'emergencyContact',
+    'favSnack',
+    'resume',
+    'tshirtSize'
+];
 
 const APPLICATIONS = 'applications';
 const USER = 'users';
@@ -8,7 +16,7 @@ module.exports = (ctr) => {
 
     const { user } = ctr;
 
-    userAPI.get('/users', (req, res) => {
+    userAPI.get(`/${USER}`, (req, res) => {
         user.getAllUsers().then((users) => {
             res.status(200).json(users);
         }).catch((err) => {
@@ -45,6 +53,17 @@ module.exports = (ctr) => {
         const { status } = req.body;
         try {
             const updatedUser = await user.updateApplicationStatus(userId, eventId, status);
+            return res.status(200).json({ user: updatedUser });
+        } catch (e) {
+            return res.status(e.code).json(e);
+        }
+    });
+
+    userAPI.put(`/${USER}/:userId/${APPLICATIONS}/:eventId/rsvp`, async (req, res) => {
+        const { eventId, userId } = req.params;
+        const rsvp = _.pick(req.body.rsvp, RSVP_FIELDS);
+        try {
+            const updatedUser = await user.submitRSVP(userId, eventId, rsvp);
             return res.status(200).json({ user: updatedUser });
         } catch (e) {
             return res.status(e.code).json(e);

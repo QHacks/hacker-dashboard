@@ -2,6 +2,7 @@ const { User } = require('../models');
 const { ERROR_TEMPLATES, createError } = require('../errors');
 const { EMAILS, ERROR, USER } = require('../strings');
 const { sendEmail } = require('../emails');
+const _ = require('lodash');
 
 const DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS = { new: true };
 const EMAILS_BY_APPLICATION_STATUS = {
@@ -96,6 +97,47 @@ module.exports = {
         if (templateName) {
             await sendEmail(templateName, updatedUser);
         }
+
+        return updatedUser;
+    },
+
+    async submitRSVP(userId, eventId, rsvp) {
+        if (!userId) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_USER_ID);
+        }
+
+        if (!eventId) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_EVENT_ID);
+        }
+
+        if (!rsvp) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_RSVP);
+        }
+
+        const setters = _.reduce(rsvp, (accum, value, key) => {
+            return {
+                ...accum,
+                [`applications.$.${key}`]: value
+            };
+        }, {});
+
+        let updatedUser;
+        try {
+            updatedUser = await User.findOneAndUpdate(
+                { _id: userId, 'applications.event': eventId },
+                {
+                    $set: {
+                        ...setters,
+                        'applications.$.rsvp': USER.APPLICATION.RSVPS.COMPLETED
+                    }
+                },
+                DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
+            );
+        } catch (e) {
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_RSVP, e);
+        }
+
+        if (!updatedUser) throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_RSVP);
 
         return updatedUser;
     }
