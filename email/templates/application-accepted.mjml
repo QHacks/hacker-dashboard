@@ -32,7 +32,9 @@
                         <ol>
                             <li>
                                 <a href="{{rsvpUrl}}" rel="noopener noreferrer" target="_blank">
-                                    RSVP on the hacker dashboard</a> by no later than
+                                    RSVP on the hacker dashboard
+                                </a>
+                                by no later than
                                 <b>Wednesday, January 24th at 11:59 PM</b>. We need you to confirm
                                 that you'll be attending and need some more information about you to make QHacks as
                                 awesome as possible!
@@ -47,10 +49,10 @@
                             </li>
                             <li>
                                 Share that you're coming to QHacks 2018 on Twitter with
-                                <a href="https://twitter.com/intent/tweet?text=I%27m%20going%20to%20QHacks%202018!&hashtags=qhacks"
+                                <a href="https://twitter.com/intent/tweet?text=I%27m%20going%20to%20QHacks%202018!&hashtags=Qhacks"
                                    rel="noopener noreferrer"
                                    target="_blank">
-                                    #qhacks</a>.
+                                    #Qhacks</a>.
                             </li>
                         </ol>
                     </mj-text>
@@ -61,13 +63,26 @@
                         <p>
                             If you are coming from <b>Montreal, Ottawa, Toronto, or Waterloo</b>, we will be having
                             buses going to Kingston from each of those cities. Spots on those buses will be filled on a
-                            <b>first-come-first-serve basis</b> based on RSVP time, so get that RSVP in ASAP!
+                            <b>first-come-first-serve basis</b>
+                            based on RSVP time, so get that RSVP in ASAP! You also need to email
+                            <a href="mailto:travel@qhacks.io"
+                               rel="noopener noreferrer"
+                               target="_blank">travel@qhacks.io</a> telling us that you would like to be on the bus for
+                            your city.
                         </p>
                         <p>
                             If you are interested in being a bus coordinator for your city, please email
                             <a href="mailto:travel@qhacks.io"
                                rel="noopener noreferrer"
                                target="_blank">travel@qhacks.io</a>.
+                        </p>
+                        <p>
+                            If you are travelling to QHacks from another location than the ones listed above, we will be
+                            offering travel reimbursements. Please email <a target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            href="mailto:travel@qhacks.io">
+                            travel@qhacks.io
+                        </a> for more information.
                         </p>
                     </mj-text>
 
@@ -98,7 +113,8 @@
                             attend, please
                             <a href="{{withdrawUrl}}"
                                rel="noopener noreferrer"
-                               target="_blank">withdraw your application on the hacker dashboard</a>
+                               target="_blank">withdraw your application on the hacker dashboard
+                            </a>
                             so you give someone on the waitlist the opportunity to attend.
                         </p>
                     </mj-text>
@@ -117,7 +133,8 @@
                                target="_blank">Twitter</a>, and
                             <a href="https://www.instagram.com/qhacks18"
                                rel="noopener noreferrer"
-                               target="_blank">Instagram</a>
+                               target="_blank">Instagram
+                            </a>
                             for announcements about cool events and prizes. If you have any questions, you can reply
                             directly to this email or email
                             <a href="mailto:hello@qhacks.io">hello@qhacks.io</a>. We can't wait to see what you create
