@@ -1,14 +1,13 @@
 import { Divider, Header, Message, Button } from 'semantic-ui-react';
 import { actionCreators, selectors } from '../../HackerStore';
-import UpdatePasswordForm from '../utils/UpdatePasswordForm';
-import { Link } from 'react-router-dom';
-
+import { UpdatePasswordForm } from '../Forms';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './UpdatePassword.less';
 
-const { updatePasswordForReset } = actionCreators;
 const { getIsPasswordUpdated, getIsPasswordUpdatedError, getIsPasswordUpdatedLoading } = selectors;
+const { updatePasswordForReset } = actionCreators;
 
 class UpdatePassword extends Component {
 
@@ -18,7 +17,6 @@ class UpdatePassword extends Component {
 
         this.props.updatePasswordForReset(hash, password);
     }
-
 
     renderPasswordUpdateHeader() {
         const { isPasswordUpdated } = this.props;

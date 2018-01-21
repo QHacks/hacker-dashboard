@@ -46,6 +46,9 @@ const apiRequestTypes = {
     REFRESH_TOKENS: '@@/hacker/REFRESH_TOKENS',
     VALIDATE_TOKENS: '@@/hacker/VALIDATE_TOKENS',
 
+    RSVP_REQUEST: '@@/hacker/RSVP_REQUEST',
+    WITHDRAW_APPLICATION: '@@/hacker/WITHDRAW_APPLICATION',
+
     CREATE_RESET_HASH: '@@/hacker/CREATE_RESET_HASH',
     UPDATE_PASSWORD_RESET: '@@/hacker/UPDATE_PASSWORD_RESET',
 
@@ -77,6 +80,10 @@ const apiSuccessTypes = {
     CREATE_RESET_HASH_SUCCESS: '@@/hacker/CREATE_RESET_HASH_SUCCESS',
     UPDATE_PASSWORD_RESET_SUCCESS: '@@/hacker/UPDATE_PASSWORD_RESET_SUCCESS',
 
+    RSVP_SUCCESS: '@@/hacker/RSVP_SUCCESS',
+    WITHDRAW_SUCCESS: '@@/hacker/WITHDRAW_SUCCESS',
+
+
     USERS_FETCHED: '@@/hacker/USERS_FETCHED',
     ADMINS_FETCHED: '@@/hacker/ADMINS_FETCHED',
     APPLICATION_TO_REVIEW_FETCHED: '@@/hacker/APPLICATION_TO_REVIEW_FETCHED',
@@ -102,6 +109,9 @@ const apiErrorTypes = {
     AUTHENTICATION_ERROR: '@@/hacker/AUTHENTICATION_ERROR',
     APPLICATION_ERROR: '@@/hacker/APPLICATION_ERROR',
     TOKENS_CANNOT_REFRESH: '@@/hacker/TOKENS_CANNOT_REFRESH',
+
+    RSVP_ERROR: '@@/hacker/RSVP_ERROR',
+    WITHDRAW_FAIL: '@@/hacker/WITHDRAW_FAIL',
 
     CREATE_RESET_HASH_FAIL: '@@/hacker/CREATE_RESET_HASH_FAIL',
     UPDATE_PASSWORD_RESET_FAIL: '@@/hacker/UPDATE_PASSWORD_RESET_FAIL',
@@ -131,7 +141,6 @@ const normalTypes = {
     CLEAR_RESET_PASSWORD: '@@/hacker/CLEAR_RESET_PASSWORD',
     APPLICATION_PAGE_UPDATE: '@@/hacker/APPLICATION_PAGE_UPDATE',
     APPLICATION_FORM_ERROR_MESSAGES_UPDATE: '@@/hacker/APPLICATION_FORM_ERROR_MESSAGES_UPDATE',
-    TOGGLE_SIDEBAR_VISIBILITY: '@@/hacker/TOGGLE_SIDEBAR_VISIBILITY',
     CLEAR_DASHBOARD_SUCCESS_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_SUCCESS_MESSAGE',
     CLEAR_DASHBOARD_ERROR_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_ERROR_MESSAGE',
     SET_TEST_EMAIL_RECIPIENTS: '@@/hacker/SET_TEST_EMAIL_RECIPIENTS',
@@ -158,7 +167,6 @@ const normalActionCreators = {
     applicationPageUpdate: (data) => ({ type: actionTypes.APPLICATION_PAGE_UPDATE, data }),
     applicationFormErrorMessagesUpdate: (data) => ({ type: actionTypes.APPLICATION_FORM_ERROR_MESSAGES_UPDATE, data }),
     applicationError: (data) => ({ type: actionTypes.APPLICATION_ERROR, data }),
-    toggleSidebarVisibility: () => ({ type: actionTypes.TOGGLE_SIDEBAR_VISIBILITY }),
     clearDashboardSuccessMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_SUCCESS_MESSAGE, data }),
     clearDashboardErrorMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_ERROR_MESSAGE, data }),
     setTestEmailRecipients: (data) => ({ type: actionTypes.SET_TEST_EMAIL_RECIPIENTS, data }),
@@ -425,6 +433,42 @@ const invokeAPIActionCreators = {
                 method: PUT,
                 tokenRequired: true,
                 body: { status }
+            }
+        }
+    }),
+
+    submitRSVP: (userId, eventId, rsvp) => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.RSVP_REQUEST,
+                actionTypes.RSVP_SUCCESS,
+                actionTypes.RSVP_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}/users/${userId}/applications/${eventId}/rsvp`,
+                method: PUT,
+                tokenRequired: true,
+                body: { rsvp }
+            }
+        }
+    }),
+
+    withdrawApplication: (userId, eventId) => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.WITHDRAW_APPLICATION,
+                actionTypes.WITHDRAW_SUCCESS,
+                actionTypes.WITHDRAW_FAIL
+            ],
+            request: {
+                url: `${API_SUFFIX}/users/${userId}/applications/${eventId}`,
+                method: PUT,
+                tokenRequired: true,
+                body: {
+                    status: 'WITHDRAWN'
+                }
             }
         }
     })

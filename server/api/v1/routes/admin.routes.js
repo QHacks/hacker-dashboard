@@ -50,7 +50,7 @@ module.exports = (ctr) => {
         const { eventId, userId } = req.params;
         const { status } = req.body;
         try {
-            const updatedUser = await admin.updateApplicationStatus(userId, eventId, status);
+            const updatedUser = await user.updateApplicationStatus(userId, eventId, status);
             return res.status(200).json({ user: updatedUser });
         } catch (e) {
             return res.status(e.code).json(e);

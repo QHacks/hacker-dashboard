@@ -27,6 +27,7 @@ const initialState = {
 
     loginLoading: false,
     loginError: false,
+
     applicationError: false,
     applicationLoading: false,
     applicationFormErrorMessages: [],
@@ -49,8 +50,6 @@ const initialState = {
     isHacker: true,
     isPartner: false,
 
-    isSidebarVisible: false,
-
     applicationToReview: {},
     applicationsWithReviews: [],
     applicationsWithReviewsCount: 0,
@@ -58,7 +57,13 @@ const initialState = {
     settings: {},
     reviewers: [],
     emails: [],
-    testEmailRecipients: {} // keys are email template names
+    testEmailRecipients: {},
+
+    rsvpLoading: false,
+    rsvpSubmitted: false,
+    rsvpError: false,
+
+    withdrawError: false
 };
 
 /**
@@ -90,7 +95,6 @@ export const selectors = {
     getIsAdmin: (state) => state[reducerMount].isAdmin,
     getIsHacker: (state) => state[reducerMount].isHacker,
     getIsPartner: (state) => state[reducerMount].isPartner,
-    getIsSidebarVisible: (state) => state[reducerMount].isSidebarVisible,
     getApplicationToReview: (state) => state[reducerMount].applicationToReview,
     getSettings: (state) => state[reducerMount].settings,
     getReviewers: (state) => state[reducerMount].reviewers,
@@ -101,7 +105,11 @@ export const selectors = {
     getEmails: (state) => state[reducerMount].emails,
     getAdmins: (state) => state[reducerMount].admins,
     getTestEmailRecipients: (state) => state[reducerMount].testEmailRecipients,
-    getReviewTablePage: (state) => state[reducerMount].reviewTablePage
+    getReviewTablePage: (state) => state[reducerMount].reviewTablePage,
+    getRSVPLoading: (state) => state[reducerMount].rsvpLoading,
+    getRSVPSubmitted: (state) => state[reducerMount].rsvpSubmitted,
+    getRSVPError: (state) => state[reducerMount].rsvpError,
+    getWithdrawError: (state) => state[reducerMount].withdrawError
 };
 
 /**
@@ -276,13 +284,6 @@ const handlers = {
         return {
             ...state,
             applicationFormErrorMessages
-        };
-    },
-
-    [actionTypes.TOGGLE_SIDEBAR_VISIBILITY]: (state, action) => {
-        return {
-            ...state,
-            isSidebarVisible: !state.isSidebarVisible
         };
     },
 
@@ -521,7 +522,57 @@ const handlers = {
     [actionTypes.APPLICATION_STATUS_UPDATE_ERROR]: (state, action) => {
         const { message: errorMessage } = action.data.data;
         return reduceDashboardErrorMessage(state, errorMessage);
+    },
 
+    [actionTypes.RSVP_REQUEST]: (state, action) => {
+        return {
+            ...state,
+            rsvpError: false,
+            rsvpLoading: true
+        };
+    },
+
+    [actionTypes.RSVP_SUCCESS]: (state, action) => {
+
+        const { user } = action.data;
+
+        return {
+            ...state,
+            user,
+            rsvpError: false,
+            rsvpLoading: false
+        };
+    },
+
+    [actionTypes.RSVP_ERROR]: (state, action) => {
+        return {
+            ...state,
+            rsvpLoading: false,
+            rsvpError: true
+        };
+    },
+
+    [actionTypes.WITHDRAW_APPLICATION]: (state, action) => {
+        return {
+            ...state,
+            withdrawError: false
+        };
+    },
+
+    [actionTypes.WITHDRAW_SUCCESS]: (state, action) => {
+        const { user } = action.data;
+        const message = 'Withdrawn application successfully!';
+        return {
+            ...reduceDashboardSuccessMessage(state, message),
+            user
+        };
+    },
+
+    [actionTypes.WITHDRAW_FAIL]: (state, action) => {
+        return {
+            ...state,
+            withdrawError: true
+        };
     }
 };
 

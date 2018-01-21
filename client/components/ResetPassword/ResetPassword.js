@@ -1,14 +1,13 @@
 import { actionCreators, selectors } from '../../HackerStore';
-import ResetPasswordForm from '../utils/ResetPasswordForm';
 import { Divider, Header } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-
+import { ResetPasswordForm } from '../Forms';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './ResetPassword.less';
 
-const { createResetHash, clearResetPassword } = actionCreators;
 const { getIsPasswordReset, getIsPasswordResetError, getIsPasswordResetLoading } = selectors;
+const { createResetHash, clearResetPassword } = actionCreators;
 
 class ResetPassword extends Component {
 

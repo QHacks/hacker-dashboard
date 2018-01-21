@@ -21,6 +21,7 @@ async function sendSendgridEmail(email) {
 
 async function sendEmail(templateName, recipient) {
     if (!emailsConfig[templateName]) throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.EMAIL_TEMPLATE_DOES_NOT_EXIST);
+    if (_.isEmpty(recipient)) throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.NO_EMAIL_RECIPIENT_SPECIFIED);
     const recipients = _.isArray(recipient) && recipient || [recipient];
     const email = emailsConfig[templateName](recipients);
     return await sendSendgridEmail(email);

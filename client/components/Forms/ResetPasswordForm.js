@@ -1,7 +1,6 @@
-import { Button, Form, Segment, Transition, Message } from 'semantic-ui-react';
+import { Button, Form, Message } from 'semantic-ui-react';
 import { required, email } from 'redux-form-validators';
 import SemanticFormField from './SemanticFormField';
-import { actionCreators } from '../../HackerStore';
 import { Field, reduxForm } from 'redux-form';
 import React, { Component } from 'react';
 

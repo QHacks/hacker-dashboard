@@ -2,7 +2,7 @@ import { Form, Input } from 'semantic-ui-react';
 import React from 'react';
 
 export default function SemanticFormField({ input, type, label, placeholder, meta: { touched, error, warning }, as: As = input, ...props }) {
-
+    console.log(error);
     function handleChange(e, { value }) {
         return input.onChange(value);
     }
