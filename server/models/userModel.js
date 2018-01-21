@@ -260,10 +260,25 @@ UserSchema.pre('update', function(next) {
  * when an application has had its status changed to 'ACCEPTED'
  */
 UserSchema.pre('findOneAndUpdate', function(next) {
+    const { ACCEPTED, REJECTED, WAITING_LIST, WITHDRAWN } = USER.APPLICATION.STATUSES;
     const event = this.getQuery()['applications.event'];
     const updatedStatus = this.getUpdate().$set['applications.$.status'];
-    if (!event || !updatedStatus || !_.isEqual(updatedStatus, USER.APPLICATION.STATUSES.ACCEPTED)) return next();
-    this.update({ 'applications.event': event }, { $set: { 'applications.$.rsvp': USER.APPLICATION.RSVPS.PENDING } });
+    if (!event || !updatedStatus) return next();
+    if (_.isEqual(updatedStatus, ACCEPTED)) {
+        this.update({
+            'applications.event': event
+        }, {
+            $set: { 'applications.$.rsvp': USER.APPLICATION.RSVPS.PENDING }
+        });
+    } else if (
+        _.isEqual(updatedStatus, REJECTED) || _.isEqual(updatedStatus, WAITING_LIST) || _.isEqual(updatedStatus, WITHDRAWN)
+    ) {
+        this.update({
+            'applications.event': event
+        }, {
+            $set: { 'applications.$.rsvp': USER.APPLICATION.RSVPS.NOT_NEEDED }
+        });
+    }
     return next();
 });
 

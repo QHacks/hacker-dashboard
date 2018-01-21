@@ -20,6 +20,7 @@ const ERROR = {
     NO_REVIEWERS_EXIST: 'No reviewers exist in the database!',
     NO_SETTINGS_EXIST: 'No settings exist in the database!',
     EMAIL_TEMPLATE_DOES_NOT_EXIST: 'The email template specified does not exist',
+    NO_EMAIL_RECIPIENT_SPECIFIED: 'No email recipient was specified',
 
     INVALID_APPLICATION_STATUS: 'Invalid application status supplied!',
     INVALID_CREDENTIALS: 'You have provided invalid credentials!',

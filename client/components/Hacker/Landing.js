@@ -20,14 +20,18 @@ class HackerLanding extends Component {
     }
 
     handleApplicationWithdraw() {
-        this.props.withdrawApplication();
+        const { user } = this.props;
+        const userId = user._id;
+        const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
+        this.props.withdrawApplication(userId, eventId);
     }
 
     renderCorrectStatus() {
         const { user, rsvpLoading, rsvpError } = this.props;
+        const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
+        const application = user.applications.find((application) => application.event === eventId);
 
-
-        switch (user.applicationStatus) {
+        switch (application.status) {
             case 'APPLIED':
                 return <ApplicationSubmitted/>;
             case 'REJECTED':
@@ -38,12 +42,14 @@ class HackerLanding extends Component {
                 return <ApplicationWithdrawn/>;
             case 'ACCEPTED':
                 return (
-                    <SuccessfulApplicant rsvpStatus={user.rsvpStatus}
+                    <SuccessfulApplicant rsvpStatus={application.rsvp}
                                          onSubmit={this.handleSubmitRSVP.bind(this)}
                                          onWithdrawApplication={this.handleApplicationWithdraw.bind(this)}
                                          rsvpLoading={rsvpLoading}
                                          rsvpError={rsvpError}/>
                 );
+            default:
+                return null;
         }
     }
 

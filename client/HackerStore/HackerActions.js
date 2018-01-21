@@ -454,7 +454,7 @@ const invokeAPIActionCreators = {
         }
     }),
 
-    withdrawApplication: () => ({
+    withdrawApplication: (userId, eventId) => ({
         type: actionTypes.INVOKE_API_CALL,
         data: {
             types: [
@@ -463,9 +463,12 @@ const invokeAPIActionCreators = {
                 actionTypes.WITHDRAW_FAIL
             ],
             request: {
-                url: ``,
+                url: `${API_SUFFIX}/users/${userId}/applications/${eventId}`,
                 method: PUT,
-                tokenRequired: true
+                tokenRequired: true,
+                body: {
+                    status: 'WITHDRAWN'
+                }
             }
         }
     })

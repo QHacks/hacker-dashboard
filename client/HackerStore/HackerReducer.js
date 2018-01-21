@@ -560,8 +560,12 @@ const handlers = {
     },
 
     [actionTypes.WITHDRAW_SUCCESS]: (state, action) => {
+        const { user } = action.data;
         const message = 'Withdrawn application successfully!';
-        return reduceDashboardSuccessMessage(state, message);
+        return {
+            ...reduceDashboardSuccessMessage(state, message),
+            user
+        };
     },
 
     [actionTypes.WITHDRAW_FAIL]: (state, action) => {

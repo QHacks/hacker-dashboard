@@ -6,11 +6,6 @@ const { EMAILS, ERROR, USER } = require('../strings');
 const { sendEmail } = require('../emails');
 
 const DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS = { new: true };
-const EMAILS_BY_APPLICATION_STATUS = {
-    [USER.APPLICATION.STATUSES.ACCEPTED]: EMAILS.TEMPLATES.APPLICATION_ACCEPTED.NAME,
-    [USER.APPLICATION.STATUSES.REJECTED]: EMAILS.TEMPLATES.APPLICATION_DECLINED.NAME,
-    [USER.APPLICATION.STATUSES.WAITING_LIST]: EMAILS.TEMPLATES.APPLICATION_WAITLISTED.NAME
-};
 const REVIEW_FIELDS = [
     'score',
     'group',
@@ -261,39 +256,6 @@ module.exports = {
             );
         } catch (err) {
             throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR_MESSAGES.DB_REVIEW_CREATE, err);
-        }
-
-        return updatedUser;
-    },
-
-    async updateApplicationStatus(userId, eventId, status) {
-        if (!userId) {
-            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_USER_ID);
-        }
-
-        if (!eventId) {
-            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_EVENT_ID);
-        }
-
-        if (!status || !USER.APPLICATION.STATUSES[status]) {
-            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_APPLICATION_STATUS);
-        }
-
-        let updatedUser;
-        try {
-            updatedUser = await User.findOneAndUpdate(
-                { _id: userId, 'applications.event': eventId },
-                { $set: { 'applications.$.status': USER.APPLICATION.STATUSES[status] } },
-                DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
-            );
-        } catch (e) {
-            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_UPDATE_APPLICATION_STATUS, e);
-        }
-
-        const templateName = EMAILS_BY_APPLICATION_STATUS[status];
-
-        if (templateName) {
-            await sendEmail(templateName, updatedUser);
         }
 
         return updatedUser;
