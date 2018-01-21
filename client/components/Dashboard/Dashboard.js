@@ -1,7 +1,7 @@
-import { Landing as AdminLanding, Review, Settings } from '../Admin';
+import { Landing as AdminLanding, Applicants, Review, Settings } from '../Admin';
 import { actionCreators, selectors } from '../../HackerStore';
-import { Message, Segment, Sidebar, Container } from 'semantic-ui-react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Message, Container } from 'semantic-ui-react';
+import { Route } from 'react-router-dom';
 import { Landing as HackerLanding } from '../Hacker';
 import PrivateRoute from '../utils/PrivateRoute';
 import { AuthSwitch, NotFound } from '../utils';
@@ -43,6 +43,10 @@ class Dashboard extends Component {
                               path="/review"
                               types={["admin"]}
                               component={Review}/>
+                <PrivateRoute exact
+                              path="/applicants"
+                              types={["admin"]}
+                              component={Applicants}/>
                 <PrivateRoute exact
                               path="/settings"
                               types={["admin"]}

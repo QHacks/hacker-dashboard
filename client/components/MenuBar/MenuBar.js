@@ -64,12 +64,9 @@ class MenuBar extends Component {
             return (
                 <Dropdown item text='Admin'>
                     <Dropdown.Menu>
-                        <Dropdown.Item>
-                            <Link to="/review">Applications</Link>
-                        </Dropdown.Item>
-                        <Dropdown.Item>
-                            <Link to="/settings">Settings</Link>
-                        </Dropdown.Item>
+                        <Dropdown.Item as={Link} to="/review">Review</Dropdown.Item>
+                        <Dropdown.Item as={Link} to="/applicants">Applicants</Dropdown.Item>
+                        <Dropdown.Item as={Link} to="/settings">Settings</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             );
