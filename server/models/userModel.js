@@ -31,6 +31,7 @@ const ApplicationSchema = new mongoose.Schema({
         enum: Object.values(USER.APPLICATION.STATUSES),
         default: USER.APPLICATION.STATUSES.APPLIED
     },
+    dietaryRestrictions: String,
     emergencyContact: {
         email: String,
         firstName: String,
