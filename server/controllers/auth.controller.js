@@ -122,6 +122,7 @@ module.exports = {
             customValidator.validateSignUpInfo(signUpInfo)
                 .then(() => Event.findOne({ slug: QHACKS_2018_SLUG }))
                 .then((event) => {
+                    // TODO: Add an application based on the event
                     User.create(_.assign({}, signUpInfo, { events: [event._id] }))
                         .then((user) => {
                             const refreshToken = createRefreshToken(user._id);

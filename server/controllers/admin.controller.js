@@ -215,23 +215,23 @@ module.exports = {
             try {
                 reviewer = await User.findOne({ _id: reviewerId });
             } catch (err) {
-                throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR_MESSAGES.DB_USER, err);
+                throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER, err);
             }
 
             const { goldenTickets = 0 } = reviewer;
 
             if (goldenTickets <= 0) {
-                throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR_MESSAGES.NO_GOLDEN_TICKETS);
+                throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.NO_GOLDEN_TICKETS);
             }
 
             try {
                 hasGoldenTicket = !!(await User.findOne({ _id: userId, 'reviews.goldenTicket': true }));
             } catch (err) {
-                throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR_MESSAGES.DB_REVIEW_CREATE, err);
+                throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEW_CREATE, err);
             }
 
             if (hasGoldenTicket) {
-                throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR_MESSAGES.ALREADY_HAS_GOLDEN_TICKET);
+                throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.ALREADY_HAS_GOLDEN_TICKET);
             }
 
             try {
@@ -243,7 +243,7 @@ module.exports = {
                     { $set: { goldenTickets: numberOfGoldenTicketsRemaining } }
                 );
             } catch (err) {
-                throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR_MESSAGES.DB_GOLDEN_TICKETS_REDUCE, err);
+                throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_GOLDEN_TICKETS_REDUCE, err);
             }
         }
 
@@ -255,7 +255,7 @@ module.exports = {
                 DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
             );
         } catch (err) {
-            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR_MESSAGES.DB_REVIEW_CREATE, err);
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEW_CREATE, err);
         }
 
         return updatedUser;

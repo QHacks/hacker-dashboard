@@ -15,25 +15,25 @@ const { getUser, getRSVPLoading, getRSVPError, getRSVPSubmitted, getWithdrawErro
 
 const RSVP_FIELDS = [
     'favSnack',
-    'tshirtSize',
     'emergencyFirstName',
     'emergencyLastName',
     'emergencyEmail',
     'emergencyPhoneNumber',
-    'emergencyRelationToContact'
+    'emergencyRelationToContact',
+    'tshirtSize'
 ];
 
 class HackerLanding extends Component {
 
     handleSubmitRSVP(values) {
 
-        // TODO: fix this bull shit
-        let formComplete = true;
-        RSVP_FIELDS.forEach((key) => {
+        // TODO: fix this bull shit form validation
+        const formComplete = RSVP_FIELDS.reduce((accum, key) => {
             if (!Object.keys(values).includes(key)) {
-                formComplete = false;
+                return false;
             }
-        });
+            return accum;
+        }, true);
 
         if (formComplete) {
             const { user } = this.props;

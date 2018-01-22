@@ -82,6 +82,16 @@ class RSVPForm extends Component {
                        validate={[required({ msg: 'none' })]}
                 />
 
+                <Field name="dietaryRestrictions"
+                       component={SemanticFormField}
+                       as={Form.Input}
+                       label={'Dietary Restrictions'}
+                       type="text"
+                       placeholder="Gluten-free, vegan, allergic to nuts, etc."
+                       validate={[required({ msg: 'none' })]}
+                />
+
+
                 <Field name="emergencyFirstName"
                        component={SemanticFormField}
                        as={Form.Input}

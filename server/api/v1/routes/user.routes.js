@@ -2,6 +2,7 @@ const Router = require('express').Router;
 const _ = require('lodash');
 
 const RSVP_FIELDS = [
+    'dietaryRestrictions',
     'emergencyContact',
     'favSnack',
     'resume',

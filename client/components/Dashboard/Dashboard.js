@@ -102,6 +102,9 @@ class Dashboard extends Component {
 
     renderConfetti() {
         const { user } = this.props;
+
+        if (user.role !== 'HACKER') return null;
+
         const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
         const application = user.applications.find((application) => application.event === eventId);
         const shouldRun = (application.status === 'ACCEPTED') && (application.rsvp === 'PENDING');
