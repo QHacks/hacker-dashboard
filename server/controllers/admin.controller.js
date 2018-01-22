@@ -63,7 +63,7 @@ module.exports = {
         return user;
     },
 
-    async getApplicationsWithReviews({ limit = 20, skip = 0, sort = { score: -1 } }) {
+    async getApplicationsWithReviews({ limit = 20, skip = 0, sort = { score: -1, _id: -1 } }) {
         let applications;
         const { numberOfReviewsRequired } = await this.getSettings();
 
