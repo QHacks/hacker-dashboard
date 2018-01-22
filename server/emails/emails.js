@@ -10,7 +10,6 @@ sendgrid.setApiKey(SENDGRID_API_KEY);
 
 async function sendSendgridEmail(email) {
     if (!SENDGRID_API_KEY) return;
-    console.log(email.message);
     try {
         await sendgrid.send(email.message);
         return await email.onSuccess();
