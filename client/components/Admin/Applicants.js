@@ -36,9 +36,12 @@ const REVIEW_TABLE_HEADERS = [
 class Applicants extends Component {
 
     componentDidMount() {
-        // TODO: load on tab change
+        const { reviewTablePage } = this.props;
         this.props.fetchSettings();
-        this.props.fetchApplicationsWithReviews(REVIEW_TABLE_FETCH_DEFAULT_SETTINGS);
+        this.props.fetchApplicationsWithReviews({
+            ...REVIEW_TABLE_FETCH_DEFAULT_SETTINGS,
+            skip: reviewTablePage * REVIEW_TABLE_APPLICATIONS_PER_PAGE
+        });
         this.props.fetchApplicationsWithReviewsCount();
     }
 
