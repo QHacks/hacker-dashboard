@@ -1,2 +1,3 @@
-node_modules/*
-client/bundle/*
+node_modules
+packages/client/bundle/*
+packages/email/dist/*
