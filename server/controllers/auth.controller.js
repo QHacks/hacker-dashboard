@@ -154,10 +154,8 @@ module.exports = {
 
                 User.findOneAndUpdate({ _id: user._id }, { passwordResetHash: hash }, { new: true }).then((updatedUser) => {
                     emails.sendEmail(EMAILS.TEMPLATES.RESET_PASSWORD.NAME, updatedUser.toObject()).then(() => {
-                        console.log('Sent!');
                         resolve();
                     }).catch((err) => {
-                        console.log(err);
                         reject(createError(err));
                     });
                 }).catch((err) => {
@@ -177,7 +175,7 @@ module.exports = {
                 user.password = password;
                 user.passwordResetHash = null;
                 user.save().then(() => {
-                    emails.sendEmail(EMAILS.TEMPLATES.RESET_PASSWORD_SUCCESS, user).then(() => {
+                    emails.sendEmail(EMAILS.TEMPLATES.RESET_PASSWORD_SUCCESS.NAME, user).then(() => {
                         resolve();
                     }).catch((err) => {
                         reject(err);
