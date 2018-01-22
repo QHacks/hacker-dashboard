@@ -27,6 +27,7 @@ const initialState = {
 
     loginLoading: false,
     loginError: false,
+
     applicationError: false,
     applicationLoading: false,
     applicationFormErrorMessages: [],
@@ -35,6 +36,7 @@ const initialState = {
     dashboardErrorMessages: [],
 
     users: [],
+    admins: [],
 
     fetchingNewTokens: false,
 
@@ -48,11 +50,20 @@ const initialState = {
     isHacker: true,
     isPartner: false,
 
-    isSidebarVisible: false,
-
     applicationToReview: {},
+    applicationsWithReviews: [],
+    applicationsWithReviewsCount: 0,
+    reviewTablePage: 0,
     settings: {},
-    reviewers: []
+    reviewers: [],
+    emails: [],
+    testEmailRecipients: {},
+
+    rsvpLoading: false,
+    rsvpSubmitted: false,
+    rsvpError: false,
+
+    withdrawError: false
 };
 
 /**
@@ -84,12 +95,21 @@ export const selectors = {
     getIsAdmin: (state) => state[reducerMount].isAdmin,
     getIsHacker: (state) => state[reducerMount].isHacker,
     getIsPartner: (state) => state[reducerMount].isPartner,
-    getIsSidebarVisible: (state) => state[reducerMount].isSidebarVisible,
     getApplicationToReview: (state) => state[reducerMount].applicationToReview,
     getSettings: (state) => state[reducerMount].settings,
     getReviewers: (state) => state[reducerMount].reviewers,
     getDashboardSuccessMessages: (state) => state[reducerMount].dashboardSuccessMessages,
-    getDashboardErrorMessages: (state) => state[reducerMount].dashboardErrorMessages
+    getDashboardErrorMessages: (state) => state[reducerMount].dashboardErrorMessages,
+    getApplicationsWithReviews: (state) => state[reducerMount].applicationsWithReviews,
+    getApplicationsWithReviewsCount: (state) => state[reducerMount].applicationsWithReviewsCount,
+    getEmails: (state) => state[reducerMount].emails,
+    getAdmins: (state) => state[reducerMount].admins,
+    getTestEmailRecipients: (state) => state[reducerMount].testEmailRecipients,
+    getReviewTablePage: (state) => state[reducerMount].reviewTablePage,
+    getRSVPLoading: (state) => state[reducerMount].rsvpLoading,
+    getRSVPSubmitted: (state) => state[reducerMount].rsvpSubmitted,
+    getRSVPError: (state) => state[reducerMount].rsvpError,
+    getWithdrawError: (state) => state[reducerMount].withdrawError
 };
 
 /**
@@ -267,13 +287,6 @@ const handlers = {
         };
     },
 
-    [actionTypes.TOGGLE_SIDEBAR_VISIBILITY]: (state, action) => {
-        return {
-            ...state,
-            isSidebarVisible: !state.isSidebarVisible
-        };
-    },
-
     [actionTypes.FETCH_APPLICATION_TO_REVIEW]: (state, action) => {
         // TODO: Loading
         return { ...state };
@@ -353,16 +366,49 @@ const handlers = {
     [actionTypes.APPLICATION_REVIEW_SUBMITTED]: (state, action) => {
         const { user: updatedUser } = action.data; // updated user
         const { firstName, lastName } = updatedUser;
-        return {
-            ...state,
-            dashboardSuccessMessages: [
-                ...state.dashboardSuccessMessages,
-                `Application review submitted for ${firstName} ${lastName}`
-            ]
-        };
+        const message = `Application review submitted for ${firstName} ${lastName}`;
+        return reduceDashboardSuccessMessage(state, message);
     },
 
     [actionTypes.APPLICATION_REVIEW_SUBMIT_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
+    },
+
+    [actionTypes.FETCH_APPLICATIONS_WITH_REVIEWS]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.APPLICATIONS_WITH_REVIEWS_FETCHED]: (state, action) => {
+        const { applicationsWithReviews } = action.data; // updated user
+        return {
+            ...state,
+            applicationsWithReviews
+        };
+    },
+
+    [actionTypes.APPLICATIONS_WITH_REVIEWS_FETCH_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
+    },
+
+    [actionTypes.FETCH_APPLICATIONS_WITH_REVIEWS_COUNT]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.APPLICATIONS_WITH_REVIEWS_COUNT_FETCHED]: (state, action) => {
+        const { count: applicationsWithReviewsCount } = action.data;
+        return {
+            ...state,
+            applicationsWithReviewsCount
+        };
+    },
+
+    [actionTypes.APPLICATIONS_WITH_REVIEWS_COUNT_FETCH_ERROR]: (state, action) => {
         const { message: errorMessage } = action.data.data;
         return reduceDashboardErrorMessage(state, errorMessage);
 
@@ -388,11 +434,158 @@ const handlers = {
                 ...state.dashboardErrorMessages.slice(index + 1)
             ]
         };
+    },
+
+    [actionTypes.FETCH_EMAILS]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.EMAILS_FETCHED]: (state, action) => {
+        const { emails } = action.data; // updated user
+        return {
+            ...state,
+            emails
+        };
+    },
+
+    [actionTypes.EMAILS_FETCH_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
+    },
+
+    [actionTypes.FETCH_ADMINS]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.ADMINS_FETCHED]: (state, action) => {
+        const { admins } = action.data;
+        return {
+            ...state,
+            admins
+        };
+    },
+
+    [actionTypes.ADMINS_FETCH_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
+    },
+
+    [actionTypes.SET_TEST_EMAIL_RECIPIENTS]: (state, action) => {
+        console.log(action);
+        return {
+            ...state,
+            testEmailRecipients: {
+                ...state.testEmailRecipients,
+                ...action.data.testEmailRecipients
+            }
+        };
+    },
+
+    [actionTypes.SEND_EMAIL]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.EMAIL_SENT]: (state, action) => {
+        const message = 'Email sent successfully!';
+        return reduceDashboardSuccessMessage(state, message);
+    },
+
+    [actionTypes.EMAIL_SEND_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+
+    },
+
+    [actionTypes.SET_REVIEW_TABLE_PAGE]: (state, action) => {
+        const { reviewTablePage } = action.data;
+        return {
+            ...state,
+            reviewTablePage
+        };
+    },
+
+    [actionTypes.UPDATE_APPLICATION_STATUS]: (state, action) => {
+        // TODO: Loading
+        return { ...state };
+    },
+
+    [actionTypes.APPLICATION_STATUS_UPDATED]: (state, action) => {
+        const message = 'Updated application status successfully!';
+        return reduceDashboardSuccessMessage(state, message);
+    },
+
+    [actionTypes.APPLICATION_STATUS_UPDATE_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(state, errorMessage);
+    },
+
+    [actionTypes.RSVP_REQUEST]: (state, action) => {
+        return {
+            ...state,
+            rsvpError: false,
+            rsvpLoading: true
+        };
+    },
+
+    [actionTypes.RSVP_SUCCESS]: (state, action) => {
+
+        const { user } = action.data;
+
+        return {
+            ...state,
+            user,
+            rsvpError: false,
+            rsvpLoading: false
+        };
+    },
+
+    [actionTypes.RSVP_ERROR]: (state, action) => {
+        return {
+            ...state,
+            rsvpLoading: false,
+            rsvpError: true
+        };
+    },
+
+    [actionTypes.WITHDRAW_APPLICATION]: (state, action) => {
+        return {
+            ...state,
+            withdrawError: false
+        };
+    },
+
+    [actionTypes.WITHDRAW_SUCCESS]: (state, action) => {
+        const { user } = action.data;
+        const message = 'Withdrawn application successfully!';
+        return {
+            ...reduceDashboardSuccessMessage(state, message),
+            user
+        };
+    },
+
+    [actionTypes.WITHDRAW_FAIL]: (state, action) => {
+        return {
+            ...state,
+            withdrawError: true
+        };
     }
 };
 
-function reduceDashboardErrorMessage(state, errorMessage) {
-    return { ...state, dashboardErrorMessages: [...state.dashboardErrorMessages, errorMessage] };
+function reduceDashboardErrorMessage(state, message) {
+    return reduceDashboardMessage(state, 'dashboardErrorMessages', message);
+}
+
+function reduceDashboardSuccessMessage(state, message) {
+    return reduceDashboardMessage(state, 'dashboardSuccessMessages', message);
+}
+
+function reduceDashboardMessage(state, key, message) {
+    return { ...state, [key]: [...state[key], message] };
 }
 
 /**

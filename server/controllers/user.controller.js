@@ -1,74 +1,144 @@
 const { User } = require('../models');
+const { ERROR_TEMPLATES, createError } = require('../errors');
+const { EMAILS, ERROR, USER } = require('../strings');
+const { sendEmail } = require('../emails');
+const _ = require('lodash');
 
-const ERRORS = {
-	NOT_FOUND: {
-		code: 404,
-		type: 'MISSING'
-	},
-	DB_ERROR: {
-		code: 503,
-		type: "DB_ERROR"
-	}
+const DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS = { new: true };
+const EMAILS_BY_APPLICATION_STATUS = {
+    [USER.APPLICATION.STATUSES.ACCEPTED]: EMAILS.TEMPLATES.APPLICATION_ACCEPTED.NAME,
+    [USER.APPLICATION.STATUSES.REJECTED]: EMAILS.TEMPLATES.APPLICATION_DECLINED.NAME,
+    [USER.APPLICATION.STATUSES.WAITING_LIST]: EMAILS.TEMPLATES.APPLICATION_WAITLISTED.NAME
 };
-
-const ERROR_MESSAGES = {
-	INVALID_USER_ID: "A user with this identifier not exist!",
-
-	DB_USER: "Could not retreive the user from the database!",
-	DB_USERS: "Could not retreive any users from the database!"
-};
-
-function createError(errorTemplate, message, data = {}) {
-	return Object.assign({}, errorTemplate, { message, data });
-}
 
 module.exports = {
-	getUser(userId) {
-		return new Promise((resolve, reject) => {
-			User.findOne({ _id: userId }).then((user) => {
-				if (user) resolve(user);
-				else reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID));
-			}).catch((err) => {
-				reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
-			});
-		});
-	},
+    getUser(userId) {
+        return new Promise((resolve, reject) => {
+            User.findOne({ _id: userId }).then((user) => {
+                if (user) {
+                    resolve(user);
+                } else {
+                    reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID));
+                }
+            }).catch((err) => {
+                reject(createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_GET, err));
+            });
+        });
+    },
 
-	getAllUsers() {
-		return new Promise((resolve, reject) => {
-			User.find().then((users) => {
-				resolve({ users });
-			}).catch((err) => {
-				reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USERS, err));
-			});
-		});
-	},
+    getAllUsers() {
+        return new Promise((resolve, reject) => {
+            User.find().then((users) => {
+                resolve({ users });
+            }).catch((err) => {
+                reject(createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USERS_GET, err));
+            });
+        });
+    },
 
-	deleteUser(userId) {
-		return new Promise((resolve, reject) => {
-			User.findOneAndRemove({ _id: userId }).then((user) => {
-				if (!user) return reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID));
-				resolve();
-			});
-		});
-	},
+    deleteUser(userId) {
+        return new Promise((resolve, reject) => {
+            User.findOneAndRemove({ _id: userId }).then((user) => {
+                if (!user) return reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID));
+                resolve();
+            });
+        });
+    },
 
-	updateUser(userId, userInfo) {
-		return new Promise((resolve, reject) => {
-			User.findOne({ _id: userId }).then((user) => {
-				if (!user) reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID));
+    updateUser(userId, userInfo) {
+        return new Promise((resolve, reject) => {
+            User.findOne({ _id: userId }).then((user) => {
+                if (!user) reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID));
 
-				Object.keys(userInfo).forEach((key) => {
-					if (user[key]) user[key] = userInfo[key];
-				});
+                Object.keys(userInfo).forEach((key) => {
+                    if (user[key]) user[key] = userInfo[key];
+                });
 
-				user.save().then(resolve).catch((err) => {
-					reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
-				});
+                user.save().then(resolve).catch((err) => {
+                    reject(createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_UPDATE, err));
+                });
 
-			}).catch((err) => {
-				reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
-			});
-		});
-	}
+            }).catch((err) => {
+                reject(createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_GET, err));
+            });
+        });
+    },
+
+    async updateApplicationStatus(userId, eventId, status) {
+        if (!userId) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_USER_ID);
+        }
+
+        if (!eventId) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_EVENT_ID);
+        }
+
+        if (!status || !USER.APPLICATION.STATUSES[status]) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_APPLICATION_STATUS);
+        }
+
+        let updatedUser;
+        try {
+            updatedUser = await User.findOneAndUpdate(
+                { _id: userId, 'applications.event': eventId },
+                { $set: { 'applications.$.status': USER.APPLICATION.STATUSES[status] } },
+                DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
+            );
+            console.log(userId, eventId);
+            console.log('updated user', updatedUser);
+        } catch (e) {
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_UPDATE_APPLICATION_STATUS, e);
+        }
+
+        if (!updatedUser) throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_UPDATE_APPLICATION_STATUS);
+
+        const templateName = EMAILS_BY_APPLICATION_STATUS[status];
+
+        if (templateName) {
+            await sendEmail(templateName, updatedUser);
+        }
+
+        return updatedUser;
+    },
+
+    async submitRSVP(userId, eventId, rsvp) {
+        if (!userId) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_USER_ID);
+        }
+
+        if (!eventId) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_EVENT_ID);
+        }
+
+        if (!rsvp) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.INVALID_RSVP);
+        }
+
+        const setters = _.reduce(rsvp, (accum, value, key) => {
+            return {
+                ...accum,
+                [`applications.$.${key}`]: value
+            };
+        }, {});
+
+        let updatedUser;
+        try {
+            updatedUser = await User.findOneAndUpdate(
+                { _id: userId, 'applications.event': eventId },
+                {
+                    $set: {
+                        ...setters,
+                        'applications.$.rsvp': USER.APPLICATION.RSVPS.COMPLETED
+                    }
+                },
+                DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
+            );
+        } catch (e) {
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_RSVP, e);
+        }
+
+        if (!updatedUser) throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_RSVP);
+
+        return updatedUser;
+    }
 };

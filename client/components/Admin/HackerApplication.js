@@ -1,6 +1,6 @@
-import React from 'react';
 import { isFunction, map, pick } from 'lodash';
 import moment from 'moment';
+import React from 'react';
 
 /* HackerApplication Fields */
 const FIRST_NAME = 'firstName';
@@ -37,9 +37,11 @@ const APPLICATION_FIELDS = [
     WHY_QHACKS,
     LINKS
 ];
+
 const APPLICATION_VALUE_TRANSFORMATIONS = {
     [DATE_OF_BIRTH]: (value) => moment(value).format('MMM Do, YYYY')
 };
+
 const FIELD_TITLES = {
     [FIRST_NAME]: 'First Name',
     [LAST_NAME]: 'Last Name',

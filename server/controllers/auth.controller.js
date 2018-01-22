@@ -1,9 +1,11 @@
 const customValidator = require('../services/custom-validator');
 const jwt = require('jsonwebtoken');
-const mailer = require('../mailer');
+const emails = require('../emails');
 const crypto = require('crypto');
 const _ = require('lodash');
 const { Event, User } = require('../models');
+const { ERROR_TEMPLATES, createError } = require('../errors');
+const { EMAILS, ERROR } = require('../strings');
 
 
 const JWT_ISSUER = 'QHacks Authentication';
@@ -13,64 +15,27 @@ const QHACKS_2018_SLUG = 'qhacks-2018';
 
 const { AUTH_SECRET } = process.env;
 
-const ERRORS = {
-	UNPROCESSABLE: {
-		code: 422,
-		type: "VALIDATION"
-	},
-	NOT_FOUND: {
-		code: 404,
-		type: 'MISSING'
-	},
-	DB_ERROR: {
-		code: 503,
-		type: "DB_ERROR"
-	},
-	INTERNAL_SERVER_ERROR: {
-		code: 500,
-		type: "INTERNAL_SERVER_ERROR"
-	},
-	UNAUTHORIZED: {
-		code: 401,
-		type: "AUTHORIZATION"
-	}
-};
 
-const ERROR_MESSAGES = {
-	INVALID_USER_ID: "A user with this identifier does not exist!",
-	INVALID_USER_EMAIL: "A user with this email does not exist!",
-	INVALID_REFRESH_TOKEN: "The refresh token provided is invalid!",
-	INVALID_CREDENTIALS: "You have provided invalid credentials!",
-	INVALID_RESET_HASH: "A user with this reset hash does not exist!",
 
-	DB_USER: "Error creating User in the database!",
-	DB_USERS: "Error retreiving Users from the database!",
-
-	RESET_HASH_CREATE_FAIL: "Error when creating the reset hash!"
-};
 
 const HACKER_SIGN_UP_FIELDS = [
-	'firstName',
-	'lastName',
-	'email',
-	'phoneNumber',
-	'dateOfBirth',
-	'gender',
-	'password',
-	'school',
-	'degreeType',
-	'program',
-	'graduationYear',
-	'graduationMonth',
-	'travelOrigin',
-	'numberOfHackathons',
-	'whyQhacks',
-	'links'
+    'firstName',
+    'lastName',
+    'email',
+    'phoneNumber',
+    'dateOfBirth',
+    'gender',
+    'password',
+    'school',
+    'degreeType',
+    'program',
+    'graduationYear',
+    'graduationMonth',
+    'travelOrigin',
+    'numberOfHackathons',
+    'whyQhacks',
+    'links'
 ];
-
-function createError(errorTemplate, message, data = {}) {
-	return Object.assign({}, errorTemplate, { message, data });
-}
 
 /**
  * Creates a user access token.
@@ -78,10 +43,10 @@ function createError(errorTemplate, message, data = {}) {
  * @return {String} Access token.
  */
 function createAccessToken(userId) {
-	return jwt.sign({ userId }, AUTH_SECRET, {
-		expiresIn: ACCESS_TOKEN_EXPIRE_TIME,
-		issuer: JWT_ISSUER
-	});
+    return jwt.sign({ userId }, AUTH_SECRET, {
+        expiresIn: ACCESS_TOKEN_EXPIRE_TIME,
+        issuer: JWT_ISSUER
+    });
 }
 
 /**
@@ -90,13 +55,13 @@ function createAccessToken(userId) {
  * @return {String} Refresh token.
  */
 function createRefreshToken(userId) {
-	return jwt.sign({
-		type: 'refresh',
-		userId
-	}, AUTH_SECRET, {
-		expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
-		issuer: JWT_ISSUER
-	});
+    return jwt.sign({
+        type: 'refresh',
+        userId
+    }, AUTH_SECRET, {
+        expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
+        issuer: JWT_ISSUER
+    });
 }
 
 /**
@@ -104,122 +69,125 @@ function createRefreshToken(userId) {
  * @param {Object} user The user to create the hash for.
  */
 function createResetPasswordHash(user) {
-	const { AUTH_SECRET } = process.env;
-	const timeInMs = Date.now();
-	return crypto.createHmac('sha256', AUTH_SECRET)
-		.update(`${user.email}${timeInMs}`)
-		.digest('hex');
+    const { AUTH_SECRET } = process.env;
+    const timeInMs = Date.now();
+    return crypto.createHmac('sha256', AUTH_SECRET)
+        .update(`${user.email}${timeInMs}`)
+        .digest('hex');
 }
 
 module.exports = {
-	authenticateUser(email, password) {
-		return new Promise((resolve, reject) => {
-			User.authenticate(email, password)
-				.then((user) => {
-					const refreshToken = createRefreshToken(user._id);
+    authenticateUser(email, password) {
+        return new Promise((resolve, reject) => {
+            User.authenticate(email, password)
+                .then((user) => {
+                    const refreshToken = createRefreshToken(user._id);
 
-					User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }).then((updatedUser) => {
-						const accessToken = createAccessToken(updatedUser._id);
+                    User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }).then((updatedUser) => {
+                        const accessToken = createAccessToken(updatedUser._id);
 
-						resolve({ accessToken, refreshToken, user: updatedUser });
-					}).catch((err) => {
-						reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
-					});
-				}).catch((err) => {
-				reject(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_CREDENTIALS));
-			});
-		});
-	},
+                        resolve({ accessToken, refreshToken, user: updatedUser });
+                    }).catch((err) => {
+                        reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID, err));
+                    });
+                }).catch((err) => {
+                reject(createError(ERROR_TEMPLATES.UNAUTHORIZED, ERROR.INVALID_CREDENTIALS));
+            });
+        });
+    },
 
-	refresh(refreshToken) {
-		return new Promise((resolve, reject) => {
-			jwt.verify(refreshToken, AUTH_SECRET, (err, decoded) => {
-				if (err) reject(createError(ERRORS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_REFRESH_TOKEN, err));
-				const { userId } = decoded;
-				const refreshToken = createRefreshToken(userId);
+    refresh(refreshToken) {
+        return new Promise((resolve, reject) => {
+            jwt.verify(refreshToken, AUTH_SECRET, (err, decoded) => {
+                if (err) reject(createError(ERROR_TEMPLATES.UNAUTHORIZED, ERROR.INVALID_REFRESH_TOKEN, err));
+                const { userId } = decoded;
+                const refreshToken = createRefreshToken(userId);
 
-				User.findOneAndUpdate({ _id: userId }, { refreshToken }, { new: true }).then((updatedUser) => {
-					const accessToken = createAccessToken(updatedUser._id);
+                User.findOneAndUpdate({ _id: userId }, { refreshToken }, { new: true }).then((updatedUser) => {
+                    const accessToken = createAccessToken(updatedUser._id);
 
-					resolve({ accessToken, refreshToken, user: updatedUser });
-				}).catch((err) => {
-					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
-				});
+                    resolve({ accessToken, refreshToken, user: updatedUser });
+                }).catch((err) => {
+                    reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID, err));
+                });
 
-			});
-		});
-	},
+            });
+        });
+    },
 
-	signup(signUpInfo) {
-		return new Promise((resolve, reject) => {
-			signUpInfo = _.pick(signUpInfo, HACKER_SIGN_UP_FIELDS);
+    signup(signUpInfo) {
+        return new Promise((resolve, reject) => {
+            signUpInfo = _.pick(signUpInfo, HACKER_SIGN_UP_FIELDS);
 
-			customValidator.validateSignUpInfo(signUpInfo)
-				.then(() => Event.findOne({ slug: QHACKS_2018_SLUG }))
-				.then((event) => {
-					User.create(_.assign({}, signUpInfo, { events: [event._id] }))
-						.then((user) => {
-							const refreshToken = createRefreshToken(user._id);
+            customValidator.validateSignUpInfo(signUpInfo)
+                .then(() => Event.findOne({ slug: QHACKS_2018_SLUG }))
+                .then((event) => {
+                    // TODO: Add an application based on the event
+                    User.create(_.assign({}, signUpInfo, { events: [event._id] }))
+                        .then((user) => {
+                            const refreshToken = createRefreshToken(user._id);
 
-							User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true })
-								.then((updatedUser) => {
-									const accessToken = createAccessToken(updatedUser._id);
-									resolve({ accessToken, refreshToken, user: updatedUser });
-								})
-								.catch((err) => {
-									reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
-								});
-						})
-						.catch((err) => {
-							reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
-						});
-				})
-				.catch((err) => {
-					reject(createError(ERRORS.UNPROCESSABLE, err.message));
-				});
-		});
-	},
+                            User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true })
+                                .then((updatedUser) => {
+                                    const accessToken = createAccessToken(updatedUser._id);
+                                    resolve({ accessToken, refreshToken, user: updatedUser });
+                                })
+                                .catch((err) => {
+                                    reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID, err));
+                                });
+                        })
+                        .catch((err) => {
+                            reject(createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_CREATE, err));
+                        });
+                })
+                .catch((err) => {
+                    reject(createError(ERROR_TEMPLATES.UNPROCESSABLE, err.message));
+                });
+        });
+    },
 
-	createResetHash(email) {
-		return new Promise((resolve, reject) => {
-			User.findOne({ email }).then((user) => {
+    createResetHash(email) {
+        return new Promise((resolve, reject) => {
+            User.findOne({ email }).then((user) => {
 
-				const hash = createResetPasswordHash(user);
+                const hash = createResetPasswordHash(user);
 
-				User.findOneAndUpdate({ _id: user._id }, { passwordResetHash: hash }, { new: true }).then((updatedUser) => {
-					mailer.sendResetPasswordEmail(updatedUser).then(() => {
-						resolve();
-					}).catch((err) => {
-						reject(err);
-					});
-				}).catch((err) => {
-					reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_ID, err));
-				});
-			}).catch((err) => {
-				reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_EMAIL, err));
-			});
-		});
-	},
+                User.findOneAndUpdate({ _id: user._id }, { passwordResetHash: hash }, { new: true }).then((updatedUser) => {
+                    emails.sendEmail(EMAILS.TEMPLATES.RESET_PASSWORD.NAME, updatedUser.toObject()).then(() => {
+                        console.log('Sent!');
+                        resolve();
+                    }).catch((err) => {
+                        console.log(err);
+                        reject(createError(err));
+                    });
+                }).catch((err) => {
+                    reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID, err));
+                });
+            }).catch((err) => {
+                reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_EMAIL, err));
+            });
+        });
+    },
 
-	updatePasswordForReset(resetHash, password) {
-		return new Promise((resolve, reject) => {
-			User.findOne({ passwordResetHash: resetHash }).then((user) => {
-				if (!user) reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_RESET_HASH));
+    updatePasswordForReset(resetHash, password) {
+        return new Promise((resolve, reject) => {
+            User.findOne({ passwordResetHash: resetHash }).then((user) => {
+                if (!user) reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_RESET_HASH));
 
-				user.password = password;
-				user.passwordResetHash = null;
-				user.save().then(() => {
-					mailer.sendPasswordResetSuccessfulEmail(user).then(() => {
-						resolve();
-					}).catch((err) => {
-						reject(err);
-					});
-				}).catch((err) => {
-					reject(createError(ERRORS.DB_ERROR, ERROR_MESSAGES.DB_USER, err));
-				});
-			}).catch((err) => {
-				reject(createError(ERRORS.NOT_FOUND, ERROR_MESSAGES.INVALID_USER_EMAIL, err));
-			});
-		});
-	}
+                user.password = password;
+                user.passwordResetHash = null;
+                user.save().then(() => {
+                    emails.sendEmail(EMAILS.TEMPLATES.RESET_PASSWORD_SUCCESS, user).then(() => {
+                        resolve();
+                    }).catch((err) => {
+                        reject(err);
+                    });
+                }).catch((err) => {
+                    reject(createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_CREATE, err));
+                });
+            }).catch((err) => {
+                reject(createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_EMAIL, err));
+            });
+        });
+    }
 };

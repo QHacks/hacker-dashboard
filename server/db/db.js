@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const winston = require('winston');
-
-function noop() {}
+const { noop } = require('lodash');
 
 module.exports = function connectToDB(cb = noop) {
     const host = process.env.MONGO_HOST;

@@ -1,18 +1,25 @@
 import React from 'react';
 import { Button, Popup } from 'semantic-ui-react';
-
-function noop() {}
+import { noop } from 'lodash';
 
 const NO_SCORE = 1;
 const MAYBE_SCORE = 2;
 const YES_SCORE = 3;
+const GOLDEN_TICKET_SCORE = Number.MAX_SAFE_INTEGER;
 
-export default ({onVote = noop, ...rest}) => {
+export const SCORES = {
+    NO_SCORE,
+    MAYBE_SCORE,
+    YES_SCORE,
+    GOLDEN_TICKET_SCORE
+};
+
+export default ({ onVote = noop, ...rest }) => {
     function renderGoldenTicketTrigger() {
         return (
             <Button color="yellow"
                     icon="ticket"
-                    content="Use Golden Ticket" />
+                    content="Use Golden Ticket"/>
         );
     }
 
@@ -20,7 +27,7 @@ export default ({onVote = noop, ...rest}) => {
         return (
             <Button color="green"
                     content="I'm sure!"
-                    onClick={() => onVote(Number.MAX_SAFE_INTEGER, { goldenTicket: true})}
+                    onClick={() => onVote(GOLDEN_TICKET_SCORE, { goldenTicket: true })}
             />
         );
     }
@@ -40,7 +47,7 @@ export default ({onVote = noop, ...rest}) => {
                     Yes
                 </Button>
             </div>
-            <div style={{display: 'flex', justifyContent: 'center', marginTop: '25px'}}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '25px' }}>
                 <Popup
                     trigger={renderGoldenTicketTrigger()}
                     content={renderGoldenTicketContent()}

@@ -1,78 +1,65 @@
+import { Landing as AdminLanding, Applicants, Review, Settings } from '../Admin';
 import { actionCreators, selectors } from '../../HackerStore';
+import { Message, Container } from 'semantic-ui-react';
+import { Route } from 'react-router-dom';
+import { Landing as HackerLanding } from '../Hacker';
+import PrivateRoute from '../utils/PrivateRoute';
+import { AuthSwitch, NotFound } from '../utils';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import MenuBar from '../utils/MenuBar';
-import { Route, Switch } from 'react-router-dom';
-import PrivateRoute from '../utils/PrivateRoute';
-import { Landing as AdminLanding, Sidebar as AdminSidebar, Review, Settings } from '../Admin';
-import { Landing as HackerLanding, Sidebar as HackerSidebar } from '../Hacker';
-import { AuthSwitch, NotFound } from '../utils';
-import { Message, Segment, Sidebar } from 'semantic-ui-react';
+import Confetti from 'react-confetti';
+import sizeMe from 'react-sizeme';
 import { isEmpty } from 'lodash';
+import Profile from '../Profile';
+import MenuBar from '../MenuBar';
 import uuid from 'uuid/v4';
 
-const { clearDashboardErrorMessage, clearDashboardSuccessMessage, logout, toggleSidebarVisibility } = actionCreators;
-const {
-    getDashboardErrorMessages,
-    getDashboardSuccessMessages,
-    getIsAdmin,
-    getIsHacker,
-    getIsPartner,
-    getIsSidebarVisible
-} = selectors;
+const { clearDashboardErrorMessage, clearDashboardSuccessMessage, logout } = actionCreators;
+const { getDashboardErrorMessages, getDashboardSuccessMessages, getIsAdmin, getIsHacker, getIsPartner, getUser } = selectors;
 
 class Dashboard extends Component {
-
-    getCurrentAuthType() {
-        const { isAdmin, isHacker, isPartner } = this.props;
-        return (isAdmin && 'admin') || (isHacker && 'hacker') || (isPartner && 'partner');
-    }
-
-    handleBarsClick() {
-        this.props.toggleSidebarVisibility();
-    }
 
     handleLogoutClick() {
         this.props.logout();
     }
 
-    renderSidebar() {
-        const { isSidebarVisible } = this.props;
-        const authType = this.getCurrentAuthType();
+    renderMenuBar() {
+        const { isAdmin } = this.props;
         return (
-            <AuthSwitch type={authType}>
-                <PrivateRoute path="*"
-                              type="admin"
-                              component={() => <AdminSidebar visible={isSidebarVisible}/>}/>
-                <PrivateRoute path="*"
-                              type="hacker"
-                              component={() => <HackerSidebar visible={isSidebarVisible}/>}/>
-            </AuthSwitch>
+            <MenuBar onLogoutClick={this.handleLogoutClick.bind(this)} isAdmin={isAdmin} />
         );
     }
 
     renderBody() {
-        const authType = this.getCurrentAuthType();
+        const { isAdmin, isPartner, isHacker } = this.props;
+        const authType = (isAdmin && 'admin') || (isPartner && 'partner') || (isHacker && 'hacker');
         return (
             <AuthSwitch type={authType}>
                 <PrivateRoute exact
                               path="/"
-                              type="admin"
+                              types={["admin"]}
                               component={AdminLanding}/>
                 <PrivateRoute exact
                               path="/review"
-                              type="admin"
+                              types={["admin"]}
                               component={Review}/>
                 <PrivateRoute exact
+                              path="/applicants"
+                              types={["admin"]}
+                              component={Applicants}/>
+                <PrivateRoute exact
                               path="/settings"
-                              type="admin"
+                              types={["admin"]}
                               component={Settings}/>
                 <PrivateRoute exact
+                              path="/profile"
+                              types={["hacker", "partner", "admin"]}
+                              component={Profile}/>
+                <PrivateRoute exact
                               path="/"
-                              type="hacker"
+                              types={["hacker"]}
                               component={HackerLanding}/>
-                <Route path="*"
-                       component={NotFound}/>
+                <Route path="*" component={NotFound}/>
             </AuthSwitch>
         );
     }
@@ -89,7 +76,9 @@ class Dashboard extends Component {
                      positive
                      floating
                      onDismiss={() => this.props.clearDashboardSuccessMessage({ index })}
-                     content={message}/>
+                     content={message}
+                     style={{ marginTop: '3em' }}
+            />
         ));
     }
 
@@ -105,25 +94,39 @@ class Dashboard extends Component {
                      negative
                      floating
                      onDismiss={() => this.props.clearDashboardErrorMessage({ index })}
-                     content={message}/>
+                     content={message}
+                     style={{ marginTop: '3em' }}
+                />
         ));
     }
 
+    renderConfetti() {
+        const { user } = this.props;
+
+        if (user.role !== 'HACKER') return null;
+
+        const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
+        const application = user.applications.find((application) => application.event === eventId);
+        const shouldRun = (application.status === 'ACCEPTED') && (application.rsvp === 'PENDING');
+        if (shouldRun) {
+            return (
+                <Confetti {...this.props.size} numberOfPieces={400} recycle={false} />
+            );
+        }
+        return null;
+    }
+
     render() {
+        const { width, height } = this.props.size;
         return (
             <div style={{ height: '100vh' }}>
-                <MenuBar onBarsClick={this.handleBarsClick.bind(this)}
-                         onLogoutClick={this.handleLogoutClick.bind(this)}/>
-                <Sidebar.Pushable>
-                    {this.renderSidebar()}
-                    <Sidebar.Pusher>
-                        <Segment basic>
-                            {this.renderBody()}
-                        </Segment>
-                        {this.renderDashboardSuccessMessages()}
-                        {this.renderDashboardErrorMessages()}
-                    </Sidebar.Pusher>
-                </Sidebar.Pushable>
+                {this.renderMenuBar()}
+                <Container>
+                    {this.renderConfetti()}
+                    {this.renderDashboardSuccessMessages()}
+                    {this.renderDashboardErrorMessages()}
+                    {this.renderBody()}
+                </Container>
             </div>
         );
     }
@@ -132,18 +135,19 @@ class Dashboard extends Component {
 function mapStateToProps(state, ownProps) {
     return {
         ...ownProps,
-        errorMessages: getDashboardErrorMessages(state),
+        user: getUser(state),
         isAdmin: getIsAdmin(state),
         isHacker: getIsHacker(state),
         isPartner: getIsPartner(state),
-        isSidebarVisible: getIsSidebarVisible(state),
+        errorMessages: getDashboardErrorMessages(state),
         successMessages: getDashboardSuccessMessages(state)
     };
 }
 
-export default connect(mapStateToProps, {
+Dashboard = connect(mapStateToProps, {
     clearDashboardErrorMessage,
     clearDashboardSuccessMessage,
-    logout,
-    toggleSidebarVisibility
+    logout
 })(Dashboard);
+
+export default sizeMe({ monitorHeight: true })(Dashboard);

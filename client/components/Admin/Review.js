@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Container, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import HackerApplication from './HackerApplication';
 import ReviewScale from './ReviewScale';
 import { actionCreators } from '../../HackerStore/HackerActions';
@@ -11,6 +12,7 @@ const { getApplicationToReview, getUser } = selectors;
 
 class Review extends Component {
     componentDidMount() {
+        // TODO: load on tab change
         this.props.fetchApplicationToReview();
     }
 
@@ -29,15 +31,16 @@ class Review extends Component {
 
     render() {
         const { applicationToReview } = this.props;
+        if (isEmpty(applicationToReview)) return (<p>No applications left to review!</p>);
         return (
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Container style={{ display: 'flex', justifyContent: 'center' }}>
                 <Segment compact>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <HackerApplication application={applicationToReview}/>
                         <ReviewScale onVote={this.handleVote.bind(this)}/>
                     </div>
                 </Segment>
-            </div>
+            </Container>
         );
     }
 }

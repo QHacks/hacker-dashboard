@@ -1,13 +1,13 @@
 import { actionCreators, selectors } from '../../HackerStore';
 import { Redirect } from 'react-router-dom';
-import LoginForm from '../utils/LoginForm';
 import { Header } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import LoginForm from '../Forms/LoginForm';
 import './Login.less';
 
-const { login } = actionCreators;
 const { getLoginLoading, getAuthenticated, getIsLoginError, getApplicationsStatus } = selectors;
+const { login } = actionCreators;
 
 class Login extends Component {
 
@@ -29,7 +29,7 @@ class Login extends Component {
             return locationState.from.pathname;
         }
 
-        return '/dashboard';
+        return '/';
     }
 
     renderLoginForm() {

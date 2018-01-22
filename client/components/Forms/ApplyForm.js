@@ -1,13 +1,13 @@
 import { confirmation, date, email, format, length, required } from 'redux-form-validators';
-import { Button, Form, Message, Segment } from 'semantic-ui-react';
-import SemanticFormField from './SemanticFormField';
 import { Field, getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
-import mlhSchools from './mlhSchools.json';
+import { Button, Form, Message, Segment } from 'semantic-ui-react';
+import { actionCreators, selectors } from "../../HackerStore";
+import SemanticFormField from './SemanticFormField';
+import mlhSchools from '../utils/mlhSchools.json';
+import { flatten, isEmpty, pick } from 'lodash';
 import FormProgress from './FormProgress';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { flatten, isEmpty, pick } from 'lodash';
-import { actionCreators, selectors } from "../../HackerStore";
 import './ApplyForm.less';
 
 const { applicationFormErrorMessagesUpdate, applicationError: applicationErrorUpdate } = actionCreators;
@@ -26,6 +26,7 @@ const FORM_STEPS = [
     'Education',
     'Hackathon Experience'
 ];
+
 const FORM_FIELDS_BY_PAGE = [
     ['firstName', 'lastName', 'email', 'phoneNumber', 'dateOfBirth', 'gender', 'password', 'confirmPassword'],
     ['school', 'degreeType', 'program', 'graduationYear', 'graduationMonth', 'travelOrigin'],
