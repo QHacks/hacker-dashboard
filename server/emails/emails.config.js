@@ -96,7 +96,7 @@ module.exports = {
         )
     }),
     [EMAIL_STRINGS.TEMPLATES.RESET_PASSWORD_SUCCESS.NAME]: (recipients) => ({
-        messages: recipients.map((recipient) => (
+        message: recipients.map((recipient) => (
             EMAIL_TEMPLATES[EMAIL_STRINGS.TEMPLATES.RESET_PASSWORD_SUCCESS.NAME].createMessage({
                 to: recipient.email
             })
