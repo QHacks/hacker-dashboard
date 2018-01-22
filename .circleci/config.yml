@@ -20,11 +20,8 @@ jobs:
           name: Install NPM dependencies
           command: npm install
       - run:
-          name: Build React client
-          command: npm run client-prod
-      - run:
-          name: Build MJML email templates
-          command: npm run email-prod
+          name: Build React client and MJML email templates
+          command: npm run build
       - run:
           name: Create .env file
           command: |

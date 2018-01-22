@@ -46,15 +46,15 @@ Utilize the scripts below to use the application:
 
 ```
 # install dependancies
-npm install
+npm run bootstrap
 
-# run the server in development mode with nodemon
-npm run server-dev
+# run the application in development mode (client and server hot-reload)
+npm run dev
 
 # run the server in debug mode
 npm run server-debug
 
-# run the server in production mode
+# run the application in production mode
 npm run start
 
 # runs webpack-dev-server for ui development

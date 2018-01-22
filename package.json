@@ -4,6 +4,10 @@
     "description": "Dashboard for participants, judges, mentors and partners of QHacks 2018.",
     "author": "Robert Saunders and Zack Harley",
     "scripts": {
+        "bootstrap": "npm install && lerna bootstrap",
+        "build": "npm run test && lerna run build --stream",
+        "dev": "lerna run build --scope email && lerna run dev --scope server --scope client --stream --parallel",
+        "start": "lerna run start --scope server --stream",
         "test": "cross-env eslint packages/server/**/*.js packages/client/**/*.js && nsp check --reporter checkstyle && ncu -e 2 -x mongoose"
     },
     "dependencies": {},
