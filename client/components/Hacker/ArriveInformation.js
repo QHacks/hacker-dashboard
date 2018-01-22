@@ -34,7 +34,7 @@ export default () => (
                     <Item.Image size='mini' src={require('../../assets/img/slack.svg')}/>
                     <Item.Content verticalAlign='middle'>
                         <Item.Header as='a'
-                                     href="https://join.slack.com/t/qhacks2018/shared_invite/enQtMjk5NDMxODk0NzIxLTY5NjE1NjliMGMzODU5MDM0ZmY2MmRlMDI1YTE1ZWFhOTczMDUwODFiZjVjZDE1ODA4ZGY0NjAyYWJhNzYyMzM">Join
+                                     href="https://join.slack.com/t/qhacks2018/shared_invite/enQtMzAwNTkyNTU3NjY1LWExOTkzZmNiODNiNGM4MDZhOTMzNjM3MWYxMjdhZmZhZmZiNzEwODAzY2U2MDM2YzE0YzgwM2UxZWQyZmM2NTE">Join
                             the QHacks 2018 Slack!</Item.Header>
                         <Item.Description>
                             This will be the primary method our team (and our partners) will communicate with
