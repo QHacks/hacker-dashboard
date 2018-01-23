@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import uuid from 'uuid/v4';
 import { connect } from 'react-redux';
-import { SCORES } from './ReviewScale';
+import { SCORES } from '../Admin/ReviewScale';
 import { head, map } from 'lodash';
 import { Button, Icon, Menu, Segment, Table } from 'semantic-ui-react';
 import { selectors } from '../../HackerStore/HackerReducer';

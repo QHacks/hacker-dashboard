@@ -4,6 +4,7 @@ import { API } from '../strings';
 const ADMIN = 'ADMIN';
 const HACKER = 'HACKER';
 const PARTNER = 'PARTNER';
+const SUPER_ADMIN = 'SUPER_ADMIN';
 
 export const reducerMount = 'hacker';
 
@@ -49,6 +50,7 @@ const initialState = {
     isAdmin: false,
     isHacker: true,
     isPartner: false,
+    isSuperAdmin: false,
 
     applicationToReview: {},
     applicationsWithReviews: [],
@@ -95,6 +97,7 @@ export const selectors = {
     getIsAdmin: (state) => state[reducerMount].isAdmin,
     getIsHacker: (state) => state[reducerMount].isHacker,
     getIsPartner: (state) => state[reducerMount].isPartner,
+    getIsSuperAdmin: (state) => state[reducerMount].isSuperAdmin,
     getApplicationToReview: (state) => state[reducerMount].applicationToReview,
     getSettings: (state) => state[reducerMount].settings,
     getReviewers: (state) => state[reducerMount].reviewers,
@@ -134,6 +137,7 @@ const handlers = {
         const isAdmin = user.role === ADMIN;
         const isHacker = user.role === HACKER;
         const isPartner = user.role === PARTNER;
+        const isSuperAdmin = user.role === SUPER_ADMIN;
 
         return {
             ...state,
@@ -143,6 +147,7 @@ const handlers = {
             isAdmin,
             isHacker,
             isPartner,
+            isSuperAdmin,
             authenticated: true,
             loginLoading: false,
             loginError: false,

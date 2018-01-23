@@ -45,7 +45,8 @@ const USER = {
     ROLES: {
         ADMIN: 'ADMIN',
         HACKER: 'HACKER',
-        PARTNER: 'PARTNER'
+        PARTNER: 'PARTNER',
+        SUPER_ADMIN: 'SUPER_ADMIN'
     }
 };
 
