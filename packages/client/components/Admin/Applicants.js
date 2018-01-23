@@ -30,7 +30,8 @@ const REVIEW_TABLE_HEADERS = [
     'Score',
     'Golden Ticket Recipient?',
     'Is Application Complete?',
-    'Application Status'
+    'Application Status',
+    'RSVP'
 ];
 
 class Applicants extends Component {
@@ -205,7 +206,8 @@ class Applicants extends Component {
                 score,
                 hasGoldenTicket,
                 isApplicationComplete: hasGoldenTicket || (user.reviews.length >= numberOfReviewsRequired),
-                status: application.status || 'APPLIED'
+                status: application.status || 'APPLIED',
+                rsvp: application.rsvp
             };
         });
 
@@ -226,8 +228,8 @@ class Applicants extends Component {
                                     if (key === '_id' || key === 'event') return null;
                                     return (
                                         <Table.Cell key={uuid()}
-                                                    positive={(key.match(/(is|has)/) && value) || (key === 'status' && value === 'ACCEPTED')}
-                                                    negative={key.match(/(is|has)/) && !value || (key === 'status' && value === 'REJECTED')}>
+                                                    positive={(key.match(/(is|has)/) && value) || (key === 'status' && value === 'ACCEPTED') || (key === 'rsvp' && value === 'COMPLETED')}
+                                                    negative={key.match(/(is|has)/) && !value || (key === 'status' && value === 'REJECTED') || (key === 'rsvp' && value === 'NOT_NEEDED')}>
                                             {
                                                 key === 'status'
                                                     ? this.renderStatusCell(application._id, application.event, value)
