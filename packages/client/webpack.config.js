@@ -1,6 +1,6 @@
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CompressionPlugin = require("compression-webpack-plugin");
+const CompressionPlugin = require('compression-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const winston = require('winston');
@@ -11,8 +11,8 @@ require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 const isProd = process.env.NODE_ENV === 'production';
 
 (isProd)
-    ? winston.info("Running production build!")
-    : winston.info("Running development build!");
+    ? winston.info('Running production build!')
+    : winston.info('Running development build!');
 
 const PORT = process.env.PORT;
 const DEV_PROXY = process.env.DEV_PROXY || `http://localhost:${PORT}`;
@@ -93,8 +93,8 @@ module.exports = {
             filename: '[name].[contenthash].css'
         }),
         new CompressionPlugin({
-            asset: "[path].gz[query]",
-            algorithm: "gzip",
+            asset: '[path].gz[query]',
+            algorithm: 'gzip',
             test: /\.js$|\.css$|\.html$/,
             threshold: 10240,
             minRatio: 0
