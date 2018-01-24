@@ -32,6 +32,8 @@
         "func-style": ["error", "declaration"],
         "react/jsx-wrap-multilines": "error",
         "prefer-const": "error",
-        "no-debugger": "error"
+        "no-debugger": "error",
+        "jsx-quotes": ["warn", "prefer-double"],
+        "quotes": ["warn", "single"]
     }
 }

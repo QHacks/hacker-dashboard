@@ -2,6 +2,6 @@ node_modules
 .idea
 *.log
 .env
-client/bundle
-email/dist
+packages/client/bundle/*
+packages/email/dist/*
 .DS_STORE

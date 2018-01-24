@@ -1,0 +1,16 @@
+{
+    "name": "email",
+    "version": "1.3.4",
+    "description": "",
+    "scripts": {
+        "dev": "cross-env npm run clean && mjml ./templates/*.mjml -o ./dist/",
+        "build": "cross-env npm run clean && mjml --min ./templates/*.mjml -o ./dist/",
+        "clean": "cross-env rimraf ./dist && mkdir ./dist"
+    },
+    "author": "Zack Harley and Robert Saunders",
+    "license": "MIT",
+    "devDependencies": {
+        "cross-env": "^5.1.3",
+        "mjml": "^3.3.5"
+    }
+}
