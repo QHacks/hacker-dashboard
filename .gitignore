@@ -5,3 +5,4 @@ node_modules
 packages/client/bundle/*
 packages/email/dist/*
 .DS_STORE
+package-lock.json
