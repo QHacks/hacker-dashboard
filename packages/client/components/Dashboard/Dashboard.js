@@ -1,4 +1,5 @@
-import { Landing as AdminLanding, Applicants, Review, Settings } from '../Admin';
+import { Landing as AdminLanding, Review } from '../Admin';
+import { Applicants, Settings } from '../SuperAdmin';
 import { actionCreators, selectors } from '../../HackerStore';
 import { Message, Container } from 'semantic-ui-react';
 import { Route } from 'react-router-dom';
@@ -15,7 +16,15 @@ import MenuBar from '../MenuBar';
 import uuid from 'uuid/v4';
 
 const { clearDashboardErrorMessage, clearDashboardSuccessMessage, logout } = actionCreators;
-const { getDashboardErrorMessages, getDashboardSuccessMessages, getIsAdmin, getIsHacker, getIsPartner, getUser } = selectors;
+const {
+    getDashboardErrorMessages,
+    getDashboardSuccessMessages,
+    getIsAdmin,
+    getIsHacker,
+    getIsPartner,
+    getIsSuperAdmin,
+    getUser
+} = selectors;
 
 class Dashboard extends Component {
 
@@ -24,40 +33,42 @@ class Dashboard extends Component {
     }
 
     renderMenuBar() {
-        const { isAdmin } = this.props;
+        const { isAdmin, isSuperAdmin } = this.props;
         return (
-            <MenuBar onLogoutClick={this.handleLogoutClick.bind(this)} isAdmin={isAdmin} />
+            <MenuBar onLogoutClick={this.handleLogoutClick.bind(this)}
+                     isAdmin={isAdmin}
+                     isSuperAdmin={isSuperAdmin}/>
         );
     }
 
     renderBody() {
-        const { isAdmin, isPartner, isHacker } = this.props;
-        const authType = (isAdmin && 'admin') || (isPartner && 'partner') || (isHacker && 'hacker');
+        const { isAdmin, isPartner, isHacker, isSuperAdmin } = this.props;
+        const authType = (isAdmin && 'admin') || (isPartner && 'partner') || (isHacker && 'hacker') || (isSuperAdmin && 'superAdmin');
         return (
             <AuthSwitch type={authType}>
                 <PrivateRoute exact
                               path="/"
-                              types={["admin"]}
+                              types={['admin', 'superAdmin']}
                               component={AdminLanding}/>
                 <PrivateRoute exact
                               path="/review"
-                              types={["admin"]}
+                              types={['admin', 'superAdmin']}
                               component={Review}/>
                 <PrivateRoute exact
                               path="/applicants"
-                              types={["admin"]}
+                              types={['superAdmin']}
                               component={Applicants}/>
                 <PrivateRoute exact
                               path="/settings"
-                              types={["admin"]}
+                              types={['superAdmin']}
                               component={Settings}/>
                 <PrivateRoute exact
                               path="/profile"
-                              types={["hacker", "partner", "admin"]}
+                              types={['hacker', 'partner', 'admin', 'superAdmin']}
                               component={Profile}/>
                 <PrivateRoute exact
                               path="/"
-                              types={["hacker"]}
+                              types={['hacker']}
                               component={HackerLanding}/>
                 <Route path="*" component={NotFound}/>
             </AuthSwitch>
@@ -96,7 +107,7 @@ class Dashboard extends Component {
                      onDismiss={() => this.props.clearDashboardErrorMessage({ index })}
                      content={message}
                      style={{ marginTop: '3em' }}
-                />
+            />
         ));
     }
 
@@ -110,14 +121,13 @@ class Dashboard extends Component {
         const shouldRun = (application.status === 'ACCEPTED') && (application.rsvp === 'PENDING');
         if (shouldRun) {
             return (
-                <Confetti {...this.props.size} numberOfPieces={400} recycle={false} />
+                <Confetti {...this.props.size} numberOfPieces={400} recycle={false}/>
             );
         }
         return null;
     }
 
     render() {
-        const { width, height } = this.props.size;
         return (
             <div style={{ height: '100vh' }}>
                 {this.renderMenuBar()}
@@ -139,6 +149,7 @@ function mapStateToProps(state, ownProps) {
         isAdmin: getIsAdmin(state),
         isHacker: getIsHacker(state),
         isPartner: getIsPartner(state),
+        isSuperAdmin: getIsSuperAdmin(state),
         errorMessages: getDashboardErrorMessages(state),
         successMessages: getDashboardSuccessMessages(state)
     };

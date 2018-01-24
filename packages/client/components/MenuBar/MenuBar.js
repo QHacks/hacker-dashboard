@@ -48,6 +48,7 @@ class MenuBar extends Component {
         return (
             <Menu.Menu position="right">
                 {this.renderAdminMenu()}
+                {this.renderSuperAdminMenu()}
                 <Menu.Item as={Link} to="/profile">
                     Profile
                 </Menu.Item>
@@ -59,12 +60,25 @@ class MenuBar extends Component {
     }
 
     renderAdminMenu() {
-        const { isAdmin } = this.props;
-        if (isAdmin) {
+        const { isAdmin, isSuperAdmin } = this.props;
+        if (isAdmin || isSuperAdmin) {
             return (
-                <Dropdown item text='Admin'>
+                <Dropdown item text="Admin">
                     <Dropdown.Menu>
                         <Dropdown.Item as={Link} to="/review">Review</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            );
+        }
+        return null;
+    }
+
+    renderSuperAdminMenu() {
+        const { isSuperAdmin } = this.props;
+        if (isSuperAdmin) {
+            return (
+                <Dropdown item text="Super Admin">
+                    <Dropdown.Menu>
                         <Dropdown.Item as={Link} to="/applicants">Applicants</Dropdown.Item>
                         <Dropdown.Item as={Link} to="/settings">Settings</Dropdown.Item>
                     </Dropdown.Menu>
