@@ -6,6 +6,7 @@ const winston = require('winston');
 const EMAIL_TEMPLATES = require('./templates');
 const { EMAILS: EMAIL_STRINGS, ERROR } = require('../strings');
 const { ERROR_TEMPLATES, createError } = require('../errors');
+const { get } = require('lodash');
 
 const { EMAIL_URL_HOST } = process.env;
 const HACKER_DASHBOARD_URL = 'https://app.qhacks.io';
@@ -28,6 +29,25 @@ module.exports = {
             err
         ),
         onSuccess: () => winston.info('The application accepted email sent correctly!')
+    }),
+    [EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED_REMINDER.NAME]: (recipients, rsvpUrl = HACKER_DASHBOARD_URL, withdrawUrl = HACKER_DASHBOARD_URL) => ({
+        message: recipients.map((recipient) => (
+            EMAIL_TEMPLATES[EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED_REMINDER.NAME].createMessage({
+                to: recipient.email,
+                data: {
+                    recipient,
+                    rsvpUrl,
+                    withdrawUrl,
+                    isRSVPComplete: get(recipient, 'applications[0].rsvp') === 'COMPLETED'
+                }
+            })
+        )),
+        onError: (err) => createError(
+            ERROR_TEMPLATES.SENDGRID_ERROR,
+            ERROR.APPLICATION_ACCEPTED_REMINDER_EMAIL_FAILED_TO_SEND,
+            err
+        ),
+        onSuccess: () => winston.info('The application accepted reminder email sent correctly!')
     }),
     [EMAIL_STRINGS.TEMPLATES.APPLICATION_DECLINED.NAME]: (recipients) => ({
         message: recipients.map((recipient) => (

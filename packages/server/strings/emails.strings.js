@@ -9,6 +9,11 @@ module.exports = {
             SUBJECT: 'Congrats, you\'re coming to QHacks 2018!',
             TEXT: 'You\'ve been accepted to QHacks 2018! See https://app.qhacks.io for more details.'
         },
+        APPLICATION_ACCEPTED_REMINDER: {
+            NAME: 'application-accepted-reminder',
+            SUBJECT: 'Less than two weeks to QHacks 2018!',
+            TEXT: 'You\'ve been accepted to QHacks 2018. Make sure to go to https://app.qhacks.io to fill out your RSVP.'
+        },
         APPLICATION_DECLINED: {
             NAME: 'application-declined',
             SUBJECT: 'QHacks 2018 Application Status',
