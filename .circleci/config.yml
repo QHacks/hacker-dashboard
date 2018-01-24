@@ -18,7 +18,7 @@ jobs:
       - checkout
       - run:
           name: Install NPM dependencies
-          command: npm install
+          command: npm run bootstrap
       - run:
           name: Build React client and MJML email templates
           command: npm run build
