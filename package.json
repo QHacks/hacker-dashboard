@@ -10,6 +10,10 @@
         "start": "lerna run start --scope server --stream",
         "test": "cross-env eslint packages/server/**/*.js packages/client/**/*.js && nsp check --reporter checkstyle && ncu -e 2 -x mongoose"
     },
+    "engines": {
+        "node": "8.9.x",
+        "npm": "5.x"
+    },
     "dependencies": {},
     "devDependencies": {
         "babel-eslint": "^8.2.1",
