@@ -13,5 +13,6 @@ COPY . /app/
 # as well.
 # This command will also cat the npm-debug.log file after the
 # build, if it exists.
+RUN npm install --global lerna
 RUN npm run bootstrap
 CMD npm start
