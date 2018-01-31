@@ -17,9 +17,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Cat stuff
-          command: cat package.json
-      - run:
           name: Install NPM dependencies
           command: npm run bootstrap
       - run:
