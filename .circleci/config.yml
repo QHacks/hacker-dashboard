@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Install NPM dependencies
-          command: npm install
+          command: npm run bootstrap
       - run:
           name: Test
           command: npm test
