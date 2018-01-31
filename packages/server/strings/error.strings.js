@@ -45,7 +45,9 @@ const ERROR = {
     RESET_HASH_CREATE_FAIL: 'Error when creating the reset hash!',
 
     APPLICATION_ACCEPTED_EMAIL_FAILED_TO_SEND: 'The application accepted email did not send correctly!',
+    APPLICATION_ACCEPTED_FROM_WAITLIST_EMAIL_FAILED_TO_SEND: 'The application accepted from waitlist email did not send correctly!',
     APPLICATION_ACCEPTED_REMINDER_EMAIL_FAILED_TO_SEND: 'The application accepted reminder email did not send correctly!',
+    APPLICATION_ACCEPTED_REMINDER_AFTER_WAITLIST_ACCEPTED_EMAIL_FAILED_TO_SEND: 'The application accepted reminder after waitlist accepted email did not send correctly!',
     APPLICATION_DECLINED_EMAIL_FAILED_TO_SEND: 'The application declined email did not send correctly!',
     APPLICATION_SUCCESSFUL_EMAIL_FAILED_TO_SEND: 'The application successful email did not send correctly!',
     APPLICATION_WAITLISTED_EMAIL_FAILED_TO_SEND: 'The application waitlisted email did not send correctly!',
