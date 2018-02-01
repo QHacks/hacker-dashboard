@@ -30,6 +30,24 @@ module.exports = {
         ),
         onSuccess: () => winston.info('The application accepted email sent correctly!')
     }),
+    [EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED_FROM_WAITLIST.NAME]: (recipients, rsvpUrl = HACKER_DASHBOARD_URL, withdrawUrl = HACKER_DASHBOARD_URL) => ({
+        message: recipients.map((recipient) => (
+            EMAIL_TEMPLATES[EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED_FROM_WAITLIST.NAME].createMessage({
+                to: recipient.email,
+                data: {
+                    recipient,
+                    rsvpUrl,
+                    withdrawUrl
+                }
+            })
+        )),
+        onError: (err) => createError(
+            ERROR_TEMPLATES.SENDGRID_ERROR,
+            ERROR.APPLICATION_ACCEPTED_FROM_WAITLIST_EMAIL_FAILED_TO_SEND,
+            err
+        ),
+        onSuccess: () => winston.info('The application accepted from waitlist email sent correctly!')
+    }),
     [EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED_REMINDER.NAME]: (recipients, rsvpUrl = HACKER_DASHBOARD_URL, withdrawUrl = HACKER_DASHBOARD_URL) => ({
         message: recipients.map((recipient) => (
             EMAIL_TEMPLATES[EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED_REMINDER.NAME].createMessage({
@@ -48,6 +66,24 @@ module.exports = {
             err
         ),
         onSuccess: () => winston.info('The application accepted reminder email sent correctly!')
+    }),
+    [EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED_REMINDER_AFTER_WAITLIST_ACCEPTED.NAME]: (recipients, rsvpUrl = HACKER_DASHBOARD_URL, withdrawUrl = HACKER_DASHBOARD_URL) => ({
+        message: recipients.map((recipient) => (
+            EMAIL_TEMPLATES[EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED_REMINDER_AFTER_WAITLIST_ACCEPTED.NAME].createMessage({
+                to: recipient.email,
+                data: {
+                    recipient,
+                    rsvpUrl,
+                    withdrawUrl
+                }
+            })
+        )),
+        onError: (err) => createError(
+            ERROR_TEMPLATES.SENDGRID_ERROR,
+            ERROR.APPLICATION_ACCEPTED_REMINDER_AFTER_WAITLIST_ACCEPTED_EMAIL_FAILED_TO_SEND,
+            err
+        ),
+        onSuccess: () => winston.info('The application accepted reminder after waitlist accepted email sent correctly!')
     }),
     [EMAIL_STRINGS.TEMPLATES.APPLICATION_DECLINED.NAME]: (recipients) => ({
         message: recipients.map((recipient) => (
