@@ -65,6 +65,7 @@ class MenuBar extends Component {
             return (
                 <Dropdown item text="Admin">
                     <Dropdown.Menu>
+                        <Dropdown.Item as={Link} to="/check-in">Check In</Dropdown.Item>
                         <Dropdown.Item as={Link} to="/review">Review</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>

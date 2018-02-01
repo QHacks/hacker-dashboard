@@ -1,7 +1,14 @@
 const USER = {
     APPLICATION: {
+        CHECK_INS: {
+            COMPLETED: 'COMPLETED',
+            NOT_COMPLETED: 'NOT_COMPLETED',
+            NOT_NEEDED: 'NOT_NEEDED',
+            PENDING: 'PENDING'
+        },
         RSVPS: {
             COMPLETED: 'COMPLETED',
+            NOT_COMPLETED: 'NOT_COMPLETED',
             NOT_NEEDED: 'NOT_NEEDED',
             PENDING: 'PENDING'
         },
