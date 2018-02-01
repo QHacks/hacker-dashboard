@@ -1,4 +1,4 @@
-import { Landing as AdminLanding, Review } from '../Admin';
+import { CheckIn, Landing as AdminLanding, Review } from '../Admin';
 import { Applicants, Settings } from '../SuperAdmin';
 import { actionCreators, selectors } from '../../HackerStore';
 import { Message, Container } from 'semantic-ui-react';
@@ -54,6 +54,10 @@ class Dashboard extends Component {
                               path="/review"
                               types={['admin', 'superAdmin']}
                               component={Review}/>
+                <PrivateRoute exact
+                              path="/check-in"
+                              types={['admin', 'superAdmin']}
+                              component={CheckIn}/>
                 <PrivateRoute exact
                               path="/applicants"
                               types={['superAdmin']}

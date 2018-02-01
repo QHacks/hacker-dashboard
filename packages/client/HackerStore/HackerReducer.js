@@ -65,7 +65,12 @@ const initialState = {
     rsvpSubmitted: false,
     rsvpError: false,
 
-    withdrawError: false
+    withdrawError: false,
+
+    hackersRequiringCheckIn: [],
+    hackerIDToCheckIn: '',
+    areHackersRequiringCheckInLoading: false,
+    isHackerBeingCheckedIn: false
 };
 
 /**
@@ -112,7 +117,11 @@ export const selectors = {
     getRSVPLoading: (state) => state[reducerMount].rsvpLoading,
     getRSVPSubmitted: (state) => state[reducerMount].rsvpSubmitted,
     getRSVPError: (state) => state[reducerMount].rsvpError,
-    getWithdrawError: (state) => state[reducerMount].withdrawError
+    getWithdrawError: (state) => state[reducerMount].withdrawError,
+    getHackersRequiringCheckIn: (state) => state[reducerMount].hackersRequiringCheckIn,
+    getHackerIDToCheckIn: (state) => state[reducerMount].hackerIDToCheckIn,
+    getAreHackersRequiringCheckInLoading: (state) => state[reducerMount].areHackersRequiringCheckInLoading,
+    getIsHackerBeingCheckedIn: (state) => state[reducerMount].isHackerBeingCheckedIn
 };
 
 /**
@@ -578,6 +587,69 @@ const handlers = {
             ...state,
             withdrawError: true
         };
+    },
+
+    [actionTypes.FETCH_HACKERS_REQUIRING_CHECK_IN]: (state, action) => {
+        return {
+            ...state,
+            areHackersRequiringCheckInLoading: true
+        };
+    },
+
+    [actionTypes.HACKERS_REQUIRING_CHECK_IN_FETCHED]: (state, action) => {
+        const { hackers: hackersToCheckIn } = action.data;
+        return {
+            ...state,
+            hackersRequiringCheckIn: hackersToCheckIn,
+            areHackersRequiringCheckInLoading: false
+        };
+    },
+
+    [actionTypes.HACKERS_REQUIRING_CHECK_IN_FETCH_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(
+            {
+                ...state,
+                areHackersRequiringCheckInLoading: false
+            },
+            errorMessage
+        );
+    },
+
+    [actionTypes.SET_HACKER_ID_TO_CHECK_IN]: (state, action) => {
+        const { hacker: hackerIDToCheckIn } = action.data;
+        return {
+            ...state,
+            hackerIDToCheckIn
+        };
+    },
+
+    [actionTypes.UPDATE_HACKER_CHECK_IN_STATUS]: (state, action) => {
+        return {
+            ...state,
+            isHackerBeingCheckedIn: true
+        };
+    },
+
+    [actionTypes.HACKER_CHECK_IN_STATUS_UPDATED]: (state, action) => {
+        return reduceDashboardSuccessMessage(
+            {
+                ...state,
+                isHackerBeingCheckedIn: false
+            },
+            'Hacker successfully checked in!'
+        );
+    },
+
+    [actionTypes.HACKER_CHECK_IN_STATUS_UPDATE_ERROR]: (state, action) => {
+        const { message: errorMessage } = action.data.data;
+        return reduceDashboardErrorMessage(
+            {
+                ...state,
+                isHackerBeingCheckedIn: false
+            },
+            errorMessage
+        );
     }
 };
 

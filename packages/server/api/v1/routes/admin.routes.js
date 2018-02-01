@@ -13,7 +13,7 @@ module.exports = (ctr) => {
 
     const { admin, user } = ctr;
 
-    adminAPI.get(`/admins`, async (req, res) => {
+    adminAPI.get('/admins', async (req, res) => {
         try {
             const admins = await admin.getAdmins();
             return res.status(200).json({ admins });
@@ -117,6 +117,28 @@ module.exports = (ctr) => {
 
     adminAPI.get(`/${ADMIN}/${EMAILS}`, (req, res) => {
         return res.status(200).json({ emails: admin.getEmails() });
+    });
+
+    adminAPI.put(`/${ADMIN}/${APPLICATIONS}/:eventId/:userId/check-in`, async (req, res) => {
+        const { eventId, userId } = req.params;
+        const { status } = req.body;
+        try {
+            const updatedUser = await admin.checkIn(userId, eventId, status);
+            return res.status(200).json({ user: updatedUser });
+        } catch (err) {
+            return res.status(err.code).json(err);
+        }
+    });
+
+    // TODO: Make this so it accepts an event ID!
+    adminAPI.get(`/${ADMIN}/${APPLICATIONS}/check-in`, async (req, res) => {
+        const { eventId } = req.params;
+        try {
+            const hackers = await admin.getHackersRequiringCheckIn(eventId);
+            return res.status(200).json({ hackers });
+        } catch (err) {
+            return res.status(err.code).json(err);
+        }
     });
 
     return adminAPI;

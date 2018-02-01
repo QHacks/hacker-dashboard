@@ -15,6 +15,40 @@ const REVIEW_FIELDS = [
 ];
 
 module.exports = {
+    async checkIn(userId, eventId, checkInStatus) {
+        if (!userId) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.MISSING_USER_ID);
+        }
+        if (!eventId) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.MISSING_EVENT_ID);
+        }
+        if (!checkInStatus) {
+            throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.MISSING_CHECK_IN_STATUS);
+        }
+
+        let updateUser;
+
+        try {
+            updateUser = await User.findOneAndUpdate(
+                {
+                    role: USER.ROLES.HACKER,
+                    'applications.status': USER.APPLICATION.STATUSES.ACCEPTED,
+                    'applications.rsvp': USER.APPLICATION.RSVPS.COMPLETED,
+                    'applications.event': eventId,
+                    _id: userId
+                },
+                {
+                    'applications.$.checkIn': checkInStatus
+                },
+                DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
+            );
+        } catch (err) {
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_CHECK_IN, err);
+        }
+
+        return updateUser;
+    },
+
     async getAdmins() {
         let admins;
 
@@ -139,6 +173,29 @@ module.exports = {
                 Object.assign(accum, keyValuePair)
             ), {})
         ));
+    },
+
+    //TODO: make this so it takes an eventId
+    // async getHackersRequiringCheckIn(eventId, email = null) {
+    async getHackersRequiringCheckIn() {
+        // if (!eventId) {
+        //     throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.MISSING_EVENT_ID);
+        // }
+
+        let hackers;
+
+        try {
+            hackers = await User.find({
+                // 'applications.event': eventId,
+                'applications.status': USER.APPLICATION.STATUSES.ACCEPTED,
+                'applications.rsvp': USER.APPLICATION.RSVPS.COMPLETED,
+                'applications.checkIn': USER.APPLICATION.CHECK_INS.PENDING
+            });
+        } catch (err) {
+            throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USERS_GET, err);
+        }
+
+        return hackers;
     },
 
     async getReviewers() {

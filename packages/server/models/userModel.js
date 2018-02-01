@@ -30,6 +30,11 @@ const ApplicationSchema = new mongoose.Schema({
         enum: Object.values(USER.APPLICATION.STATUSES),
         default: USER.APPLICATION.STATUSES.APPLIED
     },
+    checkIn: {
+        type: String,
+        enum: Object.values(USER.APPLICATION.CHECK_INS),
+        default: USER.APPLICATION.CHECK_INS.NOT_NEEDED
+    },
     dietaryRestrictions: String,
     emergencyContact: {
         email: String,
@@ -268,7 +273,10 @@ UserSchema.pre('findOneAndUpdate', function(next) {
         this.update({
             'applications.event': event
         }, {
-            $set: { 'applications.$.rsvp': USER.APPLICATION.RSVPS.PENDING }
+            $set: {
+                'applications.$.rsvp': USER.APPLICATION.RSVPS.PENDING,
+                'applications.$.checkIn': USER.APPLICATION.CHECK_INS.PENDING
+            }
         });
     } else if (
         _.isEqual(updatedStatus, REJECTED) || _.isEqual(updatedStatus, WAITING_LIST) || _.isEqual(updatedStatus, WITHDRAWN)
@@ -276,7 +284,10 @@ UserSchema.pre('findOneAndUpdate', function(next) {
         this.update({
             'applications.event': event
         }, {
-            $set: { 'applications.$.rsvp': USER.APPLICATION.RSVPS.NOT_NEEDED }
+            $set: {
+                'applications.$.rsvp': USER.APPLICATION.RSVPS.NOT_NEEDED,
+                'applications.$.checkIn': USER.APPLICATION.CHECK_INS.NOT_NEEDED
+            }
         });
     }
     return next();

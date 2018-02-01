@@ -2,6 +2,7 @@ const ERROR = {
     DB_ADMINS_GET: 'Could not retrieve admins from the database!',
     DB_APPLICATION_TO_REVIEW_GET: 'Could not retrieve an application to review from the database!',
     DB_APPLICATIONS_WITH_REVIEWS_GET: 'Could not retrieve any applications with reviews from the database!',
+    DB_CHECK_IN: 'Could not check in the supplied user to the supplied event',
     DB_GOLDEN_TICKETS_REDUCE: 'Could not reduce the amount of golden tickets for the reviewer!',
     DB_REVIEW_CREATE: 'Could not add a review to the specified application',
     DB_REVIEWS_GET: 'Could not get a review from the specified application',
@@ -12,7 +13,7 @@ const ERROR = {
     DB_USER_CREATE: 'Error creating User in the database!',
     DB_USER_GET: 'Could not retrieve that user from the database!',
     DB_USER_UPDATE: 'Could not update the specified user in the database!',
-    DB_USERS_GET: 'Error retrieving Users from the database!',
+    DB_USERS_GET: 'Error retrieving users from the database!',
 
     NO_ADMINS_EXIST: 'No admins exist in the database!',
     NO_APPLICATION_TO_REVIEW_EXISTS: 'No application to review exists in the database!',
@@ -22,7 +23,11 @@ const ERROR = {
     NO_SETTINGS_EXIST: 'No settings exist in the database!',
     EMAIL_TEMPLATE_DOES_NOT_EXIST: 'The email template specified does not exist',
     NO_EMAIL_RECIPIENT_SPECIFIED: 'No email recipient was specified',
+    NO_HACKERS_REQUIRING_CHECK_IN_EXIST: 'No hackers requiring check in for the specified event exist in the database!',
 
+    MISSING_USER_ID: 'Missing user ID!',
+    MISSING_EVENT_ID: 'Missing event ID!',
+    MISSING_CHECK_IN_STATUS: 'Missing check-in status!',
     MISSING_TOKEN: 'Missing auth token!',
     INVALID_TOKEN: 'Invalid token!',
 

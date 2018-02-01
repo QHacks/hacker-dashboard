@@ -60,11 +60,13 @@ const apiRequestTypes = {
     FETCH_APPLICATIONS_WITH_REVIEWS: '@@/hacker/FETCH_APPLICATIONS_WITH_REVIEWS',
     FETCH_APPLICATIONS_WITH_REVIEWS_COUNT: '@@/hacker/FETCH_APPLICATIONS_WITH_REVIEWS_COUNT',
     FETCH_EMAILS: '@@/hacker/FETCH_EMAILS',
-
+    FETCH_HACKERS_REQUIRING_CHECK_IN: '@@/hacker/FETCH_HACKERS_REQUIRING_CHECK_IN',
     REASSIGN_REVIEWERS: '@@/hacker/REASSIGN_REVIEWERS',
+
     SUBMIT_APPLICATION_REVIEW: '@@/hacker/SUBMIT_APPLICATION_REVIEW',
     SEND_EMAIL: '@@/hacker/SEND_EMAIL',
-    UPDATE_APPLICATION_STATUS: '@@/hacker/UPDATE_APPLICATION_STATUS'
+    UPDATE_APPLICATION_STATUS: '@@/hacker/UPDATE_APPLICATION_STATUS',
+    UPDATE_HACKER_CHECK_IN_STATUS: '@@/hacker/UPDATE_HACKER_CHECK_IN_STATUS'
 };
 
 /**
@@ -92,11 +94,13 @@ const apiSuccessTypes = {
     APPLICATIONS_WITH_REVIEWS_FETCHED: '@@/hacker/APPLICATIONS_WITH_REVIEWS_FETCHED',
     APPLICATIONS_WITH_REVIEWS_COUNT_FETCHED: '@@/hacker/APPLICATIONS_WITH_REVIEWS_COUNT_FETCHED',
     EMAILS_FETCHED: '@@/hacker/EMAILS_FETCHED',
-
+    HACKERS_REQUIRING_CHECK_IN_FETCHED: '@@/hacker/HACKERS_REQUIRING_CHECK_IN_FETCHED',
     REVIEWERS_REASSIGNED: '@@/hacker/REVIEWERS_REASSIGNED',
+
     APPLICATION_REVIEW_SUBMITTED: '@@/hacker/APPLICATION_REVIEW_SUBMITTED',
     EMAIL_SENT: '@@/hacker/EMAIL_SENT',
-    APPLICATION_STATUS_UPDATED: '@@/hacker/APPLICATION_STATUS_UPDATED'
+    APPLICATION_STATUS_UPDATED: '@@/hacker/APPLICATION_STATUS_UPDATED',
+    HACKER_CHECK_IN_STATUS_UPDATED: '@@/hacker/HACKER_CHECK_IN_STATUS_UPDATED'
 };
 
 /**
@@ -124,11 +128,13 @@ const apiErrorTypes = {
     APPLICATIONS_WITH_REVIEWS_FETCH_ERROR: '@@/hacker/APPLICATIONS_WITH_REVIEWS_FETCH_ERROR',
     APPLICATIONS_WITH_REVIEWS_COUNT_FETCH_ERROR: '@@/hacker/APPLICATIONS_WITH_REVIEWS_COUNT_FETCH_ERROR',
     EMAILS_FETCH_ERROR: '@@/hacker/EMAILS_FETCH_ERROR',
-
+    HACKERS_REQUIRING_CHECK_IN_FETCH_ERROR: '@@/hacker/HACKERS_REQUIRING_CHECK_IN_FETCH_ERROR',
     REVIEWERS_REASSIGN_ERROR: '@@/hacker/REVIEWERS_REASSIGN_ERROR',
+
     APPLICATION_REVIEW_SUBMIT_ERROR: '@@/hacker/APPLICATION_REVIEW_SUBMIT_ERROR',
     EMAIL_SEND_ERROR: '@@/hacker/EMAIL_SEND_ERROR',
-    APPLICATION_STATUS_UPDATE_ERROR: '@@/hacker/APPLICATION_STATUS_UPDATE_ERROR'
+    APPLICATION_STATUS_UPDATE_ERROR: '@@/hacker/APPLICATION_STATUS_UPDATE_ERROR',
+    HACKER_CHECK_IN_STATUS_UPDATE_ERROR: '@@/hacker/HACKER_CHECK_IN_STATUS_UPDATE_ERROR'
 };
 
 /**
@@ -144,7 +150,8 @@ const normalTypes = {
     CLEAR_DASHBOARD_SUCCESS_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_SUCCESS_MESSAGE',
     CLEAR_DASHBOARD_ERROR_MESSAGE: '@@/hacker/CLEAR_DASHBOARD_ERROR_MESSAGE',
     SET_TEST_EMAIL_RECIPIENTS: '@@/hacker/SET_TEST_EMAIL_RECIPIENTS',
-    SET_REVIEW_TABLE_PAGE: '@@/hacker/SET_REVIEW_TABLE_PAGE'
+    SET_REVIEW_TABLE_PAGE: '@@/hacker/SET_REVIEW_TABLE_PAGE',
+    SET_HACKER_ID_TO_CHECK_IN: '@@/hacker/SET_HACKER_ID_TO_CHECK_IN'
 };
 
 export const actionTypes = {
@@ -170,7 +177,8 @@ const normalActionCreators = {
     clearDashboardSuccessMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_SUCCESS_MESSAGE, data }),
     clearDashboardErrorMessage: (data) => ({ type: actionTypes.CLEAR_DASHBOARD_ERROR_MESSAGE, data }),
     setTestEmailRecipients: (data) => ({ type: actionTypes.SET_TEST_EMAIL_RECIPIENTS, data }),
-    setReviewTablePage: (data) => ({ type: actionTypes.SET_REVIEW_TABLE_PAGE, data })
+    setReviewTablePage: (data) => ({ type: actionTypes.SET_REVIEW_TABLE_PAGE, data }),
+    setHackerIDToCheckIn: (data) => ({ type: actionTypes.SET_HACKER_ID_TO_CHECK_IN, data })
 };
 
 /**
@@ -468,6 +476,42 @@ const invokeAPIActionCreators = {
                 tokenRequired: true,
                 body: {
                     status: 'WITHDRAWN'
+                }
+            }
+        }
+    }),
+
+    fetchHackersRequiringCheckIn: () => ({
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.FETCH_HACKERS_REQUIRING_CHECK_IN,
+                actionTypes.HACKERS_REQUIRING_CHECK_IN_FETCHED,
+                actionTypes.HACKERS_REQUIRING_CHECK_IN_FETCH_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}/admin/applications/check-in`,
+                method: GET,
+                tokenRequired: true
+            }
+        }
+    }),
+
+    updateHackerCheckInStatus: (userId, eventId, status) => ({
+
+        type: actionTypes.INVOKE_API_CALL,
+        data: {
+            types: [
+                actionTypes.UPDATE_HACKER_CHECK_IN_STATUS,
+                actionTypes.HACKER_CHECK_IN_STATUS_UPDATED,
+                actionTypes.HACKER_CHECK_IN_STATUS_UPDATE_ERROR
+            ],
+            request: {
+                url: `${API_SUFFIX}/admin/applications/${eventId}/${userId}/check-in`,
+                method: PUT,
+                tokenRequired: true,
+                body: {
+                    status
                 }
             }
         }
