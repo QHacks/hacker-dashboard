@@ -13,8 +13,8 @@ const IS_PROD = process.env.NODE_ENV === 'production';
 const FORCE_SSL = process.env.FORCE_SSL === 'true';
 
 (IS_PROD)
-    ? winston.info("Running production build!")
-    : winston.info("Running development build!");
+	? winston.info('Running production build!')
+	: winston.info('Running development build!');
 
 const auth = require('./auth');
 const api = require('./api');
@@ -37,51 +37,51 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 connectToDB(async (err) => {
-    if (err) {
-        winston.info('Could not connect to the database!');
-        return;
-    }
+	if (err) {
+		winston.info('Could not connect to the database!');
+		return;
+	}
 
-    winston.info('Successfully connected to the database!');
+	winston.info('Successfully connected to the database!');
 
-    // HTTPS Redirect for production
-    if (IS_PROD) {
-        if (FORCE_SSL) {
-            app.enable('trust proxy');
-            app.use((req, res, next) => {
-                if (req.secure) {
-                    next();
-                } else {
-                    res.redirect('https://' + req.headers.host + req.url);
-                }
-            });
-        }
-    }
+	// HTTPS Redirect for production
+	if (IS_PROD) {
+		if (FORCE_SSL) {
+			app.enable('trust proxy');
+			app.use((req, res, next) => {
+				if (req.secure) {
+					next();
+				} else {
+					res.redirect('https://' + req.headers.host + req.url);
+				}
+			});
+		}
+	}
 
-    try {
-        await initSettings();
-    } catch (err) {
-        winston.error('Could not initialize the application with settings');
-        winston.error(err);
-        return;
-    }
+	try {
+		await initSettings();
+	} catch (err) {
+		winston.error('Could not initialize the application with settings');
+		winston.error(err);
+		return;
+	}
 
-    // Res.on('finish') hooks
-    app.use(webhook());
-    app.use(createEmailsMiddleware());
+	// Res.on('finish') hooks
+	app.use(webhook());
+	app.use(createEmailsMiddleware());
 
-    // Core API
-    app.use('/api/', auth(), api(controllers));
+	// Core API
+	app.use('/api/', auth(), api(controllers));
 
-    // Fallback if page reload
-    app.use(history());
+	// Fallback if page reload
+	app.use(history());
 
-    // Static Files
-    app.use(express.static(BUNDLE_DIR));
+	// Static Files
+	app.use(express.static(BUNDLE_DIR));
 
-    // Error handling
-    app.use(errorReporting.express);
+	// Error handling
+	app.use(errorReporting.express);
 
-    // Start listening!
-    app.listen(port, () => winston.info(`Hacker dashboard running on port ${port}!`));
+	// Start listening!
+	app.listen(port, () => winston.info(`Hacker dashboard running on port ${port}!`));
 });

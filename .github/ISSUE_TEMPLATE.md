@@ -1,8 +1,19 @@
-**Problem**
+## Problem
 
-**Requirements**
-- [ ] 
 
-**Screenshots**
+## Expected Behavior
 
-**URL of page**
+
+## Actual Behavior
+
+
+## Steps to Reproduce the Problem
+
+	1.
+	2.
+	3.
+
+## Specifications
+
+	- Version:
+	- Platform:

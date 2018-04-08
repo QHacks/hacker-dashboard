@@ -4,16 +4,16 @@ const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
 
 module.exports = (controllers) => {
-    const api = Router();
+	const api = Router();
 
-    // authentication routes
-    api.use('/', authRoutes(controllers));
+	// authentication routes
+	api.use('/', authRoutes(controllers));
 
-    // admin routes
-    api.use('/', adminRoutes(controllers));
+	// admin routes
+	api.use('/', adminRoutes(controllers));
 
-    // user routes
-    api.use('/', userRoutes(controllers));
+	// user routes
+	api.use('/', userRoutes(controllers));
 
-    return api;
+	return api;
 };

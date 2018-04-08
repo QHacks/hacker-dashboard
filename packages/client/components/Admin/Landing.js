@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
 
 export default () => (
-    <div>Admin</div>
+	<div>Admin</div>
 );
