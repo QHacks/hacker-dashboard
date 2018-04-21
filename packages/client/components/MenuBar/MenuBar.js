@@ -33,7 +33,7 @@ class MenuBar extends Component {
 	renderLeftSideMenu() {
 		return (
 			<Menu.Menu position="left">
-				<Menu.Item as={Link} to="/">
+				<Menu.Item as={Link} to="http://qhacks.io/">
 					{this.renderQHacksCrown()}
 				</Menu.Item>
 				<Menu.Item as={Link} to="/">
