@@ -37,8 +37,8 @@ getRedirectPath() {
 		return (
 			<div className="login-form-wrapper">
 				<a href="http://qhacks.io">
-				<img src={require('../../assets/img/qhacks-tricolor-logo.svg')}
-						className="qhacks-logo-login"/>
+					<img src={require('../../assets/img/qhacks-tricolor-logo.svg')}
+							className="qhacks-logo-login"/>
 				</a>
 				<LoginForm onSubmit={this.handleLogin.bind(this)}
 									applicationsStatus={applicationsStatus}
