@@ -36,8 +36,10 @@ getRedirectPath() {
 		const { applicationsStatus, loginLoading, loginError } = this.props;
 		return (
 			<div className="login-form-wrapper">
-				<img src={require('../../assets/img/qhacks-tricolor-logo.svg')}
-						className="qhacks-logo-login"/>
+				<a href="http://qhacks.io">
+					<img src={require('../../assets/img/qhacks-tricolor-logo.svg')}
+							className="qhacks-logo-login"/>
+				</a>
 				<LoginForm onSubmit={this.handleLogin.bind(this)}
 									applicationsStatus={applicationsStatus}
 									loginLoading={loginLoading}
@@ -61,7 +63,7 @@ getRedirectPath() {
 										className="fontWeight-lighter"
 										inverted
 										size="medium">
-							QHacks 2018, Queen's University
+							QHacks 2018, Queen&apos;s University
 						</Header>
 					</div>
 				</div>
