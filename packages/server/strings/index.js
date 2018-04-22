@@ -5,9 +5,9 @@ const USER = require('./user.strings');
 const WEBHOOK = require('./webhook.strings');
 
 module.exports = {
-	ERROR,
-	SCHOOLS,
-	EMAILS,
-	USER,
-	WEBHOOK
+  ERROR,
+  SCHOOLS,
+  EMAILS,
+  USER,
+  WEBHOOK
 };
