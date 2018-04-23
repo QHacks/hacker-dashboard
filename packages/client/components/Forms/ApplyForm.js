@@ -1,7 +1,7 @@
 import { confirmation, date, email, format, length, required } from 'redux-form-validators';
 import { Field, getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
 import { Button, Form, Message, Segment } from 'semantic-ui-react';
-import { actionCreators, selectors } from "../../HackerStore";
+import { actionCreators, selectors } from '../../HackerStore';
 import SemanticFormField from './SemanticFormField';
 import mlhSchools from '../utils/mlhSchools.json';
 import { flatten, isEmpty, pick } from 'lodash';
@@ -70,85 +70,86 @@ function PageOne(props) {
 		return (
 				<Segment className={props.className}>
 						<Field name="firstName"
-									 component={SemanticFormField}
-									 as={Form.Input}
-									 type="text"
-									 label="First Name"
-									 placeholder="Morty"
-									 validate={required({ msg: 'Please enter your first name!' })}
+							component={SemanticFormField}
+							as={Form.Input}
+							type="text"
+							label="First Name"
+							placeholder="Morty"
+							validate={required({ msg: 'Please enter your first name!' })}
 						/>
 
 						<Field name="lastName"
-									 component={SemanticFormField}
-									 as={Form.Input}
-									 type="text"
-									 label="Last Name"
-									 placeholder="Smith"
-									 validate={required({ msg: 'Please enter your last name!' })}
+							component={SemanticFormField}
+							as={Form.Input}
+							type="text"
+							label="Last Name"
+							placeholder="Smith"
+							validate={required({ msg: 'Please enter your last name!' })}
 						/>
 
 						<Field name="email"
-									 component={SemanticFormField}
-									 as={Form.Input}
-									 type="email"
-									 label="Email Address"
-									 placeholder="morty.smith@example.com"
-									 validate={[required({ msg: 'Please enter an email address!' }), email({ msg: 'Please enter a valid email address!' })]}
+							component={SemanticFormField}
+							as={Form.Input}
+							type="email"
+							label="Email Address"
+							placeholder="morty.smith@example.com"
+							validate={[required({ msg: 'Please enter an email address!' }), email({ msg: 'Please enter a valid email address!' })]}
 						/>
 
 						<Field name="phoneNumber"
-									 component={SemanticFormField}
-									 as={Form.Input}
-									 type="tel"
-									 label="Phone Number"
-									 placeholder="123-456-7890"
-									 validate={[required({ msg: 'Please enter a phone number!' }), format({
-											 with: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/,
-											 msg: 'Please enter a valid phone number format. (123-456-789)'
-									 })]}
+							component={SemanticFormField}
+							as={Form.Input}
+							type="tel"
+							label="Phone Number"
+							placeholder="123-456-7890"
+							validate={[required({ msg: 'Please enter a phone number!' }), format({
+								// regex found here: https://www.regextester.com/1978. Works on all intl. phone numbers tested
+								with: /^((?:\+|00)[17](?: |\-)?|(?:\+|00)[1-9]\d{0,2}(?: |\-)?|(?:\+|00)1\-\d{3}(?: |\-)?)?(0\d|\([0-9]{3}\)|[1-9]{0,3})(?:((?: |\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\-)[0-9]{3}(?: |\-)[0-9]{4})|([0-9]{7}))$/,
+								msg: 'Please enter a valid phone number format. (123-456-7890)'
+							})]}
 						/>
 
 						<Field name="dateOfBirth"
-									 component={SemanticFormField}
-									 as={Form.Input}
-									 type="date"
-									 label="Date of Birth"
-									 placeholder="yyyy-mm-dd"
-									 validate={[required({ msg: 'Please supply your date of birth' }), date({ format: 'yyyy-mm-dd' })]}
+							component={SemanticFormField}
+							as={Form.Input}
+							type="date"
+							label="Date of Birth"
+							placeholder="yyyy-mm-dd"
+							validate={[required({ msg: 'Please supply your date of birth' }), date({ format: 'yyyy-mm-dd' })]}
 						/>
 
 						<Field name="gender"
-									 component={SemanticFormField}
-									 as={Form.Select}
-									 label="What gender do you identify with?"
-									 options={GENDERS.map(mapValueForSelect)}
-									 placeholder='Select a gender'
-									 validate={required({ msg: 'Please select a gender' })}
-									 search={true}
+							component={SemanticFormField}
+							as={Form.Select}
+							label="What gender do you identify with?"
+							options={GENDERS.map(mapValueForSelect)}
+							placeholder="Select a gender"
+							validate={required({ msg: 'Please select a gender' })}
+							search={true}
 						/>
 
 						<Field name="password"
-									 component={SemanticFormField}
-									 as={Form.Input}
-									 type="password"
-									 label="Password"
-									 placeholder='Password'
-									 validate={[required({ msg: 'You must supply a password!' }), length({
-											 min: 8,
-											 msg: 'Your password must be at least 8 characters!'
-									 })]}
+							component={SemanticFormField}
+							as={Form.Input}
+							type="password"
+							label="Password"
+							placeholder="Password"
+							validate={[required({ msg: 'You must supply a password!' }), length({
+								min: 8,
+								msg: 'Your password must be at least 8 characters!'
+							})]}
 						/>
 
 						<Field name="confirmPassword"
-									 component={SemanticFormField}
-									 as={Form.Input}
-									 type="password"
-									 label="Confirm Password"
-									 placeholder='Confirm Password'
-									 validate={[required({ msg: 'You must confirm your password!' }), length({
-											 min: 8,
-											 msg: 'Your password must be at least 8 characters!'
-									 }), confirmation({ field: 'password', msg: 'You passwords do not match.' })]}
+							component={SemanticFormField}
+							as={Form.Input}
+							type="password"
+							label="Confirm Password"
+							placeholder="Confirm Password"
+							validate={[required({ msg: 'You must confirm your password!' }), length({
+								min: 8,
+								msg: 'Your password must be at least 8 characters!'
+							}), confirmation({ field: 'password', msg: 'You passwords do not match.' })]}
 						/>
 				</Segment>
 		);
@@ -158,61 +159,61 @@ function PageTwo(props) {
 		return (
 				<Segment className={props.className}>
 						<Field name="school"
-									 component={SemanticFormField}
-									 as={Form.Select}
-									 label="School"
-									 options={mlhSchools.map(mapValueForSelect)}
-									 placeholder="Select a school"
-									 validate={required({ msg: 'Please select a school!' })}
-									 search={true}
+							component={SemanticFormField}
+							as={Form.Select}
+							label="School"
+							options={mlhSchools.map(mapValueForSelect)}
+							placeholder="Select a school"
+							validate={required({ msg: 'Please select a school!' })}
+							search={true}
 						/>
 
 						<Field name="degreeType"
-									 component={SemanticFormField}
-									 as={Form.Select}
-									 label="Degree Type"
-									 options={DEGREE_TYPES.map(mapValueForSelect)}
-									 placeholder="Select a degree type"
-									 validate={required({ msg: 'Please select a degree type!' })}
-									 search={true}
+							component={SemanticFormField}
+							as={Form.Select}
+							label="Degree Type"
+							options={DEGREE_TYPES.map(mapValueForSelect)}
+							placeholder="Select a degree type"
+							validate={required({ msg: 'Please select a degree type!' })}
+							search={true}
 						/>
 
 						<Field name="program"
-									 component={SemanticFormField}
-									 as={Form.Input}
-									 type="text"
-									 label="Program"
-									 placeholder='Computer Science'
-									 validate={required({ msg: 'Please enter your school program!' })}
+							component={SemanticFormField}
+							as={Form.Input}
+							type="text"
+							label="Program"
+							placeholder="Computer Science"
+							validate={required({ msg: 'Please enter your school program!' })}
 						/>
 
 						<Field name="graduationYear"
-									 component={SemanticFormField}
-									 as={Form.Select}
-									 label="Graduation Year"
-									 options={GRADUATION_YEARS.map(mapValueForSelect)}
-									 placeholder="Select a graduation year"
-									 validate={required({ msg: 'Please select your graduation year!' })}
-									 search={true}
+							component={SemanticFormField}
+							as={Form.Select}
+							label="Graduation Year"
+							options={GRADUATION_YEARS.map(mapValueForSelect)}
+							placeholder="Select a graduation year"
+							validate={required({ msg: 'Please select your graduation year!' })}
+							search={true}
 						/>
 
 						<Field name="graduationMonth"
-									 component={SemanticFormField}
-									 as={Form.Select}
-									 label="Graduation Month"
-									 options={MONTHS_IN_A_YEAR.map(mapValueForSelect)}
-									 placeholder="Select a graduation month"
-									 validate={required({ msg: 'Please select a graduation month!' })}
-									 search={true}
+							component={SemanticFormField}
+							as={Form.Select}
+							label="Graduation Month"
+							options={MONTHS_IN_A_YEAR.map(mapValueForSelect)}
+							placeholder="Select a graduation month"
+							validate={required({ msg: 'Please select a graduation month!' })}
+							search={true}
 						/>
 
 						<Field name="travelOrigin"
-									 component={SemanticFormField}
-									 as={Form.Input}
-									 type="text"
-									 label="Where will you be travelling from?"
-									 placeholder='Kingston, ON'
-									 validate={required({ msg: 'Please tell us where you plan on travelling from!' })}
+							component={SemanticFormField}
+							as={Form.Input}
+							type="text"
+							label="Where will you be travelling from?"
+							placeholder="Kingston, ON"
+							validate={required({ msg: 'Please tell us where you plan on travelling from!' })}
 						/>
 				</Segment>
 		);
@@ -222,33 +223,33 @@ function PageThree(props) {
 		return (
 				<Segment className={props.className}>
 						<Field name="numberOfHackathons"
-									 component={SemanticFormField}
-									 as={Form.Select}
-									 label="How many hackathons have you attended?"
-									 options={NUMBER_OF_HACKATHONS.map(mapValueForSelect)}
-									 placeholder="#"
-									 validate={required({ msg: 'Please select the number of hackathons that you have attended!' })}
-									 search={true}
+							component={SemanticFormField}
+							as={Form.Select}
+							label="How many hackathons have you attended?"
+							options={NUMBER_OF_HACKATHONS.map(mapValueForSelect)}
+							placeholder="#"
+							validate={required({ msg: 'Please select the number of hackathons that you have attended!' })}
+							search={true}
 						/>
 
 						<Field name="whyQhacks"
-									 component={SemanticFormField}
-									 as={Form.TextArea}
-									 label="Why do you want to come to QHacks 2018? (1000 characters max)"
-									 validate={[required({ msg: 'Please tell us why you want to come to QHacks 2018!' }), length({
-											 max: 1000,
-											 msg: 'Your answer cannot exceed 1000 characters!'
-									 })]}
+							component={SemanticFormField}
+							as={Form.TextArea}
+							label="Why do you want to come to QHacks 2018? (1000 characters max)"
+							validate={[required({ msg: 'Please tell us why you want to come to QHacks 2018!' }), length({
+								max: 1000,
+								msg: 'Your answer cannot exceed 1000 characters!'
+							})]}
 						/>
 
 						<Field name="links"
-									 component={SemanticFormField}
-									 as={Form.TextArea}
-									 label="Where can we find you online? e.g. GitHub, LinkedIn, etc."
+							component={SemanticFormField}
+							as={Form.TextArea}
+							label="Where can we find you online? e.g. GitHub, LinkedIn, etc."
 						/>
 
 						<p>By applying you agree to adhere to <a target="_blank" rel="noopener noreferrer"
-																										 href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">
+																		href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">
 								MLH's Code of Conduct</a>.</p>
 				</Segment>
 		);
@@ -334,9 +335,9 @@ class ApplyForm extends Component {
 				return (
 						<Message
 								error
-								size='small'
+								size="small"
 								className="error-message"
-								header='Your application is invalid!'
+								header="Your application is invalid!"
 								list={errorMessages}
 						/>
 				);
