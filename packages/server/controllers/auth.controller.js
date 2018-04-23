@@ -105,7 +105,10 @@ module.exports = {
 			customValidator.validateSignUpInfo(signUpInfo)
 				.then(() => Event.findOne({ slug: QHACKS_2018_SLUG }))
 				.then((event) => {
-					User.create(_.assign({}, signUpInfo, { events: [event._id] }))
+					User.create(_.assign({}, signUpInfo, {
+						events: [event._id],
+						applications: [{event: [event._id]}]
+					}))
 							.then((user) => {
 								const refreshToken = createRefreshToken(user._id);
 
