@@ -7,309 +7,355 @@ const { sendEmail } = require('../emails');
 
 const DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS = { new: true };
 const REVIEW_FIELDS = [
-	'score',
-	'group',
-	'performedBy',
-	'performedAt',
-	'goldenTicket'
+  'score',
+  'group',
+  'performedBy',
+  'performedAt',
+  'goldenTicket'
 ];
 
 module.exports = {
-	async checkIn(userId, eventId, checkInStatus) {
-		if (!userId) {
-			throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.MISSING_USER_ID);
-		}
-		if (!eventId) {
-			throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.MISSING_EVENT_ID);
-		}
-		if (!checkInStatus) {
-			throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.MISSING_CHECK_IN_STATUS);
-		}
+  async checkIn(userId, eventId, checkInStatus) {
+    if (!userId) {
+      throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.MISSING_USER_ID);
+    }
+    if (!eventId) {
+      throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.MISSING_EVENT_ID);
+    }
+    if (!checkInStatus) {
+      throw createError(
+        ERROR_TEMPLATES.BAD_REQUEST,
+        ERROR.MISSING_CHECK_IN_STATUS
+      );
+    }
 
-		let updateUser;
+    let updateUser;
 
-		try {
-			updateUser = await User.findOneAndUpdate(
-				{
-					role: USER.ROLES.HACKER,
-					'applications.status': USER.APPLICATION.STATUSES.ACCEPTED,
-					'applications.rsvp': USER.APPLICATION.RSVPS.COMPLETED,
-					'applications.event': eventId,
-					_id: userId
-				},
-				{
-					'applications.$.checkIn': checkInStatus
-				},
-				DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
-			);
-		} catch (err) {
-			throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_CHECK_IN, err);
-		}
+    try {
+      updateUser = await User.findOneAndUpdate(
+        {
+          role: USER.ROLES.HACKER,
+          'applications.status': USER.APPLICATION.STATUSES.ACCEPTED,
+          'applications.rsvp': USER.APPLICATION.RSVPS.COMPLETED,
+          'applications.event': eventId,
+          _id: userId
+        },
+        {
+          'applications.$.checkIn': checkInStatus
+        },
+        DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
+      );
+    } catch (err) {
+      throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_CHECK_IN, err);
+    }
 
-		return updateUser;
-	},
+    return updateUser;
+  },
 
-	async getAdmins() {
-		let admins;
+  async getAdmins() {
+    let admins;
 
-		try {
-			admins = await User.find({ role: USER.ROLES.ADMIN });
-		} catch (err) {
-			throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_ADMINS_GET, err);
-		}
+    try {
+      admins = await User.find({ role: USER.ROLES.ADMIN });
+    } catch (err) {
+      throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_ADMINS_GET, err);
+    }
 
-		if (_.isEmpty(admins)) {
-			throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_ADMINS_EXIST);
-		}
+    if (_.isEmpty(admins)) {
+      throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_ADMINS_EXIST);
+    }
 
-		return admins;
-	},
+    return admins;
+  },
 
-	async getApplicationToReview(reviewGroup) {
-		let user;
-		try {
-			user = await User.findOne({
-				$and: [
-					{ role: 'HACKER' },
-					{
-						$or: [
-							{ reviews: { $exists: false } },
-							{ reviews: { $size: 0 } },
-							{ 'reviews.group': { $ne: reviewGroup } }
-						]
-					},
-					{
-						$or: [
-							{ 'reviews.goldenTicket': false },
-							{ 'reviews.goldenTicket': { $exists: false } }
-						]
-					}
-				]
-			});
-		} catch (err) {
-			throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_APPLICATION_TO_REVIEW_GET, err);
-		}
+  async getApplicationToReview(reviewGroup) {
+    let user;
+    try {
+      user = await User.findOne({
+        $and: [
+          { role: 'HACKER' },
+          {
+            $or: [
+              { reviews: { $exists: false } },
+              { reviews: { $size: 0 } },
+              { 'reviews.group': { $ne: reviewGroup } }
+            ]
+          },
+          {
+            $or: [
+              { 'reviews.goldenTicket': false },
+              { 'reviews.goldenTicket': { $exists: false } }
+            ]
+          }
+        ]
+      });
+    } catch (err) {
+      throw createError(
+        ERROR_TEMPLATES.DB_ERROR,
+        ERROR.DB_APPLICATION_TO_REVIEW_GET,
+        err
+      );
+    }
 
-		if (_.isEmpty(user)) {
-			throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_APPLICATION_TO_REVIEW_EXISTS);
-		}
+    if (_.isEmpty(user)) {
+      throw createError(
+        ERROR_TEMPLATES.NOT_FOUND,
+        ERROR.NO_APPLICATION_TO_REVIEW_EXISTS
+      );
+    }
 
-		return user;
-	},
+    return user;
+  },
 
-	async getApplicationsWithReviews({ limit = 20, skip = 0, sort = { score: -1, _id: -1 } }) {
-		let applications;
-		const { numberOfReviewsRequired } = await this.getSettings();
+  async getApplicationsWithReviews({
+    limit = 20,
+    skip = 0,
+    sort = { score: -1, _id: -1 }
+  }) {
+    let applications;
+    const { numberOfReviewsRequired } = await this.getSettings();
 
-		const pipeline = [
-			{ $match: { role: USER.ROLES.HACKER, reviews: { $exists: true, $not: { $size: 0 } } } },
-			{
-				$addFields: {
-					score: {
-						$multiply: [
-							{
-								$divide: [
-									{ $sum: '$reviews.score' },
-									{
-										$cond: {
-											if: {
-												$gt: [{ $size: '$reviews' }, numberOfReviewsRequired]
-											},
-											then: { $size: '$reviews' },
-											else: 1
-										}
-									}
-								]
-							},
-							{
-								$cond: {
-									if: {
-										$gt: [{ $size: '$reviews' }, numberOfReviewsRequired]
-									},
-									then: numberOfReviewsRequired,
-									else: 1
-								}
-							}
-						]
-					}
-				}
-			},
-			{ $sort: sort },
-			{ $skip: skip },
-			{ $limit: limit }
-		];
-		try {
-			applications = await User.aggregate(pipeline);
-		} catch (err) {
-			throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_APPLICATIONS_WITH_REVIEWS_GET, err);
-		}
+    const pipeline = [
+      {
+        $match: {
+          role: USER.ROLES.HACKER,
+          reviews: { $exists: true, $not: { $size: 0 } }
+        }
+      },
+      {
+        $addFields: {
+          score: {
+            $multiply: [
+              {
+                $divide: [
+                  { $sum: '$reviews.score' },
+                  {
+                    $cond: {
+                      if: {
+                        $gt: [{ $size: '$reviews' }, numberOfReviewsRequired]
+                      },
+                      then: { $size: '$reviews' },
+                      else: 1
+                    }
+                  }
+                ]
+              },
+              {
+                $cond: {
+                  if: {
+                    $gt: [{ $size: '$reviews' }, numberOfReviewsRequired]
+                  },
+                  then: numberOfReviewsRequired,
+                  else: 1
+                }
+              }
+            ]
+          }
+        }
+      },
+      { $sort: sort },
+      { $skip: skip },
+      { $limit: limit }
+    ];
+    try {
+      applications = await User.aggregate(pipeline);
+    } catch (err) {
+      throw createError(
+        ERROR_TEMPLATES.DB_ERROR,
+        ERROR.DB_APPLICATIONS_WITH_REVIEWS_GET,
+        err
+      );
+    }
 
-		if (_.isEmpty(applications)) {
-			throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_APPLICATIONS_WITH_REVIEWS_EXIST);
-		}
+    if (_.isEmpty(applications)) {
+      throw createError(
+        ERROR_TEMPLATES.NOT_FOUND,
+        ERROR.NO_APPLICATIONS_WITH_REVIEWS_EXIST
+      );
+    }
 
-		return applications;
-	},
+    return applications;
+  },
 
-	async getApplicationsWithReviewsCount() {
-		let count;
-		try {
-			count = await User.count({
-				role: USER.ROLES.HACKER,
-				reviews: { $exists: true, $not: { $size: 0 } }
-			});
-		} catch (err) {
-			throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_APPLICATIONS_WITH_REVIEWS_GET, err);
-		}
-		return count;
-	},
+  async getApplicationsWithReviewsCount() {
+    let count;
+    try {
+      count = await User.count({
+        role: USER.ROLES.HACKER,
+        reviews: { $exists: true, $not: { $size: 0 } }
+      });
+    } catch (err) {
+      throw createError(
+        ERROR_TEMPLATES.DB_ERROR,
+        ERROR.DB_APPLICATIONS_WITH_REVIEWS_GET,
+        err
+      );
+    }
+    return count;
+  },
 
-	getEmails() {
-		return Object.values(EMAILS.TEMPLATES).map((template) => (
-			_.map(template, (value, key) => ({
-				[camelcase(key)]: value
-			})).reduce((accum, keyValuePair) => (
-				Object.assign(accum, keyValuePair)
-			), {})
-		));
-	},
+  getEmails() {
+    return Object.values(EMAILS.TEMPLATES).map((template) =>
+      _.map(template, (value, key) => ({
+        [camelcase(key)]: value
+      })).reduce(
+        (accum, keyValuePair) => Object.assign(accum, keyValuePair),
+        {}
+      )
+    );
+  },
 
-		//TODO: make this so it takes an eventId
-		// async getHackersRequiringCheckIn(eventId, email = null) {
-	async getHackersRequiringCheckIn() {
+  //TODO: make this so it takes an eventId
+  // async getHackersRequiringCheckIn(eventId, email = null) {
+  async getHackersRequiringCheckIn() {
+    let hackers;
 
-		let hackers;
+    try {
+      hackers = await User.find({
+        'applications.status': USER.APPLICATION.STATUSES.ACCEPTED,
+        'applications.rsvp': USER.APPLICATION.RSVPS.COMPLETED,
+        'applications.checkIn': USER.APPLICATION.CHECK_INS.PENDING
+      });
+    } catch (err) {
+      throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USERS_GET, err);
+    }
 
-		try {
-			hackers = await User.find({
-				'applications.status': USER.APPLICATION.STATUSES.ACCEPTED,
-				'applications.rsvp': USER.APPLICATION.RSVPS.COMPLETED,
-				'applications.checkIn': USER.APPLICATION.CHECK_INS.PENDING
-			});
-		} catch (err) {
-			throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USERS_GET, err);
-		}
+    return hackers;
+  },
 
-		return hackers;
-	},
+  async getReviewers() {
+    let reviewers;
 
-	async getReviewers() {
-		let reviewers;
+    try {
+      reviewers = await User.find({
+        role: USER.ROLES.ADMIN,
+        reviewGroup: { $exists: true }
+      });
+    } catch (err) {
+      throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEWERS_GET, err);
+    }
 
-		try {
-			reviewers = await User.find({ role: USER.ROLES.ADMIN, reviewGroup: { $exists: true } });
-		} catch (err) {
-			throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEWERS_GET, err);
-		}
+    if (_.isEmpty(reviewers)) {
+      throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_REVIEWERS_EXIST);
+    }
 
-		if (_.isEmpty(reviewers)) {
-			throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_REVIEWERS_EXIST);
-		}
+    return reviewers;
+  },
 
-		return reviewers;
-	},
+  async getSettings() {
+    let settings;
 
-	async getSettings() {
-		let settings;
+    try {
+      settings = await Settings.findOne({});
+    } catch (err) {
+      throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_GET, err);
+    }
 
-		try {
-			settings = await Settings.findOne({});
-		} catch (err) {
-			throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_GET, err);
-		}
+    if (_.isEmpty(settings)) {
+      throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_SETTINGS_EXIST);
+    }
 
-		if (_.isEmpty(settings)) {
-			throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_SETTINGS_EXIST);
-		}
+    return settings;
+  },
 
-		return settings;
-	},
+  async reassignReviewers() {
+    let admins = [];
 
-	async reassignReviewers() {
-		let admins = [];
+    try {
+      admins = await User.find({ role: USER.ROLES.ADMIN });
+    } catch (err) {
+      throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEWERS_GET, err);
+    }
 
-		try {
-			admins = await User.find({ role: USER.ROLES.ADMIN });
-		} catch (err) {
-			throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEWERS_GET, err);
-		}
+    if (_.isEmpty(admins)) {
+      throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_ADMINS_EXIST);
+    }
 
-		if (_.isEmpty(admins)) {
-			throw createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.NO_ADMINS_EXIST);
-		}
+    const { numberOfReviewsRequired } = await this.getSettings();
 
-		const { numberOfReviewsRequired } = await this.getSettings();
+    const promises = admins.map((admin, index) =>
+      User.findOneAndUpdate(
+        { _id: admin._id },
+        { $set: { reviewGroup: index % numberOfReviewsRequired } },
+        DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
+      )
+    );
 
-		const promises = admins.map((admin, index) => (
-			User.findOneAndUpdate(
-				{ _id: admin._id },
-				{ $set: { reviewGroup: index % numberOfReviewsRequired } },
-				DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
-			)
-		));
+    return await Promise.all(promises);
+  },
 
-		return await Promise.all(promises);
-	},
+  async sendEmail(templateName, recipients) {
+    return await sendEmail(templateName, recipients);
+  },
 
-	async sendEmail(templateName, recipients) {
-		return await sendEmail(templateName, recipients);
-	},
+  async submitApplicationReview(userId, review) {
+    let updatedUser;
+    let hasGoldenTicket;
+    let reviewer;
 
-	async submitApplicationReview(userId, review) {
-		let updatedUser;
-		let hasGoldenTicket;
-		let reviewer;
+    const reviewToSubmit = _.pick(review, REVIEW_FIELDS);
+    const reviewerId = reviewToSubmit.performedBy;
 
-		const reviewToSubmit = _.pick(review, REVIEW_FIELDS);
-		const reviewerId = reviewToSubmit.performedBy;
+    if (reviewToSubmit.goldenTicket) {
+      try {
+        reviewer = await User.findOne({ _id: reviewerId });
+      } catch (err) {
+        throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER, err);
+      }
 
-		if (reviewToSubmit.goldenTicket) {
-			try {
-				reviewer = await User.findOne({ _id: reviewerId });
-			} catch (err) {
-				throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER, err);
-			}
+      const { goldenTickets = 0 } = reviewer;
 
-			const { goldenTickets = 0 } = reviewer;
+      if (goldenTickets <= 0) {
+        throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.NO_GOLDEN_TICKETS);
+      }
 
-			if (goldenTickets <= 0) {
-				throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.NO_GOLDEN_TICKETS);
-			}
+      try {
+        hasGoldenTicket = !!(await User.findOne({
+          _id: userId,
+          'reviews.goldenTicket': true
+        }));
+      } catch (err) {
+        throw createError(
+          ERROR_TEMPLATES.DB_ERROR,
+          ERROR.DB_REVIEW_CREATE,
+          err
+        );
+      }
 
-			try {
-				hasGoldenTicket = !!(await User.findOne({ _id: userId, 'reviews.goldenTicket': true }));
-			} catch (err) {
-				throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEW_CREATE, err);
-			}
+      if (hasGoldenTicket) {
+        throw createError(
+          ERROR_TEMPLATES.BAD_REQUEST,
+          ERROR.ALREADY_HAS_GOLDEN_TICKET
+        );
+      }
 
-			if (hasGoldenTicket) {
-				throw createError(ERROR_TEMPLATES.BAD_REQUEST, ERROR.ALREADY_HAS_GOLDEN_TICKET);
-			}
+      try {
+        const numberOfGoldenTicketsRemaining =
+          goldenTickets - 1 > 0 ? goldenTickets - 1 : 0;
+        await User.findOneAndUpdate(
+          { _id: reviewerId },
+          { $set: { goldenTickets: numberOfGoldenTicketsRemaining } }
+        );
+      } catch (err) {
+        throw createError(
+          ERROR_TEMPLATES.DB_ERROR,
+          ERROR.DB_GOLDEN_TICKETS_REDUCE,
+          err
+        );
+      }
+    }
 
-			try {
-				const numberOfGoldenTicketsRemaining = goldenTickets - 1 > 0
-					? goldenTickets - 1
-					: 0;
-			await User.findOneAndUpdate(
-				{ _id: reviewerId },
-				{ $set: { goldenTickets: numberOfGoldenTicketsRemaining } }
-			);
-			} catch (err) {
-				throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_GOLDEN_TICKETS_REDUCE, err);
-			}
-		}
+    try {
+      updatedUser = await User.findOneAndUpdate(
+        { _id: userId }, // TODO: add { 'reviews.group': { $ne: reviewToSubmit.group } } to avoid duplicate
+        // applications for a user
+        { $push: { reviews: reviewToSubmit } },
+        DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
+      );
+    } catch (err) {
+      throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEW_CREATE, err);
+    }
 
-		try {
-			updatedUser = await User.findOneAndUpdate(
-				{ _id: userId },  // TODO: add { 'reviews.group': { $ne: reviewToSubmit.group } } to avoid duplicate
-				// applications for a user
-				{ $push: { reviews: reviewToSubmit } },
-				DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
-			);
-		} catch (err) {
-			throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEW_CREATE, err);
-		}
-
-		return updatedUser;
-	}
+    return updatedUser;
+  }
 };
