@@ -9,10 +9,10 @@ import React from 'react';
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-	<Provider store={getStore}>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</Provider>,
-	rootElement
+  <Provider store={getStore}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
+  rootElement
 );
