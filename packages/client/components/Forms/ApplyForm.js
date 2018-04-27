@@ -134,8 +134,9 @@ function PageOne(props) {
         validate={[
           required({ msg: 'Please enter a phone number!' }),
           format({
-            with: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/,
-            msg: 'Please enter a valid phone number format. (123-456-789)'
+            // regex found here: https://www.regextester.com/1978. Works on all intl. phone numbers tested
+            with: /^((?:\+|00)[17](?: |\-)?|(?:\+|00)[1-9]\d{0,2}(?: |\-)?|(?:\+|00)1\-\d{3}(?: |\-)?)?(0\d|\([0-9]{3}\)|[1-9]{0,3})(?:((?: |\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\-)[0-9]{3}(?: |\-)[0-9]{4})|([0-9]{7}))$/,
+            msg: 'Please enter a valid phone number format. (123-456-7890)'
           })
         ]}
       />
