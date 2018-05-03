@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import uuid from 'uuid/v4';
-import { connect } from 'react-redux';
-import { SCORES } from '../Admin/ReviewScale';
-import { head, map } from 'lodash';
-import { Button, Icon, Menu, Segment, Table } from 'semantic-ui-react';
-import { selectors } from '../../HackerStore/HackerReducer';
-import { actionCreators } from '../../HackerStore/HackerActions';
+import React, { Component } from "react";
+import uuid from "uuid/v4";
+import { connect } from "react-redux";
+import { SCORES } from "../Admin/ReviewScale";
+import { head, map } from "lodash";
+import { Button, Icon, Menu, Segment, Table } from "semantic-ui-react";
+import { selectors } from "../../HackerStore/HackerReducer";
+import { actionCreators } from "../../HackerStore/HackerActions";
 
 const {
   fetchApplicationsWithReviews,
@@ -27,13 +27,13 @@ const REVIEW_TABLE_FETCH_DEFAULT_SETTINGS = {
   limit: REVIEW_TABLE_APPLICATIONS_PER_PAGE
 };
 const REVIEW_TABLE_HEADERS = [
-  'First Name',
-  'Last Name',
-  'Score',
-  'Golden Ticket Recipient?',
-  'Is Application Complete?',
-  'Application Status',
-  'RSVP'
+  "First Name",
+  "Last Name",
+  "Score",
+  "Golden Ticket Recipient?",
+  "Is Application Complete?",
+  "Application Status",
+  "RSVP"
 ];
 
 class Applicants extends Component {
@@ -63,14 +63,14 @@ class Applicants extends Component {
   }
 
   renderStatusCell(userId, eventId, currentStatus) {
-    if (currentStatus === 'APPLIED') {
+    if (currentStatus === "APPLIED") {
       return (
         <div>
           <Button
             negative
             size="mini"
             onClick={() =>
-              this.updateApplicationStatus(userId, eventId, 'REJECTED')
+              this.updateApplicationStatus(userId, eventId, "REJECTED")
             }
           >
             Reject
@@ -78,7 +78,7 @@ class Applicants extends Component {
           <Button
             size="mini"
             onClick={() =>
-              this.updateApplicationStatus(userId, eventId, 'WAITING_LIST')
+              this.updateApplicationStatus(userId, eventId, "WAITING_LIST")
             }
           >
             Waitlist
@@ -87,7 +87,7 @@ class Applicants extends Component {
             positive
             size="mini"
             onClick={() =>
-              this.updateApplicationStatus(userId, eventId, 'ACCEPTED')
+              this.updateApplicationStatus(userId, eventId, "ACCEPTED")
             }
           >
             Accept
@@ -235,7 +235,7 @@ class Applicants extends Component {
         hasGoldenTicket,
         isApplicationComplete:
           hasGoldenTicket || user.reviews.length >= numberOfReviewsRequired,
-        status: application.status || 'APPLIED',
+        status: application.status || "APPLIED",
         rsvp: application.rsvp
       };
     });
@@ -254,27 +254,27 @@ class Applicants extends Component {
             {applications.map((application) => (
               <Table.Row key={uuid()}>
                 {map(application, (value, key) => {
-                  if (key === '_id' || key === 'event') return null;
+                  if (key === "_id" || key === "event") return null;
                   return (
                     <Table.Cell
                       key={uuid()}
                       positive={
                         (key.match(/(is|has)/) && value) ||
-                        (key === 'status' && value === 'ACCEPTED') ||
-                        (key === 'rsvp' && value === 'COMPLETED')
+                        (key === "status" && value === "ACCEPTED") ||
+                        (key === "rsvp" && value === "COMPLETED")
                       }
                       negative={
                         (key.match(/(is|has)/) && !value) ||
-                        (key === 'status' && value === 'REJECTED') ||
-                        (key === 'rsvp' && value === 'NOT_NEEDED')
+                        (key === "status" && value === "REJECTED") ||
+                        (key === "rsvp" && value === "NOT_NEEDED")
                       }
                     >
-                      {key === 'status'
+                      {key === "status"
                         ? this.renderStatusCell(
-                            application._id,
-                            application.event,
-                            value
-                          )
+                          application._id,
+                          application.event,
+                          value
+                        )
                         : String(value)}
                     </Table.Cell>
                   );

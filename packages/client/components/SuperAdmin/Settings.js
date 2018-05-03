@@ -6,13 +6,13 @@ import {
   Divider,
   Segment,
   Container
-} from 'semantic-ui-react';
-import { actionCreators } from '../../HackerStore/HackerActions';
-import { isArray, isEmpty, map, pick } from 'lodash';
-import { selectors } from '../../HackerStore/HackerReducer';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import uuid from 'uuid/v4';
+} from "semantic-ui-react";
+import { actionCreators } from "../../HackerStore/HackerActions";
+import { isArray, isEmpty, map, pick } from "lodash";
+import { selectors } from "../../HackerStore/HackerReducer";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import uuid from "uuid/v4";
 
 const {
   fetchAdmins,
@@ -31,7 +31,7 @@ const {
   getTestEmailRecipients
 } = selectors;
 
-const NUMBER_OF_REVIEWS_REQUIRED = 'numberOfReviewsRequired';
+const NUMBER_OF_REVIEWS_REQUIRED = "numberOfReviewsRequired";
 const SETTINGS_FIELDS = [NUMBER_OF_REVIEWS_REQUIRED];
 
 class Settings extends Component {
@@ -94,7 +94,9 @@ class Settings extends Component {
     const reviewersByRow = [];
     const numberOfRows = reviewersByColumn.reduce(
       (max, reviewersInColumn) =>
-        reviewersInColumn.length > max ? reviewersInColumn.length : max,
+        reviewersInColumn.length > max ?
+          reviewersInColumn.length :
+          max,
       0
     );
 
@@ -135,7 +137,7 @@ class Settings extends Component {
 
     if (isEmpty(emails)) return null;
 
-    const NAME = 'name';
+    const NAME = "name";
 
     return (
       <div>
@@ -194,7 +196,7 @@ class Settings extends Component {
 
   render() {
     return (
-      <Container text style={{ marginTop: '3em' }}>
+      <Container text style={{ marginTop: "3em" }}>
         <Header as="h1">Settings</Header>
         <Segment>{this.renderSettings()}</Segment>
         <Header as="h1">Admin Actions</Header>

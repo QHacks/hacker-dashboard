@@ -1,12 +1,12 @@
-import { Button, Form, Message, Popup } from 'semantic-ui-react';
-import SemanticFormField from './SemanticFormField';
-import { Field, reduxForm } from 'redux-form';
-import { required, email, format } from 'redux-form-validators';
+import { Button, Form, Message, Popup } from "semantic-ui-react";
+import SemanticFormField from "./SemanticFormField";
+import { Field, reduxForm } from "redux-form";
+import { required, email, format } from "redux-form-validators";
 
-import React, { Component } from 'react';
-import './RSVPForm.less';
+import React, { Component } from "react";
+import "./RSVPForm.less";
 
-const SHIRT_SIZES = ['Small', 'Medium', 'Large', 'Extra Large'];
+const SHIRT_SIZES = ["Small", "Medium", "Large", "Extra Large"];
 
 class RSVPForm extends Component {
   renderRSVPFormErrorMessage() {
@@ -57,10 +57,10 @@ class RSVPForm extends Component {
           name="tshirtSize"
           component={SemanticFormField}
           as={Form.Select}
-          label={requiredLabel('T-Shirt Size')}
+          label={requiredLabel("T-Shirt Size")}
           options={SHIRT_SIZES.map(mapValueForSelect)}
           placeholder="Select a t-shirt size"
-          validate={required({ msg: 'Please select a size!' })}
+          validate={required({ msg: "Please select a size!" })}
           search={true}
         />
 
@@ -68,20 +68,20 @@ class RSVPForm extends Component {
           name="favSnack"
           component={SemanticFormField}
           as={Form.Input}
-          label={requiredLabel('Favorite Snack')}
+          label={requiredLabel("Favorite Snack")}
           type="text"
           placeholder="What's your favorite snack?"
-          validate={[required({ msg: 'none' })]}
+          validate={[required({ msg: "none" })]}
         />
 
         <Field
           name="dietaryRestrictions"
           component={SemanticFormField}
           as={Form.Input}
-          label={'Dietary Restrictions'}
+          label={"Dietary Restrictions"}
           type="text"
           placeholder="Gluten-free, vegan, allergic to nuts, etc."
-          validate={[required({ msg: 'none' })]}
+          validate={[required({ msg: "none" })]}
         />
 
         <Field
@@ -89,10 +89,10 @@ class RSVPForm extends Component {
           component={SemanticFormField}
           as={Form.Input}
           type="text"
-          label={requiredLabel('Emergency Contact First Name')}
+          label={requiredLabel("Emergency Contact First Name")}
           placeholder="Gavin"
           validate={required({
-            msg: 'Please enter the first name of your emergency contact!'
+            msg: "Please enter the first name of your emergency contact!"
           })}
         />
 
@@ -101,10 +101,10 @@ class RSVPForm extends Component {
           component={SemanticFormField}
           as={Form.Input}
           type="text"
-          label={requiredLabel('Emergency Contact Last Name')}
+          label={requiredLabel("Emergency Contact Last Name")}
           placeholder="Belson"
           validate={required({
-            msg: 'Please enter the last name of your emergency contact!'
+            msg: "Please enter the last name of your emergency contact!"
           })}
         />
 
@@ -113,13 +113,13 @@ class RSVPForm extends Component {
           component={SemanticFormField}
           as={Form.Input}
           type="email"
-          label={requiredLabel('Emergency Contact Email')}
+          label={requiredLabel("Emergency Contact Email")}
           placeholder="gavin@hooli.com"
           validate={[
             required({
-              msg: 'Please enter the email address of your emergency contact!'
+              msg: "Please enter the email address of your emergency contact!"
             }),
-            email({ msg: 'Please enter a valid email address!' })
+            email({ msg: "Please enter a valid email address!" })
           ]}
         />
 
@@ -128,15 +128,15 @@ class RSVPForm extends Component {
           component={SemanticFormField}
           as={Form.Input}
           type="tel"
-          label={requiredLabel('Emergency Contact Phone Number')}
+          label={requiredLabel("Emergency Contact Phone Number")}
           placeholder="123-456-7890"
           validate={[
             required({
-              msg: 'Please enter the phone number of your emergency contact!'
+              msg: "Please enter the phone number of your emergency contact!"
             }),
             format({
               with: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/,
-              msg: 'Please enter a valid phone number format. (123-456-789)'
+              msg: "Please enter a valid phone number format. (123-456-789)"
             })
           ]}
         />
@@ -145,10 +145,10 @@ class RSVPForm extends Component {
           name="emergencyRelationToContact"
           component={SemanticFormField}
           as={Form.Input}
-          label={requiredLabel('Emergency Contact Relationship')}
+          label={requiredLabel("Emergency Contact Relationship")}
           type="text"
           placeholder="What's your relationship with your emergency contact?"
-          validate={[required({ msg: 'none' })]}
+          validate={[required({ msg: "none" })]}
         />
 
         <Field
@@ -188,6 +188,6 @@ function mapValueForSelect(value) {
 }
 
 export default reduxForm({
-  form: 'rsvp',
+  form: "rsvp",
   enableReinitialize: true
 })(RSVPForm);

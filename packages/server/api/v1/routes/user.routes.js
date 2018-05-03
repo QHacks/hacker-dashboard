@@ -1,16 +1,16 @@
-const Router = require('express').Router;
-const _ = require('lodash');
+const Router = require("express").Router;
+const _ = require("lodash");
 
 const RSVP_FIELDS = [
-  'dietaryRestrictions',
-  'emergencyContact',
-  'favSnack',
-  'resume',
-  'tshirtSize'
+  "dietaryRestrictions",
+  "emergencyContact",
+  "favSnack",
+  "resume",
+  "tshirtSize"
 ];
 
-const APPLICATIONS = 'applications';
-const USER = 'users';
+const APPLICATIONS = "applications";
+const USER = "users";
 
 module.exports = (ctr) => {
   const userAPI = Router();

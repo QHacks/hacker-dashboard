@@ -1,8 +1,8 @@
-import { Message, Grid, Step, Icon } from 'semantic-ui-react';
-import Emoji from 'react-emoji-render';
-import ArriveInformation from './ArriveInformation';
-import React, { Component } from 'react';
-import RSVPForm from '../Forms/RSVPForm';
+import { Message, Grid, Step, Icon } from "semantic-ui-react";
+import Emoji from "react-emoji-render";
+import ArriveInformation from "./ArriveInformation";
+import React, { Component } from "react";
+import RSVPForm from "../Forms/RSVPForm";
 
 class SuccessfulApplicant extends Component {
   renderStepInformation() {
@@ -13,7 +13,7 @@ class SuccessfulApplicant extends Component {
       onWithdrawApplication,
       onSubmit
     } = this.props;
-    const rsvpComplete = rsvpStatus === 'COMPLETED';
+    const rsvpComplete = rsvpStatus === "COMPLETED";
 
     if (rsvpComplete) {
       return <ArriveInformation />;
@@ -43,7 +43,7 @@ class SuccessfulApplicant extends Component {
 
   renderStep() {
     const { rsvpStatus } = this.props;
-    const rsvpComplete = rsvpStatus === 'COMPLETED';
+    const rsvpComplete = rsvpStatus === "COMPLETED";
 
     return (
       <Step.Group fluid vertical>

@@ -1,4 +1,4 @@
-const ERROR_TEMPLATES = require('./templates');
+const ERROR_TEMPLATES = require("./templates");
 
 module.exports = {
   ERROR_TEMPLATES,

@@ -1,9 +1,9 @@
-import { put, take, all, call, select } from 'redux-saga/effects';
-import { actionCreators, actionTypes } from './HackerActions';
-import { selectors } from './HackerReducer';
+import { put, take, all, call, select } from "redux-saga/effects";
+import { actionCreators, actionTypes } from "./HackerActions";
+import { selectors } from "./HackerReducer";
 
-const ACCESS_TOKEN_STORAGE = 'qhacksAccessToken';
-const REFRESH_TOKEN_STORAGE = 'qhacksRefreshToken';
+const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
+const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
 
 /**
  * Root saga that runs all of our sagas.

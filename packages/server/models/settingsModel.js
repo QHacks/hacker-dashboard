@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const uuid = require('uuid');
+const mongoose = require("mongoose");
+const uuid = require("uuid");
 
 const SettingsSchema = mongoose.Schema({
   _id: {
@@ -12,4 +12,4 @@ const SettingsSchema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Settings', SettingsSchema);
+module.exports = mongoose.model("Settings", SettingsSchema);

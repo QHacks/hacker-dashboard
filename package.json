@@ -9,7 +9,7 @@
     "dev": "lerna run build --scope email && lerna run dev --scope server --scope client --stream --parallel",
     "start": "lerna run start --scope server --stream",
     "test": "cross-env eslint packages/server/**/*.js packages/client/**/*.js && nsp check --reporter checkstyle && ncu -e 2 -x mongoose",
-		"beautify": "prettier-eslint \"packages/**/*.js\" --write"
+    "beautify": "prettier-eslint \"packages/**/*.js\" --write"
   },
   "engines": {
     "node": "8.9.x",

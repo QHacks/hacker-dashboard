@@ -1,8 +1,8 @@
-import { Button, Form, Message } from 'semantic-ui-react';
-import { required, email } from 'redux-form-validators';
-import SemanticFormField from './SemanticFormField';
-import { Field, reduxForm } from 'redux-form';
-import React, { Component } from 'react';
+import { Button, Form, Message } from "semantic-ui-react";
+import { required, email } from "redux-form-validators";
+import SemanticFormField from "./SemanticFormField";
+import { Field, reduxForm } from "redux-form";
+import React, { Component } from "react";
 
 function ResetPasswordForm(props) {
   return (
@@ -20,8 +20,8 @@ function ResetPasswordForm(props) {
         type="email"
         placeholder="Email address"
         validate={[
-          required({ msg: 'none' }),
-          email({ msg: 'Please enter a valid email address!' })
+          required({ msg: "none" }),
+          email({ msg: "Please enter a valid email address!" })
         ]}
       />
 
@@ -46,4 +46,4 @@ function ResetPasswordForm(props) {
   );
 }
 
-export default reduxForm({ form: 'resetPassword' })(ResetPasswordForm);
+export default reduxForm({ form: "resetPassword" })(ResetPasswordForm);

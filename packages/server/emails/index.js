@@ -1,1 +1,1 @@
-module.exports = require('./emails');
+module.exports = require("./emails");

@@ -1,5 +1,5 @@
-import { Form } from 'semantic-ui-react';
-import React from 'react';
+import { Form } from "semantic-ui-react";
+import React from "react";
 
 export default function SemanticFormField({
   input,
@@ -26,8 +26,8 @@ export default function SemanticFormField({
         onChange={handleChange}
       />
       {touched &&
-        typeof error === 'string' &&
-        ((error !== 'none' && (
+        typeof error === "string" &&
+        ((error !== "none" && (
           <div className="ui pointing red basic label">{error}</div>
         )) ||
           (warning && (

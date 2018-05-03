@@ -1,11 +1,11 @@
-import { Route, Switch } from 'react-router-dom';
-import PrivateRoute from '../utils/PrivateRoute';
-import UpdatePassword from '../UpdatePassword';
-import ResetPassword from '../ResetPassword';
-import React, { Component } from 'react';
-import Dashboard from '../Dashboard';
-import Login from '../Login';
-import Apply from '../Apply';
+import { Route, Switch } from "react-router-dom";
+import PrivateRoute from "../utils/PrivateRoute";
+import UpdatePassword from "../UpdatePassword";
+import ResetPassword from "../ResetPassword";
+import React, { Component } from "react";
+import Dashboard from "../Dashboard";
+import Login from "../Login";
+import Apply from "../Apply";
 
 export default class App extends Component {
   render() {

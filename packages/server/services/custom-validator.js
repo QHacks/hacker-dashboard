@@ -1,7 +1,7 @@
-const validator = require('validator');
-const moment = require('moment');
-const _ = require('lodash');
-const { ERROR } = require('../strings');
+const validator = require("validator");
+const moment = require("moment");
+const _ = require("lodash");
+const { ERROR } = require("../strings");
 
 const NAME_REGEX = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]+$/;
 const YEAR_REGEXP = /^20[0-9]{2}$/;
@@ -36,25 +36,28 @@ function validateName(firstName, lastName) {
     !_.isEmpty(firstName) &&
     !_.isEmpty(lastName) &&
     fullName.match(NAME_REGEX)
-  )
-    {return Promise.resolve();}
+  ) {
+    return Promise.resolve();
+  }
   return Promise.reject(new ValidationError(ERROR.INVALID_NAME));
 }
 
 function validatePassword(password) {
-  if (!_.isEmpty(password) && validator.isLength(password, { min: 8 }))
-    {return Promise.resolve();}
+  if (!_.isEmpty(password) && validator.isLength(password, { min: 8 })) {
+    return Promise.resolve();
+  }
   return Promise.reject(new ValidationError(ERROR.INVALID_PASSWORD));
 }
 
 function validatePhoneNumber(phoneNumber) {
-  const phoneNumberLocale = 'any';
+  const phoneNumberLocale = "any";
 
   if (
     !_.isEmpty(phoneNumber) &&
     validator.isMobilePhone(phoneNumber, phoneNumberLocale)
-  )
-    {return Promise.resolve();}
+  ) {
+    return Promise.resolve();
+  }
   return Promise.reject(new ValidationError(ERROR.INVALID_PHONE_NUMBER));
 }
 

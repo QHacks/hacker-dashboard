@@ -1,6 +1,6 @@
-import React from 'react';
-import { Button, Popup } from 'semantic-ui-react';
-import { noop } from 'lodash';
+import React from "react";
+import { Button, Popup } from "semantic-ui-react";
+import { noop } from "lodash";
 
 const NO_SCORE = 1;
 const MAYBE_SCORE = 2;
@@ -41,7 +41,7 @@ export default ({ onVote = noop, ...rest }) => {
         </Button>
       </div>
       <div
-        style={{ display: 'flex', justifyContent: 'center', marginTop: '25px' }}
+        style={{ display: "flex", justifyContent: "center", marginTop: "25px" }}
       >
         <Popup
           trigger={renderGoldenTicketTrigger()}

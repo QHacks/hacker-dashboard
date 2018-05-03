@@ -1,10 +1,10 @@
-import { Divider, Header, Message } from 'semantic-ui-react';
-import { actionCreators, selectors } from '../../HackerStore';
-import { UpdatePasswordForm } from '../Forms';
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import './UpdatePassword.less';
+import { Divider, Header, Message } from "semantic-ui-react";
+import { actionCreators, selectors } from "../../HackerStore";
+import { UpdatePasswordForm } from "../Forms";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import "./UpdatePassword.less";
 
 const {
   getIsPasswordUpdated,
@@ -27,7 +27,7 @@ class UpdatePassword extends Component {
     return (
       <div className="update-header">
         <img
-          src={require('../../assets/img/qhacks-tricolor-logo.svg')}
+          src={require("../../assets/img/qhacks-tricolor-logo.svg")}
           className="qhacks-logo"
         />
         <Header
@@ -37,12 +37,14 @@ class UpdatePassword extends Component {
           textAlign="center"
           className="form apply header"
         />
-        {isPasswordUpdated ? null : (
-          <p>
-            Please enter your new password to complete the reset password
-            process.
-          </p>
-        )}
+        {isPasswordUpdated ?
+          null :
+          (
+            <p>
+              Please enter your new password to complete the reset password
+              process.
+            </p>
+          )}
       </div>
     );
   }

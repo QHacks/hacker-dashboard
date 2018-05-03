@@ -1,36 +1,36 @@
-const customValidator = require('../services/custom-validator');
-const jwt = require('jsonwebtoken');
-const emails = require('../emails');
-const crypto = require('crypto');
-const _ = require('lodash');
-const { Event, User } = require('../models');
-const { ERROR_TEMPLATES, createError } = require('../errors');
-const { EMAILS, ERROR } = require('../strings');
+const customValidator = require("../services/custom-validator");
+const jwt = require("jsonwebtoken");
+const emails = require("../emails");
+const crypto = require("crypto");
+const _ = require("lodash");
+const { Event, User } = require("../models");
+const { ERROR_TEMPLATES, createError } = require("../errors");
+const { EMAILS, ERROR } = require("../strings");
 
-const JWT_ISSUER = 'QHacks Authentication';
-const ACCESS_TOKEN_EXPIRE_TIME = '5 minutes';
-const REFRESH_TOKEN_EXPIRE_TIME = '60 minutes';
-const QHACKS_2018_SLUG = 'qhacks-2018';
+const JWT_ISSUER = "QHacks Authentication";
+const ACCESS_TOKEN_EXPIRE_TIME = "5 minutes";
+const REFRESH_TOKEN_EXPIRE_TIME = "60 minutes";
+const QHACKS_2018_SLUG = "qhacks-2018";
 
 const { AUTH_SECRET } = process.env;
 
 const HACKER_SIGN_UP_FIELDS = [
-  'firstName',
-  'lastName',
-  'email',
-  'phoneNumber',
-  'dateOfBirth',
-  'gender',
-  'password',
-  'school',
-  'degreeType',
-  'program',
-  'graduationYear',
-  'graduationMonth',
-  'travelOrigin',
-  'numberOfHackathons',
-  'whyQhacks',
-  'links'
+  "firstName",
+  "lastName",
+  "email",
+  "phoneNumber",
+  "dateOfBirth",
+  "gender",
+  "password",
+  "school",
+  "degreeType",
+  "program",
+  "graduationYear",
+  "graduationMonth",
+  "travelOrigin",
+  "numberOfHackathons",
+  "whyQhacks",
+  "links"
 ];
 
 function createAccessToken(userId) {
@@ -43,7 +43,7 @@ function createAccessToken(userId) {
 function createRefreshToken(userId) {
   return jwt.sign(
     {
-      type: 'refresh',
+      type: "refresh",
       userId
     },
     AUTH_SECRET,
@@ -58,9 +58,9 @@ function createResetPasswordHash(user) {
   const { AUTH_SECRET } = process.env;
   const timeInMs = Date.now();
   return crypto
-    .createHmac('sha256', AUTH_SECRET)
+    .createHmac("sha256", AUTH_SECRET)
     .update(`${user.email}${timeInMs}`)
-    .digest('hex');
+    .digest("hex");
 }
 
 module.exports = {
@@ -101,14 +101,15 @@ module.exports = {
   refresh(refreshToken) {
     return new Promise((resolve, reject) => {
       jwt.verify(refreshToken, AUTH_SECRET, (err, decoded) => {
-        if (err)
-          {reject(
+        if (err) {
+          reject(
             createError(
               ERROR_TEMPLATES.UNAUTHORIZED,
               ERROR.INVALID_REFRESH_TOKEN,
               err
             )
-          );}
+          );
+        }
         const { userId } = decoded;
         const refreshToken = createRefreshToken(userId);
 
@@ -225,10 +226,11 @@ module.exports = {
     return new Promise((resolve, reject) => {
       User.findOne({ passwordResetHash: resetHash })
         .then((user) => {
-          if (!user)
-            {reject(
+          if (!user) {
+            reject(
               createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_RESET_HASH)
-            );}
+            );
+          }
 
           user.password = password;
           user.passwordResetHash = null;

@@ -1,19 +1,19 @@
-import { CheckIn, Landing as AdminLanding, Review } from '../Admin';
-import { Applicants, Settings } from '../SuperAdmin';
-import { actionCreators, selectors } from '../../HackerStore';
-import { Message, Container } from 'semantic-ui-react';
-import { Route } from 'react-router-dom';
-import { Landing as HackerLanding } from '../Hacker';
-import PrivateRoute from '../utils/PrivateRoute';
-import { AuthSwitch, NotFound } from '../utils';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Confetti from 'react-confetti';
-import sizeMe from 'react-sizeme';
-import { isEmpty } from 'lodash';
-import Profile from '../Profile';
-import MenuBar from '../MenuBar';
-import uuid from 'uuid/v4';
+import { CheckIn, Landing as AdminLanding, Review } from "../Admin";
+import { Applicants, Settings } from "../SuperAdmin";
+import { actionCreators, selectors } from "../../HackerStore";
+import { Message, Container } from "semantic-ui-react";
+import { Route } from "react-router-dom";
+import { Landing as HackerLanding } from "../Hacker";
+import PrivateRoute from "../utils/PrivateRoute";
+import { AuthSwitch, NotFound } from "../utils";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Confetti from "react-confetti";
+import sizeMe from "react-sizeme";
+import { isEmpty } from "lodash";
+import Profile from "../Profile";
+import MenuBar from "../MenuBar";
+import uuid from "uuid/v4";
 
 const {
   clearDashboardErrorMessage,
@@ -49,52 +49,52 @@ class Dashboard extends Component {
   renderBody() {
     const { isAdmin, isPartner, isHacker, isSuperAdmin } = this.props;
     const authType =
-      (isAdmin && 'admin') ||
-      (isPartner && 'partner') ||
-      (isHacker && 'hacker') ||
-      (isSuperAdmin && 'superAdmin');
+      (isAdmin && "admin") ||
+      (isPartner && "partner") ||
+      (isHacker && "hacker") ||
+      (isSuperAdmin && "superAdmin");
     return (
       <AuthSwitch type={authType}>
         <PrivateRoute
           exact
           path="/"
-          types={['admin', 'superAdmin']}
+          types={["admin", "superAdmin"]}
           component={AdminLanding}
         />
         <PrivateRoute
           exact
           path="/review"
-          types={['admin', 'superAdmin']}
+          types={["admin", "superAdmin"]}
           component={Review}
         />
         <PrivateRoute
           exact
           path="/check-in"
-          types={['admin', 'superAdmin']}
+          types={["admin", "superAdmin"]}
           component={CheckIn}
         />
         <PrivateRoute
           exact
           path="/applicants"
-          types={['superAdmin']}
+          types={["superAdmin"]}
           component={Applicants}
         />
         <PrivateRoute
           exact
           path="/settings"
-          types={['superAdmin']}
+          types={["superAdmin"]}
           component={Settings}
         />
         <PrivateRoute
           exact
           path="/profile"
-          types={['hacker', 'partner', 'admin', 'superAdmin']}
+          types={["hacker", "partner", "admin", "superAdmin"]}
           component={Profile}
         />
         <PrivateRoute
           exact
           path="/"
-          types={['hacker']}
+          types={["hacker"]}
           component={HackerLanding}
         />
         <Route path="*" component={NotFound} />
@@ -116,7 +116,7 @@ class Dashboard extends Component {
         floating
         onDismiss={() => this.props.clearDashboardSuccessMessage({ index })}
         content={message}
-        style={{ marginTop: '3em' }}
+        style={{ marginTop: "3em" }}
       />
     ));
   }
@@ -135,7 +135,7 @@ class Dashboard extends Component {
         floating
         onDismiss={() => this.props.clearDashboardErrorMessage({ index })}
         content={message}
-        style={{ marginTop: '3em' }}
+        style={{ marginTop: "3em" }}
       />
     ));
   }
@@ -143,14 +143,14 @@ class Dashboard extends Component {
   renderConfetti() {
     const { user } = this.props;
 
-    if (user.role !== 'HACKER') return null;
+    if (user.role !== "HACKER") return null;
 
     const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
     const application = user.applications.find(
       (application) => application.event === eventId
     );
     const shouldRun =
-      application.status === 'ACCEPTED' && application.rsvp === 'PENDING';
+      application.status === "ACCEPTED" && application.rsvp === "PENDING";
     if (shouldRun) {
       return (
         <Confetti {...this.props.size} numberOfPieces={400} recycle={false} />
@@ -161,7 +161,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div style={{ height: '100vh' }}>
+      <div style={{ height: "100vh" }}>
         {this.renderMenuBar()}
         <Container>
           {this.renderConfetti()}

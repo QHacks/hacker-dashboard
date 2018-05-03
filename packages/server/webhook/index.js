@@ -1,1 +1,1 @@
-module.exports = require('./webhook');
+module.exports = require("./webhook");

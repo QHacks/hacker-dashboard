@@ -1,10 +1,10 @@
-import { actionCreators, selectors } from '../../HackerStore';
-import { Divider, Header } from 'semantic-ui-react';
-import { ResetPasswordForm } from '../Forms';
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import './ResetPassword.less';
+import { actionCreators, selectors } from "../../HackerStore";
+import { Divider, Header } from "semantic-ui-react";
+import { ResetPasswordForm } from "../Forms";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import "./ResetPassword.less";
 
 const {
   getIsPasswordReset,
@@ -22,7 +22,7 @@ class ResetPassword extends Component {
     return (
       <div className="reset-header">
         <img
-          src={require('../../assets/img/qhacks-tricolor-logo.svg')}
+          src={require("../../assets/img/qhacks-tricolor-logo.svg")}
           className="qhacks-logo"
         />
         <Header

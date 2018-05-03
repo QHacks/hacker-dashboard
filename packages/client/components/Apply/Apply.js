@@ -1,12 +1,12 @@
-import { actionCreators, selectors } from '../../HackerStore';
-import ApplicationsClosed from './ApplicationsClosed';
-import { Divider, Header } from 'semantic-ui-react';
-import { Link, Redirect } from 'react-router-dom';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { MISC } from '../../strings';
-import { ApplyForm } from '../Forms';
-import './Apply.less';
+import { actionCreators, selectors } from "../../HackerStore";
+import ApplicationsClosed from "./ApplicationsClosed";
+import { Divider, Header } from "semantic-ui-react";
+import { Link, Redirect } from "react-router-dom";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { MISC } from "../../strings";
+import { ApplyForm } from "../Forms";
+import "./Apply.less";
 
 const {
   getApplicationLoading,
@@ -35,7 +35,7 @@ class Apply extends Component {
       return locationState.from.pathname;
     }
 
-    return '/';
+    return "/";
   }
 
   renderApplicationForm() {
@@ -64,12 +64,12 @@ class Apply extends Component {
     const { applicationsStatus } = this.props;
     const headerContent =
       applicationsStatus === APPLICATION_CLOSED_STATUS
-        ? 'Applications are now closed'
-        : 'Complete the form to apply!';
+        ? "Applications are now closed"
+        : "Complete the form to apply!";
     return (
       <div className="application-header">
         <img
-          src={require('../../assets/img/qhacks-tricolor-logo.svg')}
+          src={require("../../assets/img/qhacks-tricolor-logo.svg")}
           className="qhacks-logo"
         />
         <Header
