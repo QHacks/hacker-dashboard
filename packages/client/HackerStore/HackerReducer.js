@@ -43,6 +43,7 @@ const initialState = {
 
   bootstrapLoading: true,
   signUpLoading: false,
+	adminRegisterLoading: false,
 
   applicationPage: 0,
   applicationsStatus: process.env.APPLICATIONS_STATUS,
@@ -85,6 +86,7 @@ export const selectors = {
   getRefreshToken: (state) => state[reducerMount].refreshToken,
   getLoginLoading: (state) => state[reducerMount].loginLoading,
   getSignUpLoading: (state) => state[reducerMount].signUpLoading,
+	getAdminRegisterLoading: (state) => state[reducerMount].adminRegisterLoading,
   getAuthenticated: (state) => state[reducerMount].authenticated,
   getBootstrapLoading: (state) => state[reducerMount].bootstrapLoading,
   getFetchingNewTokens: (state) => state[reducerMount].fetchingNewTokens,
@@ -284,6 +286,13 @@ const handlers = {
   },
 
   [actionTypes.SIGNUP_REQUEST]: (state, action) => {
+    return {
+      ...state,
+      applicationLoading: true
+    };
+  },
+
+	[actionTypes.ADMIN_REGISTER_REQUEST]: (state, action) => {
     return {
       ...state,
       applicationLoading: true
