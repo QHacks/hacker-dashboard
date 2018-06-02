@@ -26,7 +26,8 @@ function isHackerMiddlewareAction(action) {
 function isTokenFailError(error, incomingRequestType) {
   if (
     incomingRequestType === actionTypes.LOGIN_REQUEST ||
-    incomingRequestType === actionTypes.SIGNUP_REQUEST
+    incomingRequestType === actionTypes.SIGNUP_REQUEST ||
+		incomingRequestType === actionTypes.ADMIN_REGISTER_REQUEST
   ) {
     return false;
   } else if (error.status === UNAUTHORIZED_STATUS) {

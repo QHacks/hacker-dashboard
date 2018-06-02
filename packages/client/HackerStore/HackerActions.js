@@ -10,6 +10,7 @@ const API_SUFFIX = '/api/v1';
 const USERS_ENDPOINT = '/users';
 const LOGIN_ENDPOINT = '/auth/session';
 const SIGNUP_ENDPOINT = '/auth/signup';
+const ADMIN_REGISTER_ENDPOINT = '/auth/admin/register';
 const REFRESH_ENDPOINT = '/auth/refresh';
 const VALIDATE_ENDPOINT = '/auth/refresh';
 const RESET_HASH_ENDPOINT = '/auth/createResetHash';
@@ -44,6 +45,7 @@ const hackerMiddlwareActionTypes = {
 const apiRequestTypes = {
   LOGIN_REQUEST: '@@/hacker/LOGIN_REQUEST',
   SIGNUP_REQUEST: '@@/hacker/SIGNUP_REQUEST',
+	ADMIN_REGISTER_REQUEST: '@@/hacker/ADMIN_REGISTER_REQUEST',
   REFRESH_TOKENS: '@@/hacker/REFRESH_TOKENS',
   VALIDATE_TOKENS: '@@/hacker/VALIDATE_TOKENS',
 
@@ -245,6 +247,22 @@ const invokeAPIActionCreators = {
       ],
       request: {
         url: `${API_SUFFIX}${SIGNUP_ENDPOINT}`,
+        method: POST,
+        body: signUpInfo
+      }
+    }
+  }),
+
+  adminRegister: (signUpInfo) => ({
+    type: actionTypes.INVOKE_API_CALL,
+    data: {
+      types: [
+        actionTypes.ADMIN_REGISTER_REQUEST,
+        actionTypes.AUTHENTICATED,
+        actionTypes.APPLICATION_ERROR
+      ],
+      request: {
+        url: `${API_SUFFIX}${ADMIN_REGISTER_ENDPOINT}`,
         method: POST,
         body: signUpInfo
       }
