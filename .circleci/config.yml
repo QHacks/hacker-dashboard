@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  test:
+  code-style:
     docker:
       - image: circleci/node:latest
     steps:
@@ -9,8 +9,8 @@ jobs:
           name: Install NPM dependencies
           command: npm run bootstrap
       - run:
-          name: Test
-          command: npm test
+          name: Check Code Style
+          command: npm run style
   dev-deploy:
     docker:
       - image: lakoo/node-gcloud-docker:latest
@@ -52,10 +52,10 @@ workflows:
   version: 2
   deploy:
     jobs:
-      - test
+      - code-style
       - dev-deploy:
           requires:
-            - test
+            - code-style
           filters:
             branches:
               only: /^(dev|release/.+)$/
