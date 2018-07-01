@@ -14,7 +14,7 @@
   },
   "scripts": {
     "bootstrap": "npm install --unsafe-perm || ((if [ -f npm-debug.log ]; then cat npm-debug.log; fi) && false) && lerna bootstrap --hoist",
-    "build": "npm run style && lerna run build --stream",
+    "build": "lerna run build --stream",
     "dev": "lerna run build --scope email && lerna run dev --scope server --scope client --stream --parallel",
     "start": "lerna run start --scope server --stream",
     "style": "eslint --quiet packages/server/**/*.js packages/client/**/*.js"

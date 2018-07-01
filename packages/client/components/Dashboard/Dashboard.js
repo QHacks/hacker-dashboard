@@ -8,8 +8,6 @@ import PrivateRoute from "../utils/PrivateRoute";
 import { AuthSwitch, NotFound } from "../utils";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Confetti from "react-confetti";
-import sizeMe from "react-sizeme";
 import { isEmpty } from "lodash";
 import Profile from "../Profile";
 import MenuBar from "../MenuBar";
@@ -140,31 +138,11 @@ class Dashboard extends Component {
     ));
   }
 
-  renderConfetti() {
-    const { user } = this.props;
-
-    if (user.role !== "HACKER") return null;
-
-    const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
-    const application = user.applications.find(
-      (application) => application.event === eventId
-    );
-    const shouldRun =
-      application.status === "ACCEPTED" && application.rsvp === "PENDING";
-    if (shouldRun) {
-      return (
-        <Confetti {...this.props.size} numberOfPieces={400} recycle={false} />
-      );
-    }
-    return null;
-  }
-
   render() {
     return (
       <div style={{ height: "100vh" }}>
         {this.renderMenuBar()}
         <Container>
-          {this.renderConfetti()}
           {this.renderDashboardSuccessMessages()}
           {this.renderDashboardErrorMessages()}
           {this.renderBody()}
@@ -193,4 +171,4 @@ Dashboard = connect(mapStateToProps, {
   logout
 })(Dashboard);
 
-export default sizeMe({ monitorHeight: true })(Dashboard);
+export default Dashboard;

@@ -1,8 +1,8 @@
 # Contributing
 
-> So you want to contribute to the Hacker Dashboard
+> So you want to contribute to the Hacker Dashboard?
 
-## 
+##
 [1. Create/assign yourself an issue](#issues)
 [2. Create a new `feature` branch](#gitflow)
 3. Build your feature or bug fix
@@ -18,7 +18,6 @@ A general guide to contributing in this repository is:
 5. Submit a pull request :D
 
 > See more information in our [contributing guide](https://github.com/qhacks/hacker-dashboard/blob/dev/CONTRIBUTING.md).
-
 
 ## Issues
 Everything that you work on should be attached to an issue in the repository. This gives everyone the opportunity to see what people are working on and to discuss the issue at hand.
