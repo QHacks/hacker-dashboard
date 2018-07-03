@@ -1,9 +1,3 @@
 <mj-style>
-  * {
-  font-family: 'Encode Sans', 'MaisonNeue','Helvetica Neue',Helvetica,Arial,sans-serif;
-  }
-
-  a {
-  color: #A4A4A4;
-  }
+  * { font-family: 'Encode Sans', 'MaisonNeue','Helvetica Neue',Helvetica,Arial,sans-serif; } a { color: #A4A4A4; }
 </mj-style>

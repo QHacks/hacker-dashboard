@@ -1,175 +1,86 @@
+<!-- FILE: application-accepted-reminder.mjml -->
 <mjml>
   <mj-head>
     <mj-preview>Less than two weeks to QHacks 2018!</mj-preview>
-    <mj-font name="Encode Sans" href="https://fonts.googleapis.com/css?family=Encode+Sans:200,300,400,700"/>
-    <mj-include path="../partials/style"/>
+    <mj-font name="Encode Sans" href="https://fonts.googleapis.com/css?family=Encode+Sans:200,300,400,700"></mj-font>
+    <mj-include path="../partials/style"></mj-include>
   </mj-head>
-  <mj-body>
-    <mj-container background-color="#f5f5f5">
-
+  <mj-body background-color="#f5f5f5">
+    <mj-raw>
       <!-- Email Hero -->
-      <mj-section padding="0">
-        <mj-column width="600">
-          <mj-image src="https://storage.googleapis.com/qhacks-static-files/qhacks-banner-tricolour-v2.jpg"
-                    padding="0"
-                    href="https://qhacks.io"/>
-        </mj-column>
-      </mj-section>
-
+    </mj-raw>
+    <mj-section padding="0px">
+      <mj-column width="600px">
+        <mj-image src="https://storage.googleapis.com/qhacks-static-files/qhacks-banner-tricolour-v2.jpg" padding="0px" href="https://qhacks.io"></mj-image>
+      </mj-column>
+    </mj-section>
+    <mj-raw>
       <!-- Congrats section -->
-      <mj-section padding="0"
-                  border-bottom="10px solid #f5f5f5"
-                  background-color="white">
-        <mj-column>
-            <!-- Intro -->
-            <mj-text>
-                <h1>Less than two weeks to QHacks 2018!</h1>
-                <p>
-                    QHacks 2018 is right around the corner. We wanted to take a second to send you some more
-                    information:
-                </p>
-            </mj-text>
-            <mj-raw>
-                {{^isRSVPComplete}}
-            </mj-raw>
-            <mj-text>
-                <h2>Remember to RSVP!</h2>
-                <p>
-                    We can't wait to have you at QHacks 2018, but you still have to <a
-                    href="{{rsvpUrl}}" rel="noopener noreferrer" target="_blank">RSVP on the hacker dashboard
-                </a> before
-                    <b>Wednesday, January 24th at 11:59 PM EST</b>!
-                </p>
-            </mj-text>
-            <mj-button href="{{rsvpUrl}}"
-                       background-color="#C8102E">
-                RSVP NOW
-            </mj-button>
-            <mj-raw>
-                {{/isRSVPComplete}}
-            </mj-raw>
-            <mj-text>
-              <h2>Travel Details</h2>
-              <p>
-                If you have filled out one of the bus Google Form or emailed <a
-                href="mailto:travel@qhacks.io" rel="noopener noreferrer" target="_blank">
-                travel@qhacks.io</a>, we'll be sending out more information by email tonight around 11:59 PM
-                EST. If you still want to secure a spot on one of the buses, please fill out the appropriate
-                form below:
-              </p>
-              <ul>
-                <li>
-                  <b>Waterloo StdLib Bus:</b>
-                  <a href="http://goo.gl/forms/n1ajtZVIx1xZUWcA2"
-                     rel="noopener noreferrer"
-                     target="_blank">goo.gl/forms/n1ajtZVIx1xZUWcA2
-                  </a>
-                </li>
-                <li>
-                  <b>Waterloo Sun Life Bus:</b>
-                  <a href="http://goo.gl/forms/icXNcw0peSkJOl6m2"
-                     rel="noopener noreferrer"
-                     target="_blank">goo.gl/forms/icXNcw0peSkJOl6m2
-                  </a>
-                </li>
-                <li>
-                  <b>University of Toronto iGan Partners Bus:</b>
-                  <a href="http://goo.gl/forms/HrLTQezfzHtqUhV23"
-                     rel="noopener noreferrer"
-                     target="_blank">goo.gl/forms/HrLTQezfzHtqUhV23
-                  </a>
-                </li>
-                <li>
-                  <b>University of Toronto StdLib Bus:</b>
-                  <a href="http://goo.gl/forms/FLUQhAfivOXngWAp2"
-                     rel="noopener noreferrer"
-                     target="_blank">goo.gl/forms/FLUQhAfivOXngWAp2
-                  </a>
-                </li>
-                <li>
-                  <b>McGill and Carleton iGan Partners Bus:</b>
-                  <a href="http://goo.gl/forms/sd8XvXiiWqijRQNA3"
-                     rel="noopener noreferrer"
-                     target="_blank">goo.gl/forms/sd8XvXiiWqijRQNA3
-                  </a>
-                </li>
-              </ul>
-              <p>
-                  If you are coming from a city without a bus, we will be offering travel reimbursements. If
-                  you require a travel reimbursement, please email <a href="mailto:travel@qhacks.io"
-                                                                      rel="noopener noreferrer"
-                                                                      target="_blank">travel@qhacks.io
-              </a> by <b>10:00PM EST on Wednesday, January 24</b>. If you do not email us by that time, we
-                  cannot guarantee will be able to process your request.
-              </p>
-              <p>
-                We've had a lot of interest in the buses, so we've decided to guarantee a spot on the bus
-                for anyone who volunteers as a bus coordinator. This position involves taking attendance on
-                the bus and being the main point of contact for the QHacks team on the bus. If you are
-                interested in being a bus coordinator, please email
-                <a href="mailto:travel@qhacks.io"
-                   rel="noopener noreferrer"
-                   target="_blank">travel@qhacks.io
-                </a>.
-              </p>
-            </mj-text>
-
+    </mj-raw>
+    <mj-section padding="0px" border-bottom="10px solid #f5f5f5" background-color="white">
+      <mj-column>
+        <mj-raw>
+          <!-- Intro -->
+        </mj-raw>
+        <mj-text>
+          <h1>Less than two weeks to QHacks 2018!</h1>
+          <p> QHacks 2018 is right around the corner. We wanted to take a second to send you some more information: </p>
+        </mj-text>
+        <mj-raw>{{^isRSVPComplete}}</mj-raw>
+        <mj-text>
+          <h2>Remember to RSVP!</h2>
+          <p> We can't wait to have you at QHacks 2018, but you still have to <a href="{{rsvpUrl}}" rel="noopener noreferrer" target="_blank">RSVP on the hacker dashboard
+                </a> before <b>Wednesday, January 24th at 11:59 PM EST</b>! </p>
+        </mj-text>
+        <mj-button href="{{rsvpUrl}}" background-color="#C8102E">RSVP NOW</mj-button>
+        <mj-raw>{{/isRSVPComplete}}</mj-raw>
+        <mj-text>
+          <h2>Travel Details</h2>
+          <p> If you have filled out one of the bus Google Form or emailed <a href="mailto:travel@qhacks.io" rel="noopener noreferrer" target="_blank">
+                travel@qhacks.io</a>, we'll be sending out more information by email tonight around 11:59 PM EST. If you still want to secure a spot on one of the buses, please fill outthe appropriate form below: </p>
+          <ul>
+            <li> <b>Waterloo StdLib Bus:</b> <a href="http://goo.gl/forms/n1ajtZVIx1xZUWcA2" rel="noopener noreferrer" target="_blank">goo.gl/forms/n1ajtZVIx1xZUWcA2
+                  </a> </li>
+            <li> <b>Waterloo Sun Life Bus:</b> <a href="http://goo.gl/forms/icXNcw0peSkJOl6m2" rel="noopener noreferrer" target="_blank">goo.gl/forms/icXNcw0peSkJOl6m2
+                  </a> </li>
+            <li> <b>University of Toronto iGan Partners Bus:</b> <a href="http://goo.gl/forms/HrLTQezfzHtqUhV23" rel="noopener noreferrer" target="_blank">goo.gl/forms/HrLTQezfzHtqUhV23
+                  </a> </li>
+            <li> <b>University of Toronto StdLib Bus:</b> <a href="http://goo.gl/forms/FLUQhAfivOXngWAp2" rel="noopener noreferrer" target="_blank">goo.gl/forms/FLUQhAfivOXngWAp2
+                  </a> </li>
+            <li> <b>McGill and Carleton iGan Partners Bus:</b> <a href="http://goo.gl/forms/sd8XvXiiWqijRQNA3" rel="noopener noreferrer" target="_blank">goo.gl/forms/sd8XvXiiWqijRQNA3
+                  </a> </li>
+          </ul>
+          <p> If you are coming from a city without a bus, we will be offering travel reimbursements. If you require a travel reimbursement, please email <a href="mailto:travel@qhacks.io" rel="noopener noreferrer" target="_blank">travel@qhacks.io
+              </a> by <b>10:00PM EST on Wednesday, January 24</b>. If you do not email us by that time, we cannot guarantee will be able to process your request. </p>
+          <p> We've had a lot of interest in the buses, so we've decided to guarantee a spot on the bus for anyone who volunteers as a bus coordinator. This position involves taking attendance on the bus and being the main point of contact for the QHacks
+            team on the bus. If you are interested in being a bus coordinator, please email <a href="mailto:travel@qhacks.io" rel="noopener noreferrer" target="_blank">travel@qhacks.io
+                </a>. </p>
+        </mj-text>
+        <mj-raw>
           <!-- Other Important Info section -->
-          <mj-text>
-            <h2>Other Stuff You Probably Want To Know</h2>
-            <p>
-              Make sure to join the
-              <a href="https://join.slack.com/t/qhacks2018/shared_invite/enQtMzAwNTkyNTU3NjY1LWExOTkzZmNiODNiNGM4MDZhOTMzNjM3MWYxMjdhZmZhZmZiNzEwODAzY2U2MDM2YzE0YzgwM2UxZWQyZmM2NTE"
-                 rel="noopener noreferrer"
-                 target="_blank">QHacks 2018 Slack</a>.
-              This will be our main method of communication during the event, so download
-              the Slack mobile app to your phone too!
-            </p>
-          </mj-text>
-
+        </mj-raw>
+        <mj-text>
+          <h2>Other Stuff You Probably Want To Know</h2>
+          <p> Make sure to join the <a href="https://join.slack.com/t/qhacks2018/shared_invite/enQtMzAwNTkyNTU3NjY1LWExOTkzZmNiODNiNGM4MDZhOTMzNjM3MWYxMjdhZmZhZmZiNzEwODAzY2U2MDM2YzE0YzgwM2UxZWQyZmM2NTE" rel="noopener noreferrer" target="_blank">QHacks 2018 Slack</a>.
+            This will be our main method of communication during the event, so download the Slack mobile app to your phone too! </p>
+        </mj-text>
+        <mj-raw>
           <!-- Withdrawal section -->
-          <mj-text>
-            <p>
-              Given the sheer number of hacker applications, we ask that if you can no longer
-              attend, please
-              <a href="{{withdrawUrl}}"
-                 rel="noopener noreferrer"
-                 target="_blank">withdraw your application on the hacker dashboard
-              </a>
-              so you give someone on the waitlist the opportunity to attend.
-            </p>
-          </mj-text>
-          <mj-text>
-            <p>
-              In the meantime, stay tuned on
-              <a href="https://www.facebook.com/QHacks"
-                 rel="noopener noreferrer"
-                 target="_blank">Facebook</a>,
-              <a href="https://twitter.com/QHacks18"
-                 rel="noopener noreferrer"
-                 target="_blank">Twitter</a>, and
-              <a href="https://www.instagram.com/qhacks18"
-                 rel="noopener noreferrer"
-                 target="_blank">Instagram
-              </a>
-              for announcements about cool events and prizes. If you have any questions, you can reply
-              directly to this email or email
-              <a href="mailto:hello@qhacks.io">hello@qhacks.io</a>. We can't wait to see what you create
-              at
-              <a href="https://qhacks.io"
-                 rel="noopener noreferrer"
-                 target="_blank">QHacks 2018</a>!
-            </p>
-            <p>See you soon,</p>
-            <p>
-              <b>The QHacks Team</b>
-            </p>
-          </mj-text>
-        </mj-column>
-      </mj-section>
-
-        <mj-include path="../partials/footer"/>
-
-    </mj-container>
+        </mj-raw>
+        <mj-text>
+          <p> Given the sheer number of hacker applications, we ask that if you can no longer attend, please <a href="{{withdrawUrl}}" rel="noopener noreferrer" target="_blank">withdrawyour application on the hacker dashboard
+              </a> so you give someone on the waitlist the opportunity to attend. </p>
+        </mj-text>
+        <mj-text>
+          <p> In the meantime, stay tuned on <a href="https://www.facebook.com/QHacks" rel="noopener noreferrer" target="_blank">Facebook</a>, <a href="https://twitter.com/QHacks18" rel="noopener noreferrer" target="_blank">Twitter</a>, and <a href="https://www.instagram.com/qhacks18"
+              rel="noopener noreferrer" target="_blank">Instagram
+              </a> for announcements about cool events and prizes. If you have any questions, you can reply directly to this email or email <a href="mailto:hello@qhacks.io">hello@qhacks.io</a>. We can't wait to see what you create at <a href="https://qhacks.io"
+              rel="noopener noreferrer" target="_blank">QHacks 2018</a>! </p>
+          <p>See you soon,</p>
+          <p> <b>The QHacks Team</b> </p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-include path="../partials/footer"></mj-include>
   </mj-body>
 </mjml>

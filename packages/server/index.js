@@ -1,20 +1,19 @@
+require("dotenv").config();
+
 const history = require("connect-history-api-fallback");
 const compression = require("compression");
 const bodyParser = require("body-parser");
+const logger = require("./utils/logger");
 const express = require("express");
-const winston = require("winston");
 const path = require("path");
-const errorReporting = require("@google-cloud/error-reporting")();
 const helmet = require("helmet");
-
-require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const FORCE_SSL = process.env.FORCE_SSL === "true";
 
 IS_PROD
-  ? winston.info("Running production build!")
-  : winston.info("Running development build!");
+  ? logger.info("Running production build!")
+  : loggers.info("Running development build!");
 
 const auth = require("./auth");
 const api = require("./api");
@@ -38,11 +37,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 connectToDB(async (err) => {
   if (err) {
-    winston.info("Could not connect to the database!");
+    logger.info("Could not connect to thes database!");
     return;
   }
 
-  winston.info("Successfully connected to the database!");
+  logger.info("Successfully connected to the database!");
 
   // HTTPS Redirect for production
   if (IS_PROD) {
@@ -61,8 +60,8 @@ connectToDB(async (err) => {
   try {
     await initSettings();
   } catch (err) {
-    winston.error("Could not initialize the application with settings");
-    winston.error(err);
+    logger.error("Could not initialize the application with settings");
+    logger.error(err);
     return;
   }
 
@@ -79,11 +78,8 @@ connectToDB(async (err) => {
   // Static Files
   app.use(express.static(BUNDLE_DIR));
 
-  // Error handling
-  app.use(errorReporting.express);
-
   // Start listening!
   app.listen(port, () =>
-    winston.info(`Hacker dashboard running on port ${port}!`)
+    logger.info(`Hacker dashboard running on port ${port}!`)
   );
 });

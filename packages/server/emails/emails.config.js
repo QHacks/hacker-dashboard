@@ -2,7 +2,7 @@
  * Config for rendering email templates should be stored here.
  */
 
-const winston = require("winston");
+const logger = require("../utils/logger");
 const EMAIL_TEMPLATES = require("./templates");
 const { EMAILS: EMAIL_STRINGS, ERROR } = require("../strings");
 const { ERROR_TEMPLATES, createError } = require("../errors");
@@ -36,7 +36,7 @@ module.exports = {
         err
       ),
     onSuccess: () =>
-      winston.info("The application accepted email sent correctly!")
+      logger.info("The application accepted email sent correctly!")
   }),
   [EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED_FROM_WAITLIST.NAME]: (
     recipients,
@@ -62,7 +62,7 @@ module.exports = {
         err
       ),
     onSuccess: () =>
-      winston.info(
+      logger.info(
         "The application accepted from waitlist email sent correctly!"
       )
   }),
@@ -91,7 +91,7 @@ module.exports = {
         err
       ),
     onSuccess: () =>
-      winston.info("The application accepted reminder email sent correctly!")
+      logger.info("The application accepted reminder email sent correctly!")
   }),
   [EMAIL_STRINGS.TEMPLATES.APPLICATION_ACCEPTED_REMINDER_AFTER_WAITLIST_ACCEPTED
     .NAME]: (
@@ -119,7 +119,7 @@ module.exports = {
         err
       ),
     onSuccess: () =>
-      winston.info(
+      logger.info(
         "The application accepted reminder after waitlist accepted email sent correctly!"
       )
   }),
@@ -142,7 +142,7 @@ module.exports = {
         err
       ),
     onSuccess: () =>
-      winston.info("The application declined email sent correctly!")
+      logger.info("The application declined email sent correctly!")
   }),
   [EMAIL_STRINGS.TEMPLATES.APPLICATION_SUCCESSFUL.NAME]: (recipients) => ({
     message: recipients.map((recipient) =>
@@ -162,7 +162,7 @@ module.exports = {
         err
       ),
     onSuccess: () =>
-      winston.info("The application successful email sent correctly!")
+      logger.info("The application successful email sent correctly!")
   }),
   [EMAIL_STRINGS.TEMPLATES.APPLICATION_WAITLISTED.NAME]: (recipients) => ({
     message: recipients.map((recipient) =>
@@ -182,7 +182,7 @@ module.exports = {
         err
       ),
     onSuccess: () =>
-      winston.info("The application waitlisted email sent correctly!")
+      logger.info("The application waitlisted email sent correctly!")
   }),
   [EMAIL_STRINGS.TEMPLATES.RESET_PASSWORD.NAME]: (recipients) => ({
     message: recipients.map((recipient) =>

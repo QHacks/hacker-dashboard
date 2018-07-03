@@ -45,7 +45,7 @@ const initialState = {
   signUpLoading: false,
 
   applicationPage: 0,
-  applicationsStatus: process.env.APPLICATIONS_STATUS,
+  applicationsStatus: "open",
 
   isAdmin: false,
   isHacker: true,

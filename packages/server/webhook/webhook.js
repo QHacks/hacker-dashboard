@@ -1,12 +1,12 @@
 const axios = require("axios");
-const winston = require("winston");
+const logger = require("../utils/logger");
 const webhookConfig = require("./webhook.config");
 const validator = require("validator");
 
 const { SLACK_WEBHOOK_URL } = process.env;
 
 if (!_isValidUrl(SLACK_WEBHOOK_URL)) {
-  winston.log("warn", "No valid (or invalid) Slack webhook URL supplied");
+  logger.log("warn", "No valid (or invalid) Slack webhook URL supplied");
 }
 
 function _createWebhookMiddleware(config) {
@@ -31,9 +31,7 @@ function _createWebhookMiddleware(config) {
 }
 
 function _sendSlackNotification(notification) {
-  axios
-    .post(SLACK_WEBHOOK_URL, notification)
-    .catch((err) => winston.error(err));
+  axios.post(SLACK_WEBHOOK_URL, notification).catch((err) => logger.error(err));
 }
 
 function _isValidUrl(url) {

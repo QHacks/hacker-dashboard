@@ -1,12 +1,12 @@
 const _ = require("lodash");
 const sendgrid = require("@sendgrid/mail");
-const winston = require("winston");
+const logger = require("../utils/logger");
 const emailsConfig = require("./emails.config");
 const { EMAILS, ERROR } = require("../strings");
 const { ERROR_TEMPLATES, createError } = require("../errors");
 
 const {
-  SENDGRID_API_KEY = winston.warn(
+  SENDGRID_API_KEY = logger.warn(
     "Missing SendGrid API key. Emails will not send."
   )
 } = process.env;
