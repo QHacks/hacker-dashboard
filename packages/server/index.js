@@ -13,7 +13,7 @@ const FORCE_SSL = process.env.FORCE_SSL === "true";
 
 IS_PROD
   ? logger.info("Running production build!")
-  : loggers.info("Running development build!");
+  : logger.info("Running development build!");
 
 const auth = require("./auth");
 const api = require("./api");
