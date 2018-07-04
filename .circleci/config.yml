@@ -50,12 +50,6 @@ jobs:
 
 workflows:
   version: 2
-  deploy:
+  run-tests:
     jobs:
       - code-style
-      - dev-deploy:
-          requires:
-            - code-style
-          filters:
-            branches:
-              only: /^(dev|release/.+)$/
