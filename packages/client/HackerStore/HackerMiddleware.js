@@ -1,6 +1,6 @@
-import { actionTypes } from './HackerActions';
-import { selectors } from './HackerReducer';
-import axios from 'axios';
+import { actionTypes } from "./HackerActions";
+import { selectors } from "./HackerReducer";
+import axios from "axios";
 
 let accessToken;
 let options = {};
@@ -42,7 +42,7 @@ function isTokenFailError(error, incomingRequestType) {
  */
 function createHeaders(requestInfo) {
   let headers = {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json"
   };
 
   const { tokenRequired } = requestInfo;

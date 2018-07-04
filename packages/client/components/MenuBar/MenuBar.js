@@ -1,6 +1,6 @@
-import { Menu, Button, Dropdown } from 'semantic-ui-react';
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Menu, Button, Dropdown } from "semantic-ui-react";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class MenuBar extends Component {
   renderQHacksCrown() {

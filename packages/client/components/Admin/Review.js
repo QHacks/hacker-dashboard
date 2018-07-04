@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Container, Segment } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { isEmpty } from 'lodash';
-import HackerApplication from './HackerApplication';
-import ReviewScale from './ReviewScale';
-import { actionCreators } from '../../HackerStore/HackerActions';
-import { selectors } from '../../HackerStore/HackerReducer';
+import React, { Component } from "react";
+import { Container, Segment } from "semantic-ui-react";
+import { connect } from "react-redux";
+import { isEmpty } from "lodash";
+import HackerApplication from "./HackerApplication";
+import ReviewScale from "./ReviewScale";
+import { actionCreators } from "../../HackerStore/HackerActions";
+import { selectors } from "../../HackerStore/HackerReducer";
 
 const { fetchApplicationToReview, submitApplicationReview } = actionCreators;
 const { getApplicationToReview, getUser } = selectors;
@@ -31,16 +31,17 @@ class Review extends Component {
 
   render() {
     const { applicationToReview } = this.props;
-    if (isEmpty(applicationToReview))
-      {return <p>No applications left to review!</p>;}
+    if (isEmpty(applicationToReview)) {
+      return <p>No applications left to review!</p>;
+    }
     return (
-      <Container style={{ display: 'flex', justifyContent: 'center' }}>
+      <Container style={{ display: "flex", justifyContent: "center" }}>
         <Segment compact>
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
             }}
           >
             <HackerApplication application={applicationToReview} />

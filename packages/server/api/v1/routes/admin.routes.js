@@ -1,19 +1,19 @@
-const Router = require('express').Router;
-const _ = require('lodash');
+const Router = require("express").Router;
+const _ = require("lodash");
 
-const ADMIN = 'admin';
-const APPLICATIONS = 'applications';
-const EMAIL = 'email';
-const EMAILS = 'emails';
-const REVIEW = 'review';
-const SETTINGS = 'settings';
+const ADMIN = "admin";
+const APPLICATIONS = "applications";
+const EMAIL = "email";
+const EMAILS = "emails";
+const REVIEW = "review";
+const SETTINGS = "settings";
 
 module.exports = (ctr) => {
   const adminAPI = Router();
 
   const { admin, user } = ctr;
 
-  adminAPI.get('/admins', async (req, res) => {
+  adminAPI.get("/admins", async (req, res) => {
     try {
       const admins = await admin.getAdmins();
       return res.status(200).json({ admins });
@@ -125,7 +125,7 @@ module.exports = (ctr) => {
     const { templateName, recipients } = req.body;
     try {
       await admin.sendEmail(templateName, recipients);
-      return res.status(201).send('Success!');
+      return res.status(201).send("Success!");
     } catch (err) {
       return res.status(err.code).json(err);
     }

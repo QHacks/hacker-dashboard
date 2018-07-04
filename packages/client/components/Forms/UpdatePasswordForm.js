@@ -1,8 +1,8 @@
-import { Button, Form, Message } from 'semantic-ui-react';
-import { required, confirmation, length } from 'redux-form-validators';
-import SemanticFormField from './SemanticFormField';
-import { Field, reduxForm } from 'redux-form';
-import React, { Component } from 'react';
+import { Button, Form, Message } from "semantic-ui-react";
+import { required, confirmation, length } from "redux-form-validators";
+import SemanticFormField from "./SemanticFormField";
+import { Field, reduxForm } from "redux-form";
+import React, { Component } from "react";
 
 function UpdatePasswordForm(props) {
   return (
@@ -20,10 +20,10 @@ function UpdatePasswordForm(props) {
         type="password"
         placeholder="New Password"
         validate={[
-          required({ msg: 'none' }),
+          required({ msg: "none" }),
           length({
             min: 8,
-            msg: 'Your new password must be at least 8 characters!'
+            msg: "Your new password must be at least 8 characters!"
           })
         ]}
       />
@@ -35,9 +35,9 @@ function UpdatePasswordForm(props) {
         type="password"
         placeholder="Confirm New Password"
         validate={[
-          required({ msg: 'none' }),
-          length({ min: 8, msg: 'none' }),
-          confirmation({ field: 'password', msg: 'Passwords do not match!' })
+          required({ msg: "none" }),
+          length({ min: 8, msg: "none" }),
+          confirmation({ field: "password", msg: "Passwords do not match!" })
         ]}
       />
 
@@ -62,4 +62,4 @@ function UpdatePasswordForm(props) {
   );
 }
 
-export default reduxForm({ form: 'updatePassword' })(UpdatePasswordForm);
+export default reduxForm({ form: "updatePassword" })(UpdatePasswordForm);

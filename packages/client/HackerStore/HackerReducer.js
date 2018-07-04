@@ -1,12 +1,12 @@
-import { actionTypes } from './HackerActions';
-import { API } from '../strings';
+import { actionTypes } from "./HackerActions";
+import { API } from "../strings";
 
-const ADMIN = 'ADMIN';
-const HACKER = 'HACKER';
-const PARTNER = 'PARTNER';
-const SUPER_ADMIN = 'SUPER_ADMIN';
+const ADMIN = "ADMIN";
+const HACKER = "HACKER";
+const PARTNER = "PARTNER";
+const SUPER_ADMIN = "SUPER_ADMIN";
 
-export const reducerMount = 'hacker';
+export const reducerMount = "hacker";
 
 /**
  * Initial state for the store.
@@ -45,7 +45,7 @@ const initialState = {
   signUpLoading: false,
 
   applicationPage: 0,
-  applicationsStatus: process.env.APPLICATIONS_STATUS,
+  applicationsStatus: "open",
 
   isAdmin: false,
   isHacker: true,
@@ -68,7 +68,7 @@ const initialState = {
   withdrawError: false,
 
   hackersRequiringCheckIn: [],
-  hackerIDToCheckIn: '',
+  hackerIDToCheckIn: "",
   areHackersRequiringCheckInLoading: false,
   isHackerBeingCheckedIn: false
 };
@@ -513,7 +513,7 @@ const handlers = {
   },
 
   [actionTypes.EMAIL_SENT]: (state, action) => {
-    const message = 'Email sent successfully!';
+    const message = "Email sent successfully!";
     return reduceDashboardSuccessMessage(state, message);
   },
 
@@ -536,7 +536,7 @@ const handlers = {
   },
 
   [actionTypes.APPLICATION_STATUS_UPDATED]: (state, action) => {
-    const message = 'Updated application status successfully!';
+    const message = "Updated application status successfully!";
     return reduceDashboardSuccessMessage(state, message);
   },
 
@@ -581,7 +581,7 @@ const handlers = {
 
   [actionTypes.WITHDRAW_SUCCESS]: (state, action) => {
     const { user } = action.data;
-    const message = 'Withdrawn application successfully!';
+    const message = "Withdrawn application successfully!";
     return {
       ...reduceDashboardSuccessMessage(state, message),
       user
@@ -643,7 +643,7 @@ const handlers = {
         ...state,
         isHackerBeingCheckedIn: false
       },
-      'Hacker successfully checked in!'
+      "Hacker successfully checked in!"
     );
   },
 
@@ -660,11 +660,11 @@ const handlers = {
 };
 
 function reduceDashboardErrorMessage(state, message) {
-  return reduceDashboardMessage(state, 'dashboardErrorMessages', message);
+  return reduceDashboardMessage(state, "dashboardErrorMessages", message);
 }
 
 function reduceDashboardSuccessMessage(state, message) {
-  return reduceDashboardMessage(state, 'dashboardSuccessMessages', message);
+  return reduceDashboardMessage(state, "dashboardSuccessMessages", message);
 }
 
 function reduceDashboardMessage(state, key, message) {

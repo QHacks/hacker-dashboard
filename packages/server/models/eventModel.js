@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const uuid = require('uuid');
+const mongoose = require("mongoose");
+const uuid = require("uuid");
 
 const EventSchema = mongoose.Schema({
   _id: {
@@ -16,4 +16,4 @@ const EventSchema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Event', EventSchema);
+module.exports = mongoose.model("Event", EventSchema);

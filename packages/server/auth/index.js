@@ -1,14 +1,14 @@
-const jwt = require('jsonwebtoken');
-const { ERROR_TEMPLATES, createError } = require('../errors');
-const { ERROR } = require('../strings');
+const jwt = require("jsonwebtoken");
+const { ERROR_TEMPLATES, createError } = require("../errors");
+const { ERROR } = require("../strings");
 
 const { AUTH_SECRET } = process.env;
 const V1_EXCEPTION_REGEX = /^\/v1\/auth\//;
 
 function getBearer(req) {
   if (!req.headers || !req.headers.authorization) return false;
-  const split = req.headers.authorization.split(' ');
-  if (split.length !== 2 || split[0] !== 'Bearer') return false;
+  const split = req.headers.authorization.split(" ");
+  if (split.length !== 2 || split[0] !== "Bearer") return false;
   return split[1];
 }
 

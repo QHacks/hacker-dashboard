@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   Button,
   Container,
@@ -6,11 +6,11 @@ import {
   Header,
   Message,
   Segment
-} from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { actionCreators } from '../../HackerStore/HackerActions';
-import { selectors } from '../../HackerStore/HackerReducer';
-import uuid from 'uuid/v4';
+} from "semantic-ui-react";
+import { connect } from "react-redux";
+import { actionCreators } from "../../HackerStore/HackerActions";
+import { selectors } from "../../HackerStore/HackerReducer";
+import uuid from "uuid/v4";
 
 const {
   fetchHackersRequiringCheckIn,
@@ -41,9 +41,9 @@ class CheckIn extends Component {
   checkInHacker(hackerId) {
     const eventId = this.props.hackers.filter((h) => (h._id = hackerId))[0]
       .events[0]; //TODO: Fix this hack shit
-    this.props.setHackerIDToCheckIn({ hacker: '' });
+    this.props.setHackerIDToCheckIn({ hacker: "" });
     this.fetchHackersRequiringCheckIn();
-    this.props.updateHackerCheckInStatus(hackerId, eventId, 'COMPLETED');
+    this.props.updateHackerCheckInStatus(hackerId, eventId, "COMPLETED");
   }
 
   renderBody() {
@@ -91,7 +91,7 @@ class CheckIn extends Component {
 
   render() {
     return (
-      <Container text style={{ marginTop: '3em' }}>
+      <Container text style={{ marginTop: "3em" }}>
         <Header as="h1">Check In</Header>
         {this.renderBody()}
       </Container>

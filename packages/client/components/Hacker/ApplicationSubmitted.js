@@ -1,6 +1,6 @@
-import { Header, Segment } from 'semantic-ui-react';
-import Emoji from 'react-emoji-render';
-import React from 'react';
+import { Header, Segment } from "semantic-ui-react";
+import Emoji from "react-emoji-render";
+import React from "react";
 
 export default () => (
   <Segment>
@@ -9,10 +9,10 @@ export default () => (
     </Header>
     <p>
       Your application to attend QHacks 2018 has been submitted! So, what are
-      the next steps?{' '}
+      the next steps?{" "}
     </p>
     <p>
-      {' '}
+      {" "}
       We will be accepting applications until January 8th 2018. Later that week
       we will be sending emails to all of the applicants updating them on their
       application status.

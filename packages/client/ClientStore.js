@@ -1,16 +1,16 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { createHackerMiddleware } from './HackerStore/HackerMiddleware';
-import { reducer as formReducer } from 'redux-form';
-import createSagaMiddleware from 'redux-saga';
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import { createHackerMiddleware } from "./HackerStore/HackerMiddleware";
+import { reducer as formReducer } from "redux-form";
+import createSagaMiddleware from "redux-saga";
 import {
   rootSaga as hackerSaga,
   reducer as hackerReducer,
   reducerMount as HACKER_MOUNT
-} from './HackerStore';
+} from "./HackerStore";
 
-const FORM_MOUNT = 'form';
+const FORM_MOUNT = "form";
 
-const IS_PROD = process.env.NODE_ENV === 'production';
+const IS_PROD = process.env.NODE_ENV === "production";
 
 const reduxOptions = {
   getValue: (key) => Promise.resolve(localStorage.getItem(key)),

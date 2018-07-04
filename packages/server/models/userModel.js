@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const uuid = require('uuid');
-const _ = require('lodash');
-const { SCHOOLS, USER } = require('../strings');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const uuid = require("uuid");
+const _ = require("lodash");
+const { SCHOOLS, USER } = require("../strings");
 
 const SALT_WORK_FACTOR = 10;
 
@@ -22,7 +22,7 @@ const ApplicationSchema = new mongoose.Schema({
   },
   event: {
     type: String,
-    ref: 'Event',
+    ref: "Event",
     index: true,
     required: true
   },
@@ -65,11 +65,11 @@ const ApplicationSchema = new mongoose.Schema({
   }
 });
 
-ApplicationSchema.pre('findOneAndUpdate', function(next) {
+ApplicationSchema.pre("findOneAndUpdate", function(next) {
   this.update({}, { $set: { modifiedAt: new Date() } });
   next();
 });
-ApplicationSchema.pre('update', function(next) {
+ApplicationSchema.pre("update", function(next) {
   this.update({}, { $set: { modifiedAt: new Date() } });
   next();
 });
@@ -90,7 +90,7 @@ const ReviewSchema = new mongoose.Schema({
   },
   performedBy: {
     type: String,
-    ref: 'User',
+    ref: "User",
     required: true
   },
   createdAt: {
@@ -107,11 +107,11 @@ const ReviewSchema = new mongoose.Schema({
   }
 });
 
-ReviewSchema.pre('findOneAndUpdate', function(next) {
+ReviewSchema.pre("findOneAndUpdate", function(next) {
   this.update({}, { $set: { modifiedAt: new Date() } });
   next();
 });
-ReviewSchema.pre('update', function(next) {
+ReviewSchema.pre("update", function(next) {
   this.update({}, { $set: { modifiedAt: new Date() } });
   next();
 });
@@ -174,7 +174,7 @@ const UserSchema = new mongoose.Schema({
   events: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Event',
+      ref: "Event",
       required: true
     }
   ], // TODO: Do we need this anymore since we require an event on an application? We could scope admin permissions
@@ -201,7 +201,7 @@ const UserSchema = new mongoose.Schema({
   }, // TODO: Should be an array so a person can have different permissions each year
   reviewGroup: {
     type: Number,
-    min: [0, 'Group number must be a valid array index, i.e. non-negative.']
+    min: [0, "Group number must be a valid array index, i.e. non-negative."]
   }, // TODO: Move this to an AdminSchema?
   reviews: [ReviewSchema], // TODO: Should this be a part of the ApplicationSchema?
   goldenTickets: Number // TODO: Move this to an AdminSchema?
@@ -211,7 +211,7 @@ UserSchema.static({
   authenticate(email, password) {
     return new Promise((resolve, reject) => {
       this.findOne({ email: email.toLowerCase() }).then((user) => {
-        if (!user) return reject('No user with that email!');
+        if (!user) return reject("No user with that email!");
 
         user
           .validPassword(password)
@@ -219,7 +219,7 @@ UserSchema.static({
             resolve(user);
           })
           .catch(() => {
-            reject('Invalid password!');
+            reject("Invalid password!");
           });
       });
     });
@@ -243,8 +243,8 @@ UserSchema.method({
  * @return {Function} Next middleware.
  */
 // TODO: This doesn't get called on update or findOneAndUpdate
-UserSchema.pre('save', function(next) {
-  if (!this.isModified('password')) return next();
+UserSchema.pre("save", function(next) {
+  if (!this.isModified("password")) return next();
 
   bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
     if (err) return next(err);
@@ -259,11 +259,11 @@ UserSchema.pre('save', function(next) {
   });
 });
 
-UserSchema.pre('findOneAndUpdate', function(next) {
+UserSchema.pre("findOneAndUpdate", function(next) {
   this.update({}, { $set: { modifiedAt: new Date() } });
   return next();
 });
-UserSchema.pre('update', function(next) {
+UserSchema.pre("update", function(next) {
   this.update({}, { $set: { modifiedAt: new Date() } });
   return next();
 });
@@ -272,25 +272,25 @@ UserSchema.pre('update', function(next) {
  * Helper method to automatically add an RSVP to the UserSchema
  * when an application has had its status changed to 'ACCEPTED'
  */
-UserSchema.pre('findOneAndUpdate', function(next) {
+UserSchema.pre("findOneAndUpdate", function(next) {
   const {
     ACCEPTED,
     REJECTED,
     WAITING_LIST,
     WITHDRAWN
   } = USER.APPLICATION.STATUSES;
-  const event = this.getQuery()['applications.event'];
-  const updatedStatus = this.getUpdate().$set['applications.$.status'];
+  const event = this.getQuery()["applications.event"];
+  const updatedStatus = this.getUpdate().$set["applications.$.status"];
   if (!event || !updatedStatus) return next();
   if (_.isEqual(updatedStatus, ACCEPTED)) {
     this.update(
       {
-        'applications.event': event
+        "applications.event": event
       },
       {
         $set: {
-          'applications.$.rsvp': USER.APPLICATION.RSVPS.PENDING,
-          'applications.$.checkIn': USER.APPLICATION.CHECK_INS.PENDING
+          "applications.$.rsvp": USER.APPLICATION.RSVPS.PENDING,
+          "applications.$.checkIn": USER.APPLICATION.CHECK_INS.PENDING
         }
       }
     );
@@ -301,12 +301,12 @@ UserSchema.pre('findOneAndUpdate', function(next) {
   ) {
     this.update(
       {
-        'applications.event': event
+        "applications.event": event
       },
       {
         $set: {
-          'applications.$.rsvp': USER.APPLICATION.RSVPS.NOT_NEEDED,
-          'applications.$.checkIn': USER.APPLICATION.CHECK_INS.NOT_NEEDED
+          "applications.$.rsvp": USER.APPLICATION.RSVPS.NOT_NEEDED,
+          "applications.$.checkIn": USER.APPLICATION.CHECK_INS.NOT_NEEDED
         }
       }
     );
@@ -314,4 +314,4 @@ UserSchema.pre('findOneAndUpdate', function(next) {
   return next();
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", UserSchema);

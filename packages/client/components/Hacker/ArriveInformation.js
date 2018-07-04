@@ -1,6 +1,6 @@
-import { Header, Segment, Item } from 'semantic-ui-react';
-import Emoji from 'react-emoji-render';
-import React from 'react';
+import { Header, Segment, Item } from "semantic-ui-react";
+import Emoji from "react-emoji-render";
+import React from "react";
 
 export default () => (
   <div>
@@ -15,9 +15,9 @@ export default () => (
         most informed.
       </p>
       <p>
-        As outlined in your acceptance email, we have buses traveling from{' '}
+        As outlined in your acceptance email, we have buses traveling from{" "}
         <b>Toronto, Waterloo, Montreal and Ottawa</b>. In order to reserve a
-        spot on one of the buses, you must email{' '}
+        spot on one of the buses, you must email{" "}
         <a href="mailto:travel@qhacks.io">travel@qhacks.io</a>. The buses will
         be filled on a <b>first-come-first-serve basis</b>, so make sure to send
         us an email as soon as possible.
@@ -25,7 +25,7 @@ export default () => (
 
       <p>
         If you are travelling to QHacks from a location other than the ones
-        listed above, we will be offering travel reimbursements. Please email{' '}
+        listed above, we will be offering travel reimbursements. Please email{" "}
         <a href="mailto:travel@qhacks.io">travel@qhacks.io</a> for more
         information.
       </p>
@@ -42,12 +42,12 @@ export default () => (
       </ul>
       <p>
         We can't wait to see you at QHacks! If you have any questions at all,
-        please don't hesitate to email{' '}
+        please don't hesitate to email{" "}
         <a href="mailto:hello@qhacks.io">hello@qhacks.io</a>.
       </p>
       <Item.Group>
         <Item>
-          <Item.Image size="mini" src={require('../../assets/img/slack.svg')} />
+          <Item.Image size="mini" src={require("../../assets/img/slack.svg")} />
           <Item.Content verticalAlign="middle">
             <Item.Header
               as="a"
@@ -65,7 +65,7 @@ export default () => (
         <Item>
           <Item.Image
             size="mini"
-            src={require('../../assets/img/devpostLogo.png')}
+            src={require("../../assets/img/devpostLogo.png")}
           />
           <Item.Content verticalAlign="middle">
             <Item.Header as="a" href="https://qhacks2018.devpost.com/">
@@ -81,7 +81,7 @@ export default () => (
         <Item>
           <Item.Image
             size="mini"
-            src={require('../../assets/img/twitter.svg')}
+            src={require("../../assets/img/twitter.svg")}
           />
           <Item.Content verticalAlign="middle">
             <Item.Header as="a" href="https://twitter.com/qhacks18?lang=en">

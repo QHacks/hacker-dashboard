@@ -1,14 +1,14 @@
-import { selectors, actionCreators } from '../../HackerStore';
-import ApplicationSubmitted from './ApplicationSubmitted';
-import ApplicationWithdrawn from './ApplicationWithdrawn';
-import SuccessfulApplicant from './SuccessfulApplicant';
-import WaitlistedApplicant from './WaitlistedApplicant';
-import DeclinedApplicant from './DeclinedApplicant';
-import { Container } from 'semantic-ui-react';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { reduce, map, merge } from 'lodash';
-import camelcase from 'camelcase';
+import { selectors, actionCreators } from "../../HackerStore";
+import ApplicationSubmitted from "./ApplicationSubmitted";
+import ApplicationWithdrawn from "./ApplicationWithdrawn";
+import SuccessfulApplicant from "./SuccessfulApplicant";
+import WaitlistedApplicant from "./WaitlistedApplicant";
+import DeclinedApplicant from "./DeclinedApplicant";
+import { Container } from "semantic-ui-react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { reduce, map, merge } from "lodash";
+import camelcase from "camelcase";
 
 const { submitRSVP, withdrawApplication } = actionCreators;
 const {
@@ -20,13 +20,13 @@ const {
 } = selectors;
 
 const RSVP_FIELDS = [
-  'favSnack',
-  'emergencyFirstName',
-  'emergencyLastName',
-  'emergencyEmail',
-  'emergencyPhoneNumber',
-  'emergencyRelationToContact',
-  'tshirtSize'
+  "favSnack",
+  "emergencyFirstName",
+  "emergencyLastName",
+  "emergencyEmail",
+  "emergencyPhoneNumber",
+  "emergencyRelationToContact",
+  "tshirtSize"
 ];
 
 class HackerLanding extends Component {
@@ -47,7 +47,7 @@ class HackerLanding extends Component {
         map(values, (value, key) => {
           const emergencyContactFieldRegExp = /^emergency/;
           if (key.match(emergencyContactFieldRegExp)) {
-            const newKey = camelcase(key.replace('emergency', ''));
+            const newKey = camelcase(key.replace("emergency", ""));
             return {
               emergencyContact: {
                 [newKey]: value
@@ -77,32 +77,32 @@ class HackerLanding extends Component {
     );
 
     switch (application.status) {
-      case 'APPLIED':
-        return <ApplicationSubmitted />;
-      case 'REJECTED':
-        return <DeclinedApplicant />;
-      case 'WAITING_LIST':
-        return <WaitlistedApplicant />;
-      case 'WITHDRAWN':
-        return <ApplicationWithdrawn />;
-      case 'ACCEPTED':
-        return (
-          <SuccessfulApplicant
-            rsvpStatus={application.rsvp}
-            onSubmit={this.handleSubmitRSVP.bind(this)}
-            onWithdrawApplication={this.handleApplicationWithdraw.bind(this)}
-            rsvpLoading={rsvpLoading}
-            rsvpError={rsvpError}
-          />
-        );
-      default:
-        return null;
+    case "APPLIED":
+      return <ApplicationSubmitted />;
+    case "REJECTED":
+      return <DeclinedApplicant />;
+    case "WAITING_LIST":
+      return <WaitlistedApplicant />;
+    case "WITHDRAWN":
+      return <ApplicationWithdrawn />;
+    case "ACCEPTED":
+      return (
+        <SuccessfulApplicant
+          rsvpStatus={application.rsvp}
+          onSubmit={this.handleSubmitRSVP.bind(this)}
+          onWithdrawApplication={this.handleApplicationWithdraw.bind(this)}
+          rsvpLoading={rsvpLoading}
+          rsvpError={rsvpError}
+        />
+      );
+    default:
+      return null;
     }
   }
 
   render() {
     return (
-      <Container style={{ marginTop: '3em' }}>
+      <Container style={{ marginTop: "3em" }}>
         {this.renderCorrectStatus()}
       </Container>
     );

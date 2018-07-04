@@ -1,13 +1,13 @@
-const _ = require('lodash');
-const sendgrid = require('@sendgrid/mail');
-const winston = require('winston');
-const emailsConfig = require('./emails.config');
-const { EMAILS, ERROR } = require('../strings');
-const { ERROR_TEMPLATES, createError } = require('../errors');
+const _ = require("lodash");
+const sendgrid = require("@sendgrid/mail");
+const logger = require("../utils/logger");
+const emailsConfig = require("./emails.config");
+const { EMAILS, ERROR } = require("../strings");
+const { ERROR_TEMPLATES, createError } = require("../errors");
 
 const {
-  SENDGRID_API_KEY = winston.warn(
-    'Missing SendGrid API key. Emails will not send.'
+  SENDGRID_API_KEY = logger.warn(
+    "Missing SendGrid API key. Emails will not send."
   )
 } = process.env;
 
@@ -24,29 +24,31 @@ async function sendSendgridEmail(email) {
 }
 
 async function sendEmail(templateName, recipient) {
-  if (!emailsConfig[templateName])
-    {throw createError(
+  if (!emailsConfig[templateName]) {
+    throw createError(
       ERROR_TEMPLATES.NOT_FOUND,
       ERROR.EMAIL_TEMPLATE_DOES_NOT_EXIST
-    );}
-  if (_.isEmpty(recipient))
-    {throw createError(
+    );
+  }
+  if (_.isEmpty(recipient)) {
+    throw createError(
       ERROR_TEMPLATES.BAD_REQUEST,
       ERROR.NO_EMAIL_RECIPIENT_SPECIFIED
-    );}
+    );
+  }
   const recipients = (_.isArray(recipient) && recipient) || [recipient];
   const email = emailsConfig[templateName](recipients);
   return await sendSendgridEmail(email);
 }
 
 const TEMPLATE_NAMES_BY_URL = {
-  '/api/v1/auth/signup': EMAILS.TEMPLATES.APPLICATION_SUCCESSFUL.NAME
+  "/api/v1/auth/signup": EMAILS.TEMPLATES.APPLICATION_SUCCESSFUL.NAME
 };
 
 function createEmailsMiddleware() {
   return (req, res, next) => {
     function handleFinish() {
-      res.removeListener('finish', handleFinish);
+      res.removeListener("finish", handleFinish);
       if (res.statusCode === 200) {
         const templateName = TEMPLATE_NAMES_BY_URL[req.originalUrl];
         const recipients = req.body;
@@ -54,8 +56,9 @@ function createEmailsMiddleware() {
       }
     }
 
-    if (TEMPLATE_NAMES_BY_URL.hasOwnProperty(req.url))
-      {res.on('finish', handleFinish);}
+    if (TEMPLATE_NAMES_BY_URL.hasOwnProperty(req.url)) {
+      res.on("finish", handleFinish);
+    }
 
     return next();
   };

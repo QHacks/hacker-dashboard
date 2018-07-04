@@ -1,7 +1,7 @@
-const Router = require('express').Router;
-const v1 = require('./v1/v1API');
+const Router = require("express").Router;
+const v1 = require("./v1/v1API");
 
-const V1 = 'v1';
+const V1 = "v1";
 
 module.exports = (controllers) => {
   const api = Router();

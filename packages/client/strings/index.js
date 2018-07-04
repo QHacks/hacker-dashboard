@@ -1,1 +1,1 @@
-export { default as MISC } from './misc.strings';
+export { default as MISC } from "./misc.strings";

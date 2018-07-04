@@ -1,17 +1,17 @@
-const _ = require('lodash');
-const camelcase = require('camelcase');
-const { Settings, User } = require('../models');
-const { ERROR_TEMPLATES, createError } = require('../errors');
-const { EMAILS, ERROR, USER } = require('../strings');
-const { sendEmail } = require('../emails');
+const _ = require("lodash");
+const camelcase = require("camelcase");
+const { Settings, User } = require("../models");
+const { ERROR_TEMPLATES, createError } = require("../errors");
+const { EMAILS, ERROR, USER } = require("../strings");
+const { sendEmail } = require("../emails");
 
 const DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS = { new: true };
 const REVIEW_FIELDS = [
-  'score',
-  'group',
-  'performedBy',
-  'performedAt',
-  'goldenTicket'
+  "score",
+  "group",
+  "performedBy",
+  "performedAt",
+  "goldenTicket"
 ];
 
 module.exports = {
@@ -35,13 +35,13 @@ module.exports = {
       updateUser = await User.findOneAndUpdate(
         {
           role: USER.ROLES.HACKER,
-          'applications.status': USER.APPLICATION.STATUSES.ACCEPTED,
-          'applications.rsvp': USER.APPLICATION.RSVPS.COMPLETED,
-          'applications.event': eventId,
+          "applications.status": USER.APPLICATION.STATUSES.ACCEPTED,
+          "applications.rsvp": USER.APPLICATION.RSVPS.COMPLETED,
+          "applications.event": eventId,
           _id: userId
         },
         {
-          'applications.$.checkIn': checkInStatus
+          "applications.$.checkIn": checkInStatus
         },
         DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
       );
@@ -73,18 +73,18 @@ module.exports = {
     try {
       user = await User.findOne({
         $and: [
-          { role: 'HACKER' },
+          { role: "HACKER" },
           {
             $or: [
               { reviews: { $exists: false } },
               { reviews: { $size: 0 } },
-              { 'reviews.group': { $ne: reviewGroup } }
+              { "reviews.group": { $ne: reviewGroup } }
             ]
           },
           {
             $or: [
-              { 'reviews.goldenTicket': false },
-              { 'reviews.goldenTicket': { $exists: false } }
+              { "reviews.goldenTicket": false },
+              { "reviews.goldenTicket": { $exists: false } }
             ]
           }
         ]
@@ -128,13 +128,13 @@ module.exports = {
             $multiply: [
               {
                 $divide: [
-                  { $sum: '$reviews.score' },
+                  { $sum: "$reviews.score" },
                   {
                     $cond: {
                       if: {
-                        $gt: [{ $size: '$reviews' }, numberOfReviewsRequired]
+                        $gt: [{ $size: "$reviews" }, numberOfReviewsRequired]
                       },
-                      then: { $size: '$reviews' },
+                      then: { $size: "$reviews" },
                       else: 1
                     }
                   }
@@ -143,7 +143,7 @@ module.exports = {
               {
                 $cond: {
                   if: {
-                    $gt: [{ $size: '$reviews' }, numberOfReviewsRequired]
+                    $gt: [{ $size: "$reviews" }, numberOfReviewsRequired]
                   },
                   then: numberOfReviewsRequired,
                   else: 1
@@ -212,9 +212,9 @@ module.exports = {
 
     try {
       hackers = await User.find({
-        'applications.status': USER.APPLICATION.STATUSES.ACCEPTED,
-        'applications.rsvp': USER.APPLICATION.RSVPS.COMPLETED,
-        'applications.checkIn': USER.APPLICATION.CHECK_INS.PENDING
+        "applications.status": USER.APPLICATION.STATUSES.ACCEPTED,
+        "applications.rsvp": USER.APPLICATION.RSVPS.COMPLETED,
+        "applications.checkIn": USER.APPLICATION.CHECK_INS.PENDING
       });
     } catch (err) {
       throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USERS_GET, err);
@@ -312,7 +312,7 @@ module.exports = {
       try {
         hasGoldenTicket = !!(await User.findOne({
           _id: userId,
-          'reviews.goldenTicket': true
+          "reviews.goldenTicket": true
         }));
       } catch (err) {
         throw createError(
@@ -331,7 +331,9 @@ module.exports = {
 
       try {
         const numberOfGoldenTicketsRemaining =
-          goldenTickets - 1 > 0 ? goldenTickets - 1 : 0;
+          goldenTickets - 1 > 0
+            ? goldenTickets - 1
+            : 0;
         await User.findOneAndUpdate(
           { _id: reviewerId },
           { $set: { goldenTickets: numberOfGoldenTicketsRemaining } }

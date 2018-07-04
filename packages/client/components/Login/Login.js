@@ -1,10 +1,10 @@
-import { actionCreators, selectors } from '../../HackerStore';
-import { Redirect } from 'react-router-dom';
-import { Header } from 'semantic-ui-react';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import LoginForm from '../Forms/LoginForm';
-import './Login.less';
+import { actionCreators, selectors } from "../../HackerStore";
+import { Redirect } from "react-router-dom";
+import { Header } from "semantic-ui-react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import LoginForm from "../Forms/LoginForm";
+import "./Login.less";
 
 const {
   getLoginLoading,
@@ -33,7 +33,7 @@ class Login extends Component {
       return locationState.from.pathname;
     }
 
-    return '/';
+    return "/";
   }
 
   renderLoginForm() {
@@ -42,7 +42,7 @@ class Login extends Component {
       <div className="login-form-wrapper">
         <a href="http://qhacks.io">
           <img
-            src={require('../../assets/img/qhacks-tricolor-logo.svg')}
+            src={require("../../assets/img/qhacks-tricolor-logo.svg")}
             className="qhacks-logo-login"
           />
         </a>

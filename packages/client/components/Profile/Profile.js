@@ -1,24 +1,24 @@
-import { Segment, Container, Header } from 'semantic-ui-react';
-import { map, pick } from 'lodash';
-import { selectors } from '../../HackerStore';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import uuid from 'uuid/v4';
+import { Segment, Container, Header } from "semantic-ui-react";
+import { map, pick } from "lodash";
+import { selectors } from "../../HackerStore";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import uuid from "uuid/v4";
 
 const { getUser } = selectors;
 
-const EMAIL = 'email';
-const PHONE_NUMBER = 'phoneNumber';
-const DATE_OF_BIRTH = 'dateOfBirth';
-const GENDER = 'gender';
-const SCHOOL = 'school';
-const DEGREE_TYPE = 'degreeType';
-const PROGRAM = 'program';
-const GRADUATION_YEAR = 'graduationYear';
-const GRADUATION_MONTH = 'graduationMonth';
-const TRAVEL_ORIGIN = 'travelOrigin';
-const APPLICATION_STATUS = 'applicationStatus';
-const RSVP_STATUS = 'rsvpStatus';
+const EMAIL = "email";
+const PHONE_NUMBER = "phoneNumber";
+const DATE_OF_BIRTH = "dateOfBirth";
+const GENDER = "gender";
+const SCHOOL = "school";
+const DEGREE_TYPE = "degreeType";
+const PROGRAM = "program";
+const GRADUATION_YEAR = "graduationYear";
+const GRADUATION_MONTH = "graduationMonth";
+const TRAVEL_ORIGIN = "travelOrigin";
+const APPLICATION_STATUS = "applicationStatus";
+const RSVP_STATUS = "rsvpStatus";
 
 const USER_FIELDS = [
   EMAIL,
@@ -34,16 +34,16 @@ const USER_FIELDS = [
 ];
 
 const FIELD_TITLES = {
-  [EMAIL]: 'Email',
-  [PHONE_NUMBER]: 'Phone Number',
-  [DATE_OF_BIRTH]: 'Date Of Birth',
-  [GENDER]: 'Gender',
-  [SCHOOL]: 'School',
-  [DEGREE_TYPE]: 'Degree Type',
-  [PROGRAM]: 'Program',
-  [GRADUATION_YEAR]: 'Graduation Year',
-  [GRADUATION_MONTH]: 'Graduation Month',
-  [TRAVEL_ORIGIN]: 'Travel Origin'
+  [EMAIL]: "Email",
+  [PHONE_NUMBER]: "Phone Number",
+  [DATE_OF_BIRTH]: "Date Of Birth",
+  [GENDER]: "Gender",
+  [SCHOOL]: "School",
+  [DEGREE_TYPE]: "Degree Type",
+  [PROGRAM]: "Program",
+  [GRADUATION_YEAR]: "Graduation Year",
+  [GRADUATION_MONTH]: "Graduation Month",
+  [TRAVEL_ORIGIN]: "Travel Origin"
 };
 
 class Profile extends Component {
@@ -66,7 +66,7 @@ class Profile extends Component {
   render() {
     const { user } = this.props;
     return (
-      <Container text style={{ marginTop: '3em' }}>
+      <Container text style={{ marginTop: "3em" }}>
         <Header as="h2">
           {user.firstName} {user.lastName}
         </Header>

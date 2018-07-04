@@ -1,17 +1,23 @@
 ## Proposed Change
 
-Fixes Issue Ticket: #
+Fixes:
 
-### Description
+### How you did this?
+
+### Why are you choosing this approach?
+
+### Any open questions you want to ask code reviewers?
 
 ### List of changes:
 
-	-
-	-
-	-
+  -
+  -
+  -
 
 ## Pull Request Checklist:
 
-	1. [ ] Does your submission pass tests?
-	2. [ ] Have you lint your code locally prior to submission?
-	3. [ ] Have you written new tests for your core changes, as applicable?
+  - [ ] My submission passes all tests.
+  - [ ] I have lint my code locally prior to submission.
+  - [ ] I have written new tests for my core changes (where applicable).
+  - [ ] I have referenced all useful information (issues, tasks, etc) in the pull request.
+

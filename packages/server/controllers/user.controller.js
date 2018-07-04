@@ -1,8 +1,8 @@
-const { User } = require('../models');
-const { ERROR_TEMPLATES, createError } = require('../errors');
-const { EMAILS, ERROR, USER } = require('../strings');
-const { sendEmail } = require('../emails');
-const _ = require('lodash');
+const { User } = require("../models");
+const { ERROR_TEMPLATES, createError } = require("../errors");
+const { EMAILS, ERROR, USER } = require("../strings");
+const { sendEmail } = require("../emails");
+const _ = require("lodash");
 
 const DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS = { new: true };
 const EMAILS_BY_APPLICATION_STATUS = {
@@ -50,10 +50,11 @@ module.exports = {
   deleteUser(userId) {
     return new Promise((resolve, reject) => {
       User.findOneAndRemove({ _id: userId }).then((user) => {
-        if (!user)
-          {return reject(
+        if (!user) {
+          return reject(
             createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID)
-          );}
+          );
+        }
         resolve();
       });
     });
@@ -63,10 +64,11 @@ module.exports = {
     return new Promise((resolve, reject) => {
       User.findOne({ _id: userId })
         .then((user) => {
-          if (!user)
-            {reject(
+          if (!user) {
+            reject(
               createError(ERROR_TEMPLATES.NOT_FOUND, ERROR.INVALID_USER_ID)
-            );}
+            );
+          }
 
           Object.keys(userInfo).forEach((key) => {
             if (user[key]) user[key] = userInfo[key];
@@ -106,14 +108,14 @@ module.exports = {
     let updatedUser;
     try {
       updatedUser = await User.findOneAndUpdate(
-        { _id: userId, 'applications.event': eventId },
+        { _id: userId, "applications.event": eventId },
         {
-          $set: { 'applications.$.status': USER.APPLICATION.STATUSES[status] }
+          $set: { "applications.$.status": USER.APPLICATION.STATUSES[status] }
         },
         DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
       );
       console.log(userId, eventId);
-      console.log('updated user', updatedUser);
+      console.log("updated user", updatedUser);
     } catch (e) {
       throw createError(
         ERROR_TEMPLATES.DB_ERROR,
@@ -122,11 +124,12 @@ module.exports = {
       );
     }
 
-    if (!updatedUser)
-      {throw createError(
+    if (!updatedUser) {
+      throw createError(
         ERROR_TEMPLATES.DB_ERROR,
         ERROR.DB_UPDATE_APPLICATION_STATUS
-      );}
+      );
+    }
 
     const templateName = EMAILS_BY_APPLICATION_STATUS[status];
 
@@ -164,11 +167,11 @@ module.exports = {
     let updatedUser;
     try {
       updatedUser = await User.findOneAndUpdate(
-        { _id: userId, 'applications.event': eventId },
+        { _id: userId, "applications.event": eventId },
         {
           $set: {
             ...setters,
-            'applications.$.rsvp': USER.APPLICATION.RSVPS.COMPLETED
+            "applications.$.rsvp": USER.APPLICATION.RSVPS.COMPLETED
           }
         },
         DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
@@ -177,8 +180,9 @@ module.exports = {
       throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_RSVP, e);
     }
 
-    if (!updatedUser)
-      {throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_RSVP);}
+    if (!updatedUser) {
+      throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_RSVP);
+    }
 
     return updatedUser;
   }

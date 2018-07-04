@@ -1,6 +1,6 @@
-const Router = require('express').Router;
+const Router = require("express").Router;
 
-const AUTH = 'auth';
+const AUTH = "auth";
 
 module.exports = (ctr) => {
   const authAPI = Router();

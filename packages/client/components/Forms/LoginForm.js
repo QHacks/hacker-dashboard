@@ -1,11 +1,11 @@
-import { Button, Divider, Form, Header, Message } from 'semantic-ui-react';
-import { required, email } from 'redux-form-validators';
-import SemanticFormField from './SemanticFormField';
-import { Field, reduxForm } from 'redux-form';
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { MISC } from '../../strings';
-import './LoginForm.less';
+import { Button, Divider, Form, Header, Message } from "semantic-ui-react";
+import { required, email } from "redux-form-validators";
+import SemanticFormField from "./SemanticFormField";
+import { Field, reduxForm } from "redux-form";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { MISC } from "../../strings";
+import "./LoginForm.less";
 
 const { APPLICATION_CLOSED_STATUS } = MISC;
 
@@ -40,11 +40,11 @@ class LoginForm extends Component {
     const { applicationsStatus } = this.props;
     return (
       <div>
-        <div className="fontSize-medium" style={{ marginTop: '40px' }}>
+        <div className="fontSize-medium" style={{ marginTop: "40px" }}>
           <Link to="/reset-password">Forgot password?</Link>
           <Divider />
           {applicationsStatus === APPLICATION_CLOSED_STATUS ? (
-            ''
+            ""
           ) : (
             <p>
               Haven't applied yet? <Link to="/apply">Apply Here</Link>
@@ -71,8 +71,8 @@ class LoginForm extends Component {
           type="email"
           placeholder="Email address"
           validate={[
-            required({ msg: 'none' }),
-            email({ msg: 'Please enter a valid email address!' })
+            required({ msg: "none" }),
+            email({ msg: "Please enter a valid email address!" })
           ]}
         />
 
@@ -83,7 +83,7 @@ class LoginForm extends Component {
           icon="lock"
           type="password"
           placeholder="Password"
-          validate={required({ msg: 'none' })}
+          validate={required({ msg: "none" })}
         />
 
         {this.renderLoginFormErrorMessage()}
@@ -107,6 +107,6 @@ class LoginForm extends Component {
 }
 
 export default reduxForm({
-  form: 'login',
+  form: "login",
   enableReinitialize: true
 })(LoginForm);

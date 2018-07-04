@@ -1,9 +1,9 @@
-const fs = require('fs');
-const Mustache = require('mustache');
-const path = require('path');
-const { EMAILS: EMAIL_STRINGS } = require('../strings');
+const fs = require("fs");
+const Mustache = require("mustache");
+const path = require("path");
+const { EMAILS: EMAIL_STRINGS } = require("../strings");
 
-const EMAIL_TEMPLATES_DIRECTORY = '../../email/dist/';
+const EMAIL_TEMPLATES_DIRECTORY = "../../email/dist/";
 
 function prepareTemplate({
   templateName,

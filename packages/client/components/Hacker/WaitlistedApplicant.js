@@ -1,6 +1,6 @@
-import { Header, Segment } from 'semantic-ui-react';
-import Emoji from 'react-emoji-render';
-import React from 'react';
+import { Header, Segment } from "semantic-ui-react";
+import Emoji from "react-emoji-render";
+import React from "react";
 
 export default () => (
   <Segment>
