@@ -23,7 +23,7 @@ module.exports = () => (req, res, next) => {
   }
 
   jwt.verify(token, AUTH_SECRET, (err, decoded) => {
-    if (err) {
+    if (err || decoded.type === "refresh") {
       const error = createError(
         ERROR_TEMPLATES.UNAUTHORIZED,
         ERROR.INVALID_TOKEN,
