@@ -1,3 +1,5 @@
 module.exports = {
-  testEnvironment: "./tests/config/ClientEnvironment.js"
+  setupFiles: ["./__tests__/config/Setup"],
+  snapshotSerializers: ["enzyme-to-json/serializer"],
+  testRegex: "__tests__/.*\.test\.js$"
 };

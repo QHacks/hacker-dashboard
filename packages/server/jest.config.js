@@ -1,7 +1,8 @@
 module.exports = {
-  testEnvironment: "./tests/config/ServerEnvironment",
-  resetModules: true,
   globals: {
-    dbName: "HackerDB"
-  }
+    dbName: "hacker-dashboard-test"
+  },
+  resetModules: true,
+  testEnvironment: "./__tests__/config/ServerEnvironment",
+  testRegex: "__tests__/.*\.test\.js$"
 };

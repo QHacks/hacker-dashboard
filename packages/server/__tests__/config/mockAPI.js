@@ -1,5 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const request = require("supertest");
+const jwt = require("jsonwebtoken");
 
 const auth = require("../../auth");
 const api = require("../../api");
@@ -12,4 +14,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/", auth(), api(controllers));
 
-module.exports = app;
+module.exports = {
+  request: request(app),
+  createAccessToken: (userId) => {
+    return jwt.sign({ userId }, process.env.AUTH_SECRET, {
+      expiresIn: "5 minutes",
+      issuer: "QHacks Authentication"
+    });
+  }
+};

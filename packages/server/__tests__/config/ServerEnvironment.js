@@ -1,18 +1,8 @@
 const NodeEnvironment = require("jest-environment-node");
 const MongodbMemoryServer = require("mongodb-memory-server");
-const request = require("supertest");
+const dotenv = require("dotenv");
 
-const app = require("./mockAPI.js");
-const MONGO_DB_NAME = "hackerDB";
-
-const mongod = new MongodbMemoryServer.default({
-  instance: {
-    dbName: MONGO_DB_NAME
-  },
-  binary: {
-    version: "3.2.19"
-  }
-});
+dotenv.config("./testingEnvironment");
 
 class ServerEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -20,15 +10,11 @@ class ServerEnvironment extends NodeEnvironment {
     this.mongod = new MongodbMemoryServer.default({
       instance: {
         dbName: this.global.dbName
-      },
-      binary: {
-        version: "3.2.19"
       }
     });
   }
 
   async setup() {
-    this.global.request = request(app);
     this.global.MONGO_URI = await this.mongod.getConnectionString();
     await super.setup();
   }
