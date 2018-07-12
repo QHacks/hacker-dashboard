@@ -15,9 +15,11 @@
   "scripts": {
     "bootstrap": "npm install --unsafe-perm || ((if [ -f npm-debug.log ]; then cat npm-debug.log; fi) && false) && lerna bootstrap",
     "build": "lerna run build --stream",
+    "build-emails": "lerna run build --scope email",
     "dev": "lerna run build --scope email && lerna run dev --scope server --scope client --stream --parallel",
     "start": "lerna run start --scope server --stream",
-    "style": "eslint --quiet packages/server/**/*.js packages/client/**/*.js"
+    "style": "eslint --quiet packages/server/**/*.js packages/client/**/*.js",
+    "test": "lerna run test --scope client --scope server --stream"
   },
   "engines": {
     "node": "8.11.x",

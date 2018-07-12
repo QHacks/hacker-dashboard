@@ -11,6 +11,21 @@ jobs:
       - run:
           name: Check Code Style
           command: npm run style
+  test:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run:
+          name: Install NPM dependencies
+          command: npm run bootstrap
+      - run:
+          name: Build MJML email templates
+          command: npm run build-emails
+      - run:
+          name: Perform Unit Tests
+          command: npm run test
+
   dev-deploy:
     docker:
       - image: lakoo/node-gcloud-docker:latest
@@ -53,3 +68,4 @@ workflows:
   run-tests:
     jobs:
       - code-style
+      - test
