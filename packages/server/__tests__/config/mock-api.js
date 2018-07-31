@@ -1,16 +1,18 @@
-const express = require("express");
+process.env.AUTH_SECRET = "ABC123";
+
 const bodyParser = require("body-parser");
 const request = require("supertest");
 const jwt = require("jsonwebtoken");
+const express = require("express");
 
+const controllers = require("../../controllers");
 const auth = require("../../auth");
 const api = require("../../api");
-const controllers = require("../../controllers");
 
 const app = express();
 
-app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "50mb" }));
 
 app.use("/api/", auth(), api(controllers));
 

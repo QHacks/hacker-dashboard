@@ -19,7 +19,8 @@
     "dev": "lerna run build --scope email && lerna run dev --scope server --scope client --stream --parallel",
     "start": "lerna run start --scope server --stream",
     "style": "eslint --quiet packages/server/**/*.js packages/client/**/*.js",
-    "test": "lerna run test --scope client --scope server --stream"
+    "test": "jest --projects ./packages/client ./packages/server",
+    "test-watch": "jest --watchAll --projects ./packages/client ./packages/server"
   },
   "engines": {
     "node": "8.11.x",

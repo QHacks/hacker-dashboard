@@ -1,26 +1,29 @@
 const NodeEnvironment = require("jest-environment-node");
 const MongodbMemoryServer = require("mongodb-memory-server");
-const dotenv = require("dotenv");
 
-dotenv.config("./testingEnvironment");
-
-class ServerEnvironment extends NodeEnvironment {
+class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
     super(config);
+
     this.mongod = new MongodbMemoryServer.default({
       instance: {
         dbName: this.global.dbName
+      },
+      binary: {
+        version: "3.4.4"
       }
     });
   }
 
   async setup() {
-    this.global.MONGO_URI = await this.mongod.getConnectionString();
     await super.setup();
+
+    this.global.__MONGO_URI__ = await this.mongod.getConnectionString();
   }
 
   async teardown() {
     await super.teardown();
+
     await this.mongod.stop();
   }
 
@@ -29,4 +32,4 @@ class ServerEnvironment extends NodeEnvironment {
   }
 }
 
-module.exports = ServerEnvironment;
+module.exports = MongoEnvironment;

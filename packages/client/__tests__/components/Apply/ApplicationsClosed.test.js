@@ -4,7 +4,7 @@ import { shallow } from "enzyme";
 
 const wrapper = shallow(<ApplicationsClosed />);
 
-describe("ApplicationClosed", () => {
+describe("ApplicationsClosed", () => {
   it("renders correctly", () => {
     expect(wrapper).toMatchSnapshot();
   });

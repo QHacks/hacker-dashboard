@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ApplicationClosed renders correctly 1`] = `
+exports[`ApplicationsClosed renders correctly 1`] = `
 <div>
   <p
     className="fontSize-large textAlign-center"

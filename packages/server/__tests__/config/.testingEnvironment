@@ -1,5 +1,0 @@
-# Environment variables for server testing environment
-# This file contains a subset of the production environment variables with dummy values
-# For testing purposes only
-
-AUTH_SECRET=hello
