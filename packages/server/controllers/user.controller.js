@@ -114,8 +114,6 @@ module.exports = {
         },
         DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
       );
-      console.log(userId, eventId);
-      console.log("updated user", updatedUser);
     } catch (e) {
       throw createError(
         ERROR_TEMPLATES.DB_ERROR,

@@ -149,7 +149,6 @@ module.exports = (ctr) => {
     }
   );
 
-  // TODO: Make this so it accepts an event ID!
   adminAPI.get(`/${ADMIN}/${APPLICATIONS}/check-in`, async (req, res) => {
     const { eventId } = req.params;
     try {
