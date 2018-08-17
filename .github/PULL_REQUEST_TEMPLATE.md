@@ -2,7 +2,7 @@
 
 Fixes:
 
-### How you did this?
+### How did you do this?
 
 ### Why are you choosing this approach?
 
