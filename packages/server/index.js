@@ -80,6 +80,6 @@ connectToDB(async (err) => {
 
   // Start listening!
   app.listen(port, () =>
-    logger.info(`Hacker dashboard running on port ${port}!`)
+    logger.info(`QHacks Dashboard running on port ${port}!`)
   );
 });

@@ -31,7 +31,7 @@
           <!-- Withdrawal section -->
         </mj-raw>
         <mj-text>
-          <p> Given the high volume of hacker applications, we ask that if you can no longer attend, please <a href="{{withdrawUrl}}" rel="noopener noreferrer" target="_blank">withdraw your application on the hacker dashboard
+          <p> Given the high volume of hacker applications, we ask that if you can no longer attend, please <a href="{{withdrawUrl}}" rel="noopener noreferrer" target="_blank">withdraw your application on the QHacks Dashboard
                   </a> so you give someone on the waitlist the opportunity to attend. </p>
         </mj-text>
         <mj-text>
