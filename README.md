@@ -1,7 +1,6 @@
 # QHacks Hacker Dashboard
 
-[![CircleCI](https://circleci.com/gh/qhacks/hacker-dashboard.svg?style=svg)](https://circleci.com/gh/qhacks/hacker-dashboard)
-[![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
+[![CircleCI](https://circleci.com/gh/qhacks/qhacks-dashboard.svg?style=svg)](https://circleci.com/gh/qhacks/qhacks-dashboard)
 
 This repository is a mono-repo containing the QHacks Hacker Dashboard. This dashboard is to serve as a hub for judges, mentors, partners and hackers participating in [QHacks](https://qhacks.io/). The dashboard implements a suite of features to make the process and experience of attending a hackathon a richer and more pleasant one for all parties.
 
