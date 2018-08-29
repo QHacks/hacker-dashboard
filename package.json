@@ -1,16 +1,21 @@
 {
-  "name": "hacker-dashboard",
+  "name": "qhacks-dashboard",
   "version": "1.3.4",
   "description": "Dashboard for participants, judges, mentors and partners of QHacks.",
-  "author": "Robert Saunders and Zack Harley",
-  "homepage": "https://github.com/qhacks/hacker-dashboard#readme",
+  "author": "QHacks Engineering",
+  "homepage": "https://github.com/qhacks/qhacks-dashboard#readme",
   "bugs": {
-    "url": "https://github.com/qhacks/hacker-dashboard/issues"
+    "url": "https://github.com/qhacks/qhacks-dashboard/issues"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/qhacks/hacker-dashboard.git"
+    "url": "https://github.com/qhacks/qhacks-dashboard.git"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "scripts": {
     "bootstrap": "npm install --unsafe-perm || ((if [ -f npm-debug.log ]; then cat npm-debug.log; fi) && false) && lerna bootstrap",
@@ -19,6 +24,7 @@
     "dev": "lerna run build --scope email && lerna run dev --scope server --scope client --stream --parallel",
     "start": "lerna run start --scope server --stream",
     "style": "eslint --quiet packages/server/**/*.js packages/client/**/*.js",
+    "format": "prettier --write packages/server/**/*.js packages/client/**/*.js",
     "test": "jest --projects ./packages/client ./packages/server",
     "test-watch": "jest --watchAll --projects ./packages/client ./packages/server"
   },
@@ -29,7 +35,11 @@
   "devDependencies": {
     "babel-eslint": "^8.2.5",
     "eslint": "^5.0.1",
+    "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.10.0",
-    "lerna": "^2.8.0"
+    "husky": "^1.0.0-rc.13",
+    "lerna": "^2.8.0",
+    "prettier": "^1.14.2",
+    "pretty-quick": "^1.6.0"
   }
 }

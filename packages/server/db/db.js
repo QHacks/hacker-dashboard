@@ -9,7 +9,9 @@ module.exports = function connectToDB(cb = noop) {
   const authSource = process.env.MONGO_AUTH_SOURCE;
 
   if (!host || !name) {
-    logger.info("Missing Mongo enviroment variable MONGO_HOST or MONGO_DBNAME!");
+    logger.info(
+      "Missing Mongo enviroment variable MONGO_HOST or MONGO_DBNAME!"
+    );
     throw new Error();
   }
 
@@ -29,5 +31,9 @@ module.exports = function connectToDB(cb = noop) {
     Object.assign(opt, { authSource });
   }
 
-  return mongoose.connect(url, opt, cb);
+  return mongoose.connect(
+    url,
+    opt,
+    cb
+  );
 };
