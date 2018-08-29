@@ -196,11 +196,12 @@ module.exports = {
 
   getEmails() {
     return Object.values(EMAILS.TEMPLATES).map((template) =>
-      _
-        .map(template, (value, key) => ({
-          [camelcase(key)]: value
-        }))
-        .reduce((accum, keyValuePair) => Object.assign(accum, keyValuePair), {})
+      _.map(template, (value, key) => ({
+        [camelcase(key)]: value
+      })).reduce(
+        (accum, keyValuePair) => Object.assign(accum, keyValuePair),
+        {}
+      )
     );
   },
 
@@ -330,9 +331,7 @@ module.exports = {
 
       try {
         const numberOfGoldenTicketsRemaining =
-        goldenTickets - 1 > 0 ?
-          goldenTickets - 1 :
-          0;
+          goldenTickets - 1 > 0 ? goldenTickets - 1 : 0;
         await User.findOneAndUpdate(
           { _id: reviewerId },
           { $set: { goldenTickets: numberOfGoldenTicketsRemaining } }

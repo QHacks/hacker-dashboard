@@ -3,6 +3,9 @@
   "plugins": [
     "react"
   ],
+  "extends": [
+    "prettier"
+  ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -27,7 +30,7 @@
     "curly": [2, "multi-line"],
     "space-infix-ops": 2,
     "no-else-return": [2, { "allowElseIf": true }],
-    "multiline-ternary": [2, "always"],
+    "multiline-ternary": [2, "always-multiline"],
     "key-spacing": [2, { "mode": "strict" }],
     "arrow-parens": [2, "always"],
     "react/jsx-wrap-multilines": 2,
