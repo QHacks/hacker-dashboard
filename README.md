@@ -1,41 +1,70 @@
-# QHacks Hacker Dashboard
+# QHacks Dashboard
 
 [![CircleCI](https://circleci.com/gh/qhacks/qhacks-dashboard.svg?style=svg)](https://circleci.com/gh/qhacks/qhacks-dashboard)
 
-This repository is a mono-repo containing the QHacks Hacker Dashboard. This dashboard is to serve as a hub for judges, mentors, partners and hackers participating in [QHacks](https://qhacks.io/). The dashboard implements a suite of features to make the process and experience of attending a hackathon a richer and more pleasant one for all parties.
+This repository is a [mono-repo](https://developer.atlassian.com/blog/2015/10/monorepos-in-git/) containing the QHacks Dashboard. This dashboard is to serve as a hub for judges, mentors, partners and hackers participating in [QHacks](https://qhacks.io/). The dashboard implements a suite of features to make the process and experience of attending a hackathon a richer and more pleasant one for all parties.
 
-The server-side application is built using a Node server using Express to serve a RESTful API. The client-side is implemented using [ReactJS](https://reactjs.org/), and [Redux](http://redux.js.org/docs/introduction/) for state management, all of which are bundled with [Webpack](https://webpack.github.io/). For more information about the technical specifications please refer to the [wiki](https://github.com/qhacks/hacker-dashboard/wiki).
+The back end application is built with [Node](https://nodejs.org/en/) using [Express](https://expressjs.com/) to serve a RESTful API. For persistence we use [MongoDB](https://www.mongodb.com/) and [Mongoose](https://mongoosejs.com/) as our ODM to interact with that database. The front end is implemented using [ReactJS](https://reactjs.org/), and [Redux](http://redux.js.org/docs/introduction/) for state management, all of which are bundled with [Webpack](https://webpack.github.io/). For more information about the technical specifications please refer to the [wiki](https://github.com/qhacks/hacker-dashboard/wiki).
 
 ## Usage
 
-Utilize the scripts below to use the application:
+Utilize the scripts below in the root of the project to get started:
 
-```
-# setup project and install dependencies
-npm run bootstrap
+Setup the project and install dependencies:
 
-# run the application in development mode
-npm run dev
+`npm run bootstrap`
 
-# build the client and emails
-npm run build
+> NOTE: This project uses [Lerna](https://github.com/lerna/lerna) as it is a mono-repo. This command installs all dependencies within individual projects and hoists the common package versions out to the `node_modules` directory in the root of the repo.
 
-# run the application in production mode
-npm run start
+Run the application in development mode:
 
-# check code style using linter
-npm run style
-```
+`npm run dev`
+
+> NOTE: This builds the emails and starts the server in development mode. Additionally, this will start a webpack dev server to host a bundled version of our client. The webpack dev server will track your changes and continually generate bundles when changes occur. This improves developer productivity and enables additional features like hot reloading.
+
+Build both the emails and the client:
+
+`npm run build`
+
+> NOTE: If you don't run this command before starting the server in production mode the client will not load and emails will not send among other weird issues.
+
+Build only the emails:
+
+`npm run build-emails`
+
+> NOTE: We use [MJML](https://mjml.io/) to write our emails and [handlebars](https://handlebarsjs.com/) for templating. Emails need to be built to be converted to HTML which is the format they get sent in.
+
+Start the server in production mode:
+
+`npm run start`
+
+Run the linter to check coding style:
+
+`npm run style`
+
+Run the formatter to fix code style issues:
+
+`npm run format`
+
+Run the test suite in all projects:
+
+`npm run test`
+
+Run the test suite and watch for changes in all projects:
+
+`npm run test-watch`
+
+When developing locally make sure to use the Lerna commands to run scripts across projects and to add dependencies to individual or multiple projects. Lerna has a concept called scopes, this allows you to scope commands to specific projects. If the Lerna commands are not used it will likely cause dependency issues and synchronization issues between projects. Find the list of Lerna commands [here](https://github.com/lerna/lerna).
 
 ## Contributing
 
-A general guide to contributing in this repository is:
+A general guide to contribute in this repository is:
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b feature/my-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin feature/my-feature`
-5. Submit a pull request :D
+5. Submit a pull request :rocket:
 
 > See more information in our [contributing guide](https://github.com/qhacks/hacker-dashboard/blob/dev/CONTRIBUTING.md).
 
@@ -48,3 +77,5 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+> See the entire license in our [license file](https://github.com/qhacks/qhacks-dashboard/blob/dev/LICENSE).

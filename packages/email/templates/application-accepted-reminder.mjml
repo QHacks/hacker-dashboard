@@ -29,7 +29,7 @@
         <mj-raw>{{^isRSVPComplete}}</mj-raw>
         <mj-text>
           <h2>Remember to RSVP!</h2>
-          <p> We can't wait to have you at QHacks 2018, but you still have to <a href="{{rsvpUrl}}" rel="noopener noreferrer" target="_blank">RSVP on the hacker dashboard
+          <p> We can't wait to have you at QHacks 2018, but you still have to <a href="{{rsvpUrl}}" rel="noopener noreferrer" target="_blank">RSVP on the QHacks Dashboard
                 </a> before <b>Wednesday, January 24th at 11:59 PM EST</b>! </p>
         </mj-text>
         <mj-button href="{{rsvpUrl}}" background-color="#C8102E">RSVP NOW</mj-button>
@@ -68,7 +68,7 @@
           <!-- Withdrawal section -->
         </mj-raw>
         <mj-text>
-          <p> Given the sheer number of hacker applications, we ask that if you can no longer attend, please <a href="{{withdrawUrl}}" rel="noopener noreferrer" target="_blank">withdrawyour application on the hacker dashboard
+          <p> Given the sheer number of hacker applications, we ask that if you can no longer attend, please <a href="{{withdrawUrl}}" rel="noopener noreferrer" target="_blank">withdraw your application on the QHacks Dashboard
               </a> so you give someone on the waitlist the opportunity to attend. </p>
         </mj-text>
         <mj-text>

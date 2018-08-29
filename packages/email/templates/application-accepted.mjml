@@ -28,7 +28,7 @@
           </p>
           <ol>
             <li> <a href="{{rsvpUrl}}" rel="noopener noreferrer" target="_blank">
-                    RSVP on the hacker dashboard
+                    RSVP on the QHacks Dashboard
                 </a> by no later than <b>Wednesday, January 24th at 11:59 PM EST</b>. We need you to confirm that you'll be attending and need some more information about you to make QHacks as awesome as possible! </li>
             <li> Join the <a href="https://join.slack.com/t/qhacks2018/shared_invite/enQtMzAwNTkyNTU3NjY1LWExOTkzZmNiODNiNGM4MDZhOTMzNjM3MWYxMjdhZmZhZmZiNzEwODAzY2U2MDM2YzE0YzgwM2UxZWQyZmM2NTE" rel="noopener noreferrer" target="_blank">QHacks 2018 Slack</a>.
               This will be our main method of communication during the event, so make sure to download the Slack mobile app to your phone too! </li>
@@ -64,7 +64,7 @@
           <!-- Withdrawal section -->
         </mj-raw>
         <mj-text>
-          <p> Given the sheer number of hacker applications, we ask that if you can no longer attend, please <a href="{{withdrawUrl}}" rel="noopener noreferrer" target="_blank">withdrawyour application on the hacker dashboard
+          <p> Given the sheer number of hacker applications, we ask that if you can no longer attend, please <a href="{{withdrawUrl}}" rel="noopener noreferrer" target="_blank">withdraw your application on the QHacks Dashboard
               </a> so you give someone on the waitlist the opportunity to attend. </p>
         </mj-text>
         <mj-button href="{{rsvpUrl}}" background-color="#C8102E">RSVP NOW</mj-button>
