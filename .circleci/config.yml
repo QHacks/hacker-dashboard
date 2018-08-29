@@ -11,6 +11,7 @@ jobs:
       - run:
           name: Check Code Style
           command: npm run style
+
   test:
     docker:
       - image: circleci/node:latest
