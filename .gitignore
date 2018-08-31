@@ -3,7 +3,7 @@ node_modules
 *.log
 .env
 packages/client/bundle/*
-packages/email/dist/*
+packages/server/emails/dist/*
 .DS_STORE
 package-lock.json
 .vscode
