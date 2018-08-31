@@ -3,7 +3,7 @@ const Mustache = require("mustache");
 const path = require("path");
 const { EMAILS: EMAIL_STRINGS } = require("../strings");
 
-const EMAIL_TEMPLATES_DIRECTORY = "../../email/dist/";
+const EMAIL_TEMPLATES_DIRECTORY = "./dist/";
 
 function prepareTemplate({
   templateName,
