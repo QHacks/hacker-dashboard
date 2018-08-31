@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install NPM dependencies
+          name: Install NPM Dependencies
           command: npm run bootstrap
       - run:
           name: Check Code Style
@@ -18,14 +18,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install NPM dependencies
+          name: Install NPM Dependencies
           command: npm run bootstrap
       - run:
-          name: Build MJML email templates
+          name: Build MJML Email Templates
           command: npm run build-emails
       - run:
-          name: Perform Unit Tests
-          command: npm run test
+          name: Perform Unit Tests and Send Coverage Data
+          command: npm run test-with-coverage
 
   dev-deploy:
     docker:
@@ -33,13 +33,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install NPM dependencies
+          name: Install NPM Dependencies
           command: npm run bootstrap
       - run:
-          name: Build React client and MJML email templates
+          name: Build React Client and MJML Email Templates
           command: npm run build
       - run:
-          name: Create .env file
+          name: Create .env File
           command: |
             echo "AUTH_SECRET=${AUTH_SECRET}" > .env
             echo "MONGO_AUTH_SOURCE=${MONGO_AUTH_SOURCE}" >> .env
@@ -52,13 +52,13 @@ jobs:
             echo "SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}" >> .env
             echo "FORCE_SSL=${FORCE_SSL}" >> .env
       - run:
-          name: Dump Google Cloud Credentials to file
+          name: Dump Google Cloud Credentials to File
           command: echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
       - run:
-          name: Add Google Cloud Service Account credentials to GCloud SDK
+          name: Add Google Cloud Service Account Credentials to GCloud SDK
           command: gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
       - run:
-          name: Set GCloud project
+          name: Set GCloud Project
           command: gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
       - deploy:
           name: Deploy to Google App Engine

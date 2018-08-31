@@ -7,3 +7,4 @@ packages/server/emails/dist/*
 .DS_STORE
 package-lock.json
 .vscode
+coverage

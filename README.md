@@ -1,6 +1,9 @@
 # QHacks Dashboard
 
-[![CircleCI](https://circleci.com/gh/qhacks/qhacks-dashboard.svg?style=svg)](https://circleci.com/gh/qhacks/qhacks-dashboard)
+[![CircleCI
+Status](https://circleci.com/gh/qhacks/qhacks-dashboard.svg?style=shield&circle-token=865c145070c9fe7a2d039310976c7a296f71920e)](https://circleci.com/gh/qhacks/qhacks-dashboard)
+[![Coverage
+Status](https://coveralls.io/repos/github/qhacks/qhacks-dashboard/badge.svg?branch=dev)](https://coveralls.io/github/qhacks/qhacks-dashboard?branch=dev)
 
 This repository is a
 [mono-repo](https://developer.atlassian.com/blog/2015/10/monorepos-in-git/)
@@ -75,6 +78,13 @@ Utilize the scripts below in the root of the project to get started:
 
 `npm run test-watch`
 
+**Run the test suite with coverage data being sent to Coveralls:**
+
+`npm run test-with-coverage`
+
+> NOTE: You likely won't need to do this and it will fail because some
+> environment variables are required.
+
 When developing locally make sure to use the Lerna commands to run scripts
 across projects and to add dependencies to individual or multiple projects.
 Lerna has a concept called scopes, this allows you to scope commands to specific
@@ -82,7 +92,8 @@ projects. If the Lerna commands are not used it will likely cause dependency
 issues and synchronization issues between projects. Find the list of Lerna
 commands [here](https://github.com/lerna/lerna).
 
-> See the [wiki](https://github.com/qhacks/qhacks-dashboard/wiki) for more information about environment setup.
+> See the [wiki](https://github.com/qhacks/qhacks-dashboard/wiki) for more
+> information about environment setup.
 
 ## Contributing
 
