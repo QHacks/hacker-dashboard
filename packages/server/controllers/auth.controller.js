@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const emails = require("../emails");
 const crypto = require("crypto");
 const _ = require("lodash");
-const { Event, User } = require("../models");
+const { Event, User, Hacker } = require("../models");
 const { ERROR_TEMPLATES, createError } = require("../errors");
 const { EMAILS, ERROR } = require("../strings");
 
@@ -26,11 +26,14 @@ const HACKER_SIGN_UP_FIELDS = [
   "degreeType",
   "program",
   "graduationYear",
-  "graduationMonth",
-  "travelOrigin",
-  "numberOfHackathons",
+  "graduationMonth"
+];
+
+const HACKER_APPLICATION_FIELDS = [
   "whyQhacks",
-  "links"
+  "links",
+  "travelOrigin",
+  "numberOfHackathons"
 ];
 
 function createAccessToken(userId) {
@@ -130,16 +133,17 @@ module.exports = {
 
   signup(signUpInfo) {
     return new Promise((resolve, reject) => {
+      applicationInfo = _.pick(signUpInfo, HACKER_APPLICATION_FIELDS);
       signUpInfo = _.pick(signUpInfo, HACKER_SIGN_UP_FIELDS);
 
       customValidator
         .validateSignUpInfo(signUpInfo)
         .then(() => Event.findOne({ slug: QHACKS_2018_SLUG }))
         .then((event) => {
-          User.create(
+          Hacker.create(
             _.assign({}, signUpInfo, {
               events: [event._id],
-              applications: [{ event: [event._id] }]
+              applications: [{ event: [event._id], ...applicationInfo }]
             })
           )
             .then((user) => {

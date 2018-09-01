@@ -35,24 +35,19 @@ describe("/api/v1/admins", () => {
 
         const expectedAdmins = [
           {
-            events: [],
             role: "ADMIN",
             firstName: "admin",
             lastName: "1",
             email: "admin1@gmail.com",
-            applications: [],
-            reviews: [],
+            goldenTickets: 1,
             __v: 0
           },
           {
-            events: [],
             role: "ADMIN",
             firstName: "admin",
             lastName: "2",
             email: "admin2@gmail.com",
-            applications: [],
             reviewGroup: 0,
-            reviews: [],
             __v: 0
           }
         ];
@@ -135,45 +130,97 @@ describe("/api/v1/admins", () => {
           );
 
           expect(result).toEqual({
-            events: [],
             role: "HACKER",
             _id: userId,
             firstName: "hacker",
             lastName: "1",
             email: "hacker1@gmail.com",
             applications: [],
-            reviews: [],
             __v: 0
           });
         });
       });
 
       describe("POST", () => {
-        it("submits an application for review", async () => {
-          const user = await User.findOne({ email: "hacker1@gmail.com" });
+        it("submits a review for an application", async () => {
+          const user = await User.findOne({ email: "hacker2@gmail.com" });
           const userId = user._id;
           const accessToken = createAccessToken(userId);
-
+          const review = {
+            score: 1,
+            group: 1,
+            performedBy: "1",
+            performedAt: 1,
+            goldenTicket: false
+          };
           const response = await request
             .post(`/api/v1/admin/applications/review/${userId}`)
-            .send({ review: "This is a test review" })
+            .send({ review })
             .set("Authorization", "Bearer " + accessToken);
-
           expect(response.statusCode).toBe(201);
 
-          const newReview = response.body.user.reviews;
-          expect(newReview).toBeDefined();
-          expect(newReview[0]).toBeDefined();
-
+          const newReview = response.body.user.applications[0].reviews;
+          expect(newReview[0]).toEqual(
+            expect.objectContaining(_.omit(review, "performedAt"))
+          );
           // Make sure the new review made it into the DB
           const updatedUser = await User.findOne({
-            email: "hacker1@gmail.com"
+            email: "hacker2@gmail.com"
           });
-          expect(updatedUser.reviews.length).toBe(newReview.length);
-          expect(updatedUser.reviews[0]._id).toEqual(newReview[0]._id);
-          expect(updatedUser.reviews[0].goldenTicket).toEqual(
+
+          expect(updatedUser.applications[0].reviews.length).toBe(
+            newReview.length
+          );
+          expect(updatedUser.applications[0].reviews[0]._id).toEqual(
+            newReview[0]._id
+          );
+          expect(updatedUser.applications[0].reviews[0].goldenTicket).toEqual(
             newReview[0].goldenTicket
           );
+        });
+
+        it("submits reviews with golden tickets", async () => {
+          const admin = await User.findOne({ email: "admin1@gmail.com" });
+          const user = await User.findOne({ email: "hacker2@gmail.com" });
+          const userId = user._id;
+          const accessToken = createAccessToken(userId);
+          const review = {
+            score: 1,
+            group: 1,
+            performedBy: admin._id,
+            performedAt: 1,
+            goldenTicket: true
+          };
+          const response = await request
+            .post(`/api/v1/admin/applications/review/${userId}`)
+            .send({ review })
+            .set("Authorization", "Bearer " + accessToken);
+          expect(response.statusCode).toBe(201);
+
+          const newReview = response.body.user.applications[0].reviews;
+          expect(newReview[0]).toEqual(
+            expect.objectContaining(_.omit(review, "performedAt"))
+          );
+          // Make sure the new review made it into the DB
+          const updatedUser = await User.findOne({
+            email: "hacker2@gmail.com"
+          });
+
+          expect(updatedUser.applications[0].reviews.length).toBe(
+            newReview.length
+          );
+          expect(updatedUser.applications[0].reviews[0]._id).toEqual(
+            newReview[0]._id
+          );
+          expect(updatedUser.applications[0].reviews[0].goldenTicket).toEqual(
+            newReview[0].goldenTicket
+          );
+
+          // Make sure the admin has no more golden tickets
+          const updatedAdmin = await User.findOne({
+            email: "admin1@gmail.com"
+          });
+          expect(updatedAdmin.goldenTickets).toBe(0);
         });
       });
     });
@@ -193,11 +240,14 @@ describe("/api/v1/admins", () => {
             expect(response.statusCode).toBe(200);
             expect(applicationsWithReviews.length).toBe(1);
 
-            reviewedApp = applicationsWithReviews[0];
+            reviewedApp = applicationsWithReviews[0].applications[0];
 
             expect(reviewedApp.reviews.length).toBe(2);
-            expect(reviewedApp.email).toBe("hacker3@gmail.com");
-            expect(reviewedApp.score).toBe(101);
+
+            const { reviews } = reviewedApp;
+
+            expect(reviews[0].score).toBe(100);
+            expect(reviews[1].score).toBe(1);
           });
         });
       });
