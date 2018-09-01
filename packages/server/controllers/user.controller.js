@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Hacker } = require("../models");
 const { ERROR_TEMPLATES, createError } = require("../errors");
 const { EMAILS, ERROR, USER } = require("../strings");
 const { sendEmail } = require("../emails");
@@ -76,7 +76,7 @@ module.exports = {
 
           user
             .save()
-            .then(resolve)
+            .then((updatedUser) => resolve(updatedUser))
             .catch((err) => {
               reject(
                 createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER_UPDATE, err)
@@ -107,7 +107,7 @@ module.exports = {
 
     let updatedUser;
     try {
-      updatedUser = await User.findOneAndUpdate(
+      updatedUser = await Hacker.findOneAndUpdate(
         { _id: userId, "applications.event": eventId },
         {
           $set: { "applications.$.status": USER.APPLICATION.STATUSES[status] }
@@ -164,7 +164,7 @@ module.exports = {
 
     let updatedUser;
     try {
-      updatedUser = await User.findOneAndUpdate(
+      updatedUser = await Hacker.findOneAndUpdate(
         { _id: userId, "applications.event": eventId },
         {
           $set: {

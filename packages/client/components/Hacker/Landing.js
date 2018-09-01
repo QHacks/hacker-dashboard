@@ -42,7 +42,7 @@ class HackerLanding extends Component {
     if (formComplete) {
       const { user } = this.props;
       const userId = user._id;
-      const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
+      const eventId = user.applications[0].event; // TODO: Hack. Inform the dashboard about the event that is currently running
       const rsvp = reduce(
         map(values, (value, key) => {
           const emergencyContactFieldRegExp = /^emergency/;
@@ -65,13 +65,13 @@ class HackerLanding extends Component {
   handleApplicationWithdraw() {
     const { user } = this.props;
     const userId = user._id;
-    const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
+    const eventId = user.applications[0].event; // TODO: Hack. Inform the dashboard about the event that is currently running
     this.props.withdrawApplication(userId, eventId);
   }
 
   renderCorrectStatus() {
     const { user, rsvpLoading, rsvpError } = this.props;
-    const eventId = user.events[0]; // TODO: Hack. Inform the dashboard about the event that is currently running
+    const eventId = user.applications[0].event; // TODO: Hack. Inform the dashboard about the event that is currently running
     const application = user.applications.find(
       (application) => application.event === eventId
     );
@@ -120,6 +120,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, { submitRSVP, withdrawApplication })(
-  HackerLanding
-);
+export default connect(
+  mapStateToProps,
+  { submitRSVP, withdrawApplication }
+)(HackerLanding);

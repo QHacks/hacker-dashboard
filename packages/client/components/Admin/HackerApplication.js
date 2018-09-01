@@ -19,7 +19,7 @@ const NUMBER_OF_HACKATHONS = "numberOfHackathons";
 const WHY_QHACKS = "whyQhacks";
 const LINKS = "links";
 
-const APPLICATION_FIELDS = [
+const HACKER_FIELDS = [
   FIRST_NAME,
   LAST_NAME,
   EMAIL,
@@ -30,7 +30,10 @@ const APPLICATION_FIELDS = [
   DEGREE_TYPE,
   PROGRAM,
   GRADUATION_YEAR,
-  GRADUATION_MONTH,
+  GRADUATION_MONTH
+];
+
+const APPLICATION_FIELDS = [
   TRAVEL_ORIGIN,
   NUMBER_OF_HACKATHONS,
   WHY_QHACKS,
@@ -60,7 +63,10 @@ const FIELD_TITLES = {
 };
 
 export default ({ application, ...rest }) => {
-  const fields = pick(application, APPLICATION_FIELDS);
+  const fields = {
+    ...pick(application, HACKER_FIELDS),
+    ...pick(application.applications[0], APPLICATION_FIELDS)
+  };
   return (
     <div {...rest}>
       {map(fields, (value, key) => {

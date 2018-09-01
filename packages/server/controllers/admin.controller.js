@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const camelcase = require("camelcase");
-const { Settings, User } = require("../models");
+const { Settings, User, Admin, Hacker } = require("../models");
 const { ERROR_TEMPLATES, createError } = require("../errors");
 const { EMAILS, ERROR, USER } = require("../strings");
 const { sendEmail } = require("../emails");
@@ -56,7 +56,7 @@ module.exports = {
     let admins;
 
     try {
-      admins = await User.find({ role: USER.ROLES.ADMIN });
+      admins = await Admin.find({});
     } catch (err) {
       throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_ADMINS_GET, err);
     }
@@ -71,20 +71,19 @@ module.exports = {
   async getApplicationToReview(reviewGroup) {
     let user;
     try {
-      user = await User.findOne({
+      user = await Hacker.findOne({
         $and: [
-          { role: "HACKER" },
           {
             $or: [
-              { reviews: { $exists: false } },
-              { reviews: { $size: 0 } },
-              { "reviews.group": { $ne: reviewGroup } }
+              { "applications.reviews": { $exists: false } },
+              { "applications.reviews": { $size: 0 } },
+              { "applications.reviews.group": { $ne: reviewGroup } }
             ]
           },
           {
             $or: [
-              { "reviews.goldenTicket": false },
-              { "reviews.goldenTicket": { $exists: false } }
+              { "applications.reviews.goldenTicket": false },
+              { "applications.reviews.goldenTicket": { $exists: false } }
             ]
           }
         ]
@@ -118,8 +117,7 @@ module.exports = {
     const pipeline = [
       {
         $match: {
-          role: USER.ROLES.HACKER,
-          reviews: { $exists: true, $not: { $size: 0 } }
+          "applications.reviews": { $exists: true, $not: { $size: 0 } }
         }
       },
       {
@@ -128,13 +126,16 @@ module.exports = {
             $multiply: [
               {
                 $divide: [
-                  { $sum: "$reviews.score" },
+                  { $sum: "$applications.reviews.score" },
                   {
                     $cond: {
                       if: {
-                        $gt: [{ $size: "$reviews" }, numberOfReviewsRequired]
+                        $gt: [
+                          { $size: "$applications.reviews" },
+                          numberOfReviewsRequired
+                        ]
                       },
-                      then: { $size: "$reviews" },
+                      then: { $size: "$applications.reviews" },
                       else: 1
                     }
                   }
@@ -143,7 +144,10 @@ module.exports = {
               {
                 $cond: {
                   if: {
-                    $gt: [{ $size: "$reviews" }, numberOfReviewsRequired]
+                    $gt: [
+                      { $size: "$applications.reviews" },
+                      numberOfReviewsRequired
+                    ]
                   },
                   then: numberOfReviewsRequired,
                   else: 1
@@ -158,7 +162,7 @@ module.exports = {
       { $limit: limit }
     ];
     try {
-      applications = await User.aggregate(pipeline);
+      applications = await Hacker.aggregate(pipeline);
     } catch (err) {
       throw createError(
         ERROR_TEMPLATES.DB_ERROR,
@@ -180,9 +184,9 @@ module.exports = {
   async getApplicationsWithReviewsCount() {
     let count;
     try {
-      count = await User.count({
+      count = await Hacker.count({
         role: USER.ROLES.HACKER,
-        reviews: { $exists: true, $not: { $size: 0 } }
+        "applications.reviews": { $exists: true, $not: { $size: 0 } }
       });
     } catch (err) {
       throw createError(
@@ -211,7 +215,7 @@ module.exports = {
     let hackers;
 
     try {
-      hackers = await User.find({
+      hackers = await Hacker.find({
         "applications.status": USER.APPLICATION.STATUSES.ACCEPTED,
         "applications.rsvp": USER.APPLICATION.RSVPS.COMPLETED,
         "applications.checkIn": USER.APPLICATION.CHECK_INS.PENDING
@@ -227,8 +231,7 @@ module.exports = {
     let reviewers;
 
     try {
-      reviewers = await User.find({
-        role: USER.ROLES.ADMIN,
+      reviewers = await Admin.find({
         reviewGroup: { $exists: true }
       });
     } catch (err) {
@@ -262,7 +265,7 @@ module.exports = {
     let admins = [];
 
     try {
-      admins = await User.find({ role: USER.ROLES.ADMIN });
+      admins = await Admin.find({});
     } catch (err) {
       throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_REVIEWERS_GET, err);
     }
@@ -274,7 +277,7 @@ module.exports = {
     const { numberOfReviewsRequired } = await this.getSettings();
 
     const promises = admins.map((admin, index) =>
-      User.findOneAndUpdate(
+      Admin.findOneAndUpdate(
         { _id: admin._id },
         { $set: { reviewGroup: index % numberOfReviewsRequired } },
         DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
@@ -292,13 +295,12 @@ module.exports = {
     let updatedUser;
     let hasGoldenTicket;
     let reviewer;
-
     const reviewToSubmit = _.pick(review, REVIEW_FIELDS);
     const reviewerId = reviewToSubmit.performedBy;
 
     if (reviewToSubmit.goldenTicket) {
       try {
-        reviewer = await User.findOne({ _id: reviewerId });
+        reviewer = await Admin.findOne({ _id: reviewerId });
       } catch (err) {
         throw createError(ERROR_TEMPLATES.DB_ERROR, ERROR.DB_USER, err);
       }
@@ -310,9 +312,9 @@ module.exports = {
       }
 
       try {
-        hasGoldenTicket = !!(await User.findOne({
+        hasGoldenTicket = !!(await Hacker.findOne({
           _id: userId,
-          "reviews.goldenTicket": true
+          "applications.reviews.goldenTicket": true
         }));
       } catch (err) {
         throw createError(
@@ -331,8 +333,10 @@ module.exports = {
 
       try {
         const numberOfGoldenTicketsRemaining =
-          goldenTickets - 1 > 0 ? goldenTickets - 1 : 0;
-        await User.findOneAndUpdate(
+          goldenTickets - 1 > 0 ?
+            goldenTickets - 1 :
+            0;
+        await Admin.findOneAndUpdate(
           { _id: reviewerId },
           { $set: { goldenTickets: numberOfGoldenTicketsRemaining } }
         );
@@ -346,10 +350,9 @@ module.exports = {
     }
 
     try {
-      updatedUser = await User.findOneAndUpdate(
-        { _id: userId }, // TODO: add { 'reviews.group': { $ne: reviewToSubmit.group } } to avoid duplicate
-        // applications for a user
-        { $push: { reviews: reviewToSubmit } },
+      updatedUser = await Hacker.findOneAndUpdate(
+        { _id: userId },
+        { $push: { "applications.0.reviews": reviewToSubmit } },
         DEFAULT_FIND_ONE_AND_UPDATE_OPTIONS
       );
     } catch (err) {

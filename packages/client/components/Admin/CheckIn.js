@@ -40,7 +40,7 @@ class CheckIn extends Component {
 
   checkInHacker(hackerId) {
     const eventId = this.props.hackers.filter((h) => (h._id = hackerId))[0]
-      .events[0]; //TODO: Fix this hack shit
+      .applications[0].event; //TODO: Fix this hack shit
     this.props.setHackerIDToCheckIn({ hacker: "" });
     this.fetchHackersRequiringCheckIn();
     this.props.updateHackerCheckInStatus(hackerId, eventId, "COMPLETED");
@@ -111,8 +111,11 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, {
-  fetchHackersRequiringCheckIn,
-  setHackerIDToCheckIn,
-  updateHackerCheckInStatus
-})(CheckIn);
+export default connect(
+  mapStateToProps,
+  {
+    fetchHackersRequiringCheckIn,
+    setHackerIDToCheckIn,
+    updateHackerCheckInStatus
+  }
+)(CheckIn);

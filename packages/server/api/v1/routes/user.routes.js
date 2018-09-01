@@ -39,7 +39,7 @@ module.exports = (ctr) => {
       });
   });
 
-  userAPI.post(`/${USER}/:userId`, (req, res) => {
+  userAPI.put(`/${USER}/:userId`, (req, res) => {
     user
       .updateUser(req.params.userId, req.body)
       .then((updatedUser) => {
