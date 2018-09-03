@@ -1,4 +1,4 @@
-const { Hacker, Event } = require("../../../models");
+const { Hacker, Event } = require("../../models");
 const _ = require("lodash");
 
 describe("Hacker model", () => {
