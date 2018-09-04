@@ -5,7 +5,7 @@ describe("Events model", () => {
     const events = await Event.find({});
     expect(events.length).toBe(1);
     expect(events[0]).toEqual(
-      expect.objectContaining({ name: "testEvent", slug: "Test Event" })
+      expect.objectContaining({ name: "qhacks-2018", slug: "qhacks-2018" })
     );
   });
 

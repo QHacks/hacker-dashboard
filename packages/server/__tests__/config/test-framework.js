@@ -34,8 +34,8 @@ beforeEach(async () => {
   const eventId = uuid.v4();
   const testEvent = new Event({
     _id: eventId,
-    name: "testEvent",
-    slug: "Test Event"
+    name: "qhacks-2018",
+    slug: "qhacks-2018"
   });
   const hacker2 = new Hacker({
     firstName: "hacker",
