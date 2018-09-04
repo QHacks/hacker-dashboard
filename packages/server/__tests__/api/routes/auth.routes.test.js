@@ -1,8 +1,7 @@
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const { request, createAccessToken } = require("../../config/mock-api");
-const { Admin, Hacker, Event } = require("../../../models");
+const { request } = require("../../config/mock-api");
+const { Admin, Hacker } = require("../../../models");
 const emails = require("../../../emails");
 
 emails.sendEmail = jest.fn((a, b) => Promise.resolve());

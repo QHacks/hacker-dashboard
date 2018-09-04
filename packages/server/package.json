@@ -6,8 +6,6 @@
   "scripts": {
     "dev": "npm run build && NODE_ENV=development nodemon index.js",
     "start": "NODE_ENV=production node index.js",
-    "test": "jest",
-    "test-watch": "jest --watch",
     "build": "npm run clean && mjml --min ./emails/templates/*.mjml -o ./emails/dist/",
     "build-emails": "npm run build",
     "clean": "rimraf ./emails/dist && mkdir ./emails/dist"
