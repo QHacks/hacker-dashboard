@@ -97,7 +97,7 @@ describe("/api/v1/users", () => {
         describe("PUT", () => {
           it("updates a user's application status", async () => {
             const user = await User.findOne({ email: "hacker2@gmail.com" });
-            const event = await Event.findOne({ name: "testEvent" });
+            const event = await Event.findOne({ name: "qhacks-2018" });
             const status = "ACCEPTED";
             const response = await request
               .put(`/api/v1/users/${user._id}/applications/${event._id}`)
@@ -120,7 +120,7 @@ describe("/api/v1/users", () => {
         describe("PUT", () => {
           it("RSVPs a user for an event", async () => {
             const user = await User.findOne({ email: "hacker3@gmail.com" });
-            const event = await Event.findOne({ name: "testEvent" });
+            const event = await Event.findOne({ name: "qhacks-2018" });
             const rsvp = "COMPLETED";
             const response = await request
               .put(`/api/v1/users/${user._id}/applications/${event._id}/rsvp`)

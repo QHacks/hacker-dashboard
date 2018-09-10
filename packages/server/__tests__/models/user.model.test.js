@@ -1,4 +1,4 @@
-const { User, Admin, Hacker } = require("../../../models");
+const { User, Admin, Hacker } = require("../../models");
 
 describe("Users model", () => {
   it("Returns all hackers and admins", async () => {
