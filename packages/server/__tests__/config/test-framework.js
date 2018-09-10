@@ -2,11 +2,23 @@ const mongoose = require("mongoose");
 const uuid = require("uuid");
 
 const { User, Admin, Event, Settings, Hacker } = require("../../models");
+const logger = require("../../utils/logger");
 
 jest.mock("../../emails");
 
 beforeAll(async () => {
-  mongoose.connect(global.__MONGO_URI__);
+  mongoose.connect(
+    global.__MONGO_URI__,
+    { useNewUrlParser: true },
+    (err) => {
+      if (err) {
+        logger.info("Could not connect to the test database!");
+        return;
+      }
+      logger.info("Successfully connected to the test database!");
+    }
+  );
+
   mongoose.Promise = Promise;
 });
 
@@ -34,8 +46,8 @@ beforeEach(async () => {
   const eventId = uuid.v4();
   const testEvent = new Event({
     _id: eventId,
-    name: "testEvent",
-    slug: "Test Event"
+    name: "qhacks-2018",
+    slug: "qhacks-2018"
   });
   const hacker2 = new Hacker({
     firstName: "hacker",

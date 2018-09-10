@@ -17,13 +17,19 @@ module.exports = function connectToDB(cb = noop) {
 
   const user = process.env.MONGO_USER;
   const pass = process.env.MONGO_PASS;
+  const uri = `mongodb://${host}:${port}/${name}`;
 
-  if (!user || !pass) logger.info("Running Mongo unauthenticated!");
-
-  const url = `mongodb://${host}:${port}/${name}`;
   mongoose.Promise = global.Promise;
 
-  logger.info("Connecting to database:", url);
+  if (!user || !pass) {
+    logger.info("Running Mongo unauthenticated!");
+    return mongoose.connect(
+      uri,
+      cb
+    );
+  }
+
+  logger.info("Connecting to database:", uri);
 
   const opt = user && pass && { user, pass };
 
@@ -32,7 +38,7 @@ module.exports = function connectToDB(cb = noop) {
   }
 
   return mongoose.connect(
-    url,
+    uri,
     opt,
     cb
   );

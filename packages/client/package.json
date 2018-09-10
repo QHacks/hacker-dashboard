@@ -7,9 +7,7 @@
     "dev": "webpack-dev-server",
     "build": "npm run clean && NODE_ENV=production webpack",
     "build-client": "npm run build",
-    "clean": "rimraf ./bundle",
-    "test": "jest",
-    "test-watch": "jest --watch"
+    "clean": "rimraf ./bundle"
   },
   "author": "Zack Harley and Robert Saunders",
   "license": "MIT",
