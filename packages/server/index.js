@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 connectToDB(async (err) => {
   if (err) {
-    logger.info("Could not connect to thes database!");
+    logger.info("Could not connect to the database!");
     return;
   }
 
@@ -80,6 +80,6 @@ connectToDB(async (err) => {
 
   // Start listening!
   app.listen(port, () =>
-    logger.info(`QHacks Dashboard running on port ${port}!`)
+    logger.info(`QHacks Dashboard is running on port ${port}!`)
   );
 });
