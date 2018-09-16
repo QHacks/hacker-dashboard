@@ -5,6 +5,5 @@ node_modules
 packages/client/bundle/*
 packages/server/emails/dist/*
 .DS_STORE
-package-lock.json
 .vscode
 coverage
