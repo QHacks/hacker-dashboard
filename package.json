@@ -18,7 +18,7 @@
     }
   },
   "scripts": {
-    "bootstrap": "npm install --unsafe-perm || ((if [ -f npm-debug.log ]; then cat npm-debug.log; fi) && false) && lerna bootstrap",
+    "bootstrap": "npm install --unsafe-perm || ((if [ -f npm-debug.log ]; then cat npm-debug.log; fi) && false) && lerna bootstrap --no-ci",
     "build": "lerna run build --stream",
     "build-emails": "lerna run build-emails --scope server",
     "build-client": "lerna run build-client --scope client",
@@ -35,13 +35,13 @@
     "npm": "5.x"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.5",
+    "babel-eslint": "^9.0.0",
     "coveralls": "^3.0.2",
-    "eslint": "^5.0.1",
+    "eslint": "^5.6.0",
     "eslint-config-prettier": "^3.0.1",
-    "eslint-plugin-react": "^7.10.0",
-    "husky": "^1.0.0-rc.13",
-    "lerna": "^2.8.0",
+    "eslint-plugin-react": "^7.11.1",
+    "husky": "^1.0.0-rc.14",
+    "lerna": "^3.4.0",
     "prettier": "^1.14.2",
     "pretty-quick": "^1.6.0"
   }

@@ -7,6 +7,7 @@ const logger = require("../../utils/logger");
 jest.mock("../../emails");
 
 beforeAll(async () => {
+  mongoose.set("useCreateIndex", true);
   mongoose.connect(
     global.__MONGO_URI__,
     { useNewUrlParser: true },

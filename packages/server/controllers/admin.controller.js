@@ -333,9 +333,7 @@ module.exports = {
 
       try {
         const numberOfGoldenTicketsRemaining =
-          goldenTickets - 1 > 0 ?
-            goldenTickets - 1 :
-            0;
+          goldenTickets - 1 > 0 ? goldenTickets - 1 : 0;
         await Admin.findOneAndUpdate(
           { _id: reviewerId },
           { $set: { goldenTickets: numberOfGoldenTicketsRemaining } }
