@@ -8,8 +8,10 @@ const { ERROR_TEMPLATES, createError } = require("../errors");
 const { EMAILS, ERROR } = require("../strings");
 
 const JWT_ISSUER = "QHacks Authentication";
-const ACCESS_TOKEN_EXPIRE_TIME = "5 minutes";
-const REFRESH_TOKEN_EXPIRE_TIME = "60 minutes";
+const ACCESS_TOKEN_EXPIRE_TIME =
+  process.env.ACCESS_TOKEN_EXPIRE_TIME || "5 minutes";
+const REFRESH_TOKEN_EXPIRE_TIME =
+  process.env.REFRESH_TOKEN_EXPIRE_TIME || "60 minutes";
 const QHACKS_2018_SLUG = "qhacks-2018";
 
 const { AUTH_SECRET } = process.env;
