@@ -18,6 +18,6 @@ module.exports = {
     }
   ],
   coverageDirectory: "./coverage",
-  coveragePathIgnorePatterns: ["/node_modules/"],
+  collectCoverageFrom: ["**/*.js", "!**/node_modules/**", "!**/*.config.js", "!**/__tests__/**", "./packages/**/*.js"],
   coverageReporters: ["lcov"]
 };
