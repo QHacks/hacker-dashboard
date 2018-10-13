@@ -19,7 +19,6 @@ const auth = require("./auth");
 const api = require("./api");
 const controllers = require("./controllers");
 const connectToDB = require("./db");
-const webhook = require("./webhook");
 const { createEmailsMiddleware } = require("./emails");
 const { initSettings } = require("./settings");
 
@@ -66,7 +65,6 @@ connectToDB(async (err) => {
   }
 
   // Res.on('finish') hooks
-  app.use(webhook());
   app.use(createEmailsMiddleware());
 
   // Core API
