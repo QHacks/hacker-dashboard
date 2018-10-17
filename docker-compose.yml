@@ -1,0 +1,14 @@
+version: "3"
+services:
+  core:
+    build: ./packages/core
+    ports:
+      - "3000:3000"
+  client:
+    build: ./packages/client
+    ports:
+      - "3001:3001"
+  bot:
+    build: ./packages/bot
+    ports:
+      - "3002:3002"

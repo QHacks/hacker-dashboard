@@ -5,7 +5,6 @@ const compression = require("compression");
 const bodyParser = require("body-parser");
 const logger = require("./utils/logger");
 const express = require("express");
-const path = require("path");
 const helmet = require("helmet");
 
 const IS_PROD = process.env.NODE_ENV === "production";
@@ -21,9 +20,6 @@ const controllers = require("./controllers");
 const connectToDB = require("./db");
 const { createEmailsMiddleware } = require("./emails");
 const { initSettings } = require("./settings");
-
-// Path to static files
-const BUNDLE_DIR = path.join(__dirname, "../client/bundle");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -72,9 +68,6 @@ connectToDB(async (err) => {
 
   // Fallback if page reload
   app.use(history());
-
-  // Static Files
-  app.use(express.static(BUNDLE_DIR));
 
   // Start listening!
   app.listen(port, () =>

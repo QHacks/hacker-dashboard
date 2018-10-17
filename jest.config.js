@@ -8,14 +8,18 @@ module.exports = {
       testURL: "http://localhost/"
     },
     {
-      displayName: "server",
+      displayName: "core",
       globals: {
         dbName: "qhacks-dashboard-test"
       },
-      setupTestFrameworkScriptFile: "./packages/server/__tests__/config/test-framework",
-      testEnvironment: "./packages/server/__tests__/config/mongo-environment",
-      testRegex: "./packages/server/__tests__\/.*\.test\.js$"
-    }
+      setupTestFrameworkScriptFile: "./packages/core/__tests__/config/test-framework",
+      testEnvironment: "./packages/core/__tests__/config/mongo-environment",
+      testRegex: "./packages/core/__tests__\/.*\.test\.js$"
+    },
+    {
+      displayName: "bot",
+      testRegex: "./packages/bot/__tests__\/.*\.test\.js$"
+    },
   ],
   coverageDirectory: "./coverage",
   collectCoverageFrom: ["**/*.js", "!**/node_modules/**", "!**/*.config.js", "!**/__tests__/**", "./packages/**/*.js"],
