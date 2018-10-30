@@ -79,10 +79,11 @@ const ERROR = {
   SUCCESSFUL_PASSWORD_RESET_EMAIL_FAILED_TO_SEND:
     "The successful reset password email did not send correctly!",
 
-  SUBSCRIPTION_DID_NOT_SAVE: "Failed to save subscription in the database!",
-  SUBSCRIPTION_LIST_NOT_FOUND: "Subscription list not found!",
-  SUBSCRIPTION_EMAIL_TAKEN: "Provided email has already been subscribed!",
-  SUBSCRIPTION_INVALID_EMAIL: "Invalid email address provided!"
+  MAILING_LIST_SUBSCRIPTION_DID_NOT_SAVE:
+    "Failed to save mailing subscription in the database!",
+  MAILING_LIST_NOT_FOUND: "Mailing list not found!",
+  MAILING_LIST_EMAIL_TAKEN:
+    "Provided email has already been subscribed to the mailing list!"
 };
 
 module.exports = ERROR;

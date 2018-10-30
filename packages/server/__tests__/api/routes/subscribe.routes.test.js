@@ -1,33 +1,37 @@
 const { request } = require("../../config/mock-api");
-const { SubscriptionList, Event, Subscription } = require("../../../models");
+const {
+  Event,
+  MailingList,
+  MailingListSubscription
+} = require("../../../models");
 
 describe("/api/v1/subscribe", () => {
   describe("/", () => {
     describe("POST", () => {
-      it("creates a new subscription", async () => {
-        const response = await request.post("/api/v1/subscribe/").send({
-          email: "jospeh@josephmail.com",
-          type: "test-mailing-list",
+      it("creates a new subscription to a provided mailing list", async () => {
+        const response = await request.post("/api/v1/subscribe").send({
+          email: "joseph@josephmail.com",
+          name: "test-mailing-list",
           event: "qhacks-2018"
         });
 
         expect(response.statusCode).toBe(201);
 
         const event = await Event.findOne({ slug: "qhacks-2018" });
-        const list = await SubscriptionList.findOne({
+        const list = await MailingList.findOne({
           event: event._id,
-          type: "test-mailing-list"
+          name: "test-mailing-list"
         });
 
         expect(response.body).toEqual(
           expect.objectContaining({
-            email: "jospeh@josephmail.com",
+            email: "joseph@josephmail.com",
             list: list._id
           })
         );
 
-        const newSubscription = await Subscription.findOne({
-          email: "jospeh@josephmail.com",
+        const newSubscription = await MailingListSubscription.findOne({
+          email: "joseph@josephmail.com",
           list: list._id
         });
 
@@ -35,42 +39,43 @@ describe("/api/v1/subscribe", () => {
       });
 
       it("fails for an invalid email address", async () => {
-        const response = await request.post("/api/v1/subscribe/").send({
+        const response = await request.post("/api/v1/subscribe").send({
           email: "asdgjslkdfg",
-          type: "test-mailing-list",
+          name: "test-mailing-list",
+          event: "qhacks-2018"
+        });
+
+        expect(response.statusCode).toBe(422);
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            code: 422,
+            type: "VALIDATION"
+          })
+        );
+      });
+
+      it("fails for an already signed up email", async () => {
+        const response = await request.post("/api/v1/subscribe").send({
+          email: "bob@yopmail.com",
+          name: "test-mailing-list",
           event: "qhacks-2018"
         });
 
         expect(response.statusCode).toBe(400);
-        expect(response.body).toEqual({
-          code: 400,
-          type: "BAD_REQUEST",
-          message: "Invalid email address provided!",
-          data: { name: "ValidationError", message: "Invalid email provided!" }
-        });
-      });
-
-      it("fails for an already signed up email", async () => {
-        const response = await request.post("/api/v1/subscribe/").send({
-          email: "bob@yopmail.com",
-          type: "test-mailing-list",
-          event: "qhacks-2018"
-        });
-
-        expect(response.statusCode).toBe(401);
         expect(response.body).toEqual(
           expect.objectContaining({
-            code: 401,
-            type: "AUTHORIZATION",
-            message: "Provided email has already been subscribed!"
+            code: 400,
+            type: "BAD_REQUEST",
+            message:
+              "Provided email has already been subscribed to the mailing list!"
           })
         );
       });
 
       it("fails for a non-existent event", async () => {
-        const response = await request.post("/api/v1/subscribe/").send({
+        const response = await request.post("/api/v1/subscribe").send({
           email: "bob@yopmail.com",
-          type: "test-mailing-list",
+          name: "test-mailing-list",
           event: "yophacks-2020"
         });
 
@@ -83,10 +88,10 @@ describe("/api/v1/subscribe", () => {
         });
       });
 
-      it("fails for a non-existent list", async () => {
-        const response = await request.post("/api/v1/subscribe/").send({
+      it("fails for a non-existent mailing list", async () => {
+        const response = await request.post("/api/v1/subscribe").send({
           email: "bob@yopmail.com",
-          type: "super-secret-hacker-list",
+          name: "super-secret-hacker-list",
           event: "qhacks-2018"
         });
 
@@ -94,7 +99,7 @@ describe("/api/v1/subscribe", () => {
         expect(response.body).toEqual({
           code: 404,
           type: "MISSING",
-          message: "Subscription list not found!",
+          message: "Mailing list not found!",
           data: {}
         });
       });

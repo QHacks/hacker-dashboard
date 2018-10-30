@@ -1,12 +1,12 @@
 const uuid = require("uuid");
 const mongoose = require("mongoose");
 
-const subscriptionListSchema = mongoose.Schema({
+const mailingListSchema = mongoose.Schema({
   _id: {
     type: String,
     default: uuid.v4
   },
-  type: {
+  name: {
     type: String,
     unique: true
   },
@@ -25,11 +25,11 @@ const subscriptionListSchema = mongoose.Schema({
   }
 });
 
-subscriptionListSchema.pre("update", function(next) {
+mailingListSchema.pre("update", function(next) {
   this.update({}, { $set: { modifiedAt: new Date() } });
   return next();
 });
 
-subscriptionListSchema.index({ type: 1, event: 1 }, { unique: true });
+mailingListSchema.index({ name: 1, event: 1 }, { unique: true });
 
-module.exports = subscriptionListSchema;
+module.exports = mailingListSchema;

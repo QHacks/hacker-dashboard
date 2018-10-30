@@ -8,8 +8,8 @@ const {
   Event,
   Hacker,
   Settings,
-  Subscription,
-  SubscriptionList
+  MailingList,
+  MailingListSubscription
 } = require("../../models");
 
 jest.mock("../../emails");
@@ -99,15 +99,15 @@ beforeEach(async () => {
   const setting = new Settings({
     numberOfReviewsRequired: 10
   });
-  const subscriptionListId = uuid.v4();
-  const subscriptionList = new SubscriptionList({
-    _id: subscriptionListId,
-    type: "test-mailing-list",
+  const mailingListId = uuid.v4();
+  const mailingList = new MailingList({
+    _id: mailingListId,
+    name: "test-mailing-list",
     event: eventId
   });
-  const subscription = new Subscription({
+  const subscription = new MailingListSubscription({
     email: "bob@yopmail.com",
-    list: subscriptionListId
+    list: mailingListId
   });
 
   await Promise.all([
@@ -115,7 +115,7 @@ beforeEach(async () => {
     setting.save(),
     admin1.save(),
     hacker1.save(),
-    subscriptionList.save()
+    mailingList.save()
   ]);
   await Promise.all([admin2.save(), hacker2.save(), subscription.save()]);
   await hacker3.save();
@@ -126,8 +126,8 @@ afterEach(async () => {
     User.remove({}),
     Event.remove({}),
     Settings.remove({}),
-    Subscription.remove({}),
-    SubscriptionList.remove({})
+    MailingListSubscription.remove({}),
+    MailingList.remove({})
   ]);
 
   jest.clearAllMocks();

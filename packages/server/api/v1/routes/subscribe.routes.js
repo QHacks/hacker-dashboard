@@ -9,9 +9,9 @@ module.exports = (ctr) => {
   const { subscribe } = ctr;
 
   subscribeAPI.post(`/${SUBSCRIBE}/`, (req, res) => {
-    const { event, type, email } = req.body;
+    const { event, name, email } = req.body;
     subscribe
-      .addSubscription(event, type, email)
+      .addMailingListSubscription(event, name, email)
       .then((subscription) => res.status(201).json(subscription))
       .catch((err) => {
         res.status(err.code).json(err);

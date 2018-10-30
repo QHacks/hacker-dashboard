@@ -4,6 +4,6 @@ module.exports = {
   Admin: require("./admin.model"),
   Hacker: require("./hacker.model"),
   Settings: require("./settings.model"),
-  Subscription: require("./subscription.model"),
-  SubscriptionList: require("./subscriptionList.model")
+  MailingList: require("./mailingList.model"),
+  MailingListSubscription: require("./mailingListSubscription.model")
 };
