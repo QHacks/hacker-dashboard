@@ -1,6 +1,6 @@
 const { Subscription, SubscriptionList } = require("../../models");
 
-describe("Subscriptions model", () => {
+describe("Subscription model", () => {
   it("saves correctly", (done) => {
     SubscriptionList.findOne({}).then((list) => {
       const { _id: listId } = list;
@@ -33,7 +33,7 @@ describe("Subscriptions model", () => {
   });
 
   it("has a unique index on emails and lists", (done) => {
-    SubscriptionList.findOne({ slug: "test-mailing-list" }).then((list) => {
+    SubscriptionList.findOne({ type: "test-mailing-list" }).then((list) => {
       const invalidSubscription = new Subscription({
         email: "bob@yopmail.com",
         list: list._id
@@ -55,7 +55,10 @@ describe("Subscriptions model", () => {
       });
 
       invalidSubscription.save().catch((err) => {
-        expect(err).toEqual({ error: "Invalid email provided!" });
+        expect(err).toEqual({
+          name: "ValidationError",
+          message: "Invalid email provided!"
+        });
         done();
       });
     });
@@ -66,7 +69,10 @@ describe("Subscriptions model", () => {
       {},
       { email: "kadfhgjkshftgkl" }
     ).catch((err) => {
-      expect(err).toEqual({ error: "Invalid email provided!" });
+      expect(err).toEqual({
+        name: "ValidationError",
+        message: "Invalid email provided!"
+      });
     });
   });
 });

@@ -6,7 +6,7 @@ const subscriptionListSchema = mongoose.Schema({
     type: String,
     default: uuid.v4
   },
-  slug: {
+  type: {
     type: String,
     unique: true
   },
@@ -30,6 +30,6 @@ subscriptionListSchema.pre("update", function(next) {
   return next();
 });
 
-subscriptionListSchema.index({ slug: 1, event: 1 }, { unique: true });
+subscriptionListSchema.index({ type: 1, event: 1 }, { unique: true });
 
 module.exports = subscriptionListSchema;

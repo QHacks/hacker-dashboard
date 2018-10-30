@@ -22,7 +22,10 @@ const subscriptionSchema = mongoose.Schema({
 function validateEmail(email, next) {
   const isValidEmail = EMAIL_REGEX.test(email);
   if (!isValidEmail) {
-    return next({ error: "Invalid email provided!" });
+    return next({
+      name: "ValidationError",
+      message: "Invalid email provided!"
+    });
   }
 }
 

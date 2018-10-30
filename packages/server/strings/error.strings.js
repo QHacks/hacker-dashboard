@@ -19,6 +19,8 @@ const ERROR = {
   DB_USER_UPDATE: "Could not update the specified user in the database!",
   DB_USERS_GET: "Error retrieving users from the database!",
 
+  EVENT_NOT_FOUND: "Event not found!",
+
   NO_ADMINS_EXIST: "No admins exist in the database!",
   NO_APPLICATION_TO_REVIEW_EXISTS:
     "No application to review exists in the database!",
@@ -75,7 +77,12 @@ const ERROR = {
   RESET_PASSWORD_EMAIL_FAILED_TO_SEND:
     "The reset password email did not send correctly!",
   SUCCESSFUL_PASSWORD_RESET_EMAIL_FAILED_TO_SEND:
-    "The successful reset password email did not send correctly!"
+    "The successful reset password email did not send correctly!",
+
+  SUBSCRIPTION_DID_NOT_SAVE: "Failed to save subscription in the database!",
+  SUBSCRIPTION_LIST_NOT_FOUND: "Subscription list not found!",
+  SUBSCRIPTION_EMAIL_TAKEN: "Provided email has already been subscribed!",
+  SUBSCRIPTION_INVALID_EMAIL: "Invalid email address provided!"
 };
 
 module.exports = ERROR;

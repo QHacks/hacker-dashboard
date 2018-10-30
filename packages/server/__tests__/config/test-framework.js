@@ -102,7 +102,7 @@ beforeEach(async () => {
   const subscriptionListId = uuid.v4();
   const subscriptionList = new SubscriptionList({
     _id: subscriptionListId,
-    slug: "test-mailing-list",
+    type: "test-mailing-list",
     event: eventId
   });
   const subscription = new Subscription({
