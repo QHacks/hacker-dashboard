@@ -1,4 +1,5 @@
 const Router = require("express").Router;
+const cors = require("cors");
 
 const SUBSCRIBE = "subscribe";
 
@@ -8,7 +9,7 @@ module.exports = (ctr) => {
   // Get subscribe controller
   const { subscribe } = ctr;
 
-  subscribeAPI.post(`/${SUBSCRIBE}/`, (req, res) => {
+  subscribeAPI.post(`/${SUBSCRIBE}/`, cors(), (req, res) => {
     const { event, name, email } = req.body;
     subscribe
       .addMailingListSubscription(event, name, email)
