@@ -1,8 +1,16 @@
-const mongoose = require("mongoose");
 const uuid = require("uuid");
-
-const { User, Admin, Event, Settings, Hacker } = require("../../models");
 const logger = require("../../utils/logger");
+const mongoose = require("mongoose");
+
+const {
+  User,
+  Admin,
+  Event,
+  Hacker,
+  Settings,
+  MailingList,
+  MailingListSubscription
+} = require("../../models");
 
 jest.mock("../../emails");
 
@@ -91,18 +99,36 @@ beforeEach(async () => {
   const setting = new Settings({
     numberOfReviewsRequired: 10
   });
+  const mailingListId = uuid.v4();
+  const mailingList = new MailingList({
+    _id: mailingListId,
+    name: "test-mailing-list",
+    event: eventId
+  });
+  const subscription = new MailingListSubscription({
+    email: "bob@yopmail.com",
+    list: mailingListId
+  });
+
   await Promise.all([
     testEvent.save(),
     setting.save(),
     admin1.save(),
-    hacker1.save()
+    hacker1.save(),
+    mailingList.save()
   ]);
-  await Promise.all([admin2.save(), hacker2.save()]);
+  await Promise.all([admin2.save(), hacker2.save(), subscription.save()]);
   await hacker3.save();
 });
 
 afterEach(async () => {
-  await Promise.all([User.remove({}), Event.remove({}), Settings.remove({})]);
+  await Promise.all([
+    User.remove({}),
+    Event.remove({}),
+    Settings.remove({}),
+    MailingListSubscription.remove({}),
+    MailingList.remove({})
+  ]);
 
   jest.clearAllMocks();
 });

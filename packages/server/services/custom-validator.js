@@ -83,5 +83,6 @@ function validateSignUpInfo(signUpInfo) {
 }
 
 module.exports = {
+  validateEmail,
   validateSignUpInfo
 };

@@ -1,7 +1,9 @@
 module.exports = {
-  Settings: require("./settings.model"),
-  Event: require("./event.model"),
   User: require("./user.model"),
+  Event: require("./event.model"),
   Admin: require("./admin.model"),
-  Hacker: require("./hacker.model")
+  Hacker: require("./hacker.model"),
+  Settings: require("./settings.model"),
+  MailingList: require("./mailingList.model"),
+  MailingListSubscription: require("./mailingListSubscription.model")
 };

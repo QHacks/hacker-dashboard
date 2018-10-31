@@ -1,9 +1,6 @@
-const admin = require("./admin.controller");
-const auth = require("./auth.controller");
-const user = require("./user.controller");
-
 module.exports = {
-  admin,
-  auth,
-  user
+  admin: require("./admin.controller"),
+  auth: require("./auth.controller"),
+  user: require("./user.controller"),
+  subscribe: require("./subscribe.controller")
 };

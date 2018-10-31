@@ -1,7 +1,8 @@
 const Router = require("express").Router;
-const adminRoutes = require("./routes/admin.routes");
 const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
+const adminRoutes = require("./routes/admin.routes");
+const mailingListRoutes = require("./routes/subscribe.routes");
 
 module.exports = (controllers) => {
   const api = Router();
@@ -14,6 +15,9 @@ module.exports = (controllers) => {
 
   // user routes
   api.use("/", userRoutes(controllers));
+
+  // subscribe routes
+  api.use("/", mailingListRoutes(controllers));
 
   return api;
 };

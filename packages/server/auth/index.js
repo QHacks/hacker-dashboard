@@ -3,7 +3,7 @@ const { ERROR_TEMPLATES, createError } = require("../errors");
 const { ERROR } = require("../strings");
 
 const { AUTH_SECRET } = process.env;
-const V1_EXCEPTION_REGEX = /^\/v1\/auth\//;
+const V1_EXCEPTION_REGEX = /^\/v1\/(auth|subscribe)(\/)?/;
 
 function getBearer(req) {
   if (!req.headers || !req.headers.authorization) return false;
