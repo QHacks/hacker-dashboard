@@ -72,6 +72,24 @@ describe("/api/v1/subscribe", () => {
         );
       });
 
+      it("fails for an already signed up email (case-insensitive)", async () => {
+        const response = await request.post("/api/v1/subscribe").send({
+          email: "BoB@yOpMaIl.com",
+          name: "test-mailing-list",
+          event: "qhacks-2018"
+        });
+
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            code: 400,
+            type: "BAD_REQUEST",
+            message:
+              "Provided email has already been subscribed to the mailing list!"
+          })
+        );
+      });
+
       it("fails for a non-existent event", async () => {
         const response = await request.post("/api/v1/subscribe").send({
           email: "bob@yopmail.com",

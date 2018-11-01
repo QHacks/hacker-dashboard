@@ -23,6 +23,10 @@ mailingListSubscriptionSchema.pre("update", function(next) {
   return next();
 });
 
-mailingListSubscriptionSchema.index({ email: 1, list: 1 }, { unique: true });
+// Case-insensitive index
+mailingListSubscriptionSchema.index(
+  { email: 1, list: 1 },
+  { unique: true, collation: { locale: "en", strength: 2 } }
+);
 
 module.exports = mailingListSubscriptionSchema;

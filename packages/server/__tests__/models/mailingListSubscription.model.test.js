@@ -46,4 +46,19 @@ describe("MailingListSubscription model", () => {
       });
     });
   });
+
+  it("has a case-insensitive index on emails and lists", (done) => {
+    MailingList.findOne({ name: "test-mailing-list" }).then((list) => {
+      const invalidSubscription = new MailingListSubscription({
+        email: "BOB@yopmail.com",
+        list: list._id
+      });
+
+      invalidSubscription.save().catch((err) => {
+        expect(err).toBeDefined();
+        expect(err.name).toBe("MongoError");
+        done();
+      });
+    });
+  });
 });
