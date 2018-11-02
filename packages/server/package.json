@@ -26,6 +26,7 @@
     "helmet": "^3.13.0",
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.11",
+    "migrate": "^1.6.2",
     "mjml": "^4.1.2",
     "moment": "^2.22.2",
     "mongoose": "^5.2.14",

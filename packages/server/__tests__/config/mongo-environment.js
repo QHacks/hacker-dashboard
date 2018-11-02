@@ -10,7 +10,7 @@ class MongoEnvironment extends NodeEnvironment {
         dbName: this.global.dbName
       },
       binary: {
-        version: "3.4.4"
+        version: "3.6.7"
       }
     });
   }

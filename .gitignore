@@ -8,3 +8,4 @@ packages/server/emails/dist/*
 package-lock.json
 .vscode
 coverage
+.migrate
