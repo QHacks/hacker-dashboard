@@ -2,9 +2,9 @@ import { Button, Form, Message } from "semantic-ui-react";
 import { required, email } from "redux-form-validators";
 import SemanticFormField from "./SemanticFormField";
 import { Field, reduxForm } from "redux-form";
-import React, { Component } from "react";
+import React from "react";
 
-function ResetPasswordForm(props) {
+const ResetPasswordForm = (props) => {
   return (
     <Form
       size="large"
@@ -44,6 +44,6 @@ function ResetPasswordForm(props) {
       </Button>
     </Form>
   );
-}
+};
 
 export default reduxForm({ form: "resetPassword" })(ResetPasswordForm);

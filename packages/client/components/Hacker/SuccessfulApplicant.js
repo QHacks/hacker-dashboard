@@ -1,8 +1,8 @@
 import { Message, Grid, Step, Icon } from "semantic-ui-react";
-import Emoji from "react-emoji-render";
 import ArriveInformation from "./ArriveInformation";
 import React, { Component } from "react";
 import RSVPForm from "../Forms/RSVPForm";
+import Emoji from "react-emoji-render";
 
 class SuccessfulApplicant extends Component {
   renderStepInformation() {
@@ -13,11 +13,13 @@ class SuccessfulApplicant extends Component {
       onWithdrawApplication,
       onSubmit
     } = this.props;
+
     const rsvpComplete = rsvpStatus === "COMPLETED";
 
     if (rsvpComplete) {
       return <ArriveInformation />;
     }
+
     return (
       <div>
         <Message positive>

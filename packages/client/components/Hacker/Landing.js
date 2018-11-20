@@ -1,4 +1,3 @@
-import { selectors, actionCreators } from "../../HackerStore";
 import ApplicationSubmitted from "./ApplicationSubmitted";
 import ApplicationWithdrawn from "./ApplicationWithdrawn";
 import SuccessfulApplicant from "./SuccessfulApplicant";
@@ -6,18 +5,6 @@ import WaitlistedApplicant from "./WaitlistedApplicant";
 import DeclinedApplicant from "./DeclinedApplicant";
 import { Container } from "semantic-ui-react";
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { reduce, map, merge } from "lodash";
-import camelcase from "camelcase";
-
-const { submitRSVP, withdrawApplication } = actionCreators;
-const {
-  getUser,
-  getRSVPLoading,
-  getRSVPError,
-  getRSVPSubmitted,
-  getWithdrawError
-} = selectors;
 
 const RSVP_FIELDS = [
   "favSnack",
@@ -31,72 +18,42 @@ const RSVP_FIELDS = [
 
 class HackerLanding extends Component {
   handleSubmitRSVP(values) {
-    // TODO: fix this bull shit form validation
-    const formComplete = RSVP_FIELDS.reduce((accum, key) => {
-      if (!Object.keys(values).includes(key)) {
-        return false;
-      }
-      return accum;
-    }, true);
-
-    if (formComplete) {
-      const { user } = this.props;
-      const userId = user._id;
-      const eventId = user.applications[0].event; // TODO: Hack. Inform the dashboard about the event that is currently running
-      const rsvp = reduce(
-        map(values, (value, key) => {
-          const emergencyContactFieldRegExp = /^emergency/;
-          if (key.match(emergencyContactFieldRegExp)) {
-            const newKey = camelcase(key.replace("emergency", ""));
-            return {
-              emergencyContact: {
-                [newKey]: value
-              }
-            };
-          }
-          return { [key]: value };
-        }),
-        merge
-      );
-      this.props.submitRSVP(userId, eventId, rsvp);
-    }
+    // do some validation and submit rsvp via api request
   }
 
   handleApplicationWithdraw() {
-    const { user } = this.props;
-    const userId = user._id;
-    const eventId = user.applications[0].event; // TODO: Hack. Inform the dashboard about the event that is currently running
-    this.props.withdrawApplication(userId, eventId);
+    // make an api request to withdraw an application
   }
 
   renderCorrectStatus() {
-    const { user, rsvpLoading, rsvpError } = this.props;
-    const eventId = user.applications[0].event; // TODO: Hack. Inform the dashboard about the event that is currently running
-    const application = user.applications.find(
-      (application) => application.event === eventId
-    );
+    const rsvpLoading = false;
+    const rsvpError = false;
+    const application = {
+      status: "APPLIED",
+      rsvp: "COMPLETED"
+    };
 
     switch (application.status) {
-    case "APPLIED":
-      return <ApplicationSubmitted />;
-    case "REJECTED":
-      return <DeclinedApplicant />;
-    case "WAITING_LIST":
-      return <WaitlistedApplicant />;
-    case "WITHDRAWN":
-      return <ApplicationWithdrawn />;
-    case "ACCEPTED":
-      return (
-        <SuccessfulApplicant
-          rsvpStatus={application.rsvp}
-          onSubmit={this.handleSubmitRSVP.bind(this)}
-          onWithdrawApplication={this.handleApplicationWithdraw.bind(this)}
-          rsvpLoading={rsvpLoading}
-          rsvpError={rsvpError}
-        />
-      );
-    default:
-      return null;
+      case "APPLIED":
+        return <ApplicationSubmitted />;
+      case "REJECTED":
+        return <DeclinedApplicant />;
+      case "WAITING_LIST":
+        return <WaitlistedApplicant />;
+      case "WITHDRAWN":
+        return <ApplicationWithdrawn />;
+      case "ACCEPTED":
+        return (
+          <SuccessfulApplicant
+            rsvpStatus={application.rsvp}
+            onSubmit={this.handleSubmitRSVP.bind(this)}
+            onWithdrawApplication={this.handleApplicationWithdraw.bind(this)}
+            rsvpLoading={rsvpLoading}
+            rsvpError={rsvpError}
+          />
+        );
+      default:
+        return null;
     }
   }
 
@@ -109,18 +66,4 @@ class HackerLanding extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    ...ownProps,
-    user: getUser(state),
-    rsvpLoading: getRSVPLoading(state),
-    rsvpError: getRSVPError(state),
-    rsvpSubmitted: getRSVPSubmitted(state),
-    withdrawError: getWithdrawError(state)
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  { submitRSVP, withdrawApplication }
-)(HackerLanding);
+export default HackerLanding;

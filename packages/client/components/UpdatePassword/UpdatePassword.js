@@ -1,28 +1,19 @@
 import { Divider, Header, Message } from "semantic-ui-react";
-import { actionCreators, selectors } from "../../HackerStore";
 import { UpdatePasswordForm } from "../Forms";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import "./UpdatePassword.less";
-
-const {
-  getIsPasswordUpdated,
-  getIsPasswordUpdatedError,
-  getIsPasswordUpdatedLoading
-} = selectors;
-const { updatePasswordForReset } = actionCreators;
 
 class UpdatePassword extends Component {
   handleUpdatePasswordForReset(values) {
     const { password } = values;
     const { hash } = this.props.match.params;
 
-    this.props.updatePasswordForReset(hash, password);
+    // send api request to update the password with the hash from url and value from form
   }
 
   renderPasswordUpdateHeader() {
-    const { isPasswordUpdated } = this.props;
+    const isPasswordUpdated = false;
 
     return (
       <div className="update-header">
@@ -37,24 +28,21 @@ class UpdatePassword extends Component {
           textAlign="center"
           className="form apply header"
         />
-        {isPasswordUpdated ?
-          null :
-          (
-            <p>
-              Please enter your new password to complete the reset password
-              process.
-            </p>
-          )}
+        {isPasswordUpdated ? null : (
+          <p>
+            Please enter your new password to complete the reset password
+            process.
+          </p>
+        )}
       </div>
     );
   }
 
   renderPasswordUpdateForm() {
-    const {
-      isPasswordUpdated,
-      isPasswordUpdatedError,
-      isPasswordUpdatedLoading
-    } = this.props;
+    const isPasswordUpdated = false;
+    const isPasswordUpdatedError = false;
+    const isPasswordUpdatedLoading = false;
+
     if (isPasswordUpdated) {
       return (
         <Message
@@ -98,15 +86,4 @@ class UpdatePassword extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    ...ownProps,
-    isPasswordUpdated: getIsPasswordUpdated(state),
-    isPasswordUpdatedError: getIsPasswordUpdatedError(state),
-    isPasswordUpdatedLoading: getIsPasswordUpdatedLoading(state)
-  };
-}
-
-export default connect(mapStateToProps, { updatePasswordForReset })(
-  UpdatePassword
-);
+export default UpdatePassword;

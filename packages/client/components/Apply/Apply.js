@@ -1,31 +1,16 @@
-import { actionCreators, selectors } from "../../HackerStore";
 import ApplicationsClosed from "./ApplicationsClosed";
 import { Divider, Header } from "semantic-ui-react";
 import { Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { MISC } from "../../strings";
-import { ApplyForm } from "../Forms";
 import "./Apply.less";
-
-const {
-  getApplicationLoading,
-  getApplicationError,
-  getApplicationPage,
-  getAuthenticated,
-  getApplicationsStatus
-} = selectors;
-const { apply, applicationPageUpdate } = actionCreators;
-
-const { APPLICATION_CLOSED_STATUS } = MISC;
 
 class Apply extends Component {
   handleApply(values) {
-    this.props.apply(values);
+    // make api request to apply
   }
 
   handlePageUpdate(applicationPage) {
-    this.props.applicationPageUpdate({ applicationPage });
+    // specific to how we had pages in our application form last year
   }
 
   getRedirectPath() {
@@ -39,33 +24,22 @@ class Apply extends Component {
   }
 
   renderApplicationForm() {
-    const {
-      applicationError,
-      applicationLoading,
-      applicationPage,
-      applicationsStatus
-    } = this.props;
+    const applicationsStatus = "closed";
 
-    if (applicationsStatus === APPLICATION_CLOSED_STATUS) {
+    if (applicationsStatus === "closed") {
       return <ApplicationsClosed />;
     }
 
-    return (
-      <ApplyForm
-        onSubmit={this.handleApply.bind(this)}
-        applicationError={applicationError}
-        applicationLoading={applicationLoading}
-        applicationPage={applicationPage}
-        onPageUpdate={this.handlePageUpdate.bind(this)}
-      />
-    );
+    return null;
   }
   renderApplicationHeader() {
-    const { applicationsStatus } = this.props;
+    const applicationsStatus = "closed";
+
     const headerContent =
-      applicationsStatus === APPLICATION_CLOSED_STATUS
-        ? "Applications are now closed"
+      applicationsStatus === "closed"
+        ? "Applications are now closed!"
         : "Complete the form to apply!";
+
     return (
       <div className="application-header">
         <img
@@ -95,7 +69,7 @@ class Apply extends Component {
   }
 
   render() {
-    const { authenticated, applicationsStatus } = this.props;
+    const authenticated = false;
 
     if (authenticated) {
       return (
@@ -112,7 +86,6 @@ class Apply extends Component {
 
     return (
       <div className="application-container">
-        <div className="application-graphics" />
         <div className="application-form-container">
           {this.renderApplicationHeader()}
           {this.renderApplicationForm()}
@@ -123,17 +96,4 @@ class Apply extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    ...ownProps,
-    applicationError: getApplicationError(state),
-    applicationLoading: getApplicationLoading(state),
-    applicationPage: getApplicationPage(state),
-    authenticated: getAuthenticated(state),
-    applicationsStatus: getApplicationsStatus(state)
-  };
-}
-
-export default connect(mapStateToProps, { apply, applicationPageUpdate })(
-  Apply
-);
+export default Apply;

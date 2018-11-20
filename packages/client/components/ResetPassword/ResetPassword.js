@@ -1,21 +1,12 @@
-import { actionCreators, selectors } from "../../HackerStore";
 import { Divider, Header } from "semantic-ui-react";
 import { ResetPasswordForm } from "../Forms";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import "./ResetPassword.less";
-
-const {
-  getIsPasswordReset,
-  getIsPasswordResetError,
-  getIsPasswordResetLoading
-} = selectors;
-const { createResetHash, clearResetPassword } = actionCreators;
 
 class ResetPassword extends Component {
   handleResetPassword(values) {
-    this.props.createResetHash(values);
+    // fire off an api request to send out reset password link
   }
 
   renderResetPasswordHeader() {
@@ -41,15 +32,14 @@ class ResetPassword extends Component {
   }
 
   renderResetPasswordForm() {
-    const {
-      isPasswordReset,
-      isPasswordResetLoading,
-      isPasswordResetError
-    } = this.props;
+    const isPasswordResetLinkSent = false;
+    const isPasswordResetLoading = false;
+    const isPasswordResetError = false;
+
     return (
       <ResetPasswordForm
         onSubmit={this.handleResetPassword.bind(this)}
-        linkSent={isPasswordReset}
+        linkSent={isPasswordResetLinkSent}
         resetError={isPasswordResetError}
         resetLoading={isPasswordResetLoading}
       />
@@ -80,13 +70,4 @@ class ResetPassword extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    ...ownProps,
-    isPasswordReset: getIsPasswordReset(state),
-    isPasswordResetError: getIsPasswordResetError(state),
-    isPasswordResetLoading: getIsPasswordResetLoading(state)
-  };
-}
-
-export default connect(mapStateToProps, { createResetHash })(ResetPassword);
+export default ResetPassword;

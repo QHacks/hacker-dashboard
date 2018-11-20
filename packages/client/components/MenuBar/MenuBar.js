@@ -104,7 +104,7 @@ class MenuBar extends Component {
   renderLeftSideMenu() {
     return (
       <Menu.Menu position="left">
-        <Menu.Item as={Link} to="http://qhacks.io/">
+        <Menu.Item as={Link} to="https://qhacks.io/">
           {this.renderQHacksCrown()}
         </Menu.Item>
         <Menu.Item as={Link} to="/">
@@ -116,10 +116,10 @@ class MenuBar extends Component {
 
   renderRightSideMenu() {
     const { onLogoutClick } = this.props;
+
     return (
       <Menu.Menu position="right">
         {this.renderAdminMenu()}
-        {this.renderSuperAdminMenu()}
         <Menu.Item as={Link} to="/profile">
           Profile
         </Menu.Item>
@@ -133,8 +133,9 @@ class MenuBar extends Component {
   }
 
   renderAdminMenu() {
-    const { isAdmin, isSuperAdmin } = this.props;
-    if (isAdmin || isSuperAdmin) {
+    const { isAdmin } = this.props;
+
+    if (isAdmin) {
       return (
         <Dropdown item text="Admin">
           <Dropdown.Menu>
@@ -148,25 +149,7 @@ class MenuBar extends Component {
         </Dropdown>
       );
     }
-    return null;
-  }
 
-  renderSuperAdminMenu() {
-    const { isSuperAdmin } = this.props;
-    if (isSuperAdmin) {
-      return (
-        <Dropdown item text="Super Admin">
-          <Dropdown.Menu>
-            <Dropdown.Item as={Link} to="/applicants">
-              Applicants
-            </Dropdown.Item>
-            <Dropdown.Item as={Link} to="/settings">
-              Settings
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      );
-    }
     return null;
   }
 

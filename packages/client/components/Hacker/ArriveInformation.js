@@ -22,7 +22,6 @@ export default () => (
         be filled on a <b>first-come-first-serve basis</b>, so make sure to send
         us an email as soon as possible.
       </p>
-
       <p>
         If you are travelling to QHacks from a location other than the ones
         listed above, we will be offering travel reimbursements. Please email{" "}

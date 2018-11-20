@@ -10,9 +10,7 @@ const path = require("path");
 
 const isProd = process.env.NODE_ENV === "production";
 
-const mode = (isProd) ?
-  'production' :
-  'development';
+const mode = isProd ? "production" : "development";
 
 isProd
   ? logger.info("Running production build!")
@@ -25,7 +23,7 @@ const CLIENT_ENTRY = path.resolve(CLIENT_DIR, "Client.js");
 const CLIENT_TEMPLATE = path.resolve(CLIENT_DIR, "index.html");
 const CLIENT_OUTPUT = path.resolve(CLIENT_DIR, "bundle");
 
-const VENDOR_LIBS = ["react", "react-redux", "redux", "redux-form"];
+const VENDOR_LIBS = ["react"];
 
 module.exports = {
   entry: {
@@ -67,11 +65,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "less-loader"
-        ]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"]
       },
       {
         test: /\.jpe?g$|\.gif$|\.png$|\.ttf$|\.eot$|\.svg$/,
@@ -85,12 +79,8 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: !isProd ?
-        "[name].css" :
-        "[name].[hash].css",
-      chunkFilename: !isProd ?
-        "[id].css" :
-        "[id].[hash].css"
+      filename: !isProd ? "[name].css" : "[name].[hash].css",
+      chunkFilename: !isProd ? "[id].css" : "[id].[hash].css"
     }),
     new HtmlWebpackPlugin({
       template: CLIENT_TEMPLATE
@@ -120,7 +110,5 @@ module.exports = {
       }
     }
   },
-  devtool: isProd ?
-    "source-map" :
-    "cheap-eval-source-map"
+  devtool: isProd ? "source-map" : "cheap-eval-source-map"
 };

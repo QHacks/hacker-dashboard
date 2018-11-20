@@ -1,10 +1,10 @@
-import { Button, Form, Message } from "semantic-ui-react";
 import { required, confirmation, length } from "redux-form-validators";
+import { Button, Form, Message } from "semantic-ui-react";
 import SemanticFormField from "./SemanticFormField";
 import { Field, reduxForm } from "redux-form";
-import React, { Component } from "react";
+import React from "react";
 
-function UpdatePasswordForm(props) {
+const UpdatePasswordForm = (props) => {
   return (
     <Form
       size="large"
@@ -60,6 +60,6 @@ function UpdatePasswordForm(props) {
       </Button>
     </Form>
   );
-}
+};
 
 export default reduxForm({ form: "updatePassword" })(UpdatePasswordForm);

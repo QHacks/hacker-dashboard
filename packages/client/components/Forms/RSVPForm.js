@@ -1,8 +1,7 @@
+import { required, email, format } from "redux-form-validators";
 import { Button, Form, Message, Popup } from "semantic-ui-react";
 import SemanticFormField from "./SemanticFormField";
 import { Field, reduxForm } from "redux-form";
-import { required, email, format } from "redux-form-validators";
-
 import React, { Component } from "react";
 import "./RSVPForm.less";
 

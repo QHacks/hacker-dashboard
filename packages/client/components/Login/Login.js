@@ -1,18 +1,8 @@
-import { actionCreators, selectors } from "../../HackerStore";
 import { Redirect } from "react-router-dom";
 import { Header } from "semantic-ui-react";
-import React, { Component } from "react";
-import { connect } from "react-redux";
 import LoginForm from "../Forms/LoginForm";
+import React, { Component } from "react";
 import "./Login.less";
-
-const {
-  getLoginLoading,
-  getAuthenticated,
-  getIsLoginError,
-  getApplicationsStatus
-} = selectors;
-const { login } = actionCreators;
 
 class Login extends Component {
   constructor(props) {
@@ -23,7 +13,7 @@ class Login extends Component {
   }
 
   handleLogin(values) {
-    this.props.login(values);
+    // make API request to authenticate a user using the form values
   }
 
   getRedirectPath() {
@@ -37,10 +27,13 @@ class Login extends Component {
   }
 
   renderLoginForm() {
-    const { applicationsStatus, loginLoading, loginError } = this.props;
+    const loginLoading = false;
+    const loginError = false;
+    const applicationsStatus = "closed";
+
     return (
       <div className="login-form-wrapper">
-        <a href="http://qhacks.io">
+        <a href="https://qhacks.io">
           <img
             src={require("../../assets/img/qhacks-tricolor-logo.svg")}
             className="qhacks-logo-login"
@@ -79,7 +72,7 @@ class Login extends Component {
   }
 
   render() {
-    const { authenticated } = this.props;
+    const authenticated = false;
 
     if (authenticated) {
       return (
@@ -103,14 +96,4 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    ...ownProps,
-    authenticated: getAuthenticated(state),
-    loginLoading: getLoginLoading(state),
-    loginError: getIsLoginError(state),
-    applicationsStatus: getApplicationsStatus(state)
-  };
-}
-
-export default connect(mapStateToProps, { login })(Login);
+export default Login;
