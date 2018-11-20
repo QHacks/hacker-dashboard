@@ -5,25 +5,23 @@ const compression = require("compression");
 const bodyParser = require("body-parser");
 const logger = require("./utils/logger");
 const express = require("express");
-const path = require("path");
 const helmet = require("helmet");
+const path = require("path");
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const FORCE_SSL = process.env.FORCE_SSL === "true";
 
 IS_PROD
-  ? logger.info("Running production build!")
-  : logger.info("Running development build!");
+  ? logger.info("Running production server!")
+  : logger.info("Running development server!");
 
 const auth = require("./auth");
 const api = require("./api");
-const controllers = require("./controllers");
-const connectToDB = require("./db");
-const { createEmailsMiddleware } = require("./emails");
-const { initSettings } = require("./settings");
+// const controllers = require("./controllers");
+// const connectToDB = require("./db");
 
 // Path to static files
-const BUNDLE_DIR = path.join(__dirname, "../client/bundle");
+// const BUNDLE_DIR = path.join(__dirname, "../client/bundle");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -34,50 +32,55 @@ app.use(compression());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-connectToDB(async (err) => {
-  if (err) {
-    logger.info("Could not connect to the database!");
-    return;
-  }
+// Start listening!
+app.listen(port, () =>
+  logger.info(`QHacks Dashboard is running on port ${port}!`)
+);
 
-  logger.info("Successfully connected to the database!");
+// connectToDB(async (err) => {
+//   if (err) {
+//     logger.info("Could not connect to the database!");
+//     return;
+//   }
 
-  // HTTPS Redirect for production
-  if (IS_PROD) {
-    if (FORCE_SSL) {
-      app.enable("trust proxy");
-      app.use((req, res, next) => {
-        if (req.secure) {
-          next();
-        } else {
-          res.redirect("https://" + req.headers.host + req.url);
-        }
-      });
-    }
-  }
+//   logger.info("Successfully connected to the database!");
 
-  try {
-    await initSettings();
-  } catch (err) {
-    logger.error("Could not initialize the application with settings");
-    logger.error(err);
-    return;
-  }
+//   // HTTPS Redirect for production
+//   if (IS_PROD) {
+//     if (FORCE_SSL) {
+//       app.enable("trust proxy");
+//       app.use((req, res, next) => {
+//         if (req.secure) {
+//           next();
+//         } else {
+//           res.redirect("https://" + req.headers.host + req.url);
+//         }
+//       });
+//     }
+//   }
 
-  // Res.on('finish') hooks
-  app.use(createEmailsMiddleware());
+//   try {
+//     await initSettings();
+//   } catch (err) {
+//     logger.error("Could not initialize the application with settings");
+//     logger.error(err);
+//     return;
+//   }
 
-  // Core API
-  app.use("/api/", auth(), api(controllers));
+//   // Res.on('finish') hooks
+//   app.use(createEmailsMiddleware());
 
-  // Fallback if page reload
-  app.use(history());
+//   // Core API
+//   app.use("/api/", auth(), api(controllers));
 
-  // Static Files
-  app.use(express.static(BUNDLE_DIR));
+//   // Fallback if page reload
+//   app.use(history());
 
-  // Start listening!
-  app.listen(port, () =>
-    logger.info(`QHacks Dashboard is running on port ${port}!`)
-  );
-});
+//   // Static Files
+//   app.use(express.static(BUNDLE_DIR));
+
+//   // Start listening!
+//   app.listen(port, () =>
+//     logger.info(`QHacks Dashboard is running on port ${port}!`)
+//   );
+// });

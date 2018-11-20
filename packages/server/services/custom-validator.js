@@ -6,7 +6,6 @@ const { ERROR } = require("../strings");
 const NAME_REGEX = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]+$/;
 const YEAR_REGEXP = /^20[0-9]{2}$/;
 
-// TODO: Refactor this code to use errors.createError
 class ValidationError extends Error {
   constructor(message) {
     super();
