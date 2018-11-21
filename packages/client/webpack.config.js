@@ -13,8 +13,8 @@ const isProd = process.env.NODE_ENV === "production";
 const mode = isProd ? "production" : "development";
 
 isProd
-  ? logger.info("Running production build!")
-  : logger.info("Running development build!");
+  ? console.log("Running production build!")
+  : console.log("Running development build!");
 
 const DEV_PROXY = process.env.DEV_PROXY;
 
