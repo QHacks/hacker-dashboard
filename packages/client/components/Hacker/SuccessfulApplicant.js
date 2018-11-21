@@ -1,7 +1,6 @@
 import { Message, Grid, Step, Icon } from "semantic-ui-react";
 import ArriveInformation from "./ArriveInformation";
 import React, { Component } from "react";
-import RSVPForm from "../Forms/RSVPForm";
 import Emoji from "react-emoji-render";
 
 class SuccessfulApplicant extends Component {
@@ -32,13 +31,6 @@ class SuccessfulApplicant extends Component {
             application to open your spot to someone else on the waiting list.
           </p>
         </Message>
-
-        <RSVPForm
-          onWithdrawApplication={onWithdrawApplication}
-          onSubmit={onSubmit}
-          rsvpLoading={rsvpLoading}
-          rsvpError={rsvpError}
-        />
       </div>
     );
   }

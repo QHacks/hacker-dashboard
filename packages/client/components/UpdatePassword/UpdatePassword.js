@@ -28,7 +28,7 @@ class UpdatePassword extends Component {
           textAlign="center"
           className="form apply header"
         />
-        {isPasswordUpdated ? null : (
+        {isPasswordUpdated ? null : ( // eslint-disable-line multiline-ternary
           <p>
             Please enter your new password to complete the reset password
             process.
@@ -39,25 +39,9 @@ class UpdatePassword extends Component {
   }
 
   renderPasswordUpdateForm() {
-    const isPasswordUpdated = false;
-    const isPasswordUpdatedError = false;
-    const isPasswordUpdatedLoading = false;
-
-    if (isPasswordUpdated) {
-      return (
-        <Message
-          success
-          size="small"
-          header="Password Update Successful!"
-          content="Congratulations your password has been updated. Please proceed to login."
-        />
-      );
-    }
     return (
       <UpdatePasswordForm
         onSubmit={this.handleUpdatePasswordForReset.bind(this)}
-        updateError={isPasswordUpdatedError}
-        updateLoading={isPasswordUpdatedLoading}
       />
     );
   }

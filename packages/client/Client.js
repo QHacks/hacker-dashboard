@@ -9,8 +9,6 @@ import { ApolloLink } from "apollo-link";
 import { resolvers, defaults, typeDefs } from "./cache";
 import { BrowserRouter } from "react-router-dom";
 import "semantic-ui-less/semantic.less";
-import { Provider } from "react-redux";
-import getStore from "./ClientStore";
 import App from "./components/App";
 import { render } from "react-dom";
 import React from "react";
@@ -56,11 +54,9 @@ const apolloClient = new ApolloClient({
 
 const Client = () => (
   <ApolloProvider client={apolloClient}>
-    <Provider store={getStore}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </ApolloProvider>
 );
 

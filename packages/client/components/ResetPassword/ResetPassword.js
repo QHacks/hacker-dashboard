@@ -32,18 +32,7 @@ class ResetPassword extends Component {
   }
 
   renderResetPasswordForm() {
-    const isPasswordResetLinkSent = false;
-    const isPasswordResetLoading = false;
-    const isPasswordResetError = false;
-
-    return (
-      <ResetPasswordForm
-        onSubmit={this.handleResetPassword.bind(this)}
-        linkSent={isPasswordResetLinkSent}
-        resetError={isPasswordResetError}
-        resetLoading={isPasswordResetLoading}
-      />
-    );
+    return <ResetPasswordForm onSubmit={this.handleResetPassword.bind(this)} />;
   }
 
   renderResetPasswordFooter() {

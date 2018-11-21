@@ -27,8 +27,6 @@ class Login extends Component {
   }
 
   renderLoginForm() {
-    const loginLoading = false;
-    const loginError = false;
     const applicationsStatus = "closed";
 
     return (
@@ -42,8 +40,6 @@ class Login extends Component {
         <LoginForm
           onSubmit={this.handleLogin.bind(this)}
           applicationsStatus={applicationsStatus}
-          loginLoading={loginLoading}
-          loginError={loginError}
         />
       </div>
     );

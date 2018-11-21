@@ -1,7 +1,5 @@
-import { Button, Divider, Form, Header, Message } from "semantic-ui-react";
-import { required, email } from "redux-form-validators";
-import SemanticFormField from "./SemanticFormField";
-import { Field, reduxForm } from "redux-form";
+import { Divider, Header, Message } from "semantic-ui-react";
+import { Form, Field } from "react-final-form";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./LoginForm.less";
@@ -35,6 +33,7 @@ class LoginForm extends Component {
 
   renderLoginFormFooter() {
     const { applicationsStatus } = this.props;
+
     return (
       <div>
         <div className="fontSize-medium" style={{ marginTop: "40px" }}>
@@ -55,40 +54,16 @@ class LoginForm extends Component {
   renderLoginForm() {
     return (
       <Form
-        size="large"
-        error={this.props.loginError}
-        loading={this.props.loginLoading}
-        onSubmit={this.props.handleSubmit}
-      >
-        <Field
-          name="email"
-          component={SemanticFormField}
-          as={Form.Input}
-          icon="mail"
-          type="email"
-          placeholder="Email address"
-          validate={[
-            required({ msg: "none" }),
-            email({ msg: "Please enter a valid email address!" })
-          ]}
-        />
+        onSubmit={this.props.onSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Field name="email" component="input" placeholder="Email" />
+            <Field name="password" component="input" placeholder="Password" />
 
-        <Field
-          name="password"
-          component={SemanticFormField}
-          as={Form.Input}
-          icon="lock"
-          type="password"
-          placeholder="Password"
-          validate={required({ msg: "none" })}
-        />
-
-        {this.renderLoginFormErrorMessage()}
-
-        <Button primary fluid size="large">
-          Login
-        </Button>
-      </Form>
+            <button type="submit">Login</button>
+          </form>
+        )}
+      />
     );
   }
 
@@ -103,7 +78,4 @@ class LoginForm extends Component {
   }
 }
 
-export default reduxForm({
-  form: "login",
-  enableReinitialize: true
-})(LoginForm);
+export default LoginForm;
