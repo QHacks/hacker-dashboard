@@ -1,4 +1,3 @@
-import { Segment, Container, Header } from "semantic-ui-react";
 import React, { Component } from "react";
 import { map, pick } from "lodash";
 import uuid from "uuid/v4";
@@ -23,7 +22,7 @@ class Profile extends Component {
     const fields = pick(user, USER_FIELDS);
 
     return (
-      <Segment>
+      <div>
         {map(fields, (value, key) => {
           return (
             <p key={uuid()}>
@@ -31,7 +30,7 @@ class Profile extends Component {
             </p>
           );
         })}
-      </Segment>
+      </div>
     );
   }
 
@@ -44,12 +43,12 @@ class Profile extends Component {
     };
 
     return (
-      <Container text style={{ marginTop: "3em" }}>
-        <Header as="h2">
+      <div style={{ marginTop: "3em" }}>
+        <h2>
           {user.firstName} {user.lastName}
-        </Header>
-        <Segment.Group>{this.renderUserInformation()}</Segment.Group>
-      </Container>
+        </h2>
+        <div>{this.renderUserInformation()}</div>
+      </div>
     );
   }
 }

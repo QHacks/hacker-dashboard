@@ -1,8 +1,6 @@
-import { Divider, Header, Message } from "semantic-ui-react";
 import { Form, Field } from "react-final-form";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import "./LoginForm.less";
 
 class LoginForm extends Component {
   constructor(props) {
@@ -12,23 +10,11 @@ class LoginForm extends Component {
   }
 
   renderLoginFormHeader() {
-    return (
-      <Header as="h2" color="red" textAlign="center">
-        Login to your account
-      </Header>
-    );
+    return <h2>Login to your account</h2>;
   }
 
   renderLoginFormErrorMessage() {
-    return (
-      <Message
-        error
-        size="small"
-        className="error-message"
-        header="Invalid Credentials!"
-        content="Oops! We cannot authenticate you with those credentials."
-      />
-    );
+    return <p>Oops! We cannot authenticate you with those credentials.</p>;
   }
 
   renderLoginFormFooter() {
@@ -38,7 +24,6 @@ class LoginForm extends Component {
       <div>
         <div className="fontSize-medium" style={{ marginTop: "40px" }}>
           <Link to="/reset-password">Forgot password?</Link>
-          <Divider />
           {applicationsStatus === "closed" ? (
             ""
           ) : (

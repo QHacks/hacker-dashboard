@@ -1,6 +1,4 @@
-import { Menu, Button, Dropdown } from "semantic-ui-react";
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 
 class MenuBar extends Component {
   renderQHacksCrown() {
@@ -101,65 +99,8 @@ class MenuBar extends Component {
     );
   }
 
-  renderLeftSideMenu() {
-    return (
-      <Menu.Menu position="left">
-        <Menu.Item as={Link} to="https://qhacks.io/">
-          {this.renderQHacksCrown()}
-        </Menu.Item>
-        <Menu.Item as={Link} to="/">
-          Home
-        </Menu.Item>
-      </Menu.Menu>
-    );
-  }
-
-  renderRightSideMenu() {
-    const { onLogoutClick } = this.props;
-
-    return (
-      <Menu.Menu position="right">
-        {this.renderAdminMenu()}
-        <Menu.Item as={Link} to="/profile">
-          Profile
-        </Menu.Item>
-        <Menu.Item>
-          <Button primary onClick={onLogoutClick}>
-            Logout
-          </Button>
-        </Menu.Item>
-      </Menu.Menu>
-    );
-  }
-
-  renderAdminMenu() {
-    const { isAdmin } = this.props;
-
-    if (isAdmin) {
-      return (
-        <Dropdown item text="Admin">
-          <Dropdown.Menu>
-            <Dropdown.Item as={Link} to="/check-in">
-              Check In
-            </Dropdown.Item>
-            <Dropdown.Item as={Link} to="/review">
-              Review
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      );
-    }
-
-    return null;
-  }
-
   render() {
-    return (
-      <Menu stackable size="large" style={{ margin: 0 }}>
-        {this.renderLeftSideMenu()}
-        {this.renderRightSideMenu()}
-      </Menu>
-    );
+    return <div>Bob</div>;
   }
 }
 

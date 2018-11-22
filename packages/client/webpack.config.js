@@ -4,7 +4,6 @@ const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const logger = require("./utils/logger");
 const webpack = require("webpack");
 const path = require("path");
 
@@ -47,14 +46,6 @@ module.exports = {
     path: CLIENT_OUTPUT,
     publicPath: "/",
     filename: "[name].[chunkhash].js"
-  },
-  resolve: {
-    alias: {
-      "../../theme.config$": path.join(
-        CLIENT_DIR,
-        "assets/semantic-ui/theme.config"
-      )
-    }
   },
   module: {
     rules: [

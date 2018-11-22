@@ -1,5 +1,4 @@
 import { Redirect } from "react-router-dom";
-import { Header } from "semantic-ui-react";
 import LoginForm from "../Forms/LoginForm";
 import React, { Component } from "react";
 import "./Login.less";
@@ -50,17 +49,12 @@ class Login extends Component {
       <div className="login-picture">
         <div className="login-picture-overlay">
           <div>
-            <Header as="h1" className="fontWeight-normal" inverted size="huge">
+            <h1 className="fontWeight-normal" inverted size="huge">
               Dream it. Build it.
-            </Header>
-            <Header
-              as="h2"
-              className="fontWeight-lighter"
-              inverted
-              size="medium"
-            >
+            </h1>
+            <h2 className="fontWeight-lighter" inverted size="medium">
               QHacks 2018, Queen&apos;s University
-            </Header>
+            </h2>
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import ApplicationWithdrawn from "./ApplicationWithdrawn";
 import SuccessfulApplicant from "./SuccessfulApplicant";
 import WaitlistedApplicant from "./WaitlistedApplicant";
 import DeclinedApplicant from "./DeclinedApplicant";
-import { Container } from "semantic-ui-react";
 import React, { Component } from "react";
 
 const RSVP_FIELDS = [
@@ -58,11 +57,7 @@ class HackerLanding extends Component {
   }
 
   render() {
-    return (
-      <Container style={{ marginTop: "3em" }}>
-        {this.renderCorrectStatus()}
-      </Container>
-    );
+    return <div style={{ marginTop: "3em" }}>{this.renderCorrectStatus()}</div>;
   }
 }
 

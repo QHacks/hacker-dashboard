@@ -1,5 +1,4 @@
 import ApplicationsClosed from "./ApplicationsClosed";
-import { Divider, Header } from "semantic-ui-react";
 import { Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import "./Apply.less";
@@ -46,13 +45,7 @@ class Apply extends Component {
           src={require("../../assets/img/qhacks-tricolor-logo.svg")}
           className="qhacks-logo"
         />
-        <Header
-          as="h2"
-          content={headerContent}
-          color="red"
-          textAlign="center"
-          className="form apply header"
-        />
+        <h2>{headerContent}</h2>
       </div>
     );
   }
@@ -60,7 +53,6 @@ class Apply extends Component {
   renderApplicationFooter() {
     return (
       <div className="application-footer">
-        <Divider />
         <p className="fontSize-medium textAlign-center">
           Have an account? <Link to="/login">Login here</Link>
         </p>

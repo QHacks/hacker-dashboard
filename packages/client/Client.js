@@ -1,7 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { ApolloProvider } from "react-apollo";
 import apolloClient from "./ApolloClient";
-import "semantic-ui-less/semantic.less";
 import App from "./components/App";
 import { render } from "react-dom";
 import React from "react";

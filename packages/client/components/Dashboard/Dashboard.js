@@ -1,8 +1,6 @@
-import { Message, Container } from "semantic-ui-react";
 import { Route } from "react-router-dom";
 import React, { Component } from "react";
 import { isEmpty } from "lodash";
-import uuid from "uuid/v4";
 
 import { Landing as AdminLanding, Review } from "../Admin";
 import { Landing as HackerLanding } from "../Hacker";
@@ -76,16 +74,7 @@ class Dashboard extends Component {
       return [];
     }
 
-    return successMessages.map((message, index) => (
-      <Message
-        key={uuid()}
-        positive
-        floating
-        onDismiss={() => this.props.clearDashboardSuccessMessage({ index })}
-        content={message}
-        style={{ marginTop: "3em" }}
-      />
-    ));
+    return successMessages.map((message, index) => <p>{message}</p>);
   }
 
   renderDashboardErrorMessages() {
@@ -95,27 +84,16 @@ class Dashboard extends Component {
       return [];
     }
 
-    return errorMessages.map((message, index) => (
-      <Message
-        key={uuid()}
-        negative
-        floating
-        onDismiss={() => this.props.clearDashboardErrorMessage({ index })}
-        content={message}
-        style={{ marginTop: "3em" }}
-      />
-    ));
+    return errorMessages.map((message, index) => <p>{message}</p>);
   }
 
   render() {
     return (
       <div style={{ height: "100vh" }}>
         {this.renderMenuBar()}
-        <Container>
-          {this.renderDashboardSuccessMessages()}
-          {this.renderDashboardErrorMessages()}
-          {this.renderBody()}
-        </Container>
+        {this.renderDashboardSuccessMessages()}
+        {this.renderDashboardErrorMessages()}
+        {this.renderBody()}
       </div>
     );
   }

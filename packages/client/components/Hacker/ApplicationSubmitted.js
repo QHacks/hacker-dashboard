@@ -1,12 +1,11 @@
-import { Header, Segment } from "semantic-ui-react";
 import Emoji from "react-emoji-render";
 import React from "react";
 
 export default () => (
-  <Segment>
-    <Header as="h2">
+  <div>
+    <h2>
       <Emoji text="Congratulations, your application is in! :tada: :heart:" />
-    </Header>
+    </h2>
     <p>
       Your application to attend QHacks 2018 has been submitted! So, what are
       the next steps?{" "}
@@ -52,5 +51,5 @@ export default () => (
       of making Queen’s and Canada as a whole recognized for its talent and
       enthusiasm for innovation and creation.
     </p>
-  </Segment>
+  </div>
 );

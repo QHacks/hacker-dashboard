@@ -1,4 +1,3 @@
-import { Divider, Header } from "semantic-ui-react";
 import { ResetPasswordForm } from "../Forms";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
@@ -16,13 +15,7 @@ class ResetPassword extends Component {
           src={require("../../assets/img/qhacks-tricolor-logo.svg")}
           className="qhacks-logo"
         />
-        <Header
-          as="h2"
-          content="Reset Password"
-          color="red"
-          textAlign="center"
-          className="form apply header"
-        />
+        <h2>Reset Password</h2>
         <p>
           Please provide the email associated with your account to reset your
           password.
@@ -38,7 +31,6 @@ class ResetPassword extends Component {
   renderResetPasswordFooter() {
     return (
       <div className="application-footer">
-        <Divider />
         <p className="fontSize-medium textAlign-center">
           Know your password? <Link to="/login">Login here</Link>
         </p>

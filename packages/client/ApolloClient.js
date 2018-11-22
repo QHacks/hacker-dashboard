@@ -26,7 +26,7 @@ const getNewAccessToken = () => {
 
   if (refreshToken) {
     return axios.post("/oauth/refresh", {
-      refreshToken: localStorage.getItem(REFRESH_TOKEN_STORAGE)
+      refreshToken
     });
   }
 

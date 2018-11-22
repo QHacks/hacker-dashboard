@@ -1,4 +1,3 @@
-import { Divider, Header, Message } from "semantic-ui-react";
 import { UpdatePasswordForm } from "../Forms";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
@@ -21,13 +20,7 @@ class UpdatePassword extends Component {
           src={require("../../assets/img/qhacks-tricolor-logo.svg")}
           className="qhacks-logo"
         />
-        <Header
-          as="h2"
-          content="Update Password"
-          color="red"
-          textAlign="center"
-          className="form apply header"
-        />
+        <h2>Update Password</h2>
         {isPasswordUpdated ? null : ( // eslint-disable-line multiline-ternary
           <p>
             Please enter your new password to complete the reset password
@@ -49,7 +42,6 @@ class UpdatePassword extends Component {
   renderPasswordUpdateFooter() {
     return (
       <div className="update-footer">
-        <Divider />
         <p className="fontSize-medium textAlign-center">
           Wrong place? <Link to="/login">Login here</Link>
         </p>
