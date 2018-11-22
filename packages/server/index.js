@@ -4,9 +4,11 @@ const history = require("connect-history-api-fallback");
 const compression = require("compression");
 const bodyParser = require("body-parser");
 const logger = require("./utils/logger");
+const db = require("./db")(logger);
 const express = require("express");
 const helmet = require("helmet");
 const path = require("path");
+const cors = require("cors");
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const FORCE_SSL = process.env.FORCE_SSL === "true";
@@ -17,70 +19,62 @@ IS_PROD
 
 const auth = require("./auth");
 const api = require("./api");
-// const controllers = require("./controllers");
-// const connectToDB = require("./db");
+const ctrs = require("./controllers");
 
 // Path to static files
-// const BUNDLE_DIR = path.join(__dirname, "../client/bundle");
+// TODO: Remove this coupling to client package
+const BUNDLE_DIR = path.join(__dirname, "../client/bundle");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+// HTTPS Redirect
+if (IS_PROD) {
+  if (FORCE_SSL) {
+    app.enable("trust proxy");
+    app.use((req, res, next) => {
+      if (req.secure) {
+        next();
+      } else {
+        res.redirect("https://" + req.headers.host + req.url);
+      }
+    });
+  }
+}
+
 // Third Party Middleware
+app.use(cors());
 app.use(helmet());
 app.use(compression());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Start listening!
-app.listen(port, () =>
-  logger.info(`QHacks Dashboard is running on port ${port}!`)
-);
+// Authentication Middleware
+app.use(auth(db));
 
-// connectToDB(async (err) => {
-//   if (err) {
-//     logger.info("Could not connect to the database!");
-//     return;
-//   }
+// REST Endpoints
+app.use("/api/", api(ctrs));
 
-//   logger.info("Successfully connected to the database!");
+// Put GraphQL stuff here!
 
-//   // HTTPS Redirect for production
-//   if (IS_PROD) {
-//     if (FORCE_SSL) {
-//       app.enable("trust proxy");
-//       app.use((req, res, next) => {
-//         if (req.secure) {
-//           next();
-//         } else {
-//           res.redirect("https://" + req.headers.host + req.url);
-//         }
-//       });
-//     }
-//   }
+// Fallback if Required
+app.use(history());
 
-//   try {
-//     await initSettings();
-//   } catch (err) {
-//     logger.error("Could not initialize the application with settings");
-//     logger.error(err);
-//     return;
-//   }
+// Static Files
+app.use(express.static(BUNDLE_DIR));
 
-//   // Res.on('finish') hooks
-//   app.use(createEmailsMiddleware());
+// Database Synchronization
+// NOTE: We only do force true for dev.
+db.sequelize
+  .sync({ force: true })
+  .then(() => {
+    logger.info("Database has synchronized successfully!");
 
-//   // Core API
-//   app.use("/api/", auth(), api(controllers));
-
-//   // Fallback if page reload
-//   app.use(history());
-
-//   // Static Files
-//   app.use(express.static(BUNDLE_DIR));
-
-//   // Start listening!
-//   app.listen(port, () =>
-//     logger.info(`QHacks Dashboard is running on port ${port}!`)
-//   );
-// });
+    // Start listening!
+    app.listen(port, () =>
+      logger.info(`QHacks Dashboard is running on port ${port}!`)
+    );
+  })
+  .catch((err) => {
+    logger.error("Database could not synchronize! Cannot start server!");
+  });
