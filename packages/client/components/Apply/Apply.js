@@ -1,7 +1,6 @@
 import ApplicationsClosed from "./ApplicationsClosed";
 import { Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import "./Apply.less";
 
 class Apply extends Component {
   handleApply(values) {
@@ -40,10 +39,19 @@ class Apply extends Component {
         : "Complete the form to apply!";
 
     return (
-      <div className="application-header">
+      <div
+        css={`
+          alignttems: center;
+          display: flex;
+          flexdirection: column;
+          margintop: 40px;
+        `}
+      >
         <img
+          css={`
+            height: 120px;
+          `}
           src={require("../../assets/img/qhacks-tricolor-logo.svg")}
-          className="qhacks-logo"
         />
         <h2>{headerContent}</h2>
       </div>
@@ -52,8 +60,13 @@ class Apply extends Component {
 
   renderApplicationFooter() {
     return (
-      <div className="application-footer">
-        <p className="fontSize-medium textAlign-center">
+      <div
+        css={`
+          margin-top: 20px;
+          margin-bottom: 40px;
+        `}
+      >
+        <p>
           Have an account? <Link to="/login">Login here</Link>
         </p>
       </div>
@@ -77,8 +90,23 @@ class Apply extends Component {
     }
 
     return (
-      <div className="application-container">
-        <div className="application-form-container">
+      <div
+        css={`
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-height: 100vh;
+        `}
+      >
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            max-width: 600px;
+            width: 100%;
+          `}
+        >
           {this.renderApplicationHeader()}
           {this.renderApplicationForm()}
           {this.renderApplicationFooter()}

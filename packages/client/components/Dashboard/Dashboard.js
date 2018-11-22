@@ -2,7 +2,7 @@ import { Route } from "react-router-dom";
 import React, { Component } from "react";
 import { isEmpty } from "lodash";
 
-import { Landing as AdminLanding, Review } from "../Admin";
+import { Landing as AdminLanding } from "../Admin";
 import { Landing as HackerLanding } from "../Hacker";
 import PrivateRoute from "../utils/PrivateRoute";
 import { AuthSwitch, NotFound } from "../utils";

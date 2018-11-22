@@ -1,7 +1,6 @@
 import { UpdatePasswordForm } from "../Forms";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import "./UpdatePassword.less";
 
 class UpdatePassword extends Component {
   handleUpdatePasswordForReset(values) {
@@ -15,10 +14,21 @@ class UpdatePassword extends Component {
     const isPasswordUpdated = false;
 
     return (
-      <div className="update-header">
+      <div
+        css={`
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          margin-top: 40px;
+          margin-bottom: 30px;
+        `}
+      >
         <img
+          css={`
+            height: 130px;
+            margin-bottom: 20px;
+          `}
           src={require("../../assets/img/qhacks-tricolor-logo.svg")}
-          className="qhacks-logo"
         />
         <h2>Update Password</h2>
         {isPasswordUpdated ? null : ( // eslint-disable-line multiline-ternary
@@ -41,7 +51,12 @@ class UpdatePassword extends Component {
 
   renderPasswordUpdateFooter() {
     return (
-      <div className="update-footer">
+      <div
+        css={`
+          margin-top: 20px;
+          margin-bottom: 40px;
+        `}
+      >
         <p className="fontSize-medium textAlign-center">
           Wrong place? <Link to="/login">Login here</Link>
         </p>
@@ -51,8 +66,23 @@ class UpdatePassword extends Component {
 
   render() {
     return (
-      <div className="update-container">
-        <div className="update-form-container">
+      <div
+        css={`
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-height: 100vh;
+        `}
+      >
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            max-width: 600px;
+            width: 100%;
+          `}
+        >
           {this.renderPasswordUpdateHeader()}
           {this.renderPasswordUpdateForm()}
           {this.renderPasswordUpdateFooter()}

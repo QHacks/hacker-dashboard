@@ -43,7 +43,7 @@ class Profile extends Component {
     };
 
     return (
-      <div style={{ marginTop: "3em" }}>
+      <div>
         <h2>
           {user.firstName} {user.lastName}
         </h2>

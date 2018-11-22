@@ -1,7 +1,6 @@
 import { ResetPasswordForm } from "../Forms";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import "./ResetPassword.less";
 
 class ResetPassword extends Component {
   handleResetPassword(values) {
@@ -10,10 +9,21 @@ class ResetPassword extends Component {
 
   renderResetPasswordHeader() {
     return (
-      <div className="reset-header">
+      <div
+        css={`
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          margin-top: 40px;
+          margin-bottom: 30px;
+        `}
+      >
         <img
+          css={`
+            height: 130px;
+            margin-bottom: 20px;
+          `}
           src={require("../../assets/img/qhacks-tricolor-logo.svg")}
-          className="qhacks-logo"
         />
         <h2>Reset Password</h2>
         <p>
@@ -30,8 +40,13 @@ class ResetPassword extends Component {
 
   renderResetPasswordFooter() {
     return (
-      <div className="application-footer">
-        <p className="fontSize-medium textAlign-center">
+      <div
+        css={`
+          margin-top: 20px;
+          margin-bottom: 40px;
+        `}
+      >
+        <p>
           Know your password? <Link to="/login">Login here</Link>
         </p>
       </div>
@@ -40,8 +55,23 @@ class ResetPassword extends Component {
 
   render() {
     return (
-      <div className="reset-container">
-        <div className="reset-form-container">
+      <div
+        css={`
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-height: 100vh;
+        `}
+      >
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            max-width: 600px;
+            width: 100%;
+          `}
+        >
           {this.renderResetPasswordHeader()}
           {this.renderResetPasswordForm()}
           {this.renderResetPasswordFooter()}

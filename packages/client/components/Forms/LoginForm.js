@@ -22,7 +22,7 @@ class LoginForm extends Component {
 
     return (
       <div>
-        <div className="fontSize-medium" style={{ marginTop: "40px" }}>
+        <div>
           <Link to="/reset-password">Forgot password?</Link>
           {applicationsStatus === "closed" ? (
             ""

@@ -26,7 +26,7 @@ const VENDOR_LIBS = ["react"];
 
 module.exports = {
   entry: {
-    bundle: ["babel-polyfill", CLIENT_ENTRY],
+    bundle: CLIENT_ENTRY,
     vendor: VENDOR_LIBS
   },
   optimization: {
@@ -50,13 +50,15 @@ module.exports = {
   module: {
     rules: [
       {
-        use: "babel-loader",
         test: /\.js$/,
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
       },
       {
-        test: /\.less$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"]
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
       },
       {
         test: /\.jpe?g$|\.gif$|\.png$|\.ttf$|\.eot$|\.svg$/,
