@@ -8,12 +8,20 @@ import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import axios from "axios";
 
-// TODO: Understand why we have to use ngrok here!
-// Comment added to this thread: https://bit.ly/2IbZspP
+const isProd = process.env.NODE_ENV === "production";
+const isStaging = process.env.NODE_ENV === "staging";
+
 const GRAPHQL_ENDPOINT =
-  process.env.NODE_ENV === "development"
-    ? `https://saunders.ngrok.io/graphql`
-    : `https://app.qhacks.io/graphql`;
+  isProd || isStaging
+    ? `https://${window.location.host}/graphql`
+    : "http://localhost:3000/graphql";
+
+const CLIENT_VERSION = "1.3.4";
+const CLIENT_NAME = isProd
+  ? "dashboard-web-client-prod"
+  : isStaging
+    ? "dashboard-web-client-staging"
+    : "dashboard-web-dev";
 
 const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
 const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
@@ -118,6 +126,22 @@ const authLink = setContext((_, previousContext) => {
   return previousContext;
 });
 
+// Identifies the client in Apollo Engine
+const clientIdentifierLink = new ApolloLink((operation, forward) => {
+  operation.extensions.clientInfo = {
+    clientName: CLIENT_NAME,
+    clientVersion: CLIENT_VERSION
+  };
+
+  operation.setContext({
+    http: {
+      includeExtensions: true
+    }
+  });
+
+  return forward(operation);
+});
+
 // Terminating link to fetch data from server
 // NOTE: Reads request headers from context
 const networkLink = new HttpLink({
@@ -127,5 +151,11 @@ const networkLink = new HttpLink({
 // Apollo client with cache and links
 export default new ApolloClient({
   cache,
-  link: ApolloLink.from([errorLink, stateLink, authLink, networkLink])
+  link: ApolloLink.from([
+    errorLink,
+    stateLink,
+    authLink,
+    clientIdentifierLink,
+    networkLink
+  ])
 });

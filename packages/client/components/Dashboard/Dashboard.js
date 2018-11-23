@@ -46,12 +46,6 @@ class Dashboard extends Component {
         />
         <PrivateRoute
           exact
-          path="/review"
-          types={["admin"]}
-          component={Review}
-        />
-        <PrivateRoute
-          exact
           path="/profile"
           types={["hacker", "partner", "admin"]}
           component={Profile}
