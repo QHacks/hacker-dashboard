@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const { ApolloServer, AuthenticationError } = require("apollo-server-express");
 const history = require("connect-history-api-fallback");
 const compression = require("compression");
 const bodyParser = require("body-parser");
@@ -17,9 +18,11 @@ IS_PROD
   ? logger.info("Running production server!")
   : logger.info("Running development server!");
 
-const auth = require("./auth");
-const api = require("./api");
-const ctrs = require("./controllers");
+const resolvers = require("./gql/resolvers");
+const typeDefs = require("./gql/definitions");
+
+const { restApi } = require("./rest")(db);
+const { oauthApi, getUser, getUserAccess } = require("./oauth")(db);
 
 // Path to static files
 // TODO: Remove this coupling to client package
@@ -49,15 +52,57 @@ app.use(compression());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Authentication Middleware
-app.use(auth(db));
+//app.use(auth(db));
 
-// REST Endpoints
-app.use("/api/", api(ctrs));
+// Public REST Endpoints
+// TODO: Remove completely!
+app.use("/api/", restApi());
 
-// Put GraphQL stuff here!
+// Public OAuth Endpoints
+app.use("/oauth/", oauthApi());
 
-// Fallback if Required
+// Protected GraphQL Endpoint
+const graphqlServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req, res }) => {
+    // // get the user from auth token
+    // const user = getUser(req);
+
+    // // throw error if not authenticated
+    // if (!user) throw new AuthenticationError("Invalid access token!");
+
+    // // get user access scopes
+    // const access = getUserAccess(user);
+
+    const access = {
+      scopes: ["user:read"]
+    };
+
+    return {
+      db,
+      //user,
+      access
+    };
+  },
+  playground: {
+    endpoint: "/graphql"
+  },
+  tracing: true,
+  formatError: (error) => {
+    console.log(error);
+    return error;
+  },
+  formatResponse: (response) => {
+    console.log(response);
+    return response;
+  }
+});
+
+// Apply Express Middleware
+graphqlServer.applyMiddleware({ app });
+
+// Fallback if required
 app.use(history());
 
 // Static Files

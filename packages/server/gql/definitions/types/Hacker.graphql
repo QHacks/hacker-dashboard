@@ -1,0 +1,48 @@
+extend type QueryRoot {
+  """
+  Returns a hacker resource by ID.
+  """
+  hacker(id: ID!): Hacker
+}
+
+extend type MutationRoot {
+  """
+  Delete a hacker resource by ID.
+  """
+  hackerDelete(id: ID!): String
+}
+
+"""
+Represents a hacker, including the hackers auth info,
+contact information, and applications.
+"""
+type Hacker implements User {
+  """
+  The hackers first name.
+  """
+  firstName: String!
+  """
+  The hackers last name.
+  """
+  lastName: String!
+  """
+  The hackers full name.
+  """
+  fullName: String!
+  """
+  The hackers email.
+  """
+  email: String!
+  """
+  The hackers phone number.
+  """
+  phoneNumber: String!
+  """
+  The hackers date of birth.
+  """
+  dateOfBirth: String!
+  """
+  The hackers auth information.
+  """
+  oauthInfo: OAuthInfo!
+}

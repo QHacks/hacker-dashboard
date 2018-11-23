@@ -20,7 +20,8 @@ const database = (logger) => {
     });
 
   const db = {
-    User: sequelize.import("./models/user")
+    User: sequelize.import("./models/user"),
+    OAuthUser: sequelize.import("./models/oauth-user")
   };
 
   Object.keys(db).forEach((modelName) => {

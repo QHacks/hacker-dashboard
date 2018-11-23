@@ -1,0 +1,27 @@
+"""
+Represents a users auth information.
+"""
+type OAuthInfo {
+  """
+  The users role in the platform.
+  """
+  role: UserRole!
+  """
+  The users auth scopes.
+  """
+  scopes: [OAuthScope!]!
+}
+
+"""
+Represents a single OAuth scope.
+"""
+type OAuthScope {
+  """
+  The entity the scope is for.
+  """
+  entity: String!
+  """
+  The highest level of permission to the entity.
+  """
+  permission: OAuthScopePermission!
+}

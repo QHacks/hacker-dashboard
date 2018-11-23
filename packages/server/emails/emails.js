@@ -3,7 +3,7 @@ const sendgrid = require("@sendgrid/mail");
 const logger = require("../utils/logger");
 const emailsConfig = require("./emails.config");
 const { EMAILS, ERROR } = require("../strings");
-const { ERROR_TEMPLATES, createError } = require("../errors");
+const { ERROR_TEMPLATES, createError } = require("../oauth/errors");
 
 const {
   SENDGRID_API_KEY = logger.warn(

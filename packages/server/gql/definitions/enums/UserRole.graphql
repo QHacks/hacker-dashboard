@@ -1,0 +1,21 @@
+"""
+Different user roles.
+"""
+enum UserRole {
+  """
+  A hacker role.
+  """
+  HACKER
+  """
+  A volunteer role.
+  """
+  VOLUNTEER
+  """
+  A admin role.
+  """
+  ADMIN
+  """
+  A super admin role.
+  """
+  SUPER_ADMIN
+}
