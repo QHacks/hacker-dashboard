@@ -12,9 +12,8 @@ module.exports = {
       globals: {
         dbName: "qhacks-dashboard-test"
       },
-      // setupTestFrameworkScriptFile: "./packages/server/__tests__/config/test-framework",
-      // testEnvironment: "./packages/server/__tests__/config/mongo-environment",
-      testRegex: "./packages/server/__tests__\/.*\.test\.js$"
+      setupTestFrameworkScriptFile: "./packages/server/__tests__/config/test-framework",
+      testRegex: "./packages/server/__tests__\/.*\.test\.js$",
     }
   ],
   coverageDirectory: "./coverage",

@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const _ = require("lodash");
 
 const PHONE_NUMBER_REGEX = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
 
@@ -127,41 +128,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  User.addHook("beforeCreate", (user) => {
-    return user.hashPassword();
-  });
-
-  User.addHook("beforeBulkCreate", (users) => {
-    return Promise.all(
-      users.map(({ dataValues: user }) => {
-        user.hashPassword();
-      })
-    );
-  });
-
-  User.addHook("beforeUpdate", async (user, _) => {
-    if (user.changed("password")) {
-      return user.hashPassword();
-    }
-  });
-
-  User.authenticate = function(email, password) {
-    return new Promise((resolve, reject) => {
-      this.findOne({ where: { email } }).then((user) => {
-        if (!user) return reject("Could not find user with that email!");
-
-        user
-          .validPassword(password)
-          .then(() => {
-            return resolve(user);
-          })
-          .catch(() => {
-            return reject("Invalid Password!");
-          });
-      });
-    });
-  };
-
   User.prototype.validPassword = function(password) {
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, this.password, (err, valid) => {
@@ -183,6 +149,37 @@ module.exports = (sequelize, DataTypes) => {
 
           return resolve();
         });
+      });
+    });
+  };
+
+  User.addHook("beforeCreate", (user) => {
+    return user.hashPassword();
+  });
+
+  User.addHook("beforeBulkCreate", (users) => {
+    return Promise.all(users.map((user) => user.hashPassword()));
+  });
+
+  User.addHook("beforeUpdate", async (user, _) => {
+    if (user.changed("password")) {
+      return user.hashPassword();
+    }
+  });
+
+  User.authenticate = function(email, password) {
+    return new Promise((resolve, reject) => {
+      this.findOne({ where: { email } }).then((user) => {
+        if (!user) return reject("Could not find user with that email!");
+
+        user
+          .validPassword(password)
+          .then(() => {
+            return resolve(user);
+          })
+          .catch(() => {
+            return reject("Invalid Password!");
+          });
       });
     });
   };

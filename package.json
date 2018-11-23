@@ -26,9 +26,9 @@
     "start": "lerna run start --scope server --stream",
     "style": "eslint --quiet packages/server/**/*.js packages/client/**/*.js",
     "format": "prettier --write packages/server/**/*.js packages/client/**/*.js",
-    "test": "jest --verbose",
-    "test-watch": "jest --watchAll",
-    "test-with-coverage": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test": "jest --verbose --runInBand",
+    "test-watch": "jest --watchAll --runInBand",
+    "test-with-coverage": "jest --coverage --runInBand && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "engines": {
     "node": "8.11.x",

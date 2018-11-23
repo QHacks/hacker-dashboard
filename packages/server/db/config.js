@@ -28,6 +28,19 @@ const config = {
     database: process.env.DB_NAME,
     dialect: "postgres",
     ...options
+  },
+  test: {
+    database: "qhacks-test-database",
+    host: "localhost",
+    dialect: "postgres",
+    reconnect: true,
+    pool: {
+      max: 10000,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    },
+    ...options
   }
 };
 
