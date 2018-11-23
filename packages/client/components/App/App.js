@@ -12,10 +12,13 @@ export default class App extends Component {
     return (
       <div>
         <Switch>
+          {/* Public routes */}
           <Route path="/apply" component={Apply} />
           <Route path="/login" component={Login} />
           <Route path="/reset-password" component={ResetPassword} />
           <Route path="/update-password/:hash" component={UpdatePassword} />
+
+          {/* Authenticated routes */}
           <PrivateRoute path="/" component={Dashboard} />
         </Switch>
       </div>

@@ -1,92 +1,53 @@
-import { CheckIn, Landing as AdminLanding, Review } from "../Admin";
-import { Applicants, Settings } from "../SuperAdmin";
-import { actionCreators, selectors } from "../../HackerStore";
-import { Message, Container } from "semantic-ui-react";
 import { Route } from "react-router-dom";
+import React, { Component } from "react";
+import { isEmpty } from "lodash";
+
+import { Landing as AdminLanding } from "../Admin";
 import { Landing as HackerLanding } from "../Hacker";
 import PrivateRoute from "../utils/PrivateRoute";
 import { AuthSwitch, NotFound } from "../utils";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { isEmpty } from "lodash";
 import Profile from "../Profile";
 import MenuBar from "../MenuBar";
-import uuid from "uuid/v4";
-
-const {
-  clearDashboardErrorMessage,
-  clearDashboardSuccessMessage,
-  logout
-} = actionCreators;
-const {
-  getDashboardErrorMessages,
-  getDashboardSuccessMessages,
-  getIsAdmin,
-  getIsHacker,
-  getIsPartner,
-  getIsSuperAdmin,
-  getUser
-} = selectors;
 
 class Dashboard extends Component {
   handleLogoutClick() {
-    this.props.logout();
+    // invalidate access token and redirect to login page
   }
 
   renderMenuBar() {
-    const { isAdmin, isSuperAdmin } = this.props;
+    const isAdmin = false;
+
     return (
       <MenuBar
         onLogoutClick={this.handleLogoutClick.bind(this)}
         isAdmin={isAdmin}
-        isSuperAdmin={isSuperAdmin}
       />
     );
   }
 
   renderBody() {
-    const { isAdmin, isPartner, isHacker, isSuperAdmin } = this.props;
+    // get the user role based on scopes and auth info
+    const isHacker = true;
+    const isAdmin = false;
+    const isPartner = false;
+
     const authType =
       (isAdmin && "admin") ||
       (isPartner && "partner") ||
-      (isHacker && "hacker") ||
-      (isSuperAdmin && "superAdmin");
+      (isHacker && "hacker");
+
     return (
       <AuthSwitch type={authType}>
         <PrivateRoute
           exact
           path="/"
-          types={["admin", "superAdmin"]}
+          types={["admin"]}
           component={AdminLanding}
         />
         <PrivateRoute
           exact
-          path="/review"
-          types={["admin", "superAdmin"]}
-          component={Review}
-        />
-        <PrivateRoute
-          exact
-          path="/check-in"
-          types={["admin", "superAdmin"]}
-          component={CheckIn}
-        />
-        <PrivateRoute
-          exact
-          path="/applicants"
-          types={["superAdmin"]}
-          component={Applicants}
-        />
-        <PrivateRoute
-          exact
-          path="/settings"
-          types={["superAdmin"]}
-          component={Settings}
-        />
-        <PrivateRoute
-          exact
           path="/profile"
-          types={["hacker", "partner", "admin", "superAdmin"]}
+          types={["hacker", "partner", "admin"]}
           component={Profile}
         />
         <PrivateRoute
@@ -101,74 +62,35 @@ class Dashboard extends Component {
   }
 
   renderDashboardSuccessMessages() {
-    const { successMessages } = this.props;
+    const successMessages = [];
 
     if (isEmpty(successMessages)) {
       return [];
     }
 
-    return successMessages.map((message, index) => (
-      <Message
-        key={uuid()}
-        positive
-        floating
-        onDismiss={() => this.props.clearDashboardSuccessMessage({ index })}
-        content={message}
-        style={{ marginTop: "3em" }}
-      />
-    ));
+    return successMessages.map((message, index) => <p>{message}</p>);
   }
 
   renderDashboardErrorMessages() {
-    const { errorMessages } = this.props;
+    const errorMessages = [];
 
     if (isEmpty(errorMessages)) {
       return [];
     }
 
-    return errorMessages.map((message, index) => (
-      <Message
-        key={uuid()}
-        negative
-        floating
-        onDismiss={() => this.props.clearDashboardErrorMessage({ index })}
-        content={message}
-        style={{ marginTop: "3em" }}
-      />
-    ));
+    return errorMessages.map((message, index) => <p>{message}</p>);
   }
 
   render() {
     return (
       <div style={{ height: "100vh" }}>
         {this.renderMenuBar()}
-        <Container>
-          {this.renderDashboardSuccessMessages()}
-          {this.renderDashboardErrorMessages()}
-          {this.renderBody()}
-        </Container>
+        {this.renderDashboardSuccessMessages()}
+        {this.renderDashboardErrorMessages()}
+        {this.renderBody()}
       </div>
     );
   }
 }
-
-function mapStateToProps(state, ownProps) {
-  return {
-    ...ownProps,
-    user: getUser(state),
-    isAdmin: getIsAdmin(state),
-    isHacker: getIsHacker(state),
-    isPartner: getIsPartner(state),
-    isSuperAdmin: getIsSuperAdmin(state),
-    errorMessages: getDashboardErrorMessages(state),
-    successMessages: getDashboardSuccessMessages(state)
-  };
-}
-
-Dashboard = connect(mapStateToProps, {
-  clearDashboardErrorMessage,
-  clearDashboardSuccessMessage,
-  logout
-})(Dashboard);
 
 export default Dashboard;

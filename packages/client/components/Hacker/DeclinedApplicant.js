@@ -1,12 +1,11 @@
-import { Header, Segment } from "semantic-ui-react";
 import Emoji from "react-emoji-render";
 import React from "react";
 
 export default () => (
-  <Segment>
-    <Header as="h2">
+  <div>
+    <h2>
       <Emoji text="Thank you from QHacks! :heart:" />
-    </Header>
+    </h2>
     <p>
       This years applicant pool was the best yet, making our decision-making
       process harder than ever. Unfortunately, we will be unable to offer you a
@@ -30,5 +29,5 @@ export default () => (
       <a href="mailto:hello@qhacks.io">hello@qhacks.io</a>.
     </p>
     <p>We wish all the best and keep hacking!</p>
-  </Segment>
+  </div>
 );

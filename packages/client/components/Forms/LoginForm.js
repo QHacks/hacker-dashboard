@@ -1,13 +1,6 @@
-import { Button, Divider, Form, Header, Message } from "semantic-ui-react";
-import { required, email } from "redux-form-validators";
-import SemanticFormField from "./SemanticFormField";
-import { Field, reduxForm } from "redux-form";
+import { Form, Field } from "react-final-form";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { MISC } from "../../strings";
-import "./LoginForm.less";
-
-const { APPLICATION_CLOSED_STATUS } = MISC;
 
 class LoginForm extends Component {
   constructor(props) {
@@ -17,33 +10,21 @@ class LoginForm extends Component {
   }
 
   renderLoginFormHeader() {
-    return (
-      <Header as="h2" color="red" textAlign="center">
-        Login to your account
-      </Header>
-    );
+    return <h2>Login to your account</h2>;
   }
 
   renderLoginFormErrorMessage() {
-    return (
-      <Message
-        error
-        size="small"
-        className="error-message"
-        header="Invalid Credentials!"
-        content="Oops! We cannot authenticate you with those credentials."
-      />
-    );
+    return <p>Oops! We cannot authenticate you with those credentials.</p>;
   }
 
   renderLoginFormFooter() {
     const { applicationsStatus } = this.props;
+
     return (
       <div>
-        <div className="fontSize-medium" style={{ marginTop: "40px" }}>
+        <div>
           <Link to="/reset-password">Forgot password?</Link>
-          <Divider />
-          {applicationsStatus === APPLICATION_CLOSED_STATUS ? (
+          {applicationsStatus === "closed" ? (
             ""
           ) : (
             <p>
@@ -58,40 +39,16 @@ class LoginForm extends Component {
   renderLoginForm() {
     return (
       <Form
-        size="large"
-        error={this.props.loginError}
-        loading={this.props.loginLoading}
-        onSubmit={this.props.handleSubmit}
-      >
-        <Field
-          name="email"
-          component={SemanticFormField}
-          as={Form.Input}
-          icon="mail"
-          type="email"
-          placeholder="Email address"
-          validate={[
-            required({ msg: "none" }),
-            email({ msg: "Please enter a valid email address!" })
-          ]}
-        />
+        onSubmit={this.props.onSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Field name="email" component="input" placeholder="Email" />
+            <Field name="password" component="input" placeholder="Password" />
 
-        <Field
-          name="password"
-          component={SemanticFormField}
-          as={Form.Input}
-          icon="lock"
-          type="password"
-          placeholder="Password"
-          validate={required({ msg: "none" })}
-        />
-
-        {this.renderLoginFormErrorMessage()}
-
-        <Button primary fluid size="large">
-          Login
-        </Button>
-      </Form>
+            <button type="submit">Login</button>
+          </form>
+        )}
+      />
     );
   }
 
@@ -106,7 +63,4 @@ class LoginForm extends Component {
   }
 }
 
-export default reduxForm({
-  form: "login",
-  enableReinitialize: true
-})(LoginForm);
+export default LoginForm;

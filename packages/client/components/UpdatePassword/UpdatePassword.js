@@ -1,83 +1,62 @@
-import { Divider, Header, Message } from "semantic-ui-react";
-import { actionCreators, selectors } from "../../HackerStore";
 import { UpdatePasswordForm } from "../Forms";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import "./UpdatePassword.less";
-
-const {
-  getIsPasswordUpdated,
-  getIsPasswordUpdatedError,
-  getIsPasswordUpdatedLoading
-} = selectors;
-const { updatePasswordForReset } = actionCreators;
 
 class UpdatePassword extends Component {
   handleUpdatePasswordForReset(values) {
     const { password } = values;
     const { hash } = this.props.match.params;
 
-    this.props.updatePasswordForReset(hash, password);
+    // send api request to update the password with the hash from url and value from form
   }
 
   renderPasswordUpdateHeader() {
-    const { isPasswordUpdated } = this.props;
+    const isPasswordUpdated = false;
 
     return (
-      <div className="update-header">
+      <div
+        css={`
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          margin-top: 40px;
+          margin-bottom: 30px;
+        `}
+      >
         <img
+          css={`
+            height: 130px;
+            margin-bottom: 20px;
+          `}
           src={require("../../assets/img/qhacks-tricolor-logo.svg")}
-          className="qhacks-logo"
         />
-        <Header
-          as="h2"
-          content="Update Password"
-          color="red"
-          textAlign="center"
-          className="form apply header"
-        />
-        {isPasswordUpdated ?
-          null :
-          (
-            <p>
-              Please enter your new password to complete the reset password
-              process.
-            </p>
-          )}
+        <h2>Update Password</h2>
+        {isPasswordUpdated ? null : ( // eslint-disable-line multiline-ternary
+          <p>
+            Please enter your new password to complete the reset password
+            process.
+          </p>
+        )}
       </div>
     );
   }
 
   renderPasswordUpdateForm() {
-    const {
-      isPasswordUpdated,
-      isPasswordUpdatedError,
-      isPasswordUpdatedLoading
-    } = this.props;
-    if (isPasswordUpdated) {
-      return (
-        <Message
-          success
-          size="small"
-          header="Password Update Successful!"
-          content="Congratulations your password has been updated. Please proceed to login."
-        />
-      );
-    }
     return (
       <UpdatePasswordForm
         onSubmit={this.handleUpdatePasswordForReset.bind(this)}
-        updateError={isPasswordUpdatedError}
-        updateLoading={isPasswordUpdatedLoading}
       />
     );
   }
 
   renderPasswordUpdateFooter() {
     return (
-      <div className="update-footer">
-        <Divider />
+      <div
+        css={`
+          margin-top: 20px;
+          margin-bottom: 40px;
+        `}
+      >
         <p className="fontSize-medium textAlign-center">
           Wrong place? <Link to="/login">Login here</Link>
         </p>
@@ -87,8 +66,23 @@ class UpdatePassword extends Component {
 
   render() {
     return (
-      <div className="update-container">
-        <div className="update-form-container">
+      <div
+        css={`
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-height: 100vh;
+        `}
+      >
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            max-width: 600px;
+            width: 100%;
+          `}
+        >
           {this.renderPasswordUpdateHeader()}
           {this.renderPasswordUpdateForm()}
           {this.renderPasswordUpdateFooter()}
@@ -98,15 +92,4 @@ class UpdatePassword extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    ...ownProps,
-    isPasswordUpdated: getIsPasswordUpdated(state),
-    isPasswordUpdatedError: getIsPasswordUpdatedError(state),
-    isPasswordUpdatedLoading: getIsPasswordUpdatedLoading(state)
-  };
-}
-
-export default connect(mapStateToProps, { updatePasswordForReset })(
-  UpdatePassword
-);
+export default UpdatePassword;

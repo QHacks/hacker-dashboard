@@ -1,18 +1,6 @@
-import { actionCreators, selectors } from "../../HackerStore";
 import { Redirect } from "react-router-dom";
-import { Header } from "semantic-ui-react";
-import React, { Component } from "react";
-import { connect } from "react-redux";
 import LoginForm from "../Forms/LoginForm";
-import "./Login.less";
-
-const {
-  getLoginLoading,
-  getAuthenticated,
-  getIsLoginError,
-  getApplicationsStatus
-} = selectors;
-const { login } = actionCreators;
+import React, { Component } from "react";
 
 class Login extends Component {
   constructor(props) {
@@ -23,7 +11,7 @@ class Login extends Component {
   }
 
   handleLogin(values) {
-    this.props.login(values);
+    // make API request to authenticate a user using the form values
   }
 
   getRedirectPath() {
@@ -37,20 +25,34 @@ class Login extends Component {
   }
 
   renderLoginForm() {
-    const { applicationsStatus, loginLoading, loginError } = this.props;
+    const applicationsStatus = "closed";
+
     return (
-      <div className="login-form-wrapper">
-        <a href="http://qhacks.io">
+      <div
+        css={`
+          align-items: center;
+          box-shadow: 3px 0 25px rgba(0, 0, 0, 0.3);
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          justify-content: center;
+          padding: 50px;
+          width: 40%;
+          z-index: 0;
+        `}
+      >
+        <a href="https://qhacks.io">
           <img
+            css={`
+              height: 130px;
+              margin-bottom: 20px;
+            `}
             src={require("../../assets/img/qhacks-tricolor-logo.svg")}
-            className="qhacks-logo-login"
           />
         </a>
         <LoginForm
           onSubmit={this.handleLogin.bind(this)}
           applicationsStatus={applicationsStatus}
-          loginLoading={loginLoading}
-          loginError={loginError}
         />
       </div>
     );
@@ -58,20 +60,35 @@ class Login extends Component {
 
   renderLoginDisplay() {
     return (
-      <div className="login-picture">
-        <div className="login-picture-overlay">
+      <div
+        css={`
+          align-items: center;
+          background-color: #000;
+          background-image: url("../../assets/img/students-at-hackathon.jpg");
+          background-position: center;
+          background-size: cover;
+          color: white;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          justify-content: center;
+          width: 60%;
+        `}
+      >
+        <div
+          css={`
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            padding: 50px;
+            width: 100%;
+          `}
+        >
           <div>
-            <Header as="h1" className="fontWeight-normal" inverted size="huge">
-              Dream it. Build it.
-            </Header>
-            <Header
-              as="h2"
-              className="fontWeight-lighter"
-              inverted
-              size="medium"
-            >
-              QHacks 2018, Queen&apos;s University
-            </Header>
+            <h1>Dream it. Build it.</h1>
+            <h2>QHacks 2018, Queen&apos;s University</h2>
           </div>
         </div>
       </div>
@@ -79,7 +96,7 @@ class Login extends Component {
   }
 
   render() {
-    const { authenticated } = this.props;
+    const authenticated = false;
 
     if (authenticated) {
       return (
@@ -95,7 +112,16 @@ class Login extends Component {
     }
 
     return (
-      <div className="login-container">
+      <div
+        css={`
+          align-items: center;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          height: 100vh;
+          width: 100vw;
+        `}
+      >
         {this.renderLoginForm()}
         {this.renderLoginDisplay()}
       </div>
@@ -103,14 +129,4 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    ...ownProps,
-    authenticated: getAuthenticated(state),
-    loginLoading: getLoginLoading(state),
-    loginError: getIsLoginError(state),
-    applicationsStatus: getApplicationsStatus(state)
-  };
-}
-
-export default connect(mapStateToProps, { login })(Login);
+export default Login;

@@ -1,7 +1,0 @@
-.ui.header.fontWeight-lighter {
-  font-weight: lighter;
-}
-
-.ui.header.fontWeight-normal {
-  font-weight: normal;
-}

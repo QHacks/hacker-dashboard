@@ -4,19 +4,16 @@ const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const logger = require("./utils/logger");
 const webpack = require("webpack");
 const path = require("path");
 
 const isProd = process.env.NODE_ENV === "production";
 
-const mode = (isProd) ?
-  'production' :
-  'development';
+const mode = isProd ? "production" : "development";
 
 isProd
-  ? logger.info("Running production build!")
-  : logger.info("Running development build!");
+  ? console.log("Running production build!")
+  : console.log("Running development build!");
 
 const DEV_PROXY = process.env.DEV_PROXY;
 
@@ -25,11 +22,11 @@ const CLIENT_ENTRY = path.resolve(CLIENT_DIR, "Client.js");
 const CLIENT_TEMPLATE = path.resolve(CLIENT_DIR, "index.html");
 const CLIENT_OUTPUT = path.resolve(CLIENT_DIR, "bundle");
 
-const VENDOR_LIBS = ["react", "react-redux", "redux", "redux-form"];
+const VENDOR_LIBS = ["react"];
 
 module.exports = {
   entry: {
-    bundle: ["babel-polyfill", CLIENT_ENTRY],
+    bundle: CLIENT_ENTRY,
     vendor: VENDOR_LIBS
   },
   optimization: {
@@ -50,28 +47,18 @@ module.exports = {
     publicPath: "/",
     filename: "[name].[chunkhash].js"
   },
-  resolve: {
-    alias: {
-      "../../theme.config$": path.join(
-        CLIENT_DIR,
-        "assets/semantic-ui/theme.config"
-      )
-    }
-  },
   module: {
     rules: [
       {
-        use: "babel-loader",
         test: /\.js$/,
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
       },
       {
-        test: /\.less$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "less-loader"
-        ]
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
       },
       {
         test: /\.jpe?g$|\.gif$|\.png$|\.ttf$|\.eot$|\.svg$/,
@@ -85,12 +72,8 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: !isProd ?
-        "[name].css" :
-        "[name].[hash].css",
-      chunkFilename: !isProd ?
-        "[id].css" :
-        "[id].[hash].css"
+      filename: !isProd ? "[name].css" : "[name].[hash].css",
+      chunkFilename: !isProd ? "[id].css" : "[id].[hash].css"
     }),
     new HtmlWebpackPlugin({
       template: CLIENT_TEMPLATE
@@ -120,7 +103,5 @@ module.exports = {
       }
     }
   },
-  devtool: isProd ?
-    "source-map" :
-    "cheap-eval-source-map"
+  devtool: isProd ? "source-map" : "cheap-eval-source-map"
 };
