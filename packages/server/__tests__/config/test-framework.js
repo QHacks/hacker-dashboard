@@ -10,6 +10,7 @@ const {
   OAuthClient,
   OAuthUser,
   Location,
+  Activity,
   Project,
   Sponsor,
   Event,
@@ -101,7 +102,8 @@ afterEach(() => {
         Project.destroy({ where: {} }),
         Application.destroy({ where: {} }),
         ApplicationField.destroy({ where: {} }),
-        EventSponsor.destroy({ where: {} })
+        EventSponsor.destroy({ where: {} }),
+        Activity.destroy({ where: {} })
       ])
     )
     .then(() =>
