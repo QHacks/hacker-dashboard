@@ -1,5 +1,6 @@
 const uuid = require("uuid");
 const {
+  ApplicationFieldResponse,
   OAuthRefreshToken,
   ApplicationField,
   Application,
@@ -72,18 +73,22 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
-  return Promise.all([
-    Application.destroy({ where: {} }),
-    ApplicationField.destroy({ where: {} })
-  ]).then(() =>
-    Promise.all([
-      OAuthRefreshToken.destroy({ where: {} }),
-      OAuthUser.destroy({ where: {} }),
-      User.destroy({ where: {} }),
-      OAuthClient.destroy({ where: {} }),
-      Event.destroy({ where: {} })
-    ])
-  );
+  return ApplicationFieldResponse.destroy({ where: {} })
+    .then(() =>
+      Promise.all([
+        Application.destroy({ where: {} }),
+        ApplicationField.destroy({ where: {} })
+      ])
+    )
+    .then(() =>
+      Promise.all([
+        OAuthRefreshToken.destroy({ where: {} }),
+        OAuthUser.destroy({ where: {} }),
+        User.destroy({ where: {} }),
+        OAuthClient.destroy({ where: {} }),
+        Event.destroy({ where: {} })
+      ])
+    );
 });
 
 afterAll(async () => {
