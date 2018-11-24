@@ -9,6 +9,7 @@ const {
   ProjectUser,
   OAuthClient,
   OAuthUser,
+  Location,
   Project,
   Sponsor,
   Event,
@@ -110,7 +111,8 @@ afterEach(() => {
         User.destroy({ where: {} }),
         OAuthClient.destroy({ where: {} }),
         Sponsor.destroy({ where: {} }),
-        Event.destroy({ where: {} })
+        Event.destroy({ where: {} }),
+        Location.destroy({ where: {} })
       ])
     );
 });
