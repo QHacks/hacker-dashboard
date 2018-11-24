@@ -9,6 +9,7 @@ const {
   OAuthClient,
   OAuthUser,
   Project,
+  Sponsor,
   Event,
   User,
   sequelize
@@ -106,6 +107,7 @@ afterEach(() => {
         OAuthUser.destroy({ where: {} }),
         User.destroy({ where: {} }),
         OAuthClient.destroy({ where: {} }),
+        Sponsor.destroy({ where: {} }),
         Event.destroy({ where: {} })
       ])
     );
