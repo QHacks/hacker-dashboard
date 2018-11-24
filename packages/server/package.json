@@ -4,7 +4,7 @@
   "description": "The server for the QHacks Dashboard!",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run build && NODE_ENV=development nodemon index.js",
+    "dev": "npm run build && NODE_ENV=development nodemon --ext graphql,js,json index.js",
     "start": "NODE_ENV=production node index.js",
     "build": "npm run clean && mjml --min ./emails/templates/*.mjml -o ./emails/dist/",
     "build-emails": "npm run build",
