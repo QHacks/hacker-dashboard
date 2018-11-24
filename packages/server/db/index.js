@@ -25,6 +25,7 @@ const database = (logger) => {
     ApplicationFieldResponse: sequelize.import(
       "./models/application-field-response"
     ),
+    Project: sequelize.import("./models/project"),
     OAuthUser: sequelize.import("./models/oauth-user"),
     Application: sequelize.import("./models/application"),
     OAuthClient: sequelize.import("./models/oauth-client"),

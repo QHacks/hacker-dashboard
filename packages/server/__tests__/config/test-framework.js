@@ -7,6 +7,7 @@ const {
   Application,
   OAuthClient,
   OAuthUser,
+  Project,
   Event,
   User,
   sequelize
@@ -92,6 +93,7 @@ afterEach(() => {
   ])
     .then(() =>
       Promise.all([
+        Project.destroy({ where: {} }),
         Application.destroy({ where: {} }),
         ApplicationField.destroy({ where: {} })
       ])
