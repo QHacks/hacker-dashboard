@@ -5,6 +5,7 @@ describe("Project Model", () => {
     const { id: eventId } = await Event.findOne({});
     const { id } = await Project.create({
       eventId,
+      name: "Lorem Ipsum",
       description: "lorem ipsum"
     });
 

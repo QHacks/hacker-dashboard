@@ -4,6 +4,7 @@ describe("ProjectUser Model", () => {
   it("saves with a uuid", async () => {
     const { id: eventId } = await Event.findOne({});
     const { id: projectId } = await Project.create({
+      name: "cool project",
       description: "my cool project B-)",
       eventId
     });
@@ -16,6 +17,7 @@ describe("ProjectUser Model", () => {
   it("doesn't allow duplicates", async (done) => {
     const { id: eventId } = await Event.findOne({});
     const { id: projectId } = await Project.create({
+      name: "cool project",
       description: "my cool project B-)",
       eventId
     });

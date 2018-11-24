@@ -8,6 +8,13 @@ module.exports = (sequelie, DataTypes) => {
         isUUID: 4
       }
     },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     description: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -22,6 +29,12 @@ module.exports = (sequelie, DataTypes) => {
       }
     },
     videoUrl: {
+      type: DataTypes.STRING,
+      validate: {
+        isUrl: true
+      }
+    },
+    repositoryUrl: {
       type: DataTypes.STRING,
       validate: {
         isUrl: true

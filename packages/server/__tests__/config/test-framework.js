@@ -6,6 +6,7 @@ const {
   ApplicationField,
   ActivityCheckIn,
   EventSponsor,
+  ProjectPrize,
   Application,
   ProjectUser,
   OAuthClient,
@@ -98,6 +99,7 @@ afterEach(() => {
     ApplicationFieldResponse.destroy({ where: {} }),
     ApplicationReview.destroy({ where: {} }),
     ProjectUser.destroy({ where: {} }),
+    ProjectPrize.destroy({ where: {} }),
     ActivityCheckIn.destroy({ where: {} })
   ])
     .then(() =>
