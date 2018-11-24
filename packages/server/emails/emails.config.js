@@ -1,11 +1,7 @@
-/**
- * Config for rendering email templates should be stored here.
- */
-
 const logger = require("../utils/logger");
 const EMAIL_TEMPLATES = require("./templates");
 const { EMAILS: EMAIL_STRINGS, ERROR } = require("../strings");
-const { ERROR_TEMPLATES, createError } = require("../errors");
+const { ERROR_TEMPLATES, createError } = require("../oauth/errors");
 const { get } = require("lodash");
 
 const { EMAIL_URL_HOST } = process.env;

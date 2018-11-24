@@ -1,0 +1,13 @@
+"""
+Different permission levels.
+"""
+enum OAuthScopePermission {
+  """
+  Read permission, allows only reading resources.
+  """
+  READ
+  """
+  Write permission, allows reading and writing resources.
+  """
+  WRITE
+}
