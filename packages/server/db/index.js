@@ -25,6 +25,7 @@ const database = (logger) => {
     OAuthUser: sequelize.import("./models/oauth-user"),
     Application: sequelize.import("./models/application"),
     OAuthClient: sequelize.import("./models/oauth-client"),
+    ApplicationField: sequelize.import("./models/application-field"),
     OAuthRefreshToken: sequelize.import("./models/oauth-refresh-token")
   };
 

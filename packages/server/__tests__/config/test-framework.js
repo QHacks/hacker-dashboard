@@ -1,11 +1,12 @@
 const uuid = require("uuid");
 const {
-  User,
-  OAuthUser,
   OAuthRefreshToken,
-  OAuthClient,
-  Event,
+  ApplicationField,
   Application,
+  OAuthClient,
+  OAuthUser,
+  Event,
+  User,
   sequelize
 } = require("./mock-db");
 
@@ -71,7 +72,10 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
-  return Application.destroy({ where: {} }).then(() =>
+  return Promise.all([
+    Application.destroy({ where: {} }),
+    ApplicationField.destroy({ where: {} })
+  ]).then(() =>
     Promise.all([
       OAuthRefreshToken.destroy({ where: {} }),
       OAuthUser.destroy({ where: {} }),
