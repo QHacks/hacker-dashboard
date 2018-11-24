@@ -5,6 +5,7 @@ const {
   OAuthRefreshToken,
   ApplicationField,
   Application,
+  ProjectUser,
   OAuthClient,
   OAuthUser,
   Project,
@@ -89,7 +90,8 @@ beforeEach(async () => {
 afterEach(() => {
   return Promise.all([
     ApplicationFieldResponse.destroy({ where: {} }),
-    ApplicationReview.destroy({ where: {} })
+    ApplicationReview.destroy({ where: {} }),
+    ProjectUser.destroy({ where: {} })
   ])
     .then(() =>
       Promise.all([
