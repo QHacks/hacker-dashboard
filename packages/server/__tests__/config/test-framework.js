@@ -4,6 +4,7 @@ const {
   OAuthUser,
   OAuthRefreshToken,
   OAuthClient,
+  Event,
   sequelize
 } = require("./mock-db");
 
@@ -14,6 +15,19 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  await Event.create({
+    name: "qhacks-2019",
+    slug: "qhacks-2019",
+    startDate: new Date("2019-02-01T19:00Z"),
+    endDate: new Date("2019-02-03T19:00Z"),
+    requiresApplication: true,
+    applicationOpenDate: new Date("2018-12-01"),
+    applicationCloseDate: new Date("2019-01-10"),
+    hasProjectSubmissions: true,
+    projectSubmissionDate: new Date("2018-02-03T14:00Z"),
+    eventLogoUrl: "http://digitalocean.com/qhacks.jpg"
+  });
+
   await OAuthClient.create({
     id: QHACKS_CLIENT_ID,
     name: "test-client",
@@ -60,7 +74,8 @@ afterEach(() => {
     OAuthRefreshToken.destroy({ where: {} }),
     OAuthUser.destroy({ where: {} }),
     User.destroy({ where: {} }),
-    OAuthClient.destroy({ where: {} })
+    OAuthClient.destroy({ where: {} }),
+    Event.destroy({ where: {} })
   ]);
 });
 
