@@ -1,6 +1,7 @@
 const uuid = require("uuid");
 const {
   ApplicationFieldResponse,
+  ApplicationReview,
   OAuthRefreshToken,
   ApplicationField,
   Application,
@@ -12,6 +13,8 @@ const {
 } = require("./mock-db");
 
 const QHACKS_CLIENT_ID = uuid.v4();
+const QHACKS_EVENT_ID = uuid.v4();
+const HACKER_ID = uuid.v4();
 
 beforeAll(async () => {
   await sequelize.sync({ force: true });
@@ -19,6 +22,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await Event.create({
+    id: QHACKS_EVENT_ID,
     name: "qhacks-2019",
     slug: "qhacks-2019",
     startDate: new Date("2019-02-01T19:00Z"),
@@ -39,41 +43,53 @@ beforeEach(async () => {
     redirectUri: "https://qhacks.io"
   });
 
-  await createUsers([
-    {
-      firstName: "Ross",
-      lastName: "Hill",
-      dateOfBirth: new Date(),
-      email: "ross.hill@rosshill.ca",
-      phoneNumber: "(123)-456-789",
-      schoolName: "Queen's",
-      password: "password"
-    },
-    {
-      id: uuid.v4(),
-      firstName: "Robert",
-      lastName: "Saunders",
-      dateOfBirth: new Date(),
-      email: "bob@yopmail.com",
-      phoneNumber: "(123)-456-789",
-      schoolName: "Queen's",
-      password: "password"
-    },
-    {
-      id: uuid.v4(),
-      firstName: "Joey",
-      lastName: "Tepperman",
-      dateOfBirth: new Date(),
-      email: "jmichaelt98@gmail.com",
-      phoneNumber: "(123)-456-789",
-      schoolName: "Queen's",
-      password: "password"
-    }
-  ]);
+  await createUsers(
+    [
+      {
+        firstName: "Ross",
+        lastName: "Hill",
+        dateOfBirth: new Date(),
+        email: "ross.hill@rosshill.ca",
+        phoneNumber: "(123)-456-789",
+        schoolName: "Queen's",
+        password: "password"
+      },
+      {
+        id: uuid.v4(),
+        firstName: "Robert",
+        lastName: "Saunders",
+        dateOfBirth: new Date(),
+        email: "bob@yopmail.com",
+        phoneNumber: "(123)-456-789",
+        schoolName: "Queen's",
+        password: "password"
+      },
+      {
+        id: HACKER_ID,
+        firstName: "Joey",
+        lastName: "Tepperman",
+        dateOfBirth: new Date(),
+        email: "jmichaelt98@gmail.com",
+        phoneNumber: "(123)-456-789",
+        schoolName: "Queen's",
+        password: "password"
+      }
+    ],
+    [{ role: "ADMIN" }, { role: "VOLUNTEER" }, { role: "HACKER" }]
+  );
+
+  await Application.create({
+    eventId: QHACKS_EVENT_ID,
+    userId: HACKER_ID,
+    status: "APPLIED"
+  });
 });
 
 afterEach(() => {
-  return ApplicationFieldResponse.destroy({ where: {} })
+  return Promise.all([
+    ApplicationFieldResponse.destroy({ where: {} }),
+    ApplicationReview.destroy({ where: {} })
+  ])
     .then(() =>
       Promise.all([
         Application.destroy({ where: {} }),
@@ -96,7 +112,7 @@ afterAll(async () => {
 });
 
 // Create necessary relationships for users
-async function createUsers(users) {
+async function createUsers(users, options) {
   const scopes = users.map(() =>
     JSON.stringify([{ user: "read", user: "write" }])
   );
@@ -109,7 +125,7 @@ async function createUsers(users) {
   const tokens = await OAuthRefreshToken.bulkCreate(refreshTokens);
   const oauthUsers = tokens.map(({ dataValues: token }, i) => ({
     refreshTokenId: token.id,
-    role: "HACKER",
+    role: options[i].role,
     scopes: scopes[i]
   }));
 
