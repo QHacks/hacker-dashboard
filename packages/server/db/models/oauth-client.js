@@ -8,9 +8,23 @@ module.exports = (sequelize, DataTypes) => {
         isUUID: 4
       }
     },
-    clientSecret: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
+    host: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: true
+      }
+    },
+    clientSecret: {
+      type: DataTypes.STRING,
+      allowNull: true,
       validate: {
         notEmpty: true
       }
@@ -22,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     redirectUri: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         isUrl: true
       }

@@ -9,7 +9,12 @@ extend type MutationRoot {
   """
   Delete a hacker resource by ID.
   """
-  hackerDelete(id: ID!): String
+  hackerDelete(id: ID!): HackerDeletePayload!
+
+  """
+  Updates a hacker by ID.
+  """
+  hackerUpdate(id: ID!, input: HackerInput!): HackerUpdatePayload!
 }
 
 """
@@ -36,13 +41,44 @@ type Hacker implements User {
   """
   The hackers phone number.
   """
-  phoneNumber: String!
+  phoneNumber: String
   """
   The hackers date of birth.
   """
-  dateOfBirth: String!
+  dateOfBirth: String
   """
   The hackers auth information.
   """
   oauthInfo: OAuthInfo!
+}
+
+input HackerInput {
+  """
+  The hackers first name.
+  """
+  firstName: String!
+  """
+  The hackers last name.
+  """
+  lastName: String!
+  """
+  The hackers email.
+  """
+  email: String!
+  """
+  The hackers phone number.
+  """
+  phoneNumber: String
+  """
+  The hackers date of birth.
+  """
+  dateOfBirth: String
+}
+
+type HackerDeletePayload {
+  deletedHackerId: ID
+}
+
+type HackerUpdatePayload {
+  hacker: Hacker
 }

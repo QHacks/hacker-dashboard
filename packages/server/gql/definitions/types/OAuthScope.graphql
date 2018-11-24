@@ -1,18 +1,4 @@
 """
-Represents a users auth information.
-"""
-type OAuthInfo {
-  """
-  The users role in the platform.
-  """
-  role: UserRole!
-  """
-  The users auth scopes.
-  """
-  scopes: [OAuthScope!]!
-}
-
-"""
 Represents a single OAuth scope.
 """
 type OAuthScope {

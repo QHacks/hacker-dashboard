@@ -21,7 +21,9 @@ const database = (logger) => {
 
   const db = {
     User: sequelize.import("./models/user"),
-    OAuthUser: sequelize.import("./models/oauth-user")
+    OAuthUser: sequelize.import("./models/oauth-user"),
+    OAuthClient: sequelize.import("./models/oauth-client"),
+    OAuthRefreshToken: sequelize.import("./models/oauth-refresh-token")
   };
 
   Object.keys(db).forEach((modelName) => {

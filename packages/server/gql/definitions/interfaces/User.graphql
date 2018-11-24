@@ -18,11 +18,11 @@ interface User {
   """
   The users phone number.
   """
-  phoneNumber: String!
+  phoneNumber: String
   """
   The users date of birth.
   """
-  dateOfBirth: String!
+  dateOfBirth: String
   """
   The users auth information.
   """

@@ -1,0 +1,6 @@
+module.exports = {
+  "config": "db/config.js",
+  "models-path": "db/models",
+  "seeders-path": "db/seeders",
+  "migrations-path": "db/migrations"
+}

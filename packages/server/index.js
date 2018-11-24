@@ -76,7 +76,7 @@ const graphqlServer = new ApolloServer({
     // const access = getUserAccess(user);
 
     const access = {
-      scopes: ["user:read"]
+      scopes: ["hacker:write"]
     };
 
     return {
