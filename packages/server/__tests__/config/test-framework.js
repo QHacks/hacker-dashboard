@@ -15,6 +15,7 @@ const {
   Project,
   Sponsor,
   Event,
+  Prize,
   User,
   sequelize
 } = require("./mock-db");
@@ -105,7 +106,8 @@ afterEach(() => {
         Application.destroy({ where: {} }),
         ApplicationField.destroy({ where: {} }),
         EventSponsor.destroy({ where: {} }),
-        Activity.destroy({ where: {} })
+        Activity.destroy({ where: {} }),
+        Prize.destroy({ where: {} })
       ])
     )
     .then(() =>

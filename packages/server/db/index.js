@@ -21,6 +21,7 @@ const database = (logger) => {
 
   const db = {
     User: sequelize.import("./models/user"),
+    Prize: sequelize.import("./models/prize"),
     Event: sequelize.import("./models/event"),
     ApplicationFieldResponse: sequelize.import(
       "./models/application-field-response"
