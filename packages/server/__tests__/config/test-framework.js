@@ -4,6 +4,7 @@ const {
   ApplicationReview,
   OAuthRefreshToken,
   ApplicationField,
+  EventSponsor,
   Application,
   ProjectUser,
   OAuthClient,
@@ -98,7 +99,8 @@ afterEach(() => {
       Promise.all([
         Project.destroy({ where: {} }),
         Application.destroy({ where: {} }),
-        ApplicationField.destroy({ where: {} })
+        ApplicationField.destroy({ where: {} }),
+        EventSponsor.destroy({ where: {} })
       ])
     )
     .then(() =>
