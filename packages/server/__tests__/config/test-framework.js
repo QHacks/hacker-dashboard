@@ -5,6 +5,7 @@ const {
   OAuthRefreshToken,
   OAuthClient,
   Event,
+  Application,
   sequelize
 } = require("./mock-db");
 
@@ -70,13 +71,15 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
-  return Promise.all([
-    OAuthRefreshToken.destroy({ where: {} }),
-    OAuthUser.destroy({ where: {} }),
-    User.destroy({ where: {} }),
-    OAuthClient.destroy({ where: {} }),
-    Event.destroy({ where: {} })
-  ]);
+  return Application.destroy({ where: {} }).then(() =>
+    Promise.all([
+      OAuthRefreshToken.destroy({ where: {} }),
+      OAuthUser.destroy({ where: {} }),
+      User.destroy({ where: {} }),
+      OAuthClient.destroy({ where: {} }),
+      Event.destroy({ where: {} })
+    ])
+  );
 });
 
 afterAll(async () => {
