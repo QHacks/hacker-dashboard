@@ -17,6 +17,7 @@ const {
   Activity,
   Project,
   Sponsor,
+  Speaker,
   Event,
   Prize,
   User,
@@ -113,7 +114,8 @@ afterEach(() => {
         EventSponsor.destroy({ where: {} }),
         Activity.destroy({ where: {} }),
         Prize.destroy({ where: {} }),
-        MailingList.destroy({ where: {} })
+        MailingList.destroy({ where: {} }),
+        Speaker.destroy({ where: {} })
       ])
     )
     .then(() =>

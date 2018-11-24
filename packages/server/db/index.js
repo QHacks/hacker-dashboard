@@ -31,6 +31,7 @@ const database = (logger) => {
     ),
     Sponsor: sequelize.import("./models/sponsor"),
     Project: sequelize.import("./models/project"),
+    Speaker: sequelize.import("./models/speaker"),
     Activity: sequelize.import("./models/activity"),
     Location: sequelize.import("./models/location"),
     OAuthUser: sequelize.import("./models/oauth-user"),
