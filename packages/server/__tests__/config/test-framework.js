@@ -1,6 +1,7 @@
 const uuid = require("uuid");
 const {
   ApplicationFieldResponse,
+  MailingListSubscription,
   ApplicationReview,
   OAuthRefreshToken,
   ApplicationField,
@@ -101,7 +102,8 @@ afterEach(() => {
     ApplicationReview.destroy({ where: {} }),
     ProjectUser.destroy({ where: {} }),
     ProjectPrize.destroy({ where: {} }),
-    ActivityCheckIn.destroy({ where: {} })
+    ActivityCheckIn.destroy({ where: {} }),
+    MailingListSubscription.destroy({ where: {} })
   ])
     .then(() =>
       Promise.all([
