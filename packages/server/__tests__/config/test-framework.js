@@ -10,6 +10,7 @@ const {
   Application,
   ProjectUser,
   OAuthClient,
+  MailingList,
   OAuthUser,
   Location,
   Activity,
@@ -109,7 +110,8 @@ afterEach(() => {
         ApplicationField.destroy({ where: {} }),
         EventSponsor.destroy({ where: {} }),
         Activity.destroy({ where: {} }),
-        Prize.destroy({ where: {} })
+        Prize.destroy({ where: {} }),
+        MailingList.destroy({ where: {} })
       ])
     )
     .then(() =>
