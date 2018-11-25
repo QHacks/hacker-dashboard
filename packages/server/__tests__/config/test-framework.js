@@ -6,6 +6,7 @@ const {
   OAuthRefreshToken,
   ApplicationField,
   ActivityCheckIn,
+  EventCheckIn,
   EventSponsor,
   ProjectPrize,
   Application,
@@ -115,7 +116,8 @@ afterEach(() => {
         Activity.destroy({ where: {} }),
         Prize.destroy({ where: {} }),
         MailingList.destroy({ where: {} }),
-        Speaker.destroy({ where: {} })
+        Speaker.destroy({ where: {} }),
+        EventCheckIn.destroy({ where: {} })
       ])
     )
     .then(() =>

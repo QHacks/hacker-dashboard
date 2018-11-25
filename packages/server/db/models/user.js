@@ -184,5 +184,13 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  User.associate = ({ Event, EventCheckIn }) => {
+    User.belongsToMany(Event, {
+      through: EventCheckIn,
+      foreignKey: { name: "userId", allowNull: false },
+      otherKey: { name: "eventId", allowNull: false }
+    });
+  };
+
   return User;
 };
