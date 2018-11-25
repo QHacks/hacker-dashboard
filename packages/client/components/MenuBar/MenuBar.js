@@ -100,7 +100,46 @@ class MenuBar extends Component {
   }
 
   render() {
-    return <div>Bob</div>;
+    return (
+      <header
+        css={`
+          width: 100%;
+          height: 84px;
+          line-height: 44px;
+          padding: 20px 5%;
+          position: absolute;
+          top: 0;
+          left: 0;
+        `}
+      >
+        <div
+          css={`
+            display: inline-block;
+          `}
+        >
+          {this.renderQHacksCrown()}
+        </div>
+        <nav
+          css={`
+            display: inline-block;
+            float: right;
+            line-height: 44px;
+            a {
+              padding: 0 20px;
+              color: #00205b;
+              font-weight: 600;
+              text-decoration: none;
+            }
+          `}
+        >
+          <a href="#">QHacks 2019</a>
+          <a href="#">Past Events</a>
+          <a href="#">Blog</a>
+          <a href="#">Code</a>
+          <a href="#">Apply</a>
+        </nav>
+      </header>
+    );
   }
 }
 
