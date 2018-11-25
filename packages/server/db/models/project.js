@@ -46,8 +46,13 @@ module.exports = (sequelie, DataTypes) => {
     }
   });
 
-  Project.associate = ({ Event }) => {
+  Project.associate = ({ Event, User, ProjectUser }) => {
     Project.belongsTo(Event, { foreignKey: "eventId", allowNull: false });
+    Project.belongsToMany(User, {
+      through: ProjectUser,
+      foreignKey: { name: "projectId", allowNull: false },
+      otherKey: { name: "userId", allowNull: false }
+    });
   };
 
   return Project;

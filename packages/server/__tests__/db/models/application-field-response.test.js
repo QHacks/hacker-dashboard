@@ -7,7 +7,7 @@ const {
 } = require("../../config/mock-db");
 
 describe("ApplicationFieldResponse Model", () => {
-  it("creates a uuid on save", async () => {
+  it("prevents duplicates", async (done) => {
     const { id: eventId } = await Event.findOne({});
     const { id: userId } = await User.findOne();
     const { id: applicationId } = await Application.create({
@@ -15,17 +15,26 @@ describe("ApplicationFieldResponse Model", () => {
       eventId,
       userId
     });
-    const { id: fieldId } = await ApplicationField.create({
+    const { id: applicationFieldId } = await ApplicationField.create({
       eventId,
       type: "TEXT_INPUT",
-      label: "What's the biggest event of 2018"
+      label: "What's the biggest event of 2019"
     });
-    const { id } = await ApplicationFieldResponse.create({
-      answer: "qhacks ;)",
-      fieldId,
-      applicationId
+    const answer = "qhacks ;)";
+    ApplicationFieldResponse.bulkCreate([
+      {
+        answer,
+        applicationFieldId,
+        applicationId
+      },
+      {
+        answer,
+        applicationFieldId,
+        applicationId
+      }
+    ]).catch(({ errors: [{ message }] }) => {
+      expect(message).toBe("applicationFieldId must be unique");
+      done();
     });
-
-    expect(id).toBeDefined();
   });
 });

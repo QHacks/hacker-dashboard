@@ -33,5 +33,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
+  Sponsor.associate = ({ Event, EventSponsor }) => {
+    Sponsor.belongsToMany(Event, {
+      through: EventSponsor,
+      foreignKey: { name: "sponsorId", allowNull: false },
+      otherKey: { name: "eventId", allowNull: false }
+    });
+  };
   return Sponsor;
 };

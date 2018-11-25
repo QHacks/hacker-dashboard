@@ -1,18 +1,6 @@
 const { Event, EventSponsor, Sponsor } = require("../../config/mock-db");
 
 describe("EventSponsor Model", () => {
-  it("saves with a uuid", async () => {
-    const { id: sponsorId } = await Sponsor.create({
-      name: "Pied Piper",
-      sponsorshipLevel: "TERA",
-      contactEmail: "richard@piedpiper.com",
-      contactAddress: "123 Fake Street"
-    });
-    const { id: eventId } = await Event.findOne({});
-    const { id } = await EventSponsor.create({ eventId, sponsorId });
-
-    expect(id).toBeDefined();
-  });
   it("prevents duplicates", async (done) => {
     const { id: sponsorId } = await Sponsor.create({
       name: "Pied Piper",
@@ -25,7 +13,7 @@ describe("EventSponsor Model", () => {
       { eventId, sponsorId },
       { eventId, sponsorId }
     ]).catch(({ errors: [{ message }] }) => {
-      expect(message).toBe("eventId must be unique");
+      expect(message).toBe("sponsorId must be unique");
       done();
     });
   });

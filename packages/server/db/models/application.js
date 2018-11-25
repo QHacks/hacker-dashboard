@@ -25,12 +25,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  Application.associate = ({ Event, User }) => {
+  Application.associate = ({ Event, User, ApplicationReview }) => {
     Application.belongsTo(Event, {
       foreignKey: { name: "eventId", allowNull: false }
     });
     Application.belongsTo(User, {
       foreignKey: { name: "userId", allowNull: false }
+    });
+    Application.belongsToMany(User, {
+      through: ApplicationReview,
+      foreignKey: { name: "applicationId", allowNull: false },
+      otherKey: { name: "reviewerId", allowNull: false }
     });
   };
 

@@ -1,9 +1,9 @@
 const {
-  Activity,
-  User,
   ActivityCheckIn,
+  Activity,
   Location,
-  Event
+  Event,
+  User
 } = require("../../config/mock-db");
 
 describe("ActivityCheckIn Model", () => {
@@ -32,14 +32,6 @@ describe("ActivityCheckIn Model", () => {
     });
   });
 
-  it("saves with a uuid", async () => {
-    const { id: activityId } = await Activity.findOne({});
-    const { id: userId } = await User.findOne({});
-    const { id } = await ActivityCheckIn.create({ activityId, userId });
-
-    expect(id).toBeDefined();
-  });
-
   it("prevents duplicates", async (done) => {
     const { id: activityId } = await Activity.findOne({});
     const { id: userId } = await User.findOne({});
@@ -47,7 +39,7 @@ describe("ActivityCheckIn Model", () => {
       { activityId, userId },
       { activityId, userId }
     ]).catch(({ errors: [{ message }] }) => {
-      expect(message).toBe("userId must be unique");
+      expect(message).toBe("activityId must be unique");
       done();
     });
   });

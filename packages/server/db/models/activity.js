@@ -32,9 +32,20 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  Activity.associate = ({ Sponsor, Event, Location }) => {
-    Event.hasMany(Activity, { foreignKey: "eventId", allowNull: false });
+  Activity.associate = ({
+    Sponsor,
+    Event,
+    Location,
+    User,
+    ActivityCheckIn
+  }) => {
     Activity.belongsTo(Sponsor, { foreignKey: "sponsorId" });
+    Activity.belongsToMany(User, {
+      through: ActivityCheckIn,
+      foreignKey: { name: "activityId", allowNull: false },
+      otherKey: { name: "userId", allowNull: false }
+    });
+    Event.hasMany(Activity, { foreignKey: "eventId", allowNull: false });
     Location.hasMany(Activity, { foreignKey: "locationId", allowNull: false });
   };
 

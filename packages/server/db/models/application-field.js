@@ -28,9 +28,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  ApplicationField.associate = ({ Event }) => {
+  ApplicationField.associate = ({
+    Event,
+    Application,
+    ApplicationFieldResponse
+  }) => {
     ApplicationField.belongsTo(Event, {
       foreignKey: { name: "eventId", allowNull: false }
+    });
+    ApplicationField.belongsToMany(Application, {
+      through: ApplicationFieldResponse,
+      foreignKey: { name: "applicationFieldId", allowNull: false },
+      otherKey: { name: "applicationId", allowNull: false }
     });
   };
 

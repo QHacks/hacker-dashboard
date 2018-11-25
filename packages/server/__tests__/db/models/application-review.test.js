@@ -5,21 +5,6 @@ const {
 } = require("../../config/mock-db");
 
 describe("ApplicationReview Model", () => {
-  it("saves with a uuid", async () => {
-    const { id: reviewerId } = await User.findOne({
-      where: { email: "ross.hill@rosshill.ca" }
-    });
-
-    const { id: applicationId } = await Application.findOne({});
-    const { id } = await ApplicationReview.create({
-      score: 5,
-      applicationId,
-      reviewerId
-    });
-
-    expect(id).toBeDefined();
-  });
-
   it("validates minimum on score", async (done) => {
     const { id: reviewerId } = await User.findOne({
       where: { email: "ross.hill@rosshill.ca" }

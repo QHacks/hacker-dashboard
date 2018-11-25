@@ -16,14 +16,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  ApplicationFieldResponse.associate = ({ Application, ApplicationField }) => {
-    ApplicationFieldResponse.belongsTo(ApplicationField, {
-      foreignKey: { name: "fieldId", allowNull: false }
-    });
-
-    ApplicationFieldResponse.belongsTo(Application, {
-      foreignKey: { name: "applicationId", allowNull: false }
-    });
-  };
   return ApplicationFieldResponse;
 };
