@@ -25,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         "SELECT"
       ),
       allowNull: false
+    },
+    required: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
   });
 

@@ -19,16 +19,18 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
-      indexes: [{ fields: ["mailingListId", "email"], unique: true }]
+      indexes: [
+        { fields: ["mailingListId", "email"], unique: true },
+        { fields: ["mailingListId", "userId"], unique: true }
+      ]
     }
   );
 
-  MailingListSubscription.associate = ({ MailingList, User }) => {
+  MailingListSubscription.associate = ({ User, MailingList }) => {
+    MailingListSubscription.belongsTo(User, { foreignKey: "userId" });
     MailingListSubscription.belongsTo(MailingList, {
       foreignKey: { name: "mailingListId", allowNull: false }
     });
-
-    MailingListSubscription.belongsTo(User, { foreignKey: "userId" });
   };
 
   return MailingListSubscription;

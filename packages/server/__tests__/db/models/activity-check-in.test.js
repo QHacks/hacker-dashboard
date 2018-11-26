@@ -39,7 +39,7 @@ describe("ActivityCheckIn Model", () => {
       { activityId, userId },
       { activityId, userId }
     ]).catch(({ errors: [{ message }] }) => {
-      expect(message).toBe("activityId must be unique");
+      expect(message).toBe("userId must be unique");
       done();
     });
   });

@@ -38,7 +38,7 @@ const database = (logger) => {
     MailingList: sequelize.import("./models/mailing-list"),
     Application: sequelize.import("./models/application"),
     OAuthClient: sequelize.import("./models/oauth-client"),
-    ProjectUser: sequelize.import("./models/project-user"),
+    UserProject: sequelize.import("./models/user-project"),
     ProjectPrize: sequelize.import("./models/project-prize"),
     EventSponsor: sequelize.import("./models/event-sponsor"),
     EventCheckIn: sequelize.import("./models/event-check-in"),

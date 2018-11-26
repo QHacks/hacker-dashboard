@@ -1,6 +1,6 @@
-const { Event, Project, ProjectUser, User } = require("../../config/mock-db");
+const { Event, Project, UserProject, User } = require("../../config/mock-db");
 
-describe("ProjectUser Model", () => {
+describe("UserProject Model", () => {
   it("doesn't allow duplicates", async (done) => {
     const { id: eventId } = await Event.findOne({});
     const { id: projectId } = await Project.create({
@@ -9,7 +9,7 @@ describe("ProjectUser Model", () => {
       eventId
     });
     const { id: userId } = await User.findOne({});
-    ProjectUser.bulkCreate([
+    UserProject.bulkCreate([
       { projectId, userId },
       { projectId, userId }
     ]).catch(({ errors: [{ message }] }) => {

@@ -33,7 +33,7 @@ describe("ApplicationFieldResponse Model", () => {
         applicationId
       }
     ]).catch(({ errors: [{ message }] }) => {
-      expect(message).toBe("applicationFieldId must be unique");
+      expect(message).toBe("applicationId must be unique");
       done();
     });
   });

@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: false,
       validate: {
         notEmpty: true
       }
@@ -39,14 +38,17 @@ module.exports = (sequelize, DataTypes) => {
     User,
     ActivityCheckIn
   }) => {
-    Activity.belongsTo(Sponsor, { foreignKey: "sponsorId" });
+    Activity.belongsTo(Sponsor, {
+      foreignKey: "sponsorId",
+      onDelete: "CASCADE"
+    });
     Activity.belongsToMany(User, {
       through: ActivityCheckIn,
       foreignKey: { name: "activityId", allowNull: false },
       otherKey: { name: "userId", allowNull: false }
     });
-    Event.hasMany(Activity, { foreignKey: "eventId", allowNull: false });
-    Location.hasMany(Activity, { foreignKey: "locationId", allowNull: false });
+    Activity.belongsTo(Event);
+    Activity.belongsTo(Location);
   };
 
   return Activity;

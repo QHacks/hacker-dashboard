@@ -9,13 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     status: {
-      type: DataTypes.ENUM(
-        "APPLIED",
-        "WAITING_LIST",
-        "ACCEPTED",
-        "REJECTED",
-        "PENDING"
-      ),
+      type: DataTypes.ENUM("APPLIED", "WAITING_LIST", "ACCEPTED", "REJECTED"),
       allowNull: true
     },
     submissionDate: {
@@ -25,12 +19,23 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  Application.associate = ({ Event, User, ApplicationReview }) => {
+  Application.associate = ({
+    Event,
+    User,
+    ApplicationField,
+    ApplicationReview,
+    ApplicationFieldResponse
+  }) => {
     Application.belongsTo(Event, {
       foreignKey: { name: "eventId", allowNull: false }
     });
     Application.belongsTo(User, {
       foreignKey: { name: "userId", allowNull: false }
+    });
+    Application.belongsToMany(ApplicationField, {
+      through: ApplicationFieldResponse,
+      foreignKey: "applicationId",
+      otherKey: "applicationFieldId"
     });
     Application.belongsToMany(User, {
       through: ApplicationReview,

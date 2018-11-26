@@ -5,25 +5,16 @@ describe("ProjectPrize Model", () => {
     const { id: eventId } = await Event.findOne({});
     await Project.create({
       eventId,
-      name: "QHack's Dashboard",
-      description: "Test project"
+      name: "QHacks Dashboard Unit Tests",
+      description:
+        "Tests written to ensure the security of the QHacks Dashboard"
     });
     await Prize.create({
       eventId,
-      title: "My Prize",
-      description: "A really good prize!"
+      title: "Nobel Prize for Technology",
+      description:
+        "A prize awarded to the greatest technological advancement of the past year"
     });
-  });
-
-  it("creates a uuid on save", async () => {
-    const { id: projectId } = await Project.findOne({});
-    const { id: prizeId } = await Prize.findOne({});
-    const { id } = await ProjectPrize.create({
-      projectId,
-      prizeId
-    });
-
-    expect(id).toBeDefined();
   });
 
   it("prevents duplicates", async (done) => {
@@ -39,7 +30,7 @@ describe("ProjectPrize Model", () => {
         prizeId
       }
     ]).catch(({ errors: [{ message }] }) => {
-      expect(message).toBe("projectId must be unique");
+      expect(message).toBe("prizeId must be unique");
       done();
     });
   });

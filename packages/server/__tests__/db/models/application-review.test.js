@@ -55,7 +55,7 @@ describe("ApplicationReview Model", () => {
         reviewerId
       }
     ]).catch(({ errors: [{ message }] }) => {
-      expect(message).toBe("applicationId must be unique");
+      expect(message).toBe("reviewerId must be unique");
       done();
     });
   });

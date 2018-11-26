@@ -24,21 +24,18 @@ module.exports = (sequelize, DataTypes) => {
     },
     bio: {
       type: DataTypes.STRING,
-      allowNull: false,
       validate: {
         notEmpty: true
       }
     },
     companyName: {
       type: DataTypes.STRING,
-      allowNull: false,
       validate: {
         notEmpty: true
       }
     },
     companyPosition: {
       type: DataTypes.STRING,
-      allowNull: false,
       validate: {
         notEmpty: true
       }

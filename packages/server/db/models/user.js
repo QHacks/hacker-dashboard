@@ -184,11 +184,35 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  User.associate = ({ Event, EventCheckIn }) => {
+  User.associate = ({
+    Event,
+    EventCheckIn,
+    MailingListSubscription,
+    Activity,
+    ActivityCheckIn,
+    Application,
+    ApplicationReview
+  }) => {
+    User.hasMany(Application, {
+      foreignKey: { name: "userId", allowNull: false }
+    });
     User.belongsToMany(Event, {
       through: EventCheckIn,
-      foreignKey: { name: "userId", allowNull: false },
-      otherKey: { name: "eventId", allowNull: false }
+      foreignKey: "userId",
+      otherKey: "eventId"
+    });
+    User.hasMany(MailingListSubscription, {
+      foreignKey: "userId"
+    });
+    User.belongsToMany(Application, {
+      through: ApplicationReview,
+      foreignKey: "reviewerId",
+      otherKey: "applicationId"
+    });
+    User.belongsToMany(Activity, {
+      through: ActivityCheckIn,
+      foreignKey: "userId",
+      otherKey: "activityId"
     });
   };
 

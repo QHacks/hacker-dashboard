@@ -10,7 +10,7 @@ const {
   EventSponsor,
   ProjectPrize,
   Application,
-  ProjectUser,
+  UserProject,
   OAuthClient,
   MailingList,
   OAuthUser,
@@ -102,7 +102,7 @@ afterEach(() => {
   return Promise.all([
     ApplicationFieldResponse.destroy({ where: {} }),
     ApplicationReview.destroy({ where: {} }),
-    ProjectUser.destroy({ where: {} }),
+    UserProject.destroy({ where: {} }),
     ProjectPrize.destroy({ where: {} }),
     ActivityCheckIn.destroy({ where: {} }),
     MailingListSubscription.destroy({ where: {} })

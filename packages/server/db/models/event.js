@@ -1,3 +1,7 @@
+const DEFAULT_HAS_MANY_OPTIONS = {
+  foreignKey: { name: "eventId", allowNull: false }
+};
+
 module.exports = (sequelize, DataTypes) => {
   const Event = sequelize.define(
     "Event",
@@ -67,6 +71,32 @@ module.exports = (sequelize, DataTypes) => {
       ]
     }
   );
+
+  Event.associate = ({
+    Sponsor,
+    EventSponsor,
+    Activity,
+    User,
+    EventCheckIn,
+    MailingList,
+    Speaker,
+    Prize
+  }) => {
+    Event.belongsToMany(User, {
+      through: EventCheckIn,
+      foreignKey: "userId",
+      otherKey: "eventId"
+    });
+    Event.belongsToMany(Sponsor, {
+      through: EventSponsor,
+      foreignKey: "eventId",
+      otherKey: "sponsorId"
+    });
+    Event.hasMany(Activity, DEFAULT_HAS_MANY_OPTIONS);
+    Event.hasMany(MailingList, DEFAULT_HAS_MANY_OPTIONS);
+    Event.hasMany(Speaker, DEFAULT_HAS_MANY_OPTIONS);
+    Event.hasMany(Prize, DEFAULT_HAS_MANY_OPTIONS);
+  };
 
   return Event;
 };

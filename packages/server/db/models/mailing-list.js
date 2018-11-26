@@ -35,9 +35,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  MailingList.associate = ({ Event }) => {
+  MailingList.associate = ({ Event, MailingListSubscription, User }) => {
     MailingList.belongsTo(Event, {
       foreignKey: { name: "eventId", allowNull: false }
+    });
+    MailingList.hasMany(MailingListSubscription, {
+      foreignKey: { name: "mailingListId", allowNull: false }
     });
   };
 

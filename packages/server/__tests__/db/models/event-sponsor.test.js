@@ -13,7 +13,7 @@ describe("EventSponsor Model", () => {
       { eventId, sponsorId },
       { eventId, sponsorId }
     ]).catch(({ errors: [{ message }] }) => {
-      expect(message).toBe("sponsorId must be unique");
+      expect(message).toBe("eventId must be unique");
       done();
     });
   });

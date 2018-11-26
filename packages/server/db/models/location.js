@@ -68,14 +68,19 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     addressLatitude: {
-      type: DataTypes.FLOAT,
-      allowNull: false
+      type: DataTypes.FLOAT
     },
     addressLongitude: {
-      type: DataTypes.FLOAT,
-      allowNull: false
+      type: DataTypes.FLOAT
     }
   });
 
+  Location.associate = ({ Activity }) => {
+    Location.hasMany(Activity, {
+      foreignKey: "locationId",
+      allowNull: false,
+      onDelete: "CASCADE"
+    });
+  };
   return Location;
 };
