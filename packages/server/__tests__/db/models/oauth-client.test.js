@@ -20,8 +20,30 @@ describe("OAuthClient Model", () => {
       clientSecret: "ABC123",
       firstParty: false,
       redirectUri: "ayyy lmao"
-    }).catch((err) => {
-      expect(err).toBeDefined();
+    }).catch(({ errors: [{ message }] }) => {
+      expect(message).toBe("Validation isUrl on redirectUri failed");
+      done();
+    });
+  });
+
+  it("has a unique index on host", (done) => {
+    OAuthClient.bulkCreate([
+      {
+        name: "test-client",
+        clientSecret: "ABC123",
+        firstParty: false,
+        redirectUri: "test",
+        host: "test-host"
+      },
+      {
+        name: "hacker >:)",
+        clientSecret: "ABC123",
+        firstParty: false,
+        redirectUri: "test",
+        host: "test-host"
+      }
+    ]).catch(({ errors: [{ message }] }) => {
+      expect(message).toBe("host must be unique");
       done();
     });
   });
