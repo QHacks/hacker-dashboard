@@ -43,6 +43,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        len: [2, 2],
+        isUppercase: true,
         notEmpty: true
       }
     },
@@ -54,11 +56,21 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     addressProvinceCode: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      type: DataTypes.ENUM(
+        "NL",
+        "PE",
+        "NS",
+        "NB",
+        "QC",
+        "ON",
+        "MB",
+        "SK",
+        "AB",
+        "BC",
+        "YT",
+        "NT",
+        "NU"
+      )
     },
     addressZIP: {
       type: DataTypes.STRING,
@@ -78,9 +90,9 @@ module.exports = (sequelize, DataTypes) => {
   Location.associate = ({ Activity }) => {
     Location.hasMany(Activity, {
       foreignKey: "locationId",
-      allowNull: false,
-      onDelete: "CASCADE"
+      allowNull: false
     });
   };
+
   return Location;
 };

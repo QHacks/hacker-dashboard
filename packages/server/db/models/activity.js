@@ -42,13 +42,16 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "sponsorId",
       onDelete: "CASCADE"
     });
+
     Activity.belongsToMany(User, {
       through: ActivityCheckIn,
       foreignKey: { name: "activityId", allowNull: false },
       otherKey: { name: "userId", allowNull: false }
     });
-    Activity.belongsTo(Event);
-    Activity.belongsTo(Location);
+
+    Activity.belongsTo(Event, { foreignKey: "eventId" });
+
+    Activity.belongsTo(Location, { foreignKey: "locationId" });
   };
 
   return Activity;

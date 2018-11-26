@@ -13,7 +13,7 @@ describe("UserProject Model", () => {
       { projectId, userId },
       { projectId, userId }
     ]).catch(({ errors: [{ message }] }) => {
-      expect(message).toBe("projectId must be unique");
+      expect(message).toBe("userId must be unique");
       done();
     });
   });

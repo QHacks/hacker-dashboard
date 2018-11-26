@@ -16,18 +16,20 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     sponsorshipLevel: {
-      type: DataTypes.ENUM("TERA", "GIGA", "MEGA", "STARTUP", "SCHOOL"),
+      type: DataTypes.ENUM(
+        "TERA",
+        "GIGA",
+        "MEGA",
+        "STARTUP",
+        "SCHOOL",
+        "IN-KIND"
+      ),
       allowNull: false
     },
     contactEmail: {
       type: DataTypes.STRING,
       validate: {
-        isEmail: true
-      }
-    },
-    contactAddress: {
-      type: DataTypes.STRING,
-      validate: {
+        isEmail: true,
         notEmpty: true
       }
     }
@@ -37,14 +39,17 @@ module.exports = (sequelize, DataTypes) => {
     Sponsor.hasMany(Activity, {
       foreignKey: "sponsorId"
     });
+
     Sponsor.hasMany(Prize, {
       foreignKey: "sponsorId"
     });
+
     Sponsor.belongsToMany(Event, {
       through: EventSponsor,
       foreignKey: "sponsorId",
       otherKey: "eventId"
     });
   };
+
   return Sponsor;
 };

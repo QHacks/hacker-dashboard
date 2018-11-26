@@ -28,7 +28,9 @@ module.exports = (sequelize, DataTypes) => {
     Prize.belongsTo(Event, {
       foreignKey: { name: "eventId", allowNull: false }
     });
+
     Prize.belongsTo(Sponsor, { foreignKey: "sponsorId" });
+
     Prize.belongsToMany(Project, {
       through: ProjectPrize,
       foreignKey: "prizeId",

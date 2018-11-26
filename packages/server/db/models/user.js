@@ -95,7 +95,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: true
+          notEmpty: true,
+          len: [8, 128]
         }
       },
       resetPasswordHash: {
@@ -191,28 +192,40 @@ module.exports = (sequelize, DataTypes) => {
     Activity,
     ActivityCheckIn,
     Application,
-    ApplicationReview
+    ApplicationReview,
+    Project,
+    UserProject
   }) => {
     User.hasMany(Application, {
       foreignKey: { name: "userId", allowNull: false }
     });
+
     User.belongsToMany(Event, {
       through: EventCheckIn,
       foreignKey: "userId",
       otherKey: "eventId"
     });
+
     User.hasMany(MailingListSubscription, {
       foreignKey: "userId"
     });
+
     User.belongsToMany(Application, {
       through: ApplicationReview,
       foreignKey: "reviewerId",
       otherKey: "applicationId"
     });
+
     User.belongsToMany(Activity, {
       through: ActivityCheckIn,
       foreignKey: "userId",
       otherKey: "activityId"
+    });
+
+    User.belongsToMany(Project, {
+      through: UserProject,
+      foreignKey: "userId",
+      otherKey: "projectId"
     });
   };
 

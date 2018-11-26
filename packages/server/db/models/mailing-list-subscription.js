@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
 
   MailingListSubscription.associate = ({ User, MailingList }) => {
     MailingListSubscription.belongsTo(User, { foreignKey: "userId" });
+
     MailingListSubscription.belongsTo(MailingList, {
       foreignKey: { name: "mailingListId", allowNull: false }
     });

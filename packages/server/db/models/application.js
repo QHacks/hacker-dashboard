@@ -29,14 +29,17 @@ module.exports = (sequelize, DataTypes) => {
     Application.belongsTo(Event, {
       foreignKey: { name: "eventId", allowNull: false }
     });
+
     Application.belongsTo(User, {
       foreignKey: { name: "userId", allowNull: false }
     });
+
     Application.belongsToMany(ApplicationField, {
       through: ApplicationFieldResponse,
       foreignKey: "applicationId",
       otherKey: "applicationFieldId"
     });
+
     Application.belongsToMany(User, {
       through: ApplicationReview,
       foreignKey: { name: "applicationId", allowNull: false },

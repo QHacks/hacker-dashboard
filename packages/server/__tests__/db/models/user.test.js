@@ -114,6 +114,16 @@ describe("User Model", () => {
       done();
     });
   });
+
+  it("validates password length", async (done) => {
+    const { oauthUserId } = await createOAuthUser();
+    User.create({ ...defaultUser, oauthUserId, password: "lol" }).catch(
+      ({ errors: [{ message }] }) => {
+        expect(message).toBe("Validation len on password failed");
+        done();
+      }
+    );
+  });
 });
 
 async function createOAuthUser() {

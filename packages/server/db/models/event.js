@@ -87,14 +87,19 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "userId",
       otherKey: "eventId"
     });
+
     Event.belongsToMany(Sponsor, {
       through: EventSponsor,
       foreignKey: "eventId",
       otherKey: "sponsorId"
     });
+
     Event.hasMany(Activity, DEFAULT_HAS_MANY_OPTIONS);
+
     Event.hasMany(MailingList, DEFAULT_HAS_MANY_OPTIONS);
+
     Event.hasMany(Speaker, DEFAULT_HAS_MANY_OPTIONS);
+
     Event.hasMany(Prize, DEFAULT_HAS_MANY_OPTIONS);
   };
 

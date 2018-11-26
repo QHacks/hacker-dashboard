@@ -30,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true
+    },
+    metaData: {
+      type: DataTypes.JSON
     }
   });
 
@@ -41,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     ApplicationField.belongsTo(Event, {
       foreignKey: { name: "eventId", allowNull: false }
     });
+
     ApplicationField.belongsToMany(Application, {
       through: ApplicationFieldResponse,
       foreignKey: { name: "applicationFieldId", allowNull: false },

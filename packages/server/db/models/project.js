@@ -48,11 +48,13 @@ module.exports = (sequelie, DataTypes) => {
 
   Project.associate = ({ Event, User, UserProject, Prize, ProjectPrize }) => {
     Project.belongsTo(Event, { foreignKey: "eventId", allowNull: false });
+
     Project.belongsToMany(User, {
       through: UserProject,
       foreignKey: { name: "projectId", allowNull: false },
       otherKey: { name: "userId", allowNull: false }
     });
+
     Project.belongsToMany(Prize, {
       through: ProjectPrize,
       foreignKey: "projectId",

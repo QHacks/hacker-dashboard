@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       }
     });
+
+    OAuthUser.belongsTo(OAuthRefreshToken, {
+      foreignKey: { name: "refreshTokenId", allowNull: false }
+    });
   };
 
   return OAuthUser;
