@@ -24,6 +24,7 @@ export default class App extends Component {
           h3,
           h4 {
             font-weight: 600;
+            margin: 16px 0;
           }
           strong {
             font-weight: 600;

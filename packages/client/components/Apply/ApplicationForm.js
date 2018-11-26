@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
+import Select from "react-select";
 import CreatableSelect from "react-select/lib/Creatable";
+import { css } from "emotion";
 
 class ApplicationForm extends PureComponent {
   constructor(props) {
@@ -15,65 +17,129 @@ class ApplicationForm extends PureComponent {
     this.setState({ answers });
   }
   setAnswerSelect(field) {
-    return (answer) => this.setAnswer(field, answer);
+    return (answer) => {
+      if (Array.isArray(answer)) {
+        this.setAnswer(field, answer.map((ans) => ans.value));
+      } else {
+        this.setAnswer(field, answer.value);
+      }
+    };
+  }
+  toOptions(str) {
+    return {
+      label: str,
+      value: str
+    };
   }
   getQuestions(num) {
     const subsectionStyle = `
             display: flex;
-            >div:first-child {
-                width: 30%;
-            };
-            >div:last-child {
-                width: 70%;
-            }
-            div > section {
+            margin: 48px 0;
+            section {
                 width: 100%;
                 display: flex;
                 flex-direction: row;
+                margin-top:16px;
                 align-items: stretch;
                 label, input {
                     display: block;
                 }
                 >div {
                     flex-grow: 1;
+                    min-width: 50%;
+                    >label {
+                        margin: 4px;
+                    }
+                    >input {
+                        height: 38px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        margin: 4px;
+                        padding: 0 6px;
+                        line-height:38px;
+                        width: 100%;
+                        background-color: #f8f8f8;
+                    }
+                    >textarea {
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        margin: 4px;
+                        padding: 6px;
+                        width: 100%;
+                        min-height: 200px;
+                        background-color: #f8f8f8;
+                    }
+                    >input#graduationYear {
+                        margin-top: 26px;
+                    }
                 }
             }
         `;
-    const raceOptions = [
-      { value: "White", label: "White" },
-      { value: "South Asian", label: "South Asian" },
-      { value: "Chinese", label: "Chinese" },
-      { value: "Black", label: "Black" },
-      { value: "Filipino", label: "Filipino" },
-      { value: "Latin American", label: "Latin American" },
-      { value: "Arab", label: "Arab" },
-      { value: "Southeast Asian", label: "Southeast Asian" },
-      { value: "West Asian", label: "West Asian" },
-      { value: "Korean", label: "Korean" },
-      { value: "Japanese", label: "Japanese" },
-      {
-        value: "Aboriginal",
-        label: "Aboriginal (First Nations, Métis, or Inuit)"
+    const subsectionTitleStyles = `
+      width: 30%;
+    `;
+    const subsectionContentStyles = `
+    width: 70%;
+    `;
+    const selectStyles = css`
+      > div {
+        background-color: #f8f8f8;
       }
-    ];
-    const genderOptions = [
-      { value: "male", label: "Male" },
-      { value: "female", label: "Female" }
-    ];
+    `;
+    const raceOptions = [
+      "White",
+      "South Asian",
+      "Chinese",
+      "Black",
+      "Filipino",
+      "Latin American",
+      "Arab",
+      "Southeast Asian",
+      "West Asian",
+      "Korean",
+      "Japanese",
+      "Aboriginal"
+    ].map((str) => this.toOptions(str));
+
+    const genderOptions = ["Male", "Female"].map((str) => this.toOptions(str));
+    const schoolOptions = ["Queen's University", "University of Toronto"].map(
+      (str) => this.toOptions(str)
+    );
+    const degreeOptions = [
+      "Bachelor of Science",
+      "Bachelor of Arts",
+      "Bachelor of Engineering",
+      "Bachelor of Computing"
+    ].map((str) => this.toOptions(str));
+    const monthOptions = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ].map((str) => this.toOptions(str));
     switch (num) {
       case 1: {
         return (
           <div>
-            <h3>Tell us about yourself</h3>
+            <h2>Tell us about yourself</h2>
             <div css={subsectionStyle}>
-              <div>Personal Details</div>
-              <div>
+              <div css={subsectionTitleStyles}>Personal Details</div>
+              <div css={subsectionContentStyles}>
                 <section>
                   <div>
                     <label htmlFor="gender">Gender</label>
                     <CreatableSelect
                       options={genderOptions}
                       id="gender"
+                      className={selectStyles}
                       onChange={this.setAnswerSelect("gender")}
                     />
                   </div>
@@ -109,8 +175,76 @@ class ApplicationForm extends PureComponent {
                       isMulti
                       options={raceOptions}
                       id="race"
+                      className={selectStyles}
                       onChange={this.setAnswerSelect("race")}
                     />
+                  </div>
+                </section>
+              </div>
+            </div>
+            <div css={subsectionStyle}>
+              <div css={subsectionTitleStyles}>Education</div>
+              <div css={subsectionContentStyles}>
+                <section>
+                  <div>
+                    <label htmlFor="school">What school do you attend?</label>
+                    <CreatableSelect
+                      options={schoolOptions}
+                      id="school"
+                      className={selectStyles}
+                      onChange={this.setAnswerSelect("school")}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="program">What is your program?</label>
+                    <input
+                      type="text"
+                      id="program"
+                      value={this.state.answers.program}
+                      onChange={(e) =>
+                        this.setAnswer("program", e.target.value)
+                      }
+                    />
+                  </div>
+                </section>
+                <section>
+                  <div>
+                    <label htmlFor="degree">Degree type</label>
+                    <CreatableSelect
+                      options={degreeOptions}
+                      id="degree"
+                      className={selectStyles}
+                      onChange={this.setAnswerSelect("degree")}
+                    />
+                  </div>
+                </section>
+                <section>
+                  <div>
+                    <label htmlFor="graduationMonth">Graduation date</label>
+                    <Select
+                      options={monthOptions}
+                      id="graduationMonth"
+                      className={selectStyles}
+                      onChange={this.setAnswerSelect("graduationMonth")}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      id="graduationYear"
+                      type="number"
+                      value={this.state.graduationYear}
+                      onChange={(e) =>
+                        this.setAnswer("graduationYear", e.target.value)
+                      }
+                    />
+                  </div>
+                </section>
+                <section>
+                  <div>
+                    <button onClick={() => this.props.previousPage()}>
+                      Previous
+                    </button>{" "}
+                    <button onClick={() => this.props.nextPage()}>Next</button>
                   </div>
                 </section>
               </div>
@@ -122,13 +256,109 @@ class ApplicationForm extends PureComponent {
         return (
           <div>
             <h3>Hackathon Information</h3>
+            <div css={subsectionStyle}>
+              <div
+                css={`
+                  width: 100%;
+                `}
+              >
+                <section>
+                  <div>
+                    <label htmlFor="whyQHacks">
+                      Why do you want to attend QHacks?
+                    </label>
+                    <textarea
+                      value={this.state.answers.whyQHacks}
+                      onChange={(e) =>
+                        this.setAnswer("whyQHacks", e.target.value)
+                      }
+                    />
+                  </div>
+                </section>
+                <section>
+                  <div>
+                    <label htmlFor="numAttendedHackathons">
+                      How many hackathons have you attended?
+                    </label>
+                    <input
+                      type="number"
+                      value={this.state.answers.numAttendedHackathons}
+                      onChange={(e) =>
+                        this.setAnswer("numAttendedHackathons", e.target.value)
+                      }
+                    />
+                  </div>
+                </section>
+                <section>
+                  <div>
+                    <label htmlFor="fromLocation">
+                      Where are you travelling from?
+                    </label>
+                    <input
+                      type="text"
+                      value={this.state.answers.fromLocation}
+                      onChange={(e) =>
+                        this.setAnswer("fromLocation", e.target.value)
+                      }
+                    />
+                  </div>
+                </section>
+                <section>
+                  <div>
+                    <button onClick={() => this.props.previousPage()}>
+                      Previous
+                    </button>{" "}
+                    <button onClick={() => this.props.nextPage()}>
+                      Submit
+                    </button>
+                  </div>
+                </section>
+              </div>
+            </div>
           </div>
         );
       }
       case 3: {
+        const pStyle = `max-width: 580px; margin: 0 auto; line-height: 1.36;`;
         return (
-          <div>
+          <div
+            css={`
+              text-align: center;
+            `}
+          >
+            <img
+              src={require("../../assets/img/3-gears.png")}
+              css={`
+                height: 133px;
+                width: 240px;
+              `}
+            />
             <h3>Thank-you for Applying to QHacks 2019!</h3>
+            <p css={pStyle}>
+              The QHacks’s team is working hard to review your application
+              carefully. We will be contacting you via email regarding the
+              status of your application. So stay in tune!
+            </p>
+            <div
+              css={`
+                margin: 40px 0;
+              `}
+            >
+              <button>View Dashoard</button>
+            </div>
+            <p css={pStyle}>
+              For more information regarding QHacks 2019, please visit our
+              website at qhacks.io
+            </p>
+            <div
+              css={`
+                margin: 40px 0;
+              `}
+            >
+              <button onClick={() => this.props.previousPage()}>
+                Previous
+              </button>
+            </div>
           </div>
         );
       }
@@ -146,7 +376,7 @@ class ApplicationForm extends PureComponent {
     return (
       <div
         css={`
-          padding: 10%;
+          padding: 64px 15%;
         `}
       >
         {this.getQuestions(this.props.pageNum)}

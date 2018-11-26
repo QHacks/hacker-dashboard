@@ -17,6 +17,14 @@ class Apply extends Component {
     // make api request to apply
   }
 
+  previousPage() {
+    this.setState({ pageNum: this.state.pageNum - 1 });
+  }
+
+  nextPage() {
+    this.setState({ pageNum: this.state.pageNum + 1 });
+  }
+
   getRedirectPath() {
     const locationState = this.props.location.state;
 
@@ -47,7 +55,11 @@ class Apply extends Component {
         <MenuBar />
         <ApplicationHeader />
         <ApplicationNavigation pageNum={this.state.pageNum} />
-        <ApplicationForm pageNum={this.state.pageNum} />
+        <ApplicationForm
+          previousPage={() => this.previousPage()}
+          nextPage={() => this.nextPage()}
+          pageNum={this.state.pageNum}
+        />
       </div>
     );
   }
