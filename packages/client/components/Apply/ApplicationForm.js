@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
 import Select from "react-select";
 import CreatableSelect from "react-select/lib/Creatable";
+import ApplicationAuthSlider from "./ApplicationAuthSlider";
+
 import { css } from "emotion";
 
 class ApplicationForm extends PureComponent {
@@ -25,6 +27,9 @@ class ApplicationForm extends PureComponent {
       }
     };
   }
+  changeSelected(i) {
+    this.setState({ returningHacker: i === 1 });
+  }
   toOptions(str) {
     return {
       label: str,
@@ -34,7 +39,7 @@ class ApplicationForm extends PureComponent {
   getQuestions(num) {
     const subsectionStyle = `
             display: flex;
-            margin: 48px 0;
+            margin: 36px 0;
             section {
                 width: 100%;
                 display: flex;
@@ -49,6 +54,7 @@ class ApplicationForm extends PureComponent {
                     min-width: 50%;
                     >label {
                         margin: 4px;
+                        text-align: left;
                     }
                     >input {
                         height: 38px;
@@ -57,7 +63,7 @@ class ApplicationForm extends PureComponent {
                         margin: 4px;
                         padding: 0 6px;
                         line-height:38px;
-                        width: 100%;
+                        width: calc(100% - 8px);
                         background-color: #f8f8f8;
                     }
                     >textarea {
@@ -365,8 +371,142 @@ class ApplicationForm extends PureComponent {
       case 0:
       default: {
         return (
-          <div>
-            <h3>Create an Account</h3>
+          <div
+            css={`
+              text-align: center;
+            `}
+          >
+            <h3>
+              {this.state.returningHacker
+                ? "Welcome back!"
+                : "Join the QHacks family!"}
+            </h3>
+            <ApplicationAuthSlider
+              items={["new hacker", "returning hacker"]}
+              changeSelected={(i) => this.changeSelected(i)}
+              selectedItem={this.state.returningHacker ? 1 : 0}
+            />
+            {this.state.returningHacker ? (
+              <div>
+                <h2>Login to Account</h2>
+                <div css={subsectionStyle}>
+                  <div
+                    css={`
+                      width: 100%;
+                    `}
+                  >
+                    <section>
+                      <div>
+                        <label htmlFor="username">Username</label>
+                        <input
+                          type="text"
+                          value={this.state.answers.username}
+                          onChange={(e) =>
+                            this.setAnswer("username", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section>
+                      <div>
+                        <label htmlFor="password">Password</label>
+                        <input
+                          type="password"
+                          value={this.state.answers.password}
+                          onChange={(e) =>
+                            this.setAnswer("password", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h2>Create an Account</h2>
+                <div css={subsectionStyle}>
+                  <div
+                    css={`
+                      width: 100%;
+                    `}
+                  >
+                    <section>
+                      <div>
+                        <label htmlFor="firstName">First Name</label>
+                        <input
+                          type="text"
+                          id="firstName"
+                          value={this.state.answers.firstName}
+                          onChange={(e) =>
+                            this.setAnswer("firstName", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="lastName">Last Name</label>
+                        <input
+                          type="text"
+                          id="lastName"
+                          value={this.state.answers.lastName}
+                          onChange={(e) =>
+                            this.setAnswer("lastName", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section>
+                      <div>
+                        <label htmlFor="username">Username</label>
+                        <input
+                          id="username"
+                          type="text"
+                          value={this.state.answers.username}
+                          onChange={(e) =>
+                            this.setAnswer("username", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section>
+                      <div>
+                        <label htmlFor="password">Password</label>
+                        <input
+                          id="password"
+                          type="password"
+                          value={this.state.answers.password}
+                          onChange={(e) =>
+                            this.setAnswer("password", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section>
+                      <div>
+                        <label htmlFor="confirmPassword">
+                          Confirm password
+                        </label>
+                        <input
+                          id="confirmPassword"
+                          type="password"
+                          value={this.state.answers.confirmPassword}
+                          onChange={(e) =>
+                            this.setAnswer("confirmPassword", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section>
+                      <div>
+                        <button onClick={() => this.props.nextPage()}>
+                          Next
+                        </button>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         );
       }
