@@ -24,12 +24,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  OAuthUser.associate = function({ User }) {
+  OAuthUser.associate = function({ User, OAuthRefreshToken }) {
     OAuthUser.hasOne(User, {
       foreignKey: {
         name: "oauthUserId",
         allowNull: false
       }
+    });
+
+    OAuthUser.belongsTo(OAuthRefreshToken, {
+      foreignKey: { name: "refreshTokenId", allowNull: false }
     });
   };
 
