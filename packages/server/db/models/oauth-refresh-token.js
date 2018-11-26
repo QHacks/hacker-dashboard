@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
-    expires: {
+    expiryDate: {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
@@ -25,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   OAuthRefreshToken.associate = ({ OAuthUser, OAuthClient }) => {
-    OAuthRefreshToken.hasOne(OAuthUser, {
+    OAuthRefreshToken.belongsTo(OAuthUser, {
       foreignKey: {
-        name: "refreshTokenId",
+        name: "oauthUserId",
         allowNull: false
       }
     });

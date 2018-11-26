@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
     OAuthClient.hasMany(OAuthRefreshToken, {
       foreignKey: {
         name: "clientId",
-        allowNull: true
+        allowNull: false
       }
     });
   };

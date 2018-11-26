@@ -1,6 +1,6 @@
 const options = {
   operatorsAliases: false,
-  logging: false,
+  logging: process.env.NODE_ENV !== "production",
   define: {
     underscored: false,
     timestamps: true,

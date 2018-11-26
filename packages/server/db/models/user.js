@@ -1,5 +1,5 @@
+const { OAuthInvalidCredentialsError } = require("../../errors");
 const bcrypt = require("bcrypt");
-const _ = require("lodash");
 
 const PHONE_NUMBER_REGEX = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
 
@@ -105,6 +105,13 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: true
         }
+      },
+      resetPasswordHashExpiryDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        validate: {
+          notEmpty: true
+        }
       }
     },
     {
@@ -171,7 +178,11 @@ module.exports = (sequelize, DataTypes) => {
   User.authenticate = function(email, password) {
     return new Promise((resolve, reject) => {
       this.findOne({ where: { email } }).then((user) => {
-        if (!user) return reject("Could not find user with that email!");
+        if (!user) {
+          return reject(
+            new UserNotFoundError("Could not find user with that email!")
+          );
+        }
 
         user
           .validPassword(password)
@@ -179,7 +190,7 @@ module.exports = (sequelize, DataTypes) => {
             return resolve(user);
           })
           .catch(() => {
-            return reject("Invalid Password!");
+            return reject(new OAuthInvalidCredentialsError());
           });
       });
     });
@@ -194,8 +205,16 @@ module.exports = (sequelize, DataTypes) => {
     Application,
     ApplicationReview,
     Project,
-    UserProject
+    UserProject,
+    OAuthUser
   }) => {
+    User.belongsTo(OAuthUser, {
+      foreignKey: {
+        name: "oauthUserId",
+        allowNull: false
+      }
+    });
+
     User.hasMany(Application, {
       foreignKey: { name: "userId", allowNull: false }
     });
