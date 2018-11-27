@@ -9,7 +9,7 @@ class Apply extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageNum: 1
+      pageNum: 0
     };
   }
 

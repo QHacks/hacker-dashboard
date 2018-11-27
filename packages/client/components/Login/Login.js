@@ -1,13 +1,17 @@
-import { Redirect } from "react-router-dom";
-import LoginForm from "../Forms/LoginForm";
+import { Redirect, Link } from "react-router-dom";
 import React, { Component } from "react";
+import MenuBar from "../MenuBar/index.js";
+import * as colors from "../../assets/colors";
+import ActionButton from "../ActionButton/ActionButton";
 
 class Login extends Component {
   constructor(props) {
     super(props);
-
-    this.renderLoginForm.bind(this);
-    this.getRedirectPath.bind(this);
+    this.state = {
+      email: "",
+      password: "",
+      rememberMe: true
+    };
   }
 
   handleLogin(values) {
@@ -22,77 +26,6 @@ class Login extends Component {
     }
 
     return "/";
-  }
-
-  renderLoginForm() {
-    const applicationsStatus = "closed";
-
-    return (
-      <div
-        css={`
-          align-items: center;
-          box-shadow: 3px 0 25px rgba(0, 0, 0, 0.3);
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-          justify-content: center;
-          padding: 50px;
-          width: 40%;
-          z-index: 0;
-        `}
-      >
-        <a href="https://qhacks.io">
-          <img
-            css={`
-              height: 130px;
-              margin-bottom: 20px;
-            `}
-            src={require("../../assets/img/qhacks-tricolor-logo.svg")}
-          />
-        </a>
-        <LoginForm
-          onSubmit={this.handleLogin.bind(this)}
-          applicationsStatus={applicationsStatus}
-        />
-      </div>
-    );
-  }
-
-  renderLoginDisplay() {
-    return (
-      <div
-        css={`
-          align-items: center;
-          background-color: #000;
-          background-image: url("../../assets/img/students-at-hackathon.jpg");
-          background-position: center;
-          background-size: cover;
-          color: white;
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-          justify-content: center;
-          width: 60%;
-        `}
-      >
-        <div
-          css={`
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            height: 100%;
-            justify-content: center;
-            padding: 50px;
-            width: 100%;
-          `}
-        >
-          <div>
-            <h1>Dream it. Build it.</h1>
-            <h2>QHacks 2018, Queen&apos;s University</h2>
-          </div>
-        </div>
-      </div>
-    );
   }
 
   render() {
@@ -110,20 +43,109 @@ class Login extends Component {
         />
       );
     }
-
+    const inputStyle = `margin: 12px 4px !important; display: block; max-width: 375px;`;
     return (
-      <div
-        css={`
-          align-items: center;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          height: 100vh;
-          width: 100vw;
-        `}
-      >
-        {this.renderLoginForm()}
-        {this.renderLoginDisplay()}
+      <div>
+        <MenuBar />
+        <div
+          css={`
+            display: grid;
+            grid-template-columns: 45% 55%;
+            height: 100vh;
+          `}
+        >
+          <div
+            css={`
+              padding: 125px 5vw 5vw;
+              height: 100%;
+            `}
+          >
+            <h1
+              css={`
+                color: ${colors.blue};
+              `}
+            >
+              QHacks
+            </h1>
+            <p
+              css={`
+                margin-top: 24px;
+                color: #8a929f;
+              `}
+            >
+              Welcome back.
+            </p>
+            <p
+              css={`
+                margin-top: 12px;
+                color: #8a929f;
+              `}
+            >
+              Please login to your account.
+            </p>
+            <div
+              css={`
+                margin-top: 64px;
+              `}
+            >
+              <input
+                css={inputStyle}
+                id="email"
+                type="text"
+                value={this.state.email}
+                onChange={(e) => this.setState({ email: e.target.value })}
+                placeholder="Enter your email address"
+              />
+              <input
+                css={inputStyle}
+                id="password"
+                type="password"
+                value={this.state.password}
+                onChange={(e) => this.setState({ password: e.target.value })}
+                placeholder="Enter your password"
+              />
+            </div>
+            <div
+              css={`
+                margin: 40px 0;
+                display: flex;
+              `}
+            >
+              <div
+                css={`
+                  flex-grow: 1;
+                `}
+              >
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  onChange={(e) =>
+                    this.setState({ rememberMe: e.target.checked })
+                  }
+                />
+                <label htmlFor="rememberMe">Remember me</label>
+              </div>
+              <div
+                css={`
+                  flex-grow: 1;
+                `}
+              >
+                <Link to="/forgot-password">Forgot password</Link>
+              </div>
+            </div>
+            <div>
+              <ActionButton color="red">Login</ActionButton>
+            </div>
+          </div>
+          <div
+            css={`
+              background: url(${require("../../assets/img/circuits.png")})
+                no-repeat center center fixed;
+              background-size: cover;
+              height: 100%;
+            `}
+          />
+        </div>
       </div>
     );
   }

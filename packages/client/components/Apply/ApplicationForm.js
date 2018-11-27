@@ -2,8 +2,8 @@ import React, { PureComponent } from "react";
 import Select from "react-select";
 import CreatableSelect from "react-select/lib/Creatable";
 import ApplicationAuthSlider from "./ApplicationAuthSlider";
-
-import { css } from "emotion";
+import ActionButton from "../ActionButton/ActionButton";
+import ContentWrapper from "../ContentWrapper/ContentWrapper";
 
 class ApplicationForm extends PureComponent {
   constructor(props) {
@@ -13,11 +13,13 @@ class ApplicationForm extends PureComponent {
       answers: {}
     };
   }
+
   setAnswer(field, answer) {
     const answers = this.state.answers;
     answers[field] = answer;
     this.setState({ answers });
   }
+
   setAnswerSelect(field) {
     return (answer) => {
       if (Array.isArray(answer)) {
@@ -27,71 +29,57 @@ class ApplicationForm extends PureComponent {
       }
     };
   }
+
   changeSelected(i) {
     this.setState({ returningHacker: i === 1 });
   }
+
   toOptions(str) {
     return {
       label: str,
       value: str
     };
   }
+
   getQuestions(num) {
+    const formStyle = `
+      padding-top: 64px;
+    `;
+
     const subsectionStyle = `
-            display: flex;
-            margin: 36px 0;
-            section {
-                width: 100%;
-                display: flex;
-                flex-direction: row;
-                margin-top:16px;
-                align-items: stretch;
-                label, input {
-                    display: block;
-                }
-                >div {
-                    flex-grow: 1;
-                    min-width: 50%;
-                    >label {
-                        margin: 4px;
-                        text-align: left;
-                    }
-                    >input {
-                        height: 38px;
-                        border: 1px solid #ccc;
-                        border-radius: 4px;
-                        margin: 4px;
-                        padding: 0 6px;
-                        line-height:38px;
-                        width: calc(100% - 8px);
-                        background-color: #f8f8f8;
-                    }
-                    >textarea {
-                        border: 1px solid #ccc;
-                        border-radius: 4px;
-                        margin: 4px;
-                        padding: 6px;
-                        width: 100%;
-                        min-height: 200px;
-                        background-color: #f8f8f8;
-                    }
-                    >input#graduationYear {
-                        margin-top: 26px;
-                    }
-                }
-            }
-        `;
+      display: flex;
+      margin: 36px 0;
+    `;
+
     const subsectionTitleStyles = `
       width: 30%;
+      color: #575757;
+      padding-top: 24px;
+      font-weight: bold;
     `;
+
     const subsectionContentStyles = `
-    width: 70%;
+      width: 70%;
     `;
-    const selectStyles = css`
-      > div {
-        background-color: #f8f8f8;
+
+    const inputRowStyle = `
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      margin-top:12px;
+      align-items: stretch;
+      label, input {
+          display: block;
+      }
+      >div{
+          flex-grow: 1;
+          min-width: 50%;
+          padding: 4px;
       }
     `;
+
+    const authHeadingStyle = `margin-top: 45px !important; margin-bottom: -20px !important;`;
+
     const raceOptions = [
       "White",
       "South Asian",
@@ -108,15 +96,18 @@ class ApplicationForm extends PureComponent {
     ].map((str) => this.toOptions(str));
 
     const genderOptions = ["Male", "Female"].map((str) => this.toOptions(str));
+
     const schoolOptions = ["Queen's University", "University of Toronto"].map(
       (str) => this.toOptions(str)
     );
+
     const degreeOptions = [
       "Bachelor of Science",
       "Bachelor of Arts",
       "Bachelor of Engineering",
       "Bachelor of Computing"
     ].map((str) => this.toOptions(str));
+
     const monthOptions = [
       "January",
       "February",
@@ -131,21 +122,22 @@ class ApplicationForm extends PureComponent {
       "November",
       "December"
     ].map((str) => this.toOptions(str));
+
     switch (num) {
       case 1: {
         return (
-          <div>
+          <div css={formStyle}>
             <h2>Tell us about yourself</h2>
             <div css={subsectionStyle}>
               <div css={subsectionTitleStyles}>Personal Details</div>
               <div css={subsectionContentStyles}>
-                <section>
+                <section css={inputRowStyle}>
                   <div>
                     <label htmlFor="gender">Gender</label>
                     <CreatableSelect
                       options={genderOptions}
                       id="gender"
-                      className={selectStyles}
+                      className="select"
                       onChange={this.setAnswerSelect("gender")}
                     />
                   </div>
@@ -161,7 +153,7 @@ class ApplicationForm extends PureComponent {
                     />
                   </div>
                 </section>
-                <section>
+                <section css={inputRowStyle}>
                   <div>
                     <label htmlFor="birthday">Birthday</label>
                     <input
@@ -174,14 +166,14 @@ class ApplicationForm extends PureComponent {
                     />
                   </div>
                 </section>
-                <section>
+                <section css={inputRowStyle}>
                   <div>
                     <label htmlFor="race">Race</label>
                     <CreatableSelect
                       isMulti
                       options={raceOptions}
                       id="race"
-                      className={selectStyles}
+                      className="select"
                       onChange={this.setAnswerSelect("race")}
                     />
                   </div>
@@ -191,13 +183,13 @@ class ApplicationForm extends PureComponent {
             <div css={subsectionStyle}>
               <div css={subsectionTitleStyles}>Education</div>
               <div css={subsectionContentStyles}>
-                <section>
+                <section css={inputRowStyle}>
                   <div>
                     <label htmlFor="school">What school do you attend?</label>
                     <CreatableSelect
                       options={schoolOptions}
                       id="school"
-                      className={selectStyles}
+                      className="select"
                       onChange={this.setAnswerSelect("school")}
                     />
                   </div>
@@ -213,24 +205,24 @@ class ApplicationForm extends PureComponent {
                     />
                   </div>
                 </section>
-                <section>
+                <section css={inputRowStyle}>
                   <div>
                     <label htmlFor="degree">Degree type</label>
                     <CreatableSelect
                       options={degreeOptions}
                       id="degree"
-                      className={selectStyles}
+                      className="select"
                       onChange={this.setAnswerSelect("degree")}
                     />
                   </div>
                 </section>
-                <section>
+                <section css={inputRowStyle}>
                   <div>
                     <label htmlFor="graduationMonth">Graduation date</label>
                     <Select
                       options={monthOptions}
                       id="graduationMonth"
-                      className={selectStyles}
+                      className="select"
                       onChange={this.setAnswerSelect("graduationMonth")}
                     />
                   </div>
@@ -239,18 +231,30 @@ class ApplicationForm extends PureComponent {
                       id="graduationYear"
                       type="number"
                       value={this.state.graduationYear}
+                      css={`
+                        margin-top: 31px !important;
+                      `}
                       onChange={(e) =>
                         this.setAnswer("graduationYear", e.target.value)
                       }
                     />
                   </div>
                 </section>
-                <section>
+                <section css={inputRowStyle}>
                   <div>
-                    <button onClick={() => this.props.previousPage()}>
+                    <ActionButton
+                      style={`margin-top: 50px;`}
+                      onClick={() => this.props.previousPage()}
+                    >
                       Previous
-                    </button>{" "}
-                    <button onClick={() => this.props.nextPage()}>Next</button>
+                    </ActionButton>{" "}
+                    <ActionButton
+                      style={`margin-top: 50px;`}
+                      color="red"
+                      onClick={() => this.props.nextPage()}
+                    >
+                      Continue
+                    </ActionButton>
                   </div>
                 </section>
               </div>
@@ -260,15 +264,15 @@ class ApplicationForm extends PureComponent {
       }
       case 2: {
         return (
-          <div>
-            <h3>Hackathon Information</h3>
+          <div css={formStyle}>
+            <h2>Hackathon Information</h2>
             <div css={subsectionStyle}>
               <div
                 css={`
                   width: 100%;
                 `}
               >
-                <section>
+                <section css={inputRowStyle}>
                   <div>
                     <label htmlFor="whyQHacks">
                       Why do you want to attend QHacks?
@@ -281,7 +285,7 @@ class ApplicationForm extends PureComponent {
                     />
                   </div>
                 </section>
-                <section>
+                <section css={inputRowStyle}>
                   <div>
                     <label htmlFor="numAttendedHackathons">
                       How many hackathons have you attended?
@@ -295,7 +299,7 @@ class ApplicationForm extends PureComponent {
                     />
                   </div>
                 </section>
-                <section>
+                <section css={inputRowStyle}>
                   <div>
                     <label htmlFor="fromLocation">
                       Where are you travelling from?
@@ -309,14 +313,21 @@ class ApplicationForm extends PureComponent {
                     />
                   </div>
                 </section>
-                <section>
+                <section css={inputRowStyle}>
                   <div>
-                    <button onClick={() => this.props.previousPage()}>
+                    <ActionButton
+                      style={`margin-top: 50px;`}
+                      onClick={() => this.props.previousPage()}
+                    >
                       Previous
-                    </button>{" "}
-                    <button onClick={() => this.props.nextPage()}>
+                    </ActionButton>{" "}
+                    <ActionButton
+                      style={`margin-top: 50px;`}
+                      color="red"
+                      onClick={() => this.props.nextPage()}
+                    >
                       Submit
-                    </button>
+                    </ActionButton>
                   </div>
                 </section>
               </div>
@@ -329,6 +340,7 @@ class ApplicationForm extends PureComponent {
         return (
           <div
             css={`
+              ${formStyle}
               text-align: center;
             `}
           >
@@ -350,7 +362,9 @@ class ApplicationForm extends PureComponent {
                 margin: 40px 0;
               `}
             >
-              <button>View Dashoard</button>
+              <ActionButton internal link="/dashboard" color="red">
+                View Dashoard
+              </ActionButton>
             </div>
             <p css={pStyle}>
               For more information regarding QHacks 2019, please visit our
@@ -361,9 +375,12 @@ class ApplicationForm extends PureComponent {
                 margin: 40px 0;
               `}
             >
-              <button onClick={() => this.props.previousPage()}>
+              <ActionButton
+                style={`margin-top: 50px;`}
+                onClick={() => this.props.previousPage()}
+              >
                 Previous
-              </button>
+              </ActionButton>
             </div>
           </div>
         );
@@ -373,6 +390,7 @@ class ApplicationForm extends PureComponent {
         return (
           <div
             css={`
+              ${formStyle}
               text-align: center;
             `}
           >
@@ -388,14 +406,14 @@ class ApplicationForm extends PureComponent {
             />
             {this.state.returningHacker ? (
               <div>
-                <h2>Login to Account</h2>
+                <h2 css={authHeadingStyle}>Login to Account</h2>
                 <div css={subsectionStyle}>
                   <div
                     css={`
                       width: 100%;
                     `}
                   >
-                    <section>
+                    <section css={inputRowStyle}>
                       <div>
                         <label htmlFor="username">Username</label>
                         <input
@@ -407,7 +425,7 @@ class ApplicationForm extends PureComponent {
                         />
                       </div>
                     </section>
-                    <section>
+                    <section css={inputRowStyle}>
                       <div>
                         <label htmlFor="password">Password</label>
                         <input
@@ -419,19 +437,30 @@ class ApplicationForm extends PureComponent {
                         />
                       </div>
                     </section>
+                    <section css={inputRowStyle}>
+                      <div>
+                        <ActionButton
+                          style={`margin-top: 50px;`}
+                          color="red"
+                          onClick={() => this.props.nextPage()}
+                        >
+                          Login
+                        </ActionButton>
+                      </div>
+                    </section>
                   </div>
                 </div>
               </div>
             ) : (
               <div>
-                <h2>Create an Account</h2>
+                <h2 css={authHeadingStyle}>Create an Account</h2>
                 <div css={subsectionStyle}>
                   <div
                     css={`
                       width: 100%;
                     `}
                   >
-                    <section>
+                    <section css={inputRowStyle}>
                       <div>
                         <label htmlFor="firstName">First Name</label>
                         <input
@@ -455,7 +484,7 @@ class ApplicationForm extends PureComponent {
                         />
                       </div>
                     </section>
-                    <section>
+                    <section css={inputRowStyle}>
                       <div>
                         <label htmlFor="username">Username</label>
                         <input
@@ -468,7 +497,7 @@ class ApplicationForm extends PureComponent {
                         />
                       </div>
                     </section>
-                    <section>
+                    <section css={inputRowStyle}>
                       <div>
                         <label htmlFor="password">Password</label>
                         <input
@@ -481,7 +510,7 @@ class ApplicationForm extends PureComponent {
                         />
                       </div>
                     </section>
-                    <section>
+                    <section css={inputRowStyle}>
                       <div>
                         <label htmlFor="confirmPassword">
                           Confirm password
@@ -496,11 +525,15 @@ class ApplicationForm extends PureComponent {
                         />
                       </div>
                     </section>
-                    <section>
+                    <section css={inputRowStyle}>
                       <div>
-                        <button onClick={() => this.props.nextPage()}>
-                          Next
-                        </button>
+                        <ActionButton
+                          style={`margin-top: 50px;`}
+                          color="red"
+                          onClick={() => this.props.nextPage()}
+                        >
+                          Create Account
+                        </ActionButton>
                       </div>
                     </section>
                   </div>
@@ -514,13 +547,7 @@ class ApplicationForm extends PureComponent {
   }
   render() {
     return (
-      <div
-        css={`
-          padding: 64px 15%;
-        `}
-      >
-        {this.getQuestions(this.props.pageNum)}
-      </div>
+      <ContentWrapper>{this.getQuestions(this.props.pageNum)}</ContentWrapper>
     );
   }
 }

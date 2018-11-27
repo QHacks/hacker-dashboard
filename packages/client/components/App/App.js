@@ -20,6 +20,9 @@ export default class App extends Component {
             margin: 0;
             color: #020b1b;
           }
+          a {
+            text-decoration: none;
+          }
           h2,
           h3,
           h4 {
@@ -30,8 +33,45 @@ export default class App extends Component {
             font-weight: 600;
           }
           h1 {
-            font-weight: 800;
+            font-weight: 700;
             margin: 16px 0;
+          }
+          label {
+            margin: 6px;
+            text-align: left;
+          }
+          input:not([type="checkbox"]) {
+            height: 42px;
+            border: 1px solid #b2b7c2;
+            border-radius: 4px;
+            margin: 6px;
+            padding: 0 6px;
+            line-height: 42px;
+            width: calc(100% - 12px);
+            background-color: #f8f8f8;
+          }
+          input:not([type="checkbox"]):only-of-type {
+            width: 100%;
+            margin: 6px 0;
+          }
+          div.select > div {
+            border: 1px solid #b2b7c2;
+            background-color: #f8f8f8;
+          }
+          div.select input {
+            height: unset;
+            line-height: unset;
+            margin: unset;
+            padding: unset;
+          }
+          textarea {
+            border: 1px solid #b2b7c2;
+            background-color: #f8f8f8;
+            border-radius: 4px;
+            margin: 6px 0;
+            padding: 6px;
+            width: 100%;
+            min-height: 200px;
           }
         `}
       >

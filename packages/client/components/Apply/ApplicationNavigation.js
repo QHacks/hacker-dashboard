@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import * as colors from "../../assets/colors";
 
 class ApplicationNavigation extends PureComponent {
   constructor(props) {
@@ -7,7 +8,7 @@ class ApplicationNavigation extends PureComponent {
   }
   getBackgroundColor(num) {
     if (num === this.props.pageNum) {
-      return "#cf2335";
+      return colors.red;
     }
     if (num > this.props.pageNum) {
       return "white";
@@ -62,7 +63,7 @@ class ApplicationNavigation extends PureComponent {
     if (num === this.props.pageNum) {
       return "white";
     }
-    return "#c81c2e";
+    return colors.red;
   }
   render() {
     const pages = ["Introduction", "About You", "Why QHacks?", "Next Steps"];
