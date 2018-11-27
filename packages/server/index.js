@@ -1,6 +1,7 @@
 require("dotenv").config();
 
-const { ApolloServer, AuthenticationError } = require("apollo-server-express");
+const { GraphQLAuthenticationError } = require("./errors");
+const { ApolloServer } = require("apollo-server-express");
 const history = require("connect-history-api-fallback");
 const compression = require("compression");
 const bodyParser = require("body-parser");
@@ -22,7 +23,7 @@ const resolvers = require("./gql/resolvers");
 const typeDefs = require("./gql/definitions");
 
 const { restApi } = require("./rest")(db);
-const { oauthApi, getUser, getUserAccess } = require("./oauth")(db);
+const { oauthApi, verifyAccessToken } = require("./oauth")(db);
 
 // Path to static files
 // TODO: Remove this coupling to client package
@@ -65,25 +66,18 @@ app.use("/oauth/", oauthApi());
 const graphqlServer = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, res }) => {
-    // // get the user from auth token
-    // const user = getUser(req);
+  context: async ({ req, res }) => {
+    try {
+      const { user, access } = await verifyAccessToken(req);
 
-    // // throw error if not authenticated
-    // if (!user) throw new AuthenticationError("Invalid access token!");
-
-    // // get user access scopes
-    // const access = getUserAccess(user);
-
-    const access = {
-      scopes: ["hacker:write"]
-    };
-
-    return {
-      db,
-      //user,
-      access
-    };
+      return {
+        db,
+        user,
+        access
+      };
+    } catch (err) {
+      throw new GraphQLAuthenticationError("Invalid access token!");
+    }
   },
   playground: {
     endpoint: "/graphql"
@@ -116,9 +110,9 @@ db.sequelize
     logger.info("Database has synchronized successfully!");
 
     // Start listening!
-    app.listen(port, () =>
-      logger.info(`QHacks Dashboard is running on port ${port}!`)
-    );
+    app.listen(port, () => {
+      logger.info(`QHacks Dashboard is running on port ${port}!`);
+    });
   })
   .catch((err) => {
     logger.error("Database could not synchronize! Cannot start server!");

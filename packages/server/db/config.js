@@ -1,6 +1,5 @@
 const options = {
   operatorsAliases: false,
-  logging: false,
   define: {
     underscored: false,
     timestamps: true,
@@ -20,6 +19,7 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     dialect: "postgres",
+    logging: false,
     ...options
   },
   production: {
@@ -27,6 +27,7 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     dialect: "postgres",
+    logging: false,
     ...options
   },
   test: {
@@ -40,6 +41,7 @@ const config = {
       acquire: 30000,
       idle: 10000
     },
+    logging: false,
     ...options
   }
 };

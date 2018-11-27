@@ -1,9 +1,4 @@
-const {
-  User,
-  OAuthUser,
-  OAuthRefreshToken,
-  OAuthClient
-} = require("../../config/mock-db");
+const { User, OAuthUser } = require("../../config/mock-db");
 
 const defaultUser = {
   firstName: "New",
@@ -32,14 +27,12 @@ describe("User Model", () => {
     expect(id).toBeDefined();
   });
 
-  it("hashes password on update", async (done) => {
+  it("hashes password on update", async () => {
     const foundUser = await User.findOne({});
-    foundUser
-      .update({ password: "newPassword" })
-      .then(({ dataValues: { password } }) => {
-        expect(password).not.toBe("newPassword");
-        done();
-      });
+
+    const user = await foundUser.update({ password: "newPassword" });
+
+    expect(user.dataValues.password).not.toBe("newPassword");
   });
 
   it("validates email", async (done) => {
@@ -127,16 +120,10 @@ describe("User Model", () => {
 });
 
 async function createOAuthUser() {
-  const { id: clientId } = await OAuthClient.findOne({});
-  const { id: refreshTokenId } = await OAuthRefreshToken.create({
-    expires: new Date(),
-    refreshToken: "ABC123",
-    clientId
-  });
-  const oauth = await OAuthUser.create({
-    refreshTokenId,
+  const { dataValues: oauthUser } = await OAuthUser.create({
     scopes: JSON.stringify([{ user: "read", user: "write" }]),
     role: "HACKER"
   });
-  return { oauthUserId: oauth.id };
+
+  return { oauthUserId: oauthUser.id };
 }
