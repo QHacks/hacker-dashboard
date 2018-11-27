@@ -142,20 +142,22 @@ async function createUsers(users, options) {
   const scopes = users.map(() =>
     JSON.stringify([{ user: "read", user: "write" }])
   );
-  const refreshTokens = users.map(() => ({
-    refreshToken: "ABC123",
-    expires: new Date(),
-    clientId: QHACKS_CLIENT_ID
-  }));
 
-  const tokens = await OAuthRefreshToken.bulkCreate(refreshTokens);
-  const oauthUsers = tokens.map(({ dataValues: token }, i) => ({
-    refreshTokenId: token.id,
+  const oauthUsers = users.map((_, i) => ({
     role: options[i].role,
     scopes: scopes[i]
   }));
 
   const savedOAuthUsers = await OAuthUser.bulkCreate(oauthUsers);
+
+  const refreshTokens = savedOAuthUsers.map(({ dataValues: oauthUser }) => ({
+    oauthUserId: oauthUser.id,
+    refreshToken: "ABC123",
+    expiryDate: new Date(),
+    clientId: QHACKS_CLIENT_ID
+  }));
+
+  await OAuthRefreshToken.bulkCreate(refreshTokens);
 
   const usersToSave = savedOAuthUsers.map(
     ({ dataValues: { id: oauthUserId } }, i) => ({

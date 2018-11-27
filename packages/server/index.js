@@ -109,17 +109,9 @@ db.sequelize
   .then(() => {
     logger.info("Database has synchronized successfully!");
 
-    // NOTE: Temporary
-    return db.OAuthClient.create({
-      name: "test",
-      host: "localhost",
-      clientSecret: "bob",
-      firstParty: true
-    }).then(() => {
-      // Start listening!
-      app.listen(port, () =>
-        logger.info(`QHacks Dashboard is running on port ${port}!`)
-      );
+    // Start listening!
+    app.listen(port, () => {
+      logger.info(`QHacks Dashboard is running on port ${port}!`);
     });
   })
   .catch((err) => {

@@ -81,6 +81,12 @@ class OAuthInvalidGrantTypeError extends RestApiError {
   }
 }
 
+class OAuthInvalidRefreshTokenError extends RestApiError {
+  constructor(message) {
+    super(message || "The refresh token provided is invalid!");
+  }
+}
+
 module.exports = {
   RestApiError,
   ValidationError,
@@ -89,6 +95,7 @@ module.exports = {
   OAuthClientNotRegisteredError,
   OAuthClientNotPrivilegedError,
   OAuthInvalidCredentialsError,
+  OAuthInvalidRefreshTokenError,
 
   GraphQLAuthenticationError,
   GraphQLForbiddenError,

@@ -4,6 +4,7 @@ const crypto = require("crypto");
 
 const {
   RestApiError,
+  OAuthInvalidRefreshTokenError,
   OAuthClientNotRegisteredError,
   OAuthClientNotPrivilegedError
 } = require("../../errors");
@@ -190,9 +191,8 @@ module.exports = (db) => {
 
   async function refresh(hostname, refreshToken) {
     return jwt.verify(refreshToken, AUTH_SECRET, async (err, decoded) => {
-      if (err) return Promise.reject(new OAuthApiError());
-      if (decoded.type !== "refresh") {
-        return Promise.reject(new OAuthApiError());
+      if (err || decoded.type !== "refresh") {
+        return Promise.reject(new OAuthInvalidRefreshTokenError());
       }
 
       try {
