@@ -1,8 +1,8 @@
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import MenuBar from "../MenuBar/index";
 import ApplicationHeader from "./ApplicationHeader";
-import ApplicationNavigation from "./ApplicationNavigation";
+import ApplicationNavigation from "../ApplicationSteps/index";
 import ApplicationForm from "./ApplicationForm";
 
 class Apply extends Component {

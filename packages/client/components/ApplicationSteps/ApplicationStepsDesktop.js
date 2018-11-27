@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import * as colors from "../../assets/colors";
 
-class ApplicationNavigation extends PureComponent {
+class ApplicationStepsDesktop extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -120,4 +120,4 @@ class ApplicationNavigation extends PureComponent {
   }
 }
 
-export default ApplicationNavigation;
+export default ApplicationStepsDesktop;
