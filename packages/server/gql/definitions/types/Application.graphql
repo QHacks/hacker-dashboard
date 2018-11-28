@@ -1,0 +1,76 @@
+extend type QueryRoot {
+  """
+  Returns the current user's application to a specific event
+  """
+  application(event: String!): Application
+}
+
+extend type MutationRoot {
+  """
+  Creates a new application to an event for the current user
+  """
+  createApplication(
+    event: String!
+    input: ApplicationInput!
+  ): ApplicationCreatePayload!
+  """
+  Updates a user's application to an event
+  """
+  updateApplication(
+    event: String!
+    input: ApplicationInput!
+  ): ApplicationUpdatePayload!
+}
+
+type Application {
+  """
+  The user has applied to the  application
+  """
+  status: ApplicationStatus
+  """
+  The users response to the application
+  """
+  response: [ApplicationFieldResponse!]
+  """
+  The date that the application was submitted
+  """
+  submissionDate: Date
+}
+
+type ApplicationFieldResponse {
+  """
+  The label of the application field
+  """
+  type: ApplicationFieldType!
+  """
+  The label of the application field
+  """
+  label: String!
+  """
+  The response of the applicant to the field
+  """
+  answer: String!
+}
+
+type ApplicationUpdatePayload {
+  application: Application
+}
+
+type ApplicationCreatePayload {
+  application: Application
+}
+
+input ApplicationInput {
+  response: [ApplicationFieldInput!]
+}
+
+input ApplicationFieldInput {
+  """
+  The label of the application field
+  """
+  label: String!
+  """
+  The response of the applicant to the field
+  """
+  answer: String!
+}

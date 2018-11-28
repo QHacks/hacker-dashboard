@@ -1,0 +1,21 @@
+"""
+Different application statuses.
+"""
+enum ApplicationStatus {
+  """
+  The user has applied to the event.
+  """
+  APPLIED
+  """
+  The user has been accepted to the event.
+  """
+  ACCEPTED
+  """
+  The user has been rejected from the event.
+  """
+  REJECTED
+  """
+  The user has been put on the waiting list for the event.
+  """
+  WAITING_LIST
+}

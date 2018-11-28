@@ -105,7 +105,7 @@ app.use(express.static(BUNDLE_DIR));
 // Database Synchronization
 // NOTE: We only do force true for dev.
 db.sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     logger.info("Database has synchronized successfully!");
 

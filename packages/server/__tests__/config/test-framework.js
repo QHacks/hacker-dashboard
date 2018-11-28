@@ -105,11 +105,42 @@ beforeEach(async () => {
     ]
   );
 
-  await Application.create({
+  const applicationFields = await ApplicationField.bulkCreate([
+    {
+      eventId: QHACKS_EVENT_ID,
+      type: "CHECKBOX",
+      label: "Field 1",
+      required: true
+    },
+    {
+      eventId: QHACKS_EVENT_ID,
+      type: "CHECKBOX",
+      label: "Field 2",
+      required: false
+    },
+    {
+      eventId: QHACKS_EVENT_ID,
+      type: "CHECKBOX",
+      label: "Field 3",
+      required: true
+    }
+  ]);
+
+  const { id: applicationId } = await Application.create({
     eventId: QHACKS_EVENT_ID,
     userId: HACKER_ID,
     status: "APPLIED"
   });
+
+  const applicationFieldResponses = applicationFields.map(
+    ({ id: applicationFieldId }, i) => ({
+      applicationFieldId,
+      applicationId,
+      answer: `Test answer ${i}`
+    })
+  );
+
+  await ApplicationFieldResponse.bulkCreate(applicationFieldResponses);
 });
 
 afterEach(() => {

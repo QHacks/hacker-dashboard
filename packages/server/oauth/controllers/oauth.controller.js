@@ -5,6 +5,7 @@ const crypto = require("crypto");
 
 const {
   RestApiError,
+  ValidationError,
   OAuthInvalidRefreshTokenError,
   OAuthClientNotRegisteredError,
   OAuthClientNotPrivilegedError
