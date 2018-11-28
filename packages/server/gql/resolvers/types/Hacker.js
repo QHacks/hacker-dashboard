@@ -1,12 +1,31 @@
 const { ForbiddenError } = require("apollo-server-express");
 const { hasPermission } = require("../../../oauth/scopes");
-
+const { DatabaseError } = require("../../../errors");
 module.exports = {
   QueryRoot: {
-    hacker(parent, args, context, info) {
-      if (!hasPermission("hacker", "read", context.access.scopes)) {
+    async hacker(
+      parent,
+      args,
+      {
+        access,
+        db: { User, OAuthUser }
+      },
+      info
+    ) {
+      if (!hasPermission("hacker", "read", access.scopes)) {
         throw new ForbiddenError("Invalid permissions!");
       }
+      const dbResponse = await OAuthUser.findOne({
+        where: { role: "HACKER" },
+        include: {
+          model: User,
+          where: { id: args.id }
+        }
+      });
+      if (!dbResponse || !dbResponse.User) {
+        throw new DatabaseError("Hacker not found");
+      }
+      return dbResponse.User;
     }
   },
   MutationRoot: {

@@ -86,9 +86,23 @@ beforeEach(async () => {
         phoneNumber: "(123)-456-789",
         schoolName: "Queen's",
         password: "password"
+      },
+      {
+        firstName: "Hacker",
+        lastName: "1",
+        dateOfBirth: new Date(),
+        email: "hacker1@gmail.com",
+        phoneNumber: "(123)-456-789",
+        schoolName: "Queen's",
+        password: "password"
       }
     ],
-    [{ role: "ADMIN" }, { role: "VOLUNTEER" }, { role: "HACKER" }]
+    [
+      { role: "ADMIN" },
+      { role: "VOLUNTEER" },
+      { role: "HACKER", scopes: JSON.stringify(["hacker:read"]) },
+      { role: "HACKER" }
+    ]
   );
 
   await Application.create({
@@ -139,13 +153,11 @@ afterAll(async () => {
 
 // Create necessary relationships for users
 async function createUsers(users, options) {
-  const scopes = users.map(() =>
-    JSON.stringify([{ user: "read", user: "write" }])
-  );
+  const DEFAULT_SCOPES = JSON.stringify(["hacker:read"]);
 
   const oauthUsers = users.map((_, i) => ({
     role: options[i].role,
-    scopes: scopes[i]
+    scopes: options[i].scope || DEFAULT_SCOPES
   }));
 
   const savedOAuthUsers = await OAuthUser.bulkCreate(oauthUsers);
