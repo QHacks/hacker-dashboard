@@ -16,7 +16,7 @@ describe("Application Type", () => {
       userId,
       `
       {
-        application(event: "qhacks-2019") {
+        application(eventSlug: "qhacks-2019") {
           status
           response {
             label
@@ -47,7 +47,7 @@ describe("Application Type", () => {
       userId,
       `
       mutation {
-        createApplication(event: "qhacks-2019", input: {
+        createApplication(eventSlug: "qhacks-2019", input: {
           response: [
             {
               label: "Field 1",
@@ -105,7 +105,7 @@ describe("Application Type", () => {
       userId,
       `
       mutation {
-        createApplication(event: "qhacks-2019", input: {
+        createApplication(eventSlug: "qhacks-2019", input: {
           response: [
             {
               label: "Field 1",
@@ -160,7 +160,7 @@ describe("Application Type", () => {
       userId,
       `
       mutation {
-        createApplication(event: "yophacks-2019", input: {
+        createApplication(eventSlug: "yophacks-2019", input: {
           response: [
             {
               label: "Field 1",
@@ -213,7 +213,7 @@ describe("Application Type", () => {
       userId,
       `
       mutation {
-        createApplication(event: "yophacks-2019", input: {
+        createApplication(eventSlug: "yophacks-2019", input: {
           response: [
             {
               label: "Field 1",
@@ -253,7 +253,7 @@ describe("Application Type", () => {
       userId,
       `
       mutation {
-        createApplication(event: "qhacks-2019", input: {
+        createApplication(eventSlug: "qhacks-2019", input: {
           response: [
             {
               label: "Field 1",
@@ -312,7 +312,7 @@ describe("Application Type", () => {
       userId,
       `
       mutation {
-        createApplication(event: "qhacks-2019", input: {
+        createApplication(eventSlug: "qhacks-2019", input: {
           response: [
             {
               label: "Field 1",

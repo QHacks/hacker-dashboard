@@ -2,14 +2,13 @@ const { DatabaseError, ValidationError } = require("../../../errors");
 
 module.exports = {
   QueryRoot: {
-    async application(
-      parent,
-      { event: slug },
-      {
+    async application(parent, args, context) {
+      const { eventSlug: slug } = args;
+      const {
         db: { Event, Application, ApplicationField },
         user
-      }
-    ) {
+      } = context;
+
       const applicationDBResponse = await Application.findOne({
         where: { userId: user.id },
         include: [
@@ -38,14 +37,13 @@ module.exports = {
     }
   },
   MutationRoot: {
-    async createApplication(
-      parent,
-      { event: slug, input },
-      {
+    async createApplication(parent, args, context) {
+      const { eventSlug: slug, input } = args;
+      const {
         user,
         db: { Event, ApplicationField, ApplicationFieldResponse, sequelize }
-      }
-    ) {
+      } = context;
+
       try {
         const newApplication = await sequelize.transaction(async (t) => {
           const event = await Event.findOne({

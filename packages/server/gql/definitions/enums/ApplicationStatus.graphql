@@ -3,19 +3,19 @@ Different application statuses.
 """
 enum ApplicationStatus {
   """
-  The user has applied to the event.
+  The application has been submitted.
   """
   APPLIED
   """
-  The user has been accepted to the event.
+  The application has been accepted.
   """
   ACCEPTED
   """
-  The user has been rejected from the event.
+  The application has been rejected.
   """
   REJECTED
   """
-  The user has been put on the waiting list for the event.
+  The application has been placed on waiting list.
   """
   WAITING_LIST
 }

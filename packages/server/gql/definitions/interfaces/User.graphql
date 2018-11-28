@@ -30,5 +30,5 @@ interface User {
 }
 
 extend type QueryRoot {
-  user: User!
+  user: User
 }

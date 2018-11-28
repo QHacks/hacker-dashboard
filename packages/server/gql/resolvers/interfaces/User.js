@@ -7,18 +7,17 @@ module.exports = {
     }
   },
   QueryRoot: {
-    async user(
-      parent,
-      args,
-      {
+    async user(parent, args, context) {
+      const {
         user,
         db: { User, OAuthUser }
-      }
-    ) {
+      } = context;
+
       const currentUser = await User.findOne({
         where: { id: user.id },
         include: OAuthUser
       });
+
       if (!currentUser) {
         throw new DatabaseError("Unable to find user");
       }

@@ -28,6 +28,10 @@ const {
 const QHACKS_CLIENT_ID = uuid.v4();
 const QHACKS_EVENT_ID = uuid.v4();
 const HACKER_ID = uuid.v4();
+
+const { getDefaultScopes } = require("../../oauth/scopes");
+const DEFAULT_SCOPES = JSON.stringify(getDefaultScopes("HACKER"));
+
 const TOMORROW = new Date();
 
 TOMORROW.setDate(new Date().getDate() + 1);
@@ -187,8 +191,6 @@ afterAll(async () => {
 
 // Create necessary relationships for users
 async function createUsers(users, options) {
-  const DEFAULT_SCOPES = JSON.stringify(["hacker:read"]);
-
   const oauthUsers = users.map((_, i) => ({
     role: options[i].role,
     scopes: options[i].scope || DEFAULT_SCOPES
