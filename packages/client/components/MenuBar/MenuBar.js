@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import * as colors from "../../assets/colors";
+import * as constants from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import crown from "../../assets/img/qhacks-tricolor-logo.svg";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
@@ -33,7 +33,7 @@ class MenuBar extends Component {
               line-height: 44px;
               a {
                 padding: 0 20px;
-                color: ${colors.blue};
+                color: ${constants.blue};
                 font-weight: 600;
                 text-decoration: none;
               }

@@ -14,8 +14,8 @@ export default (props) => (
         padding-right: 80px;
       }
       @media screen and (max-width: 860px) {
-        padding-left: 5%;
-        padding-right: 5%;
+        padding-left: 5vw;
+        padding-right: 5vw;
       }
     `}
   >

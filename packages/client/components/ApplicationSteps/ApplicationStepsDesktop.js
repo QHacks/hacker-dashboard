@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import * as colors from "../../assets/colors";
+import * as constants from "../../assets/constants";
 
 class ApplicationStepsDesktop extends PureComponent {
   constructor(props) {
@@ -8,7 +8,7 @@ class ApplicationStepsDesktop extends PureComponent {
   }
   getBackgroundColor(num) {
     if (num === this.props.pageNum) {
-      return colors.red;
+      return constants.red;
     }
     if (num > this.props.pageNum) {
       return "white";
@@ -63,7 +63,7 @@ class ApplicationStepsDesktop extends PureComponent {
     if (num === this.props.pageNum) {
       return "white";
     }
-    return colors.red;
+    return constants.red;
   }
   render() {
     const pages = ["Introduction", "About You", "Why QHacks?", "Next Steps"];

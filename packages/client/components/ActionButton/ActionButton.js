@@ -1,10 +1,10 @@
 import React from "react";
-import * as colors from "../../assets/colors";
+import * as constants from "../../assets/constants";
 
 const ActionButton = (props) => {
   const roundedStyles = `
     border-radius: 28px;
-    border: solid 2px ${props.foregroundColor || colors.blue};
+    border: solid 2px ${props.foregroundColor || constants.blue};
     padding-left: 55px;
     padding-right: 55px;
     `;
@@ -23,9 +23,9 @@ const ActionButton = (props) => {
   const getBackgroundColor = () => {
     switch (getColor()) {
       case "red":
-        return colors.red;
+        return constants.red;
       case "blue":
-        return colors.blue;
+        return constants.blue;
       default:
         return "white";
     }
@@ -37,15 +37,15 @@ const ActionButton = (props) => {
       case "blue":
         return "white";
       default:
-        return colors.blue;
+        return constants.blue;
     }
   };
   const getHoverBackgroundColor = () => {
     switch (getColor()) {
       case "red":
-        return colors.redLight;
+        return constants.redLight;
       case "blue":
-        return colors.blueLight;
+        return constants.blueLight;
       default:
         return "white";
     }
@@ -67,15 +67,15 @@ const ActionButton = (props) => {
       case "blue":
         return "none";
       default:
-        return `1px solid ${colors.blue}`;
+        return `1px solid ${constants.blue}`;
     }
   };
   const getClickBackgroundColor = () => {
     switch (getColor()) {
       case "red":
-        return colors.redDark;
+        return constants.redDark;
       case "blue":
-        return colors.blueDark;
+        return constants.blueDark;
       default:
         return "white";
     }

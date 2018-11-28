@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { css } from "emotion";
-import * as colors from "../../assets/colors";
+import * as constants from "../../assets/constants";
 
 class ApplicationAuthSlider extends PureComponent {
   changeSelected(index) {
@@ -15,7 +15,7 @@ class ApplicationAuthSlider extends PureComponent {
       left: `${this.props.selectedItem * sliderWidth}%`,
       top: 0,
       height: "44px",
-      backgroundColor: colors.red,
+      backgroundColor: constants.red,
       borderRadius: "44px",
       width: `${sliderWidth}%`,
       zIndex: 2,
@@ -53,7 +53,7 @@ class ApplicationAuthSlider extends PureComponent {
         color: "#4d4d4d"
       },
       "> button.item:not(.selectedItem):hover": {
-        color: colors.redDark
+        color: constants.redDark
       }
     });
 

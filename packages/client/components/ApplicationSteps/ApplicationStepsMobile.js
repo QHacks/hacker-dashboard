@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import * as colors from "../../assets/colors";
+import * as constants from "../../assets/constants";
 
 class ApplicationStepsMobile extends PureComponent {
   constructor(props) {
@@ -10,7 +10,7 @@ class ApplicationStepsMobile extends PureComponent {
     if (num > this.props.pageNum) {
       return "#d2d2d2";
     }
-    return colors.red;
+    return constants.red;
   }
   render() {
     const pages = ["Introduction", "About You", "Why QHacks?", "Next Steps"];
