@@ -13,13 +13,6 @@ extend type MutationRoot {
     event: String!
     input: ApplicationInput!
   ): ApplicationCreatePayload!
-  """
-  Updates a user's application to an event
-  """
-  updateApplication(
-    event: String!
-    input: ApplicationInput!
-  ): ApplicationUpdatePayload!
 }
 
 type Application {
@@ -50,10 +43,6 @@ type ApplicationFieldResponse {
   The response of the applicant to the field
   """
   answer: String!
-}
-
-type ApplicationUpdatePayload {
-  application: Application
 }
 
 type ApplicationCreatePayload {

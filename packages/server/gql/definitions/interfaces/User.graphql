@@ -28,3 +28,7 @@ interface User {
   """
   oauthInfo: OAuthInfo!
 }
+
+extend type QueryRoot {
+  user: User!
+}

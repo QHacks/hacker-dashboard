@@ -98,28 +98,37 @@ module.exports = (db) => {
       const newUser = await db.sequelize.transaction(async (t) => {
         const scopes = getDefaultScopes("HACKER");
 
-        const oauthUser = await db.OAuthUser.create({
-          role: "HACKER",
-          scopes: JSON.stringify(scopes)
-        });
+        const oauthUser = await db.OAuthUser.create(
+          {
+            role: "HACKER",
+            scopes: JSON.stringify(scopes)
+          },
+          { transaction: t }
+        );
 
-        const user = await oauthUser.createUser({
-          firstName,
-          lastName,
-          password,
-          email
-        });
+        const user = await oauthUser.createUser(
+          {
+            firstName,
+            lastName,
+            password,
+            email
+          },
+          { transaction: t }
+        );
 
         const { accessToken, refreshToken } = createTokensForUser(user.id);
         const expiryDate = new Date(
           Date.now() + 1000 * REFRESH_TOKEN_EXPIRE_SECONDS
         );
 
-        await oauthUser.createOAuthRefreshToken({
-          clientId: oauthClient.id,
-          refreshToken,
-          expiryDate
-        });
+        await oauthUser.createOAuthRefreshToken(
+          {
+            clientId: oauthClient.id,
+            refreshToken,
+            expiryDate
+          },
+          { transaction: t }
+        );
 
         return {
           user,

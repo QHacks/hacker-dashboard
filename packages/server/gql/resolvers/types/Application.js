@@ -48,16 +48,20 @@ module.exports = {
         db: { Event, ApplicationField, ApplicationFieldResponse, sequelize }
       }
     ) {
+      //TODO: evaluate specific event details (ie startDate, endDate, hasApplications)
       try {
         const newApplication = await sequelize.transaction(async (t) => {
           const event = await Event.findOne({
             where: { slug },
             include: ApplicationField
           });
-          const application = await event.createApplication({
-            userId: user.id,
-            status: "APPLIED"
-          });
+          const application = await event.createApplication(
+            {
+              userId: user.id,
+              status: "APPLIED"
+            },
+            { transaction: t }
+          );
 
           const applicationTable = {};
           event.ApplicationFields.forEach(
@@ -74,7 +78,8 @@ module.exports = {
           });
 
           const fieldResponse = await ApplicationFieldResponse.bulkCreate(
-            Object.values(applicationTable)
+            Object.values(applicationTable),
+            { transaction: t }
           );
 
           if (!fieldResponse) {
