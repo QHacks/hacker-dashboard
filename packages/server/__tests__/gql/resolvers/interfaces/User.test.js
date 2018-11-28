@@ -10,7 +10,7 @@ describe("User Interface", () => {
     const { id: userId } = await User.findOne({
       where: { email: "ross.hill@rosshill.ca" }
     });
-    const { data } = await gql(
+    const { data, errors } = await gql(
       userId,
       `
       {

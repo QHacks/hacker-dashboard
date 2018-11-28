@@ -60,5 +60,28 @@ module.exports = {
           };
         });
     }
+  },
+  Hacker: {
+    // TODO: Seperate this for other roles such as admins and partners
+    oauthInfo(parent, args, context) {
+      const {
+        db: { OAuthUser }
+      } = context;
+      const { oauthUserId } = parent;
+
+      return OAuthUser.findOne({ where: { id: oauthUserId } }).then(
+        (oauthUser) => {
+          oauthUser.scopes = JSON.parse(oauthUser.scopes).map((scope) => {
+            const splitScopes = scope.split(":");
+            return {
+              entity: splitScopes[0],
+              permission: splitScopes[1].toUpperCase()
+            };
+          });
+
+          return oauthUser;
+        }
+      );
+    }
   }
 };
