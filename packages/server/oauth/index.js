@@ -24,7 +24,8 @@ module.exports = (db) => {
       const oauthUser = await user.getOAuthUser();
 
       const access = {
-        scopes: JSON.parse(oauthUser.scopes)
+        scopes: JSON.parse(oauthUser.scopes),
+        role: oauthUser.role
       };
 
       return Promise.resolve({

@@ -3,7 +3,7 @@ const { DatabaseError } = require("../../../errors");
 module.exports = {
   User: {
     __resolveType(user, context, info) {
-      return "Hacker";
+      return upperCase(context.access.role);
     }
   },
   QueryRoot: {
@@ -12,3 +12,6 @@ module.exports = {
     }
   }
 };
+
+const upperCase = (str) =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
