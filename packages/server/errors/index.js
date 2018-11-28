@@ -87,6 +87,12 @@ class OAuthInvalidRefreshTokenError extends RestApiError {
   }
 }
 
+class GraphQLNotFoundError extends ApolloError {
+  constructor(message) {
+    super(message || "Unable to retrieve the requested resource");
+  }
+}
+
 module.exports = {
   RestApiError,
   ValidationError,
@@ -100,6 +106,7 @@ module.exports = {
   GraphQLAuthenticationError,
   GraphQLForbiddenError,
   GraphQLUserInputError,
+  GraphQLNotFoundError,
 
   DatabaseError,
   NotFoundError

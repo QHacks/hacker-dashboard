@@ -1,5 +1,6 @@
-const scopes = require("./scopes");
+const { isArray } = require("lodash");
 
+const scopes = require("./scopes");
 const READ_SUFFIX = ":read";
 const WRITE_SUFFIX = ":write";
 
@@ -15,7 +16,23 @@ function hasPermission(type, level, scopes) {
   }
 }
 
+// Converts scopes to { entity, permission } format
+function formatScopes(scopes) {
+  if (!isArray(scopes)) {
+    scopes = JSON.parse(scopes);
+  }
+
+  return scopes.map((scope) => {
+    const [entity, permission] = scope.split(":");
+    return {
+      entity,
+      permission: permission.toUpperCase()
+    };
+  });
+}
+
 module.exports = {
   ...scopes,
+  formatScopes,
   hasPermission
 };

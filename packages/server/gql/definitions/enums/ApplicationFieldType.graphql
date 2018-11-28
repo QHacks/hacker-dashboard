@@ -3,15 +3,15 @@ The allowed types for application fields (subject to change)
 """
 enum ApplicationFieldType {
   """
-  The field type is a string
+  The application field type is a string
   """
   STRING
   """
-  The field type is a number
+  The application field type is a number
   """
   NUMBER
   """
-  The field type is a file
+  The application field type is a file
   """
   FILE
 }

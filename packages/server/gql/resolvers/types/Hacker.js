@@ -1,6 +1,8 @@
-const { ForbiddenError } = require("apollo-server-express");
-const { hasPermission } = require("../../../oauth/scopes");
-const { DatabaseError } = require("../../../errors");
+const { hasPermission, formatScopes } = require("../../../oauth/scopes");
+const {
+  GraphQLNotFoundError,
+  GraphQLForbiddenError
+} = require("../../../errors");
 
 module.exports = {
   QueryRoot: {
@@ -11,7 +13,7 @@ module.exports = {
       } = context;
 
       if (!hasPermission("hacker", "read", access.scopes)) {
-        throw new ForbiddenError("Invalid permissions!");
+        throw new GraphQLForbiddenError("Invalid permissions!");
       }
 
       const oauthUser = await OAuthUser.findOne({
@@ -23,7 +25,7 @@ module.exports = {
       });
 
       if (!oauthUser || !oauthUser.User) {
-        throw new DatabaseError("Hacker not found");
+        throw new GraphQLNotFoundError("Hacker not found");
       }
 
       return oauthUser.User;
@@ -32,7 +34,7 @@ module.exports = {
   MutationRoot: {
     hackerUpdate(parent, args, context, info) {
       if (!hasPermission("hacker", "write", context.access.scopes)) {
-        throw new ForbiddenError("Invalid permissions!");
+        throw new GraphQLForbiddenError("Invalid permissions!");
       }
 
       const { db } = context;
@@ -44,7 +46,7 @@ module.exports = {
     },
     hackerDelete(parent, args, context, info) {
       if (!hasPermission("hacker", "write", context.access.scopes)) {
-        throw new ForbiddenError("Invalid permissions!");
+        throw new GraphQLForbiddenError("Invalid permissions!");
       }
 
       const { db } = context;
@@ -63,16 +65,32 @@ module.exports = {
   },
   Hacker: {
     oauthInfo(parent, args, context) {
-      return {
-        role: context.access.role,
-        scopes: context.access.scopes.map((scope) => {
-          const splitScopes = scope.split(":");
-          return {
-            entity: splitScopes[0],
-            permission: splitScopes[1].toUpperCase()
-          };
-        })
-      };
+      // Current user (resolve from context)
+      if (parent.email && parent.email === context.user.email) {
+        return Promise.resolve({
+          role: context.access.role,
+          scopes: formatScopes(context.access.scopes)
+        });
+      }
+
+      // A different user (resolve from DB)
+      const {
+        db: { OAuthUser }
+      } = context;
+      return OAuthUser.findOne({ id: parent.oauthUserId }).then((oauthUser) => {
+        if (!oauthUser) {
+          return Promise.reject(
+            new GraphQLNotFoundError(
+              "Could not find OAuth information for user"
+            )
+          );
+        }
+
+        return Promise.resolve({
+          role: oauthUser.role,
+          scopes: formatScopes(oauthUser.scopes)
+        });
+      });
     }
   }
 };

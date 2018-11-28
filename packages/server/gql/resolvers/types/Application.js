@@ -1,4 +1,9 @@
-const { DatabaseError, ValidationError } = require("../../../errors");
+const {
+  DatabaseError,
+  GraphQLNotFoundError,
+  GraphQLForbiddenError,
+  GraphQLUserInputError
+} = require("../../../errors");
 
 module.exports = {
   QueryRoot: {
@@ -18,7 +23,7 @@ module.exports = {
       });
 
       if (!applicationDBResponse) {
-        throw new DatabaseError(`No application found for ${slug}`);
+        throw new GraphQLNotFoundError(`No application found for ${slug}`);
       }
 
       const applicationResponse = {
@@ -52,11 +57,11 @@ module.exports = {
           });
 
           if (!event) {
-            throw new DatabaseError(`Could not find event ${slug}`);
+            throw new GraphQLNotFoundError(`Could not find event ${slug}`);
           }
 
           if (!event.requiresApplication) {
-            throw new DatabaseError(
+            throw new GraphQLUserInputError(
               `${event.name} does not require applications`
             );
           }
@@ -67,7 +72,7 @@ module.exports = {
             currentDate > event.applicationCloseDate ||
             currentDate < event.applicationOpenDate
           ) {
-            throw new ValidationError(
+            throw new GraphQLForbiddenError(
               `${event.name} is not accepting applications at this time`
             );
           }
@@ -97,7 +102,7 @@ module.exports = {
 
           input.response.forEach(({ label, answer }) => {
             if (!applicationTable[label]) {
-              throw new ValidationError(
+              throw new GraphQLUserInputError(
                 `${label} is not a valid field for ${slug}`
               );
             }
@@ -110,7 +115,7 @@ module.exports = {
           const userResponse = Object.values(applicationTable).filter(
             (field, i) => {
               if (field.required && !field.answer) {
-                throw new ValidationError(
+                throw new GraphQLUserInputError(
                   `${Object.keys(applicationTable)[i]} is a required field!`
                 );
               }
