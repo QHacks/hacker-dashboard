@@ -28,6 +28,9 @@ const {
 const QHACKS_CLIENT_ID = uuid.v4();
 const QHACKS_EVENT_ID = uuid.v4();
 const HACKER_ID = uuid.v4();
+const TOMORROW = new Date();
+
+TOMORROW.setDate(new Date().getDate() + 1);
 
 beforeAll(async () => {
   await sequelize.sync({ force: true });
@@ -41,8 +44,8 @@ beforeEach(async () => {
     startDate: new Date("2019-02-01T19:00Z"),
     endDate: new Date("2019-02-03T19:00Z"),
     requiresApplication: true,
-    applicationOpenDate: new Date("2018-12-01"),
-    applicationCloseDate: new Date("2019-01-10"),
+    applicationOpenDate: new Date("1970-01-01"),
+    applicationCloseDate: TOMORROW,
     hasProjectSubmissions: true,
     projectSubmissionDate: new Date("2018-02-03T14:00Z"),
     eventLogoUrl: "http://digitalocean.com/qhacks.jpg"

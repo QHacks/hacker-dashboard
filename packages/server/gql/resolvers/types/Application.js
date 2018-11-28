@@ -1,6 +1,4 @@
-const { ForbiddenError } = require("apollo-server-express");
-const { hasPermission } = require("../../../oauth/scopes");
-const { DatabaseError } = require("../../../errors");
+const { DatabaseError, ValidationError } = require("../../../errors");
 
 module.exports = {
   QueryRoot: {
@@ -48,13 +46,34 @@ module.exports = {
         db: { Event, ApplicationField, ApplicationFieldResponse, sequelize }
       }
     ) {
-      //TODO: evaluate specific event details (ie startDate, endDate, hasApplications)
       try {
         const newApplication = await sequelize.transaction(async (t) => {
           const event = await Event.findOne({
             where: { slug },
             include: ApplicationField
           });
+
+          if (!event) {
+            throw new DatabaseError(`Could not find event ${slug}`);
+          }
+
+          if (!event.requiresApplication) {
+            throw new DatabaseError(
+              `${event.name} does not require applications`
+            );
+          }
+
+          const currentDate = new Date();
+
+          if (
+            currentDate > event.applicationCloseDate ||
+            currentDate < event.applicationOpenDate
+          ) {
+            throw new ValidationError(
+              `${event.name} is not accepting applications at this time`
+            );
+          }
+
           const application = await event.createApplication(
             {
               userId: user.id,
@@ -63,27 +82,53 @@ module.exports = {
             { transaction: t }
           );
 
+          if (!application) {
+            throw new DatabaseError(
+              "Could not create an application at this time"
+            );
+          }
+
           const applicationTable = {};
           event.ApplicationFields.forEach(
             (field) =>
-              (applicationTable[field.label] = { applicationFieldId: field.id })
+              (applicationTable[field.label] = {
+                applicationFieldId: field.id,
+                required: field.required
+              })
           );
 
           input.response.forEach(({ label, answer }) => {
             if (!applicationTable[label]) {
-              throw new Error();
+              throw new ValidationError(
+                `${label} is not a valid field for ${slug}`
+              );
             }
+
             applicationTable[label]["answer"] = answer;
             applicationTable[label]["applicationId"] = application.id;
           });
 
+          // Filter out any unanswered fields that are not required
+          const userResponse = Object.values(applicationTable).filter(
+            (field, i) => {
+              if (field.required && !field.answer) {
+                throw new ValidationError(
+                  `${Object.keys(applicationTable)[i]} is a required field!`
+                );
+              }
+              return "answer" in field;
+            }
+          );
+
           const fieldResponse = await ApplicationFieldResponse.bulkCreate(
-            Object.values(applicationTable),
+            userResponse,
             { transaction: t }
           );
 
           if (!fieldResponse) {
-            return Promise.reject();
+            throw new DatabaseError(
+              "Could not create an application at this time"
+            );
           }
 
           return {
@@ -96,9 +141,7 @@ module.exports = {
 
         return Promise.resolve(newApplication);
       } catch (err) {
-        return Promise.reject(
-          new DatabaseError("Could not create a new application")
-        );
+        return Promise.reject(err);
       }
     }
   }

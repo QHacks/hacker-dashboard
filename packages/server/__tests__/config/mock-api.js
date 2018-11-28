@@ -42,10 +42,6 @@ const graphqlServer = new ApolloServer({
     } catch (err) {
       throw new GraphQLAuthenticationError("Invalid access token!");
     }
-  },
-  formatError: (error) => {
-    console.log(error);
-    return error;
   }
 });
 
