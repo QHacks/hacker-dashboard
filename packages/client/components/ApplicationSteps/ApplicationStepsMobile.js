@@ -2,12 +2,8 @@ import React, { PureComponent } from "react";
 import * as constants from "../../assets/constants";
 
 class ApplicationStepsMobile extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
   getBackgroundColor(num) {
-    if (num > this.props.pageNum) {
+    if (num > this.props.stepNum) {
       return "#d2d2d2";
     }
     return constants.red;
@@ -46,7 +42,7 @@ class ApplicationStepsMobile extends PureComponent {
                 display: inline-block;
               `}
             >
-              {this.props.pageNum > i ? "\u2713" : i + 1}
+              {this.props.stepNum > i ? "\u2713" : i + 1}
             </div>
             {i !== pages.length - 1 ? (
               <div

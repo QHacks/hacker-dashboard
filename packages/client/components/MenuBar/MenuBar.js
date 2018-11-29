@@ -43,8 +43,8 @@ class MenuBar extends Component {
               QHacks 2019
             </a>
             <a href="#">Past Events</a>
-            <a href="#">Blog</a>
-            <a href="#">Code</a>
+            <a href="https://medium.com/qhacks">Blog</a>
+            <a href="https://github.com/qhacks">Code</a>
             <ActionButton
               style={`font-size: 16px;`}
               type="rounded"

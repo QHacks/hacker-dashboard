@@ -4,10 +4,9 @@ import * as constants from "../../assets/constants";
 const ActionButton = (props) => {
   const roundedStyles = `
     border-radius: 28px;
-    border: solid 2px ${props.foregroundColor || constants.blue};
     padding-left: 55px;
     padding-right: 55px;
-    `;
+  `;
 
   const rectStyles = `
     border-radius: 4px;
@@ -30,6 +29,7 @@ const ActionButton = (props) => {
         return "white";
     }
   };
+
   const getForgroundColor = () => {
     switch (getColor()) {
       case "red":
@@ -40,6 +40,7 @@ const ActionButton = (props) => {
         return constants.blue;
     }
   };
+
   const getHoverBackgroundColor = () => {
     switch (getColor()) {
       case "red":
@@ -50,6 +51,7 @@ const ActionButton = (props) => {
         return "white";
     }
   };
+
   const getBorder = () => {
     switch (getColor()) {
       case "red":
@@ -60,6 +62,7 @@ const ActionButton = (props) => {
         return "1px solid #999da4";
     }
   };
+
   const getHoverBorder = () => {
     switch (getColor()) {
       case "red":
@@ -70,6 +73,7 @@ const ActionButton = (props) => {
         return `1px solid ${constants.blue}`;
     }
   };
+
   const getClickBackgroundColor = () => {
     switch (getColor()) {
       case "red":
@@ -80,6 +84,7 @@ const ActionButton = (props) => {
         return "white";
     }
   };
+
   let commonStyles = `
     min-height: 42px;
     cursor: pointer;
@@ -127,8 +132,9 @@ const ActionButton = (props) => {
     <a
       css={`
         ${commonStyles}
-        display: "inline-block";
-        boxsizing: "content-box";
+        display: inline-block;
+        boxsizing: content-box;
+        text-decoration: none;
       `}
       data-cy={props.dataCy}
       disabled={props.disabled}

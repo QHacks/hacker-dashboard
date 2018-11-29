@@ -124,6 +124,163 @@ class ApplicationForm extends PureComponent {
     ].map((str) => this.toOptions(str));
 
     switch (num) {
+      default: {
+        return (
+          <div
+            css={`
+              ${formStyle}
+              text-align: center;
+            `}
+          >
+            <h3>
+              {this.state.returningHacker
+                ? "Welcome back!"
+                : "Join the QHacks family!"}
+            </h3>
+            <ApplicationAuthSlider
+              items={["new hacker", "returning hacker"]}
+              changeSelected={(i) => this.changeSelected(i)}
+              selectedItem={this.state.returningHacker ? 1 : 0}
+            />
+            {this.state.returningHacker ? (
+              <div>
+                <h2 css={authHeadingStyle}>Login to Account</h2>
+                <div css={subsectionStyle}>
+                  <div
+                    css={`
+                      width: 100%;
+                    `}
+                  >
+                    <section css={inputRowStyle}>
+                      <div>
+                        <label htmlFor="username">Username</label>
+                        <input
+                          type="text"
+                          value={this.state.answers.username}
+                          onChange={(e) =>
+                            this.setAnswer("username", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section css={inputRowStyle}>
+                      <div>
+                        <label htmlFor="password">Password</label>
+                        <input
+                          type="password"
+                          value={this.state.answers.password}
+                          onChange={(e) =>
+                            this.setAnswer("password", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section css={inputRowStyle}>
+                      <div>
+                        <ActionButton
+                          style={`margin-top: 50px;`}
+                          color="red"
+                          onClick={() => this.props.nextStep()}
+                        >
+                          Login
+                        </ActionButton>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h2 css={authHeadingStyle}>Create an Account</h2>
+                <div css={subsectionStyle}>
+                  <div
+                    css={`
+                      width: 100%;
+                    `}
+                  >
+                    <section css={inputRowStyle}>
+                      <div>
+                        <label htmlFor="firstName">First Name</label>
+                        <input
+                          type="text"
+                          id="firstName"
+                          value={this.state.answers.firstName}
+                          onChange={(e) =>
+                            this.setAnswer("firstName", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="lastName">Last Name</label>
+                        <input
+                          type="text"
+                          id="lastName"
+                          value={this.state.answers.lastName}
+                          onChange={(e) =>
+                            this.setAnswer("lastName", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section css={inputRowStyle}>
+                      <div>
+                        <label htmlFor="username">Username</label>
+                        <input
+                          id="username"
+                          type="text"
+                          value={this.state.answers.username}
+                          onChange={(e) =>
+                            this.setAnswer("username", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section css={inputRowStyle}>
+                      <div>
+                        <label htmlFor="password">Password</label>
+                        <input
+                          id="password"
+                          type="password"
+                          value={this.state.answers.password}
+                          onChange={(e) =>
+                            this.setAnswer("password", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section css={inputRowStyle}>
+                      <div>
+                        <label htmlFor="confirmPassword">
+                          Confirm password
+                        </label>
+                        <input
+                          id="confirmPassword"
+                          type="password"
+                          value={this.state.answers.confirmPassword}
+                          onChange={(e) =>
+                            this.setAnswer("confirmPassword", e.target.value)
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section css={inputRowStyle}>
+                      <div>
+                        <ActionButton
+                          style={`margin-top: 50px;`}
+                          color="red"
+                          onClick={() => this.props.nextStep()}
+                        >
+                          Create Account
+                        </ActionButton>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }
       case 1: {
         return (
           <div css={formStyle}>
@@ -244,14 +401,14 @@ class ApplicationForm extends PureComponent {
                   <div>
                     <ActionButton
                       style={`margin-top: 50px;`}
-                      onClick={() => this.props.previousPage()}
+                      onClick={() => this.props.previousStep()}
                     >
                       Previous
                     </ActionButton>{" "}
                     <ActionButton
                       style={`margin-top: 50px;`}
                       color="red"
-                      onClick={() => this.props.nextPage()}
+                      onClick={() => this.props.nextStep()}
                     >
                       Continue
                     </ActionButton>
@@ -317,14 +474,14 @@ class ApplicationForm extends PureComponent {
                   <div>
                     <ActionButton
                       style={`margin-top: 50px;`}
-                      onClick={() => this.props.previousPage()}
+                      onClick={() => this.props.previousStep()}
                     >
                       Previous
                     </ActionButton>{" "}
                     <ActionButton
                       style={`margin-top: 50px;`}
                       color="red"
-                      onClick={() => this.props.nextPage()}
+                      onClick={() => this.props.nextStep()}
                     >
                       Submit
                     </ActionButton>
@@ -377,7 +534,7 @@ class ApplicationForm extends PureComponent {
             >
               <ActionButton
                 style={`margin-top: 50px;`}
-                onClick={() => this.props.previousPage()}
+                onClick={() => this.props.previousStep()}
               >
                 Previous
               </ActionButton>
@@ -385,169 +542,11 @@ class ApplicationForm extends PureComponent {
           </div>
         );
       }
-      case 0:
-      default: {
-        return (
-          <div
-            css={`
-              ${formStyle}
-              text-align: center;
-            `}
-          >
-            <h3>
-              {this.state.returningHacker
-                ? "Welcome back!"
-                : "Join the QHacks family!"}
-            </h3>
-            <ApplicationAuthSlider
-              items={["new hacker", "returning hacker"]}
-              changeSelected={(i) => this.changeSelected(i)}
-              selectedItem={this.state.returningHacker ? 1 : 0}
-            />
-            {this.state.returningHacker ? (
-              <div>
-                <h2 css={authHeadingStyle}>Login to Account</h2>
-                <div css={subsectionStyle}>
-                  <div
-                    css={`
-                      width: 100%;
-                    `}
-                  >
-                    <section css={inputRowStyle}>
-                      <div>
-                        <label htmlFor="username">Username</label>
-                        <input
-                          type="text"
-                          value={this.state.answers.username}
-                          onChange={(e) =>
-                            this.setAnswer("username", e.target.value)
-                          }
-                        />
-                      </div>
-                    </section>
-                    <section css={inputRowStyle}>
-                      <div>
-                        <label htmlFor="password">Password</label>
-                        <input
-                          type="password"
-                          value={this.state.answers.password}
-                          onChange={(e) =>
-                            this.setAnswer("password", e.target.value)
-                          }
-                        />
-                      </div>
-                    </section>
-                    <section css={inputRowStyle}>
-                      <div>
-                        <ActionButton
-                          style={`margin-top: 50px;`}
-                          color="red"
-                          onClick={() => this.props.nextPage()}
-                        >
-                          Login
-                        </ActionButton>
-                      </div>
-                    </section>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <h2 css={authHeadingStyle}>Create an Account</h2>
-                <div css={subsectionStyle}>
-                  <div
-                    css={`
-                      width: 100%;
-                    `}
-                  >
-                    <section css={inputRowStyle}>
-                      <div>
-                        <label htmlFor="firstName">First Name</label>
-                        <input
-                          type="text"
-                          id="firstName"
-                          value={this.state.answers.firstName}
-                          onChange={(e) =>
-                            this.setAnswer("firstName", e.target.value)
-                          }
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="lastName">Last Name</label>
-                        <input
-                          type="text"
-                          id="lastName"
-                          value={this.state.answers.lastName}
-                          onChange={(e) =>
-                            this.setAnswer("lastName", e.target.value)
-                          }
-                        />
-                      </div>
-                    </section>
-                    <section css={inputRowStyle}>
-                      <div>
-                        <label htmlFor="username">Username</label>
-                        <input
-                          id="username"
-                          type="text"
-                          value={this.state.answers.username}
-                          onChange={(e) =>
-                            this.setAnswer("username", e.target.value)
-                          }
-                        />
-                      </div>
-                    </section>
-                    <section css={inputRowStyle}>
-                      <div>
-                        <label htmlFor="password">Password</label>
-                        <input
-                          id="password"
-                          type="password"
-                          value={this.state.answers.password}
-                          onChange={(e) =>
-                            this.setAnswer("password", e.target.value)
-                          }
-                        />
-                      </div>
-                    </section>
-                    <section css={inputRowStyle}>
-                      <div>
-                        <label htmlFor="confirmPassword">
-                          Confirm password
-                        </label>
-                        <input
-                          id="confirmPassword"
-                          type="password"
-                          value={this.state.answers.confirmPassword}
-                          onChange={(e) =>
-                            this.setAnswer("confirmPassword", e.target.value)
-                          }
-                        />
-                      </div>
-                    </section>
-                    <section css={inputRowStyle}>
-                      <div>
-                        <ActionButton
-                          style={`margin-top: 50px;`}
-                          color="red"
-                          onClick={() => this.props.nextPage()}
-                        >
-                          Create Account
-                        </ActionButton>
-                      </div>
-                    </section>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        );
-      }
     }
   }
   render() {
     return (
-      <ContentWrapper>{this.getQuestions(this.props.pageNum)}</ContentWrapper>
+      <ContentWrapper>{this.getQuestions(this.props.stepNum)}</ContentWrapper>
     );
   }
 }

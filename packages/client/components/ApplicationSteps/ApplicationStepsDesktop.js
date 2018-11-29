@@ -2,27 +2,25 @@ import React, { PureComponent } from "react";
 import * as constants from "../../assets/constants";
 
 class ApplicationStepsDesktop extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
   getBackgroundColor(num) {
-    if (num === this.props.pageNum) {
+    if (num === this.props.stepNum) {
       return constants.red;
     }
-    if (num > this.props.pageNum) {
+    if (num > this.props.stepNum) {
       return "white";
     }
     return "transparent";
   }
+
   getForegroundColor(num) {
-    if (num === this.props.pageNum) {
+    if (num === this.props.stepNum) {
       return "white";
     }
     return "black";
   }
+
   getIcon(num) {
-    if (num < this.props.pageNum) {
+    if (num < this.props.stepNum) {
       return (
         <img
           css={`
@@ -34,7 +32,8 @@ class ApplicationStepsDesktop extends PureComponent {
         />
       );
     }
-    if (num === this.props.pageNum) {
+
+    if (num === this.props.stepNum) {
       return (
         <div
           css={`
@@ -47,6 +46,7 @@ class ApplicationStepsDesktop extends PureComponent {
         />
       );
     }
+
     return (
       <div
         css={`
@@ -59,12 +59,14 @@ class ApplicationStepsDesktop extends PureComponent {
       />
     );
   }
+
   getComplementColor(num) {
-    if (num === this.props.pageNum) {
+    if (num === this.props.stepNum) {
       return "white";
     }
     return constants.red;
   }
+
   render() {
     const pages = ["Introduction", "About You", "Why QHacks?", "Next Steps"];
     return (

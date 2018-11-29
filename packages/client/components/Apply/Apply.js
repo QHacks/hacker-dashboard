@@ -9,7 +9,7 @@ class Apply extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageNum: 0
+      stepNum: 0
     };
   }
 
@@ -17,12 +17,12 @@ class Apply extends Component {
     // make api request to apply
   }
 
-  previousPage() {
-    this.setState({ pageNum: this.state.pageNum - 1 });
+  previousStep() {
+    this.setState({ stepNum: this.state.stepNum - 1 });
   }
 
-  nextPage() {
-    this.setState({ pageNum: this.state.pageNum + 1 });
+  nextStep() {
+    this.setState({ stepNum: this.state.stepNum + 1 });
   }
 
   getRedirectPath() {
@@ -54,11 +54,11 @@ class Apply extends Component {
       <div>
         <MenuBar />
         <ApplicationHeader />
-        <ApplicationNavigation pageNum={this.state.pageNum} />
+        <ApplicationNavigation stepNum={this.state.stepNum} />
         <ApplicationForm
-          previousPage={() => this.previousPage()}
-          nextPage={() => this.nextPage()}
-          pageNum={this.state.pageNum}
+          previousStep={() => this.previousStep()}
+          nextStep={() => this.nextStep()}
+          stepNum={this.state.stepNum}
         />
       </div>
     );

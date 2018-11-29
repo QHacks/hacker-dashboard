@@ -19,6 +19,13 @@ const globalStyles = `
 }
 a {
   text-decoration: none;
+  color:${constants.linkUnvisited};
+  :hover {
+    text-decoration: underline;
+  }
+  :visited {
+    color:${constants.linkVisited};
+  }
 }
 h1 {
   font-size: 44px;
