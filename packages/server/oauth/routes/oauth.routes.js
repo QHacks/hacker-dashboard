@@ -190,7 +190,7 @@ module.exports = (db) => {
 
       await oauthCtr.resetPasswordRequest(email);
 
-      return res.send(200);
+      return res.sendStatus(200);
     } catch (err) {
       return sendError(res, err);
     }
@@ -204,7 +204,7 @@ module.exports = (db) => {
 
       await oauthCtr.updatePasswordRequest(password, resetHash);
 
-      return res.send(200);
+      return res.sendStatus(200);
     } catch (err) {
       return sendError(res, err);
     }

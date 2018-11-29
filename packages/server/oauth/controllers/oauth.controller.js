@@ -1,4 +1,5 @@
 const { getDefaultScopes } = require("../scopes");
+const { sendEmails } = require("../../emails")();
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
@@ -265,7 +266,14 @@ module.exports = (db) => {
         resetPasswordHashExpiryDate: newResetPasswordHashExpiryDate
       });
 
-      // TODO: Send the password reset email
+      await sendEmails("reset-password-request", [
+        {
+          to: email,
+          dataForTemplate: {
+            resetPasswordHash: newResetPasswordHash
+          }
+        }
+      ]);
 
       return Promise.resolve();
     } catch (err) {
@@ -297,7 +305,11 @@ module.exports = (db) => {
         password
       });
 
-      // TODO: Send the confirmation email
+      await sendEmails("reset-password-success", [
+        {
+          to: user.email
+        }
+      ]);
 
       return Promise.resolve();
     } catch (err) {
