@@ -1,0 +1,34 @@
+"""
+Represents an admin, including the admins auth info,
+contact information, and applications.
+"""
+type Admin implements User {
+  """
+  The admins first name.
+  """
+  firstName: String!
+  """
+  The admins last name.
+  """
+  lastName: String!
+  """
+  The admins full name.
+  """
+  fullName: String!
+  """
+  The admins email.
+  """
+  email: String!
+  """
+  The admins phone number.
+  """
+  phoneNumber: String!
+  """
+  The admins date of birth.
+  """
+  dateOfBirth: String!
+  """
+  The admins auth information.
+  """
+  oauthInfo: OAuthInfo!
+}

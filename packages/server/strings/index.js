@@ -1,11 +1,7 @@
-const EMAILS = require("./emails.strings");
-const ERROR = require("./error.strings");
 const SCHOOLS = require("./schools.strings");
-const USER = require("./user.strings");
+const EMAILS = require("./emails.strings");
 
 module.exports = {
-  ERROR,
   SCHOOLS,
-  EMAILS,
-  USER
+  EMAILS
 };

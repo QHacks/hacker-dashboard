@@ -1,138 +1,170 @@
 const uuid = require("uuid");
-const logger = require("../../utils/logger");
-const mongoose = require("mongoose");
-
 const {
-  User,
-  Admin,
-  Event,
-  Hacker,
-  Settings,
+  ApplicationFieldResponse,
+  MailingListSubscription,
+  ApplicationReview,
+  OAuthRefreshToken,
+  ApplicationField,
+  ActivityCheckIn,
+  EventCheckIn,
+  EventSponsor,
+  ProjectPrize,
+  Application,
+  UserProject,
+  OAuthClient,
   MailingList,
-  MailingListSubscription
-} = require("../../models");
+  OAuthUser,
+  Location,
+  Activity,
+  Project,
+  Sponsor,
+  Speaker,
+  Event,
+  Prize,
+  User,
+  sequelize
+} = require("./mock-db");
 
-jest.mock("../../emails");
+const QHACKS_CLIENT_ID = uuid.v4();
+const QHACKS_EVENT_ID = uuid.v4();
+const HACKER_ID = uuid.v4();
 
 beforeAll(async () => {
-  mongoose.set("useCreateIndex", true);
-  mongoose.connect(
-    global.__MONGO_URI__,
-    { useNewUrlParser: true },
-    (err) => {
-      if (err) {
-        logger.info("Could not connect to the test database!");
-        return;
-      }
-      logger.info("Successfully connected to the test database!");
-    }
-  );
-
-  mongoose.Promise = Promise;
+  await sequelize.sync({ force: true });
 });
 
 beforeEach(async () => {
-  const admin1 = new Admin({
-    firstName: "admin",
-    lastName: "1",
-    email: "admin1@gmail.com",
-    password: "password1",
-    goldenTickets: 1
-  });
-  const admin2 = new Admin({
-    firstName: "admin",
-    lastName: "2",
-    email: "admin2@gmail.com",
-    password: "password2",
-    reviewGroup: 0
-  });
-  const hacker1 = new Hacker({
-    firstName: "hacker",
-    lastName: "1",
-    email: "hacker1@gmail.com",
-    password: "password1"
-  });
-  const eventId = uuid.v4();
-  const testEvent = new Event({
-    _id: eventId,
-    name: "qhacks-2018",
-    slug: "qhacks-2018"
-  });
-  const hacker2 = new Hacker({
-    firstName: "hacker",
-    lastName: "2",
-    email: "hacker2@gmail.com",
-    password: "password1",
-    applications: [
-      {
-        event: eventId,
-        status: "APPLIED"
-      }
-    ]
-  });
-  const hacker3 = new Hacker({
-    firstName: "hacker",
-    lastName: "3",
-    email: "hacker3@gmail.com",
-    password: "password1",
-    applications: [
-      {
-        event: eventId,
-        status: "ACCEPTED",
-        rsvp: "COMPLETED",
-        checkIn: "PENDING",
-        reviews: [
-          {
-            score: 100,
-            group: 1,
-            performedBy: 1
-          },
-          {
-            score: 1,
-            group: 2,
-            performedBy: 2
-          }
-        ]
-      }
-    ]
-  });
-  const setting = new Settings({
-    numberOfReviewsRequired: 10
-  });
-  const mailingListId = uuid.v4();
-  const mailingList = new MailingList({
-    _id: mailingListId,
-    name: "test-mailing-list",
-    event: eventId
-  });
-  const subscription = new MailingListSubscription({
-    email: "bob@yopmail.com",
-    list: mailingListId
+  await Event.create({
+    id: QHACKS_EVENT_ID,
+    name: "qhacks-2019",
+    slug: "qhacks-2019",
+    startDate: new Date("2019-02-01T19:00Z"),
+    endDate: new Date("2019-02-03T19:00Z"),
+    requiresApplication: true,
+    applicationOpenDate: new Date("2018-12-01"),
+    applicationCloseDate: new Date("2019-01-10"),
+    hasProjectSubmissions: true,
+    projectSubmissionDate: new Date("2018-02-03T14:00Z"),
+    eventLogoUrl: "http://digitalocean.com/qhacks.jpg"
   });
 
-  await Promise.all([
-    testEvent.save(),
-    setting.save(),
-    admin1.save(),
-    hacker1.save(),
-    mailingList.save()
-  ]);
-  await Promise.all([admin2.save(), hacker2.save(), subscription.save()]);
-  await hacker3.save();
+  await OAuthClient.create({
+    id: QHACKS_CLIENT_ID,
+    name: "test-client",
+    host: "qhacks-host",
+    firstParty: true,
+    redirectUri: "https://qhacks.io"
+  });
+
+  await createUsers(
+    [
+      {
+        firstName: "Ross",
+        lastName: "Hill",
+        dateOfBirth: new Date(),
+        email: "ross.hill@rosshill.ca",
+        phoneNumber: "(123)-456-789",
+        schoolName: "Queen's",
+        password: "password"
+      },
+      {
+        id: uuid.v4(),
+        firstName: "Robert",
+        lastName: "Saunders",
+        dateOfBirth: new Date(),
+        email: "bob@yopmail.com",
+        phoneNumber: "(123)-456-789",
+        schoolName: "Queen's",
+        password: "password"
+      },
+      {
+        id: HACKER_ID,
+        firstName: "Joey",
+        lastName: "Tepperman",
+        dateOfBirth: new Date(),
+        email: "jmichaelt98@gmail.com",
+        phoneNumber: "(123)-456-789",
+        schoolName: "Queen's",
+        password: "password"
+      }
+    ],
+    [{ role: "ADMIN" }, { role: "VOLUNTEER" }, { role: "HACKER" }]
+  );
+
+  await Application.create({
+    eventId: QHACKS_EVENT_ID,
+    userId: HACKER_ID,
+    status: "APPLIED"
+  });
 });
 
-afterEach(async () => {
-  await Promise.all([
-    User.remove({}),
-    Event.remove({}),
-    Settings.remove({}),
-    MailingListSubscription.remove({}),
-    MailingList.remove({})
-  ]);
-
-  jest.clearAllMocks();
+afterEach(() => {
+  return Promise.all([
+    ApplicationFieldResponse.destroy({ where: {} }),
+    ApplicationReview.destroy({ where: {} }),
+    UserProject.destroy({ where: {} }),
+    ProjectPrize.destroy({ where: {} }),
+    ActivityCheckIn.destroy({ where: {} }),
+    MailingListSubscription.destroy({ where: {} })
+  ])
+    .then(() =>
+      Promise.all([
+        Project.destroy({ where: {} }),
+        Application.destroy({ where: {} }),
+        ApplicationField.destroy({ where: {} }),
+        EventSponsor.destroy({ where: {} }),
+        Activity.destroy({ where: {} }),
+        Prize.destroy({ where: {} }),
+        MailingList.destroy({ where: {} }),
+        Speaker.destroy({ where: {} }),
+        EventCheckIn.destroy({ where: {} })
+      ])
+    )
+    .then(() =>
+      Promise.all([
+        OAuthRefreshToken.destroy({ where: {} }),
+        OAuthUser.destroy({ where: {} }),
+        User.destroy({ where: {} }),
+        OAuthClient.destroy({ where: {} }),
+        Sponsor.destroy({ where: {} }),
+        Event.destroy({ where: {} }),
+        Location.destroy({ where: {} })
+      ])
+    );
 });
 
 afterAll(async () => {
-  mongoose.disconnect();
+  sequelize.close();
 });
+
+// Create necessary relationships for users
+async function createUsers(users, options) {
+  const scopes = users.map(() =>
+    JSON.stringify([{ user: "read", user: "write" }])
+  );
+
+  const oauthUsers = users.map((_, i) => ({
+    role: options[i].role,
+    scopes: scopes[i]
+  }));
+
+  const savedOAuthUsers = await OAuthUser.bulkCreate(oauthUsers);
+
+  const refreshTokens = savedOAuthUsers.map(({ dataValues: oauthUser }) => ({
+    oauthUserId: oauthUser.id,
+    refreshToken: "ABC123",
+    expiryDate: new Date(),
+    clientId: QHACKS_CLIENT_ID
+  }));
+
+  await OAuthRefreshToken.bulkCreate(refreshTokens);
+
+  const usersToSave = savedOAuthUsers.map(
+    ({ dataValues: { id: oauthUserId } }, i) => ({
+      ...users[i],
+      oauthUserId
+    })
+  );
+
+  return User.bulkCreate(usersToSave);
+}
