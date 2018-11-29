@@ -29,7 +29,7 @@ module.exports = {
       const applicationResponse = {
         status: applicationDBResponse.status,
         submissionDate: applicationDBResponse.submissionDate,
-        response: applicationDBResponse.ApplicationFields.map(
+        responses: applicationDBResponse.ApplicationFields.map(
           ({ dataValues, ApplicationFieldResponse }) => ({
             type: dataValues.type,
             label: dataValues.label,
@@ -100,7 +100,7 @@ module.exports = {
               })
           );
 
-          input.response.forEach(({ label, answer }) => {
+          input.responses.forEach(({ label, answer }) => {
             if (!applicationTable[label]) {
               throw new GraphQLUserInputError(
                 `${label} is not a valid field for ${slug}`
@@ -137,7 +137,8 @@ module.exports = {
           return {
             application: {
               status: application.status,
-              response: input.response
+              responses: input.responses,
+              submissionDate: application.submissionDate
             }
           };
         });

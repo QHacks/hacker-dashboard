@@ -19,7 +19,7 @@ describe("User Interface", () => {
           }
         }
       }
-    `
+      `
     );
 
     expect(data).toEqual({

@@ -13,6 +13,7 @@ module.exports = {
         dbName: "qhacks-dashboard-test"
       },
       setupTestFrameworkScriptFile: "./packages/server/__tests__/config/test-framework",
+      setupFiles: ["./packages/server/__tests__/config/set-up"],
       testRegex: "./packages/server/__tests__\/.*\.test\.js$"
     }
   ],

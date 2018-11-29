@@ -89,7 +89,7 @@ class OAuthInvalidRefreshTokenError extends RestApiError {
 
 class GraphQLNotFoundError extends ApolloError {
   constructor(message) {
-    super(message || "Unable to retrieve the requested resource");
+    super(message || "Unable to retrieve the requested resource!");
   }
 }
 

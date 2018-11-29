@@ -21,9 +21,9 @@ type Application {
   """
   status: ApplicationStatus
   """
-  The user's response to the application.
+  The user's responses to the application fields.
   """
-  response: [ApplicationFieldResponse!]!
+  responses: [ApplicationFieldResponse!]!
   """
   The date that the application was submitted.
   """
@@ -50,7 +50,7 @@ type ApplicationCreatePayload {
 }
 
 input ApplicationInput {
-  response: [ApplicationFieldInput!]!
+  responses: [ApplicationFieldInput!]!
 }
 
 input ApplicationFieldInput {

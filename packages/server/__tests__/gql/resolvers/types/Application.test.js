@@ -18,19 +18,19 @@ describe("Application Type", () => {
       {
         application(eventSlug: "qhacks-2019") {
           status
-          response {
+          responses {
             label
             answer
           }
         }
       }
-    `
+      `
     );
 
     expect(response.application.status).toBe("APPLIED");
-    expect(response.application.response).toHaveLength(3);
+    expect(response.application.responses).toHaveLength(3);
 
-    response.application.response.forEach(({ label, answer }) => {
+    response.application.responses.forEach(({ label, answer }) => {
       expect(label).toBeDefined();
       expect(label).toContain("Field");
       expect(answer).toBeDefined();
@@ -48,7 +48,7 @@ describe("Application Type", () => {
       `
       mutation {
         createApplication(eventSlug: "qhacks-2019", input: {
-          response: [
+          responses: [
             {
               label: "Field 1",
               answer: "answer1"
@@ -65,7 +65,7 @@ describe("Application Type", () => {
         }) {
           application {
             status
-            response {
+            responses {
               label
               answer
             }
@@ -76,9 +76,9 @@ describe("Application Type", () => {
     );
 
     expect(data.createApplication.application.status).toBe("APPLIED");
-    expect(data.createApplication.application.response).toHaveLength(3);
+    expect(data.createApplication.application.responses).toHaveLength(3);
 
-    data.createApplication.application.response.forEach(
+    data.createApplication.application.responses.forEach(
       ({ label, answer }, i) => {
         expect(label).toBe(`Field ${i + 1}`);
         expect(answer).toBe(`answer${i + 1}`);
@@ -106,7 +106,7 @@ describe("Application Type", () => {
       `
       mutation {
         createApplication(eventSlug: "qhacks-2019", input: {
-          response: [
+          responses: [
             {
               label: "Field 1",
               answer: "answer1"
@@ -123,7 +123,7 @@ describe("Application Type", () => {
         }) {
           application {
             status
-            response {
+            responses {
               label
               answer
             }
@@ -161,7 +161,7 @@ describe("Application Type", () => {
       `
       mutation {
         createApplication(eventSlug: "yophacks-2019", input: {
-          response: [
+          responses: [
             {
               label: "Field 1",
               answer: "answer1"
@@ -174,7 +174,7 @@ describe("Application Type", () => {
         }) {
           application {
             status
-            response {
+            responses {
               label
               answer
             }
@@ -214,7 +214,7 @@ describe("Application Type", () => {
       `
       mutation {
         createApplication(eventSlug: "yophacks-2019", input: {
-          response: [
+          responses: [
             {
               label: "Field 1",
               answer: "answer1"
@@ -227,7 +227,7 @@ describe("Application Type", () => {
         }) {
           application {
             status
-            response {
+            responses {
               label
               answer
             }
@@ -254,7 +254,7 @@ describe("Application Type", () => {
       `
       mutation {
         createApplication(eventSlug: "qhacks-2019", input: {
-          response: [
+          responses: [
             {
               label: "Field 1",
               answer: "answer1"
@@ -271,7 +271,7 @@ describe("Application Type", () => {
         }) {
           application {
             status
-            response {
+            responses {
               label
               answer
             }
@@ -282,9 +282,9 @@ describe("Application Type", () => {
     );
 
     expect(data.createApplication.application.status).toBe("APPLIED");
-    expect(data.createApplication.application.response).toHaveLength(3);
+    expect(data.createApplication.application.responses).toHaveLength(3);
 
-    data.createApplication.application.response.forEach(
+    data.createApplication.application.responses.forEach(
       ({ label, answer }, i) => {
         expect(label).toBe(`Field ${i + 1}`);
         expect(answer).toBe(`answer${i + 1}`);
@@ -313,7 +313,7 @@ describe("Application Type", () => {
       `
       mutation {
         createApplication(eventSlug: "qhacks-2019", input: {
-          response: [
+          responses: [
             {
               label: "Field 1",
               answer: "answer1"
@@ -326,7 +326,7 @@ describe("Application Type", () => {
         }) {
           application {
             status
-            response {
+            responses {
               label
               answer
             }

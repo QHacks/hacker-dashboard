@@ -24,20 +24,17 @@ const {
   User,
   sequelize
 } = require("./mock-db");
+const { getDefaultScopes } = require("../../oauth/scopes");
 
 const QHACKS_CLIENT_ID = uuid.v4();
 const QHACKS_EVENT_ID = uuid.v4();
 const HACKER_ID = uuid.v4();
-
-const { getDefaultScopes } = require("../../oauth/scopes");
-const DEFAULT_SCOPES = JSON.stringify(getDefaultScopes("HACKER"));
-
 const TOMORROW = new Date();
 
 TOMORROW.setDate(new Date().getDate() + 1);
 
 beforeAll(async () => {
-  await sequelize.sync({ force: true });
+  await sequelize.sync();
 });
 
 beforeEach(async () => {
@@ -107,7 +104,7 @@ beforeEach(async () => {
     [
       { role: "ADMIN" },
       { role: "VOLUNTEER" },
-      { role: "HACKER", scopes: JSON.stringify(["hacker:read"]) },
+      { role: "HACKER" },
       { role: "HACKER" }
     ]
   );
@@ -182,7 +179,8 @@ afterEach(() => {
         Event.destroy({ where: {} }),
         Location.destroy({ where: {} })
       ])
-    );
+    )
+    .catch((err) => console.log(err));
 });
 
 afterAll(async () => {
@@ -193,7 +191,7 @@ afterAll(async () => {
 async function createUsers(users, options) {
   const oauthUsers = users.map((_, i) => ({
     role: options[i].role,
-    scopes: options[i].scope || DEFAULT_SCOPES
+    scopes: options[i].scope || JSON.stringify(getDefaultScopes("HACKER"))
   }));
 
   const savedOAuthUsers = await OAuthUser.bulkCreate(oauthUsers);
