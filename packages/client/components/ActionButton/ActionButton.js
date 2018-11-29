@@ -96,7 +96,7 @@ const ActionButton = (props) => {
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    color: ${getForgroundColor()};
+    color: ${getForgroundColor()} !important;
     background-color: ${getBackgroundColor()};
     border: ${getBorder()};
     :hover {
@@ -134,7 +134,7 @@ const ActionButton = (props) => {
         ${commonStyles}
         display: inline-block;
         boxsizing: content-box;
-        text-decoration: none;
+        text-decoration: none !important;
       `}
       data-cy={props.dataCy}
       disabled={props.disabled}

@@ -38,11 +38,25 @@ class ApplicationStepsMobile extends PureComponent {
                 line-height: 30px;
                 text-align: center;
                 color: white;
-                background-color: ${this.getBackgroundColor(i)};
+                background-color: ${this.props.stepNum > i
+                  ? "white"
+                  : this.getBackgroundColor(i)};
                 display: inline-block;
               `}
             >
-              {this.props.stepNum > i ? "\u2713" : i + 1}
+              {this.props.stepNum > i ? (
+                <img
+                  css={`
+                    width: 30px;
+                    height: 30px;
+                    margin: 0;
+                    z-index: 2;
+                  `}
+                  src={require("../../assets/img/red-circle-check.png")}
+                />
+              ) : (
+                i + 1
+              )}
             </div>
             {i !== pages.length - 1 ? (
               <div

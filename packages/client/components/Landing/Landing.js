@@ -39,7 +39,10 @@ class Landing extends Component {
         <div
           css={`
             display: grid;
-            grid-template-columns: 45% 55%;
+            grid-template-columns: 40% 60%;
+            @media screen and (min-width: 1200px) {
+              grid-template-columns: 50% 50%;
+            }
             height: 100vh;
           `}
         >
@@ -67,8 +70,8 @@ class Landing extends Component {
           </div>
           <div
             css={`
-              background: url(${require("../../assets/img/circuits.png")})
-                no-repeat center center fixed;
+              background: url(${require("../../assets/img/landing.png")})
+                no-repeat center bottom;
               background-size: cover;
               height: 100%;
             `}
