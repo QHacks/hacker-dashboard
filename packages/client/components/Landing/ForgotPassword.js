@@ -4,7 +4,7 @@ import * as constants from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import Landing from "./Landing";
 
-class UpdatePassword extends Component {
+class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +30,7 @@ class UpdatePassword extends Component {
             font-weight: 700;
           `}
         >
-          Reset Password
+          Forgot Password
         </h3>
         <p
           css={`
@@ -39,7 +39,8 @@ class UpdatePassword extends Component {
             color: #8a929f;
           `}
         >
-          Please enter your new password!
+          Please provide the email associated with your account to reset your
+          password
         </p>
         <div
           css={`
@@ -53,13 +54,6 @@ class UpdatePassword extends Component {
             onChange={(e) => this.setState({ email: e.target.value })}
             placeholder="Enter your email address"
           />
-          <input
-            id="password"
-            type="password"
-            value={this.state.password}
-            onChange={(e) => this.setState({ password: e.target.value })}
-            placeholder="Enter your password"
-          />
         </div>
         <div
           css={`
@@ -69,11 +63,11 @@ class UpdatePassword extends Component {
           <Link to="/login">Know you password? Login here!</Link>
         </div>
         <div>
-          <ActionButton color="blue">Reset password</ActionButton>
+          <ActionButton color="blue">Send reset link</ActionButton>
         </div>
       </Landing>
     );
   }
 }
 
-export default UpdatePassword;
+export default ForgotPassword;

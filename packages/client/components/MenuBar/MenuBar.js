@@ -45,7 +45,12 @@ class MenuBar extends Component {
             <a href="#">Past Events</a>
             <a href="#">Blog</a>
             <a href="#">Code</a>
-            <ActionButton type="rounded" internal link="/apply">
+            <ActionButton
+              style={`font-size: 16px;`}
+              type="rounded"
+              internal
+              link="/apply"
+            >
               Apply
             </ActionButton>
           </nav>

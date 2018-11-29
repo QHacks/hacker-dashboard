@@ -21,7 +21,7 @@ class Login extends Component {
             color: ${constants.blue};
           `}
         >
-          QHacks!
+          QHacks
         </h1>
         <p
           css={`
@@ -86,7 +86,8 @@ class Login extends Component {
           </div>
         </div>
         <div>
-          <ActionButton color="red">Login</ActionButton>
+          <ActionButton color="blue">Login</ActionButton>{" "}
+          <ActionButton link="/apply">Apply</ActionButton>
         </div>
       </Landing>
     );

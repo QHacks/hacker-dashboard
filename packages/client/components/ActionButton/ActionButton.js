@@ -81,9 +81,9 @@ const ActionButton = (props) => {
     }
   };
   let commonStyles = `
-    min-height: 48px;
+    min-height: 42px;
     cursor: pointer;
-    line-height: 48px;
+    line-height: 42px;
     width: props.width;
     text-align: center;
     text-transform: uppercase;
@@ -111,6 +111,7 @@ const ActionButton = (props) => {
       commonStyles = `
       ${roundedStyles}
       ${commonStyles}
+      ${props.style || ""}
       `;
       break;
     default:
