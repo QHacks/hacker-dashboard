@@ -31,6 +31,7 @@ const config = {
     ...options
   },
   test: {
+    username: "postgres",
     database: "qhacks-test-database",
     host: "localhost",
     dialect: "postgres",

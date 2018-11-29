@@ -6,25 +6,34 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install NPM Dependencies
+          name: Install dependencies
           command: npm run bootstrap
       - run:
-          name: Check Code Style
+          name: Check code style
           command: npm run style
 
   test:
     docker:
       - image: circleci/node:latest
+        environment:
+          DB_ENVIRONMENT: test
+      - image: circleci/postgres:9.6.5-alpine-ram
     steps:
       - checkout
       - run:
-          name: Install NPM Dependencies
-          command: npm run bootstrap
+          name: Wait for PostgreSQL
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
-          name: Build MJML Email Templates
-          command: npm run build-emails
+          name: Install dependencies
+          command: |
+            npm run bootstrap
+            sudo apt-get install postgresql-client
       - run:
-          name: Perform Unit Tests and Send Coverage Data
+          name: Create test database
+          command: |
+            psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE \"qhacks-test-database\";"
+      - run:
+          name: Run tests and send coverage data
           command: npm run test-with-coverage
 
 workflows:
