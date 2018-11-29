@@ -1,14 +1,12 @@
-{
-  "presets": [
+module.exports = {
+  presets: [
     [
       "@babel/preset-env",
       {
-        "useBuiltIns": "entry"
+        useBuiltIns: "entry"
       }
     ],
     "@babel/preset-react"
   ],
-  "plugins": [
-    "emotion"
-  ]
-}
+  plugins: ["emotion"]
+};
