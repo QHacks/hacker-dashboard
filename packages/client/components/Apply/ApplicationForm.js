@@ -1,11 +1,11 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import Select from "react-select";
 import CreatableSelect from "react-select/lib/Creatable";
 import ApplicationAuthSlider from "./ApplicationAuthSlider";
 import ActionButton from "../ActionButton/ActionButton";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 
-class ApplicationForm extends PureComponent {
+class ApplicationForm extends Component {
   constructor(props) {
     super(props);
     this.state = {

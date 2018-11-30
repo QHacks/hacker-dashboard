@@ -136,7 +136,6 @@ const ActionButton = (props) => {
         boxsizing: content-box;
         text-decoration: none !important;
       `}
-      data-cy={props.dataCy}
       disabled={props.disabled}
       onClick={props.onClick}
       href={props.link}
@@ -148,7 +147,6 @@ const ActionButton = (props) => {
   ) : (
     <button
       css={commonStyles}
-      data-cy={props.dataCy}
       disabled={props.disabled}
       onClick={props.onClick}
     >

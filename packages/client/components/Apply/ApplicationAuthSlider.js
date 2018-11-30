@@ -1,8 +1,8 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { css } from "emotion";
 import * as constants from "../../assets/constants";
 
-class ApplicationAuthSlider extends PureComponent {
+class ApplicationAuthSlider extends Component {
   changeSelected(index) {
     this.props.changeSelected(index);
   }
