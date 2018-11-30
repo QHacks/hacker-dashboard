@@ -1,3 +1,5 @@
+console.log(process.env.DB_HOST);
+
 const options = {
   operatorsAliases: false,
   port: process.env.DB_PORT || 5432,
@@ -13,6 +15,7 @@ const config = {
     database: "qhacks-dev-database",
     host: "localhost",
     dialect: "postgres",
+    logging: false,
     ...options
   },
   staging: {
@@ -21,6 +24,12 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     dialect: "postgres",
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 20000,
+      acquire: 20000
+    },
     logging: false,
     ...options
   },
@@ -30,6 +39,12 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     dialect: "postgres",
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 20000,
+      acquire: 20000
+    },
     logging: false,
     ...options
   },

@@ -169,17 +169,19 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  User.addHook("beforeCreate", (user) => user.hashPassword());
+  // User.addHook("beforeCreate", (user) => {
+  //   return user.hashPassword();
+  // });
 
-  User.addHook("beforeBulkCreate", (users) =>
-    Promise.all(users.map((user) => user.hashPassword()))
-  );
+  // User.addHook("beforeBulkCreate", (users) => {
+  //   return Promise.all(users.map((user) => user.hashPassword()));
+  // });
 
-  User.addHook("beforeUpdate", async (user, _) => {
-    if (user.changed("password")) {
-      return user.hashPassword();
-    }
-  });
+  // User.addHook("beforeUpdate", async (user, _) => {
+  //   if (user.changed("password")) {
+  //     return user.hashPassword();
+  //   }
+  // });
 
   User.authenticate = function(email, password) {
     return new Promise((resolve, reject) => {
