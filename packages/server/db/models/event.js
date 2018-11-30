@@ -77,6 +77,8 @@ module.exports = (sequelize, DataTypes) => {
     EventSponsor,
     Activity,
     User,
+    Application,
+    ApplicationField,
     EventCheckIn,
     MailingList,
     Speaker,
@@ -93,6 +95,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "eventId",
       otherKey: "sponsorId"
     });
+
+    Event.hasMany(Application, DEFAULT_HAS_MANY_OPTIONS);
+
+    Event.hasMany(ApplicationField, DEFAULT_HAS_MANY_OPTIONS);
 
     Event.hasMany(Activity, DEFAULT_HAS_MANY_OPTIONS);
 

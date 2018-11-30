@@ -24,13 +24,17 @@ const {
   User,
   sequelize
 } = require("./mock-db");
+const { getDefaultScopes } = require("../../oauth/scopes");
 
 const QHACKS_CLIENT_ID = uuid.v4();
 const QHACKS_EVENT_ID = uuid.v4();
 const HACKER_ID = uuid.v4();
+const TOMORROW = new Date();
+
+TOMORROW.setDate(new Date().getDate() + 1);
 
 beforeAll(async () => {
-  await sequelize.sync({ force: true });
+  await sequelize.sync();
 });
 
 beforeEach(async () => {
@@ -41,8 +45,8 @@ beforeEach(async () => {
     startDate: new Date("2019-02-01T19:00Z"),
     endDate: new Date("2019-02-03T19:00Z"),
     requiresApplication: true,
-    applicationOpenDate: new Date("2018-12-01"),
-    applicationCloseDate: new Date("2019-01-10"),
+    applicationOpenDate: new Date("1970-01-01"),
+    applicationCloseDate: TOMORROW,
     hasProjectSubmissions: true,
     projectSubmissionDate: new Date("2018-02-03T14:00Z"),
     eventLogoUrl: "http://digitalocean.com/qhacks.jpg"
@@ -86,16 +90,61 @@ beforeEach(async () => {
         phoneNumber: "(123)-456-789",
         schoolName: "Queen's",
         password: "password"
+      },
+      {
+        firstName: "Hacker",
+        lastName: "1",
+        dateOfBirth: new Date(),
+        email: "hacker1@gmail.com",
+        phoneNumber: "(123)-456-789",
+        schoolName: "Queen's",
+        password: "password"
       }
     ],
-    [{ role: "ADMIN" }, { role: "VOLUNTEER" }, { role: "HACKER" }]
+    [
+      { role: "ADMIN" },
+      { role: "VOLUNTEER" },
+      { role: "HACKER" },
+      { role: "HACKER" }
+    ]
   );
 
-  await Application.create({
+  const applicationFields = await ApplicationField.bulkCreate([
+    {
+      eventId: QHACKS_EVENT_ID,
+      type: "CHECKBOX",
+      label: "Field 1",
+      required: true
+    },
+    {
+      eventId: QHACKS_EVENT_ID,
+      type: "CHECKBOX",
+      label: "Field 2",
+      required: false
+    },
+    {
+      eventId: QHACKS_EVENT_ID,
+      type: "CHECKBOX",
+      label: "Field 3",
+      required: true
+    }
+  ]);
+
+  const { id: applicationId } = await Application.create({
     eventId: QHACKS_EVENT_ID,
     userId: HACKER_ID,
     status: "APPLIED"
   });
+
+  const applicationFieldResponses = applicationFields.map(
+    ({ id: applicationFieldId }, i) => ({
+      applicationFieldId,
+      applicationId,
+      answer: `Test answer ${i}`
+    })
+  );
+
+  await ApplicationFieldResponse.bulkCreate(applicationFieldResponses);
 });
 
 afterEach(() => {
@@ -130,7 +179,8 @@ afterEach(() => {
         Event.destroy({ where: {} }),
         Location.destroy({ where: {} })
       ])
-    );
+    )
+    .catch((err) => console.log(err));
 });
 
 afterAll(async () => {
@@ -139,13 +189,9 @@ afterAll(async () => {
 
 // Create necessary relationships for users
 async function createUsers(users, options) {
-  const scopes = users.map(() =>
-    JSON.stringify([{ user: "read", user: "write" }])
-  );
-
   const oauthUsers = users.map((_, i) => ({
     role: options[i].role,
-    scopes: scopes[i]
+    scopes: options[i].scope || JSON.stringify(getDefaultScopes("HACKER"))
   }));
 
   const savedOAuthUsers = await OAuthUser.bulkCreate(oauthUsers);
