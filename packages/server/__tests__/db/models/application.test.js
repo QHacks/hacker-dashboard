@@ -12,4 +12,24 @@ describe("Application model", () => {
 
     expect(id).toBeDefined();
   });
+
+  it("has a unique index on user and event", async (done) => {
+    const { id: userId } = await User.findOne({});
+    const { id: eventId } = await Event.findOne({});
+    Application.bulkCreate([
+      {
+        status: "APPLIED",
+        eventId,
+        userId
+      },
+      {
+        status: "APPLIED",
+        eventId,
+        userId
+      }
+    ]).catch(({ errors: [{ message }] }) => {
+      expect(message).toBe("eventId must be unique");
+      done();
+    });
+  });
 });

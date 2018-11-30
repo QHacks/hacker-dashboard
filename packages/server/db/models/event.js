@@ -86,8 +86,8 @@ module.exports = (sequelize, DataTypes) => {
   }) => {
     Event.belongsToMany(User, {
       through: EventCheckIn,
-      foreignKey: "userId",
-      otherKey: "eventId"
+      foreignKey: "eventId",
+      otherKey: "userId"
     });
 
     Event.belongsToMany(Sponsor, {
