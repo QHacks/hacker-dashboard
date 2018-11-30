@@ -4,6 +4,7 @@ const {
   GraphQLForbiddenError,
   GraphQLUserInputError
 } = require("../../../errors");
+const { sendEmails } = require("../../../emails")();
 
 module.exports = {
   QueryRoot: {
@@ -133,6 +134,12 @@ module.exports = {
               "Could not create an application at this time"
             );
           }
+
+          await sendEmails("application-success", [
+            {
+              to: user.email
+            }
+          ]);
 
           return {
             application: {

@@ -33,6 +33,8 @@ const TOMORROW = new Date();
 
 TOMORROW.setDate(new Date().getDate() + 1);
 
+jest.mock("@sendgrid/mail");
+
 beforeAll(async () => {
   await sequelize.sync();
 });
@@ -185,6 +187,7 @@ afterEach(() => {
 
 afterAll(async () => {
   sequelize.close();
+  jest.clearAllMocks();
 });
 
 // Create necessary relationships for users
