@@ -5,6 +5,7 @@ const crypto = require("crypto");
 
 const {
   RestApiError,
+  ValidationError,
   OAuthInvalidRefreshTokenError,
   OAuthClientNotRegisteredError,
   OAuthClientNotPrivilegedError
@@ -97,28 +98,37 @@ module.exports = (db) => {
       const newUser = await db.sequelize.transaction(async (t) => {
         const scopes = getDefaultScopes("HACKER");
 
-        const oauthUser = await db.OAuthUser.create({
-          role: "HACKER",
-          scopes: JSON.stringify(scopes)
-        });
+        const oauthUser = await db.OAuthUser.create(
+          {
+            role: "HACKER",
+            scopes: JSON.stringify(scopes)
+          },
+          { transaction: t }
+        );
 
-        const user = await oauthUser.createUser({
-          firstName,
-          lastName,
-          password,
-          email
-        });
+        const user = await oauthUser.createUser(
+          {
+            firstName,
+            lastName,
+            password,
+            email: email.toLowerCase()
+          },
+          { transaction: t }
+        );
 
         const { accessToken, refreshToken } = createTokensForUser(user.id);
         const expiryDate = new Date(
           Date.now() + 1000 * REFRESH_TOKEN_EXPIRE_SECONDS
         );
 
-        await oauthUser.createOAuthRefreshToken({
-          clientId: oauthClient.id,
-          refreshToken,
-          expiryDate
-        });
+        await oauthUser.createOAuthRefreshToken(
+          {
+            clientId: oauthClient.id,
+            refreshToken,
+            expiryDate
+          },
+          { transaction: t }
+        );
 
         return {
           user,
@@ -147,7 +157,7 @@ module.exports = (db) => {
     try {
       const oauthClient = await checkOAuthClientFirstPartyByHost(db, hostname);
 
-      const user = await db.User.authenticate(email, password);
+      const user = await db.User.authenticate(email.toLowerCase(), password);
 
       const oauthUser = await user.getOAuthUser();
 
@@ -250,7 +260,9 @@ module.exports = (db) => {
 
   async function resetPasswordRequest(email) {
     try {
-      const user = await db.User.findOne({ where: { email } });
+      const user = await db.User.findOne({
+        where: { email: email.toLowerCase() }
+      });
 
       if (!user) {
         return Promise.reject(new RestApiError("User not found!"));

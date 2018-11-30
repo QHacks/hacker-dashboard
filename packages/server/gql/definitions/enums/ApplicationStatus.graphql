@@ -1,0 +1,21 @@
+"""
+Different application statuses.
+"""
+enum ApplicationStatus {
+  """
+  The application has been submitted.
+  """
+  APPLIED
+  """
+  The application has been accepted.
+  """
+  ACCEPTED
+  """
+  The application has been rejected.
+  """
+  REJECTED
+  """
+  The application has been placed on waiting list.
+  """
+  WAITING_LIST
+}

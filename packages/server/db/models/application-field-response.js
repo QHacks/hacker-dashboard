@@ -3,8 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "ApplicationFieldResponse",
     {
       answer: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.TEXT
       }
     }
   );
