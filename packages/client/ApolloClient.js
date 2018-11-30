@@ -20,8 +20,8 @@ const CLIENT_VERSION = "1.3.4";
 const CLIENT_NAME = isProd
   ? "dashboard-web-client-prod"
   : isStaging
-    ? "dashboard-web-client-staging"
-    : "dashboard-web-dev";
+  ? "dashboard-web-client-staging"
+  : "dashboard-web-dev";
 
 const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
 const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";

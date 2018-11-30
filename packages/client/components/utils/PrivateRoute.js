@@ -4,7 +4,7 @@ import React, { Component } from "react";
 const PrivateRoute = ({ component: ComposedComponent, types, ...rest }) => {
   class Authentication extends Component {
     handleRender(props) {
-      const authenticated = true;
+      const authenticated = false;
 
       if (!authenticated) {
         return (
