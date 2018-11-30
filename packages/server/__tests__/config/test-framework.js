@@ -33,7 +33,9 @@ const TOMORROW = new Date();
 
 TOMORROW.setDate(new Date().getDate() + 1);
 
+// For mocking emails
 jest.mock("@sendgrid/mail");
+jest.mock("../../emails/emails");
 
 beforeAll(async () => {
   await sequelize.sync();

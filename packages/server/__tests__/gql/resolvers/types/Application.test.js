@@ -2,6 +2,17 @@
 process.env.SENDGRID_API_KEY = "123ABC";
 
 const sendgrid = require("@sendgrid/mail");
+const emails = require("../../../../emails/emails");
+
+emails["application-success"] = ([message]) => ({
+  messages: [
+    {
+      ...message,
+      from: "hello@qhacks.io",
+      subject: "QHacks Application Received!"
+    }
+  ]
+});
 
 sendgrid.setApiKey = jest.fn();
 sendgrid.send = jest.fn(() => Promise.resolve());
