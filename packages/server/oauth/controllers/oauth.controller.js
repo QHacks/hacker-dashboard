@@ -111,7 +111,7 @@ module.exports = (db) => {
             firstName,
             lastName,
             password,
-            email
+            email: email.toLowerCase()
           },
           { transaction: t }
         );
@@ -157,7 +157,7 @@ module.exports = (db) => {
     try {
       const oauthClient = await checkOAuthClientFirstPartyByHost(db, hostname);
 
-      const user = await db.User.authenticate(email, password);
+      const user = await db.User.authenticate(email.toLowerCase(), password);
 
       const oauthUser = await user.getOAuthUser();
 
@@ -260,7 +260,9 @@ module.exports = (db) => {
 
   async function resetPasswordRequest(email) {
     try {
-      const user = await db.User.findOne({ where: { email } });
+      const user = await db.User.findOne({
+        where: { email: email.toLowerCase() }
+      });
 
       if (!user) {
         return Promise.reject(new RestApiError("User not found!"));
