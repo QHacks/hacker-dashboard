@@ -1,3 +1,22 @@
+// Mock Emails
+process.env.SENDGRID_API_KEY = "123ABC";
+
+const sendgrid = require("@sendgrid/mail");
+const emails = require("../../../../emails/emails");
+
+emails["application-success"] = ([message]) => ({
+  messages: [
+    {
+      ...message,
+      from: "hello@qhacks.io",
+      subject: "QHacks Application Received!"
+    }
+  ]
+});
+
+sendgrid.setApiKey = jest.fn();
+sendgrid.send = jest.fn(() => Promise.resolve());
+
 const { gql } = require("../../../config/mock-api");
 const {
   User,
@@ -72,7 +91,7 @@ describe("Application Type", () => {
           }
         }
       }
-    `
+      `
     );
 
     expect(data.createApplication.application.status).toBe("APPLIED");
@@ -94,6 +113,14 @@ describe("Application Type", () => {
     dbResponse.ApplicationFields.forEach((field) => {
       expect(field.ApplicationFieldResponse.answer).toContain("answer");
     });
+
+    expect(sendgrid.send.mock.calls[0][0][0]).toEqual(
+      expect.objectContaining({
+        to: "hacker1@gmail.com",
+        from: "hello@qhacks.io",
+        subject: "QHacks Application Received!"
+      })
+    );
   });
 
   it("validates form fields when creating an applciation", async () => {
@@ -130,7 +157,7 @@ describe("Application Type", () => {
           }
         }
       }
-    `
+      `
     );
 
     expect(data).toBeNull();
@@ -181,7 +208,7 @@ describe("Application Type", () => {
           }
         }
       }
-    `
+      `
     );
 
     expect(data).toBeNull();
@@ -234,7 +261,7 @@ describe("Application Type", () => {
           }
         }
       }
-    `
+      `
     );
 
     expect(data).toBeNull();
@@ -278,7 +305,7 @@ describe("Application Type", () => {
           }
         }
       }
-    `
+     `
     );
 
     expect(data.createApplication.application.status).toBe("APPLIED");
@@ -333,7 +360,7 @@ describe("Application Type", () => {
           }
         }
       }
-    `
+      `
     );
 
     expect(data).toBeNull();
