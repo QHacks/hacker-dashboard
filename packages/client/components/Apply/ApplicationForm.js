@@ -228,8 +228,16 @@ class ApplicationForm extends Component {
     return (answer) => this.setApplicationAnswer(field, answer.value);
   }
 
+  getApplicationAnswerSelect(field) {
+    const val = this.state.applicationAnswers[field];
+    return {
+      label: val,
+      value: val
+    };
+  }
+
   changeSelected(i) {
-    this.setState({ returningHacker: i === 1 });
+    this.setState({ returningHacker: i === 1, hasErrors: false });
   }
 
   toOptions(str) {
@@ -242,18 +250,25 @@ class ApplicationForm extends Component {
   getQuestions(num) {
     const formStyle = `
       padding-top: 64px;
+      max-width: 800px;
+      margin: 0 auto;
     `;
 
     const subsectionStyle = `
       display: flex;
       margin: 36px 0;
+      :not(:last-child) {
+        border-bottom: 2px solid #dddddd;
+      }
+      padding-bottom: 64px;
     `;
 
     const subsectionTitleStyles = `
       width: 30%;
       color: #575757;
       padding-top: 24px;
-      font-weight: bold;
+      font-weight: 600;
+      text-transform: uppercase;
     `;
 
     const subsectionContentStyles = `
@@ -276,7 +291,11 @@ class ApplicationForm extends Component {
       }
     `;
 
-    const authHeadingStyle = `margin-top: 45px !important; margin-bottom: -20px !important;`;
+    const authHeadingStyle = `
+      font-size: 32px;
+      margin-top: 45px !important;
+      margin-bottom: -20px !important;
+    `;
 
     const raceOptions = [
       "White",
@@ -354,6 +373,7 @@ class ApplicationForm extends Component {
                         <label htmlFor="email">Email</label>
                         <input
                           type="text"
+                          placeholder="Email address"
                           value={this.state.authAnswers.email}
                           onChange={(e) =>
                             this.setAuthAnswer("email", e.target.value)
@@ -367,6 +387,7 @@ class ApplicationForm extends Component {
                         <label htmlFor="password">Password</label>
                         <input
                           type="password"
+                          placeholder="Password"
                           value={this.state.authAnswers.password}
                           onChange={(e) =>
                             this.setAuthAnswer("password", e.target.value)
@@ -405,6 +426,7 @@ class ApplicationForm extends Component {
                         <input
                           type="text"
                           id="firstName"
+                          placeholder="First name"
                           key="firstName"
                           value={this.state.authAnswers.firstName}
                           onChange={(e) =>
@@ -421,6 +443,7 @@ class ApplicationForm extends Component {
                           type="text"
                           id="lastName"
                           key="lastName"
+                          placeholder="Last name"
                           value={this.state.authAnswers.lastName}
                           onChange={(e) =>
                             this.setAuthAnswer("lastName", e.target.value)
@@ -436,6 +459,7 @@ class ApplicationForm extends Component {
                           id="email"
                           key="email"
                           type="text"
+                          placeholder="Email address"
                           value={this.state.authAnswers.email}
                           onChange={(e) =>
                             this.setAuthAnswer("email", e.target.value)
@@ -451,6 +475,7 @@ class ApplicationForm extends Component {
                           id="password"
                           key="password"
                           type="password"
+                          placeholder="Password"
                           value={this.state.authAnswers.password}
                           onChange={(e) =>
                             this.setAuthAnswer("password", e.target.value)
@@ -467,6 +492,7 @@ class ApplicationForm extends Component {
                         <input
                           id="confirmPassword"
                           key="confirmPassword"
+                          placeholder="Confirm password"
                           type="password"
                           value={this.state.authAnswers.confirmPassword}
                           onChange={(e) =>
@@ -515,6 +541,7 @@ class ApplicationForm extends Component {
                       id="gender"
                       key="gender"
                       className="select"
+                      value={this.getApplicationAnswerSelect("gender")}
                       onChange={this.setApplicationAnswerSelect("gender")}
                     />
                     <ValidationError message={this.state.errors.gender} />
@@ -525,6 +552,7 @@ class ApplicationForm extends Component {
                       id="phoneNumber"
                       key="phoneNumber"
                       type="tel"
+                      placeholder="Phone number"
                       value={this.state.applicationAnswers.phoneNumber}
                       onChange={(e) =>
                         this.setApplicationAnswer("phoneNumber", e.target.value)
@@ -556,6 +584,7 @@ class ApplicationForm extends Component {
                       id="race"
                       key="race"
                       className="select"
+                      value={this.getApplicationAnswerSelect("race")}
                       onChange={this.setApplicationAnswerSelect("race")}
                     />
                     <ValidationError message={this.state.errors.race} />
@@ -574,6 +603,7 @@ class ApplicationForm extends Component {
                       id="school"
                       key="school"
                       className="select"
+                      value={this.getApplicationAnswerSelect("school")}
                       onChange={this.setApplicationAnswerSelect("school")}
                     />
                     <ValidationError message={this.state.errors.school} />
@@ -584,6 +614,7 @@ class ApplicationForm extends Component {
                       type="text"
                       id="program"
                       key="program"
+                      placeholder="Program"
                       value={this.state.applicationAnswers.program}
                       onChange={(e) =>
                         this.setApplicationAnswer("program", e.target.value)
@@ -600,6 +631,7 @@ class ApplicationForm extends Component {
                       id="degree"
                       key="degree"
                       className="select"
+                      value={this.getApplicationAnswerSelect("degree")}
                       onChange={this.setApplicationAnswerSelect("degree")}
                     />
                     <ValidationError message={this.state.errors.degree} />
@@ -613,6 +645,7 @@ class ApplicationForm extends Component {
                       id="graduationMonth"
                       key="graduationMonth"
                       className="select"
+                      value={this.getApplicationAnswerSelect("graduationMonth")}
                       onChange={this.setApplicationAnswerSelect(
                         "graduationMonth"
                       )}
@@ -625,10 +658,11 @@ class ApplicationForm extends Component {
                     <input
                       id="graduationYear"
                       key="graduationYear"
+                      placeholder="Year"
                       type="number"
-                      value={this.state.graduationYear}
+                      value={this.state.applicationAnswers.graduationYear}
                       css={`
-                        margin-top: 31px !important;
+                        margin-top: 28px !important;
                       `}
                       onChange={(e) =>
                         this.setApplicationAnswer(
@@ -645,14 +679,8 @@ class ApplicationForm extends Component {
                 <section css={inputRowStyle}>
                   <div>
                     <ActionButton
-                      style={`margin-top: 50px;`}
-                      onClick={() => this.props.previousStep()}
-                    >
-                      Previous
-                    </ActionButton>{" "}
-                    <ActionButton
                       disabled={this.state.hasErrors}
-                      style={`margin-top: 50px;`}
+                      style={`margin-top: 50px; float: right;`}
                       color="red"
                       onClick={() => this.nextStep()}
                     >
@@ -696,9 +724,13 @@ class ApplicationForm extends Component {
                     </label>
                     <input
                       type="number"
+                      placeholder="#"
                       value={
                         this.state.applicationAnswers.numAttendedHackathons
                       }
+                      css={`
+                        max-width: 125px;
+                      `}
                       onChange={(e) =>
                         this.setApplicationAnswer(
                           "numAttendedHackathons",
@@ -718,6 +750,7 @@ class ApplicationForm extends Component {
                     </label>
                     <input
                       type="text"
+                      placeholder="Location"
                       value={this.state.applicationAnswers.fromLocation}
                       onChange={(e) =>
                         this.setApplicationAnswer(
@@ -733,9 +766,10 @@ class ApplicationForm extends Component {
                   <div>
                     <ActionButton
                       style={`margin-top: 50px;`}
+                      foregroundColor="black"
                       onClick={() => this.props.previousStep()}
                     >
-                      Previous
+                      Back
                     </ActionButton>{" "}
                     <ActionButton
                       disabled={this.state.hasErrors}
@@ -753,7 +787,11 @@ class ApplicationForm extends Component {
         );
       }
       case 3: {
-        const pStyle = `max-width: 580px; margin: 0 auto; line-height: 1.36;`;
+        const pStyle = `
+          max-width: 580px;
+          margin: 0 auto;
+          line-height: 1.36;
+        `;
         return (
           <div
             css={`
@@ -768,7 +806,13 @@ class ApplicationForm extends Component {
                 width: 240px;
               `}
             />
-            <h3>Thank-you for Applying to QHacks 2019!</h3>
+            <h2
+              css={`
+                margin: 32px 0;
+              `}
+            >
+              Thank-you for Applying to QHacks 2019!
+            </h2>
             <p css={pStyle}>
               The QHacks’s team is working hard to review your application
               carefully. We will be contacting you via email regarding the
@@ -783,22 +827,23 @@ class ApplicationForm extends Component {
                 View Dashoard
               </ActionButton>
             </div>
-            <p css={pStyle}>
-              For more information regarding QHacks 2019, please visit our
-              website at qhacks.io
-            </p>
-            <div
+            <p
               css={`
-                margin: 40px 0;
+                ${pStyle}
+                margin-bottom: 100px;
               `}
             >
-              <ActionButton
-                style={`margin-top: 50px;`}
-                onClick={() => this.props.previousStep()}
+              For more information regarding QHacks 2019, please visit our
+              website at{" "}
+              <a
+                css={`
+                  font-weight: 600;
+                `}
+                href="https://qhacks.io/"
               >
-                Previous
-              </ActionButton>
-            </div>
+                qhacks.io
+              </a>
+            </p>
           </div>
         );
       }

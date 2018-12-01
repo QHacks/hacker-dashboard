@@ -10,12 +10,12 @@ import * as constants from "../../assets/constants";
 import "normalize.css";
 
 const globalStyles = `
+color: #020b1b;
 * {
   font-family: "Encode Sans", sans-serif !important;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  color: #020b1b;
 }
 a {
   text-decoration: none;
@@ -48,14 +48,25 @@ strong {
   font-weight: 600;
 }
 label {
-  margin: 6px;
+  font-size: 14px;
+  margin: 6px 0;
   text-align: left;
+  color: #838a99;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 input:not([type="checkbox"]) {
-  height: 42px;
+  height: 42.4px;
   border: 1px solid #b2b7c2;
   border-radius: 4px;
-  margin: 6px;
+  margin: 6px 0;
+  :last-child {
+    margin-right: 0;
+  }
+  :focus {
+    box-shadow: ${constants.boxShadow};
+    background-color: white;
+  }
   padding: 0 6px;
   line-height: 42px;
   width: calc(100% - 12px);
@@ -74,6 +85,8 @@ div.select input {
   line-height: unset;
   margin: unset;
   padding: unset;
+  box-shadow: none !important;
+  background-color: unset !important;
 }
 textarea {
   border: 1px solid #b2b7c2;
@@ -83,6 +96,10 @@ textarea {
   padding: 6px;
   width: 100%;
   min-height: 200px;
+  :focus {
+    box-shadow: ${constants.boxShadow};
+    background-color: white;
+  }
 }
 `;
 

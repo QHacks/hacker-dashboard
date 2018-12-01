@@ -2,17 +2,17 @@ import React from "react";
 import * as constants from "../../assets/constants";
 
 const ActionButton = (props) => {
+  const roundPadding = props.inline ? "24px" : "55px";
+
   const roundedStyles = `
     border-radius: 28px;
-    padding-left: 55px;
-    padding-right: 55px;
+    padding: 0 ${roundPadding};
   `;
 
   const rectStyles = `
     border-radius: 4px;
     border: none;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding: 0 25px;
   `;
 
   const getColor = () => {
@@ -20,6 +20,9 @@ const ActionButton = (props) => {
   };
 
   const getBackgroundColor = () => {
+    if (props.inline && !props.color) {
+      return "transparent";
+    }
     switch (getColor()) {
       case "red":
         return constants.red;
@@ -30,23 +33,48 @@ const ActionButton = (props) => {
     }
   };
 
-  const getForgroundColor = () => {
+  const getForegroundColor = () => {
     switch (getColor()) {
       case "red":
         return "white";
       case "blue":
         return "white";
       default:
-        return constants.blue;
+        return props.foregroundColor || constants.blue;
+    }
+  };
+
+  const getDisabledForegroundColor = () => {
+    switch (getColor()) {
+      case "red":
+        return "#9b9b9b";
+      case "blue":
+        return "#9b9b9b";
+      default:
+        return getForegroundColor();
     }
   };
 
   const getHoverBackgroundColor = () => {
+    if (props.inline && !getColor()) {
+      return "transparent";
+    }
     switch (getColor()) {
       case "red":
         return constants.redLight;
       case "blue":
         return constants.blueLight;
+      default:
+        return "white";
+    }
+  };
+
+  const getDisabledBackgroundColor = () => {
+    switch (getColor()) {
+      case "red":
+        return "#f5f5f5";
+      case "blue":
+        return "#f5f5f5";
       default:
         return "white";
     }
@@ -59,7 +87,9 @@ const ActionButton = (props) => {
       case "blue":
         return "none";
       default:
-        return "1px solid #999da4";
+        return props.inline
+          ? `2px solid ${constants.blue}`
+          : "1px solid #999da4";
     }
   };
 
@@ -70,7 +100,22 @@ const ActionButton = (props) => {
       case "blue":
         return "none";
       default:
-        return `1px solid ${constants.blue}`;
+        return props.inline
+          ? `2px solid ${getForegroundColor()}`
+          : `1px solid ${getForegroundColor()}`;
+    }
+  };
+
+  const getDisabledBorder = () => {
+    switch (getColor()) {
+      case "red":
+        return "1px solid #c4c4c4";
+      case "blue":
+        return "1px solid #c4c4c4";
+      default:
+        return props.inline
+          ? `2px solid ${constants.blue}`
+          : `1px solid ${constants.blue}`;
     }
   };
 
@@ -85,27 +130,37 @@ const ActionButton = (props) => {
     }
   };
 
+  const height = props.inline ? "32px" : "42px";
+
   let commonStyles = `
-    min-height: 42px;
+    box-sizing: content-box;
+    height: ${height};
     cursor: pointer;
-    line-height: 42px;
     width: props.width;
-    text-align: center;
+    flex-direction:column;
     text-transform: uppercase;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    color: ${getForgroundColor()} !important;
+    font-size: ${props.inline ? "16px" : "18px"};
+    color: ${getForegroundColor()} !important;
     background-color: ${getBackgroundColor()};
     border: ${getBorder()};
     :hover {
       background-color: ${getHoverBackgroundColor()};
       border: ${getHoverBorder()};
+      box-shadow: ${constants.boxShadow};
     }
     :active {
       background-color: ${getClickBackgroundColor()};
       border: ${getHoverBorder()};
+    }
+    :disabled {
+      background-color: ${getDisabledBackgroundColor()};
+      border: ${getDisabledBorder()};
+      color: ${getDisabledForegroundColor()} !important;
+      box-shadow: none;
+      cursor: default;
     }
     transition: 0.25s ease;
     font-weight: 600;
@@ -141,16 +196,32 @@ const ActionButton = (props) => {
       href={props.link}
       rel={props.internal ? null : "external noopener"}
       target={props.internal ? null : "_blank"}
+      className={props.className || "actionButton"}
     >
-      {props.children}
+      <div
+        css={`
+          height: ${height};
+          line-height: ${height};
+        `}
+      >
+        {props.children}
+      </div>
     </a>
   ) : (
     <button
       css={commonStyles}
       disabled={props.disabled}
       onClick={props.onClick}
+      className={props.className || "actionButton"}
     >
-      {props.children}
+      <div
+        css={`
+          height: ${height};
+          line-height: ${height};
+        `}
+      >
+        {props.children}
+      </div>
     </button>
   );
 };

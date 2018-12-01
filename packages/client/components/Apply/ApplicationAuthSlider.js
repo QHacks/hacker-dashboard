@@ -33,7 +33,8 @@ class ApplicationAuthSlider extends Component {
       height: "44px",
       position: "relative",
       zIndex: 2,
-      border: "1px solid #e4e4e4",
+      boxSizing: "content-box",
+      border: "1px solid #b2b7c2",
       borderRadius: "44px",
       "> button.item": {
         textAlign: "center",

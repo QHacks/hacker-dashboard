@@ -18,7 +18,7 @@ class MenuBar extends Component {
           left: 0;
         `}
       >
-        <ContentWrapper>
+        <ContentWrapper wide={this.props.wide}>
           <div
             css={`
               display: inline-block;
@@ -26,34 +26,64 @@ class MenuBar extends Component {
           >
             <img src={crown} alt="QHacks logo" />
           </div>
-          <nav
+          <ul
             css={`
-              display: inline-block;
+              font-size: 14px;
+              display: ${this.props.hideItems ? "none" : "float"};
               float: right;
+              width: 490px;
+              justify-content: space-between;
               line-height: 44px;
-              a {
-                padding: 0 20px;
+              text-transform: uppercase;
+              list-style-type: none;
+              a:not(.actionButton) {
                 color: ${constants.blue};
                 font-weight: 600;
-                text-decoration: none;
+                padding-bottom: 2px;
+                padding-top: 2px;
+                :hover {
+                  text-decoration: none;
+                  border-bottom: 2px solid ${constants.blue};
+                }
+              }
+              a.actionButton {
+                font-size: 14px;
+              }
+              li {
+                display: block;
               }
             `}
           >
-            <a href="https://qhacks.io" rel="external noopener" target="_blank">
-              QHacks 2019
-            </a>
-            <a href="#">Past Events</a>
-            <a href="https://medium.com/qhacks">Blog</a>
-            <a href="https://github.com/qhacks">Code</a>
-            <ActionButton
-              style={`font-size: 16px;`}
-              type="rounded"
-              internal
-              link="/apply"
-            >
-              Apply
-            </ActionButton>
-          </nav>
+            <li>
+              <a
+                href="https://qhacks.io"
+                rel="external noopener"
+                target="_blank"
+              >
+                QHacks 2019
+              </a>
+            </li>
+            <li>
+              <a href="#">Past Events</a>
+            </li>
+            <li>
+              <a href="https://medium.com/qhacks">Blog</a>
+            </li>
+            <li>
+              <a href="https://github.com/qhacks">Code</a>
+            </li>
+            <li>
+              <ActionButton
+                style={`font-size: 16px;`}
+                type="rounded"
+                internal
+                inline
+                link="/apply"
+              >
+                Apply
+              </ActionButton>
+            </li>
+          </ul>
         </ContentWrapper>
       </header>
     );

@@ -19,6 +19,20 @@ class ApplicationStepsDesktop extends PureComponent {
     return "black";
   }
 
+  getForegroundFontWeight(num) {
+    if (num === this.props.stepNum) {
+      return 600;
+    }
+    return 500;
+  }
+
+  getSecondaryFontWeight(num) {
+    if (num === this.props.stepNum) {
+      return 500;
+    }
+    return 600;
+  }
+
   getIcon(num) {
     if (num < this.props.stepNum) {
       return (
@@ -87,10 +101,12 @@ class ApplicationStepsDesktop extends PureComponent {
             key={text}
             css={`
               display: flex;
+              width: 200px;
               padding: 20px;
               color: ${this.getForegroundColor(i)};
               background-color: ${this.getBackgroundColor(i)};
               border-left: 1px solid #d2d2d2;
+              align-items: center;
               :last-child {
                 border-right: 1px solid #d2d2d2;
               }
@@ -101,6 +117,7 @@ class ApplicationStepsDesktop extends PureComponent {
               <div
                 css={`
                   font-size: 12px;
+                  font-weight: ${this.getSecondaryFontWeight(i)};
                   padding-bottom: 3px;
                   color: ${this.getComplementColor(i)};
                 `}
@@ -109,6 +126,7 @@ class ApplicationStepsDesktop extends PureComponent {
               </div>
               <div
                 css={`
+                  font-weight: ${this.getForegroundFontWeight(i)};
                   color: ${this.getForegroundColor(i)};
                 `}
               >

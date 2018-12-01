@@ -14,13 +14,13 @@ class ForgotPassword extends Component {
   render() {
     return (
       <Landing>
-        <h1
+        <img
+          src={"../../assets/img/qhacks-wordmark-colored.svg"}
           css={`
-            color: ${constants.blue};
+            max-height: 40px;
           `}
-        >
-          QHacks
-        </h1>
+          alt="QHacks"
+        />
         <h3
           css={`
             margin-top: 24px;
@@ -31,6 +31,7 @@ class ForgotPassword extends Component {
           Forgot Password
         </h3>
         <p
+          className="blurb"
           css={`
             line-height: 1.6;
             margin-top: 16px;
@@ -58,7 +59,9 @@ class ForgotPassword extends Component {
             margin: 30px 0;
           `}
         >
-          <Link to="/login">Know you password? Login here!</Link>
+          <Link className="landingLink" to="/login">
+            Know you password? Login here!
+          </Link>
         </div>
         <div>
           <ActionButton color="blue">Send reset link</ActionButton>

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import * as constants from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import Landing from "./Landing";
+import StatusReport from "../StatusReport/StatusReport";
 
 class Login extends Component {
   constructor(props) {
@@ -16,14 +16,15 @@ class Login extends Component {
   render() {
     return (
       <Landing>
-        <h1
+        <img
+          src={"../../assets/img/qhacks-wordmark-colored.svg"}
           css={`
-            color: ${constants.blue};
+            max-height: 40px;
           `}
-        >
-          QHacks
-        </h1>
+          alt="QHacks"
+        />
         <p
+          className="blurb"
           css={`
             margin-top: 24px;
             color: #8a929f;
@@ -32,6 +33,7 @@ class Login extends Component {
           Welcome back.
         </p>
         <p
+          className="blurb"
           css={`
             margin-top: 12px;
             color: #8a929f;
@@ -82,12 +84,26 @@ class Login extends Component {
               flex-grow: 1;
             `}
           >
-            <Link to="/forgot-password">Forgot password</Link>
+            <Link className="landingLink" to="/forgot-password">
+              Forgot password
+            </Link>
           </div>
         </div>
+        {this.state.error ? (
+          <StatusReport type="caution" message={this.state.error} />
+        ) : (
+          ""
+        )}
         <div>
-          <ActionButton color="blue">Login</ActionButton>{" "}
-          <ActionButton link="/apply">Apply</ActionButton>
+          <ActionButton
+            color="blue"
+            onClick={() => this.setState({ error: "Test 1" })}
+          >
+            Login
+          </ActionButton>{" "}
+          <ActionButton internal link="/apply">
+            Apply
+          </ActionButton>
         </div>
       </Landing>
     );

@@ -51,8 +51,16 @@ class Apply extends Component {
     }
 
     return (
-      <div>
-        <MenuBar />
+      <div
+        css={`
+          h1,
+          h2,
+          h3 {
+            color: black;
+          }
+        `}
+      >
+        <MenuBar hideItems={this.state.stepNum > 0} />
         <ApplicationHeader />
         <ApplicationNavigation stepNum={this.state.stepNum} />
         <ApplicationForm
