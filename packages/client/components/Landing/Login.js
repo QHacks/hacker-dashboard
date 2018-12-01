@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import ActionButton from "../ActionButton/ActionButton";
 import Landing from "./Landing";
 import StatusReport from "../StatusReport/StatusReport";
+import axios from "axios";
 
 class Login extends Component {
   constructor(props) {
@@ -13,6 +14,24 @@ class Login extends Component {
       rememberMe: true
     };
   }
+
+  async login() {
+    const { email, password } = this.state;
+    try {
+      const response = await axios.post(
+        "https://localhost:3000/oauth/session",
+        {
+          email,
+          password
+        }
+      );
+
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   render() {
     return (
       <Landing>
@@ -95,13 +114,10 @@ class Login extends Component {
           ""
         )}
         <div>
-          <ActionButton
-            color="blue"
-            onClick={() => this.setState({ error: "Test 1" })}
-          >
+          <ActionButton color="blue" onClick={() => this.login()}>
             Login
           </ActionButton>{" "}
-          <ActionButton internal link="/apply">
+          <ActionButton internal link="/qhacks-2019/apply">
             Apply
           </ActionButton>
         </div>

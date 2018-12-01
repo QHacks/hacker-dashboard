@@ -109,7 +109,7 @@ export default class App extends Component {
       <div css={globalStyles}>
         <Switch>
           {/* Public routes */}
-          <Route path="/apply" component={Apply} />
+          <Route path="/qhacks-2019/apply" component={Apply} />
           <Route path="/login" component={Login} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/update-password/:hash" component={UpdatePassword} />

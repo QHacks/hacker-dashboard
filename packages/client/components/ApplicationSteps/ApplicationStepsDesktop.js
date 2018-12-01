@@ -120,6 +120,7 @@ class ApplicationStepsDesktop extends PureComponent {
                   font-weight: ${this.getSecondaryFontWeight(i)};
                   padding-bottom: 3px;
                   color: ${this.getComplementColor(i)};
+                  text-transform: uppercase;
                 `}
               >
                 Step {i + 1}

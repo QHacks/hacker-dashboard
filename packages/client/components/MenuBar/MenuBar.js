@@ -78,7 +78,7 @@ class MenuBar extends Component {
                 type="rounded"
                 internal
                 inline
-                link="/apply"
+                link="/qhacks-2019/apply"
               >
                 Apply
               </ActionButton>
