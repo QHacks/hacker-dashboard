@@ -45,7 +45,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: true,
           isEmail: true,
           isLowercase: true,
           set(val) {
@@ -55,7 +54,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       phoneNumber: {
         type: DataTypes.STRING,
-        allowNull: true,
         validate: {
           notEmpty: true,
           is: PHONE_NUMBER_REGEX
@@ -63,31 +61,25 @@ module.exports = (sequelize, DataTypes) => {
       },
       dateOfBirth: {
         type: DataTypes.DATE,
-        allowNull: true,
         validate: {
           isDate: true
         }
       },
       schoolName: {
         type: DataTypes.STRING,
-        allowNull: true,
         validate: {
           notEmpty: true
         }
       },
       resumeUrl: {
         type: DataTypes.STRING,
-        allowNull: true,
         validate: {
-          notEmpty: true,
           isUrl: true
         }
       },
       profileImageUrl: {
         type: DataTypes.STRING,
-        allowNull: true,
         validate: {
-          notEmpty: true,
           isUrl: true
         }
       },
@@ -101,16 +93,32 @@ module.exports = (sequelize, DataTypes) => {
       },
       resetPasswordHash: {
         type: DataTypes.STRING,
-        allowNull: true,
         validate: {
           notEmpty: true
         }
       },
       resetPasswordHashExpiryDate: {
         type: DataTypes.DATE,
-        allowNull: true,
         validate: {
           notEmpty: true
+        }
+      },
+      githubLink: {
+        type: DataTypes.STRING,
+        validate: {
+          isUrl: true
+        }
+      },
+      linkedinLink: {
+        type: DataTypes.STRING,
+        validate: {
+          isUrl: true
+        }
+      },
+      personalWebsiteLink: {
+        type: DataTypes.STRING,
+        validate: {
+          isUrl: true
         }
       }
     },
