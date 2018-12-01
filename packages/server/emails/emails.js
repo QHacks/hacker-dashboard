@@ -58,7 +58,7 @@ module.exports = {
   "application-success": (recipientObjects) => ({
     messages: getEmailMessages(recipientObjects, {
       from: QHACKS_HELLO_EMAIL,
-      subject: "QHacks Application Received!",
+      subject: "QHacks 2019 Application Received!",
       text: `We've received your application!`,
       templateName: "application-success"
     })
