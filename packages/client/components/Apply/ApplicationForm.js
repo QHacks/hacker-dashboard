@@ -4,30 +4,228 @@ import CreatableSelect from "react-select/lib/Creatable";
 import ApplicationAuthSlider from "./ApplicationAuthSlider";
 import ActionButton from "../ActionButton/ActionButton";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
+import ValidationError from "../ValidationError/ValidationError";
+import escapeStringRegexp from "escape-string-regexp";
 
 class ApplicationForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       returningHacker: false,
-      answers: {}
+      authAnswers: {
+        password: "",
+        confirmPassword: "",
+        email: "",
+        firstName: "",
+        lastName: ""
+      },
+      applicationAnswers: {
+        phoneNumber: "",
+        birthday: "",
+        program: "",
+        graduationYear: "",
+        whyQHacks: "",
+        numAttendedHackathons: "",
+        fromLocation: "",
+        gender: "",
+        race: "",
+        school: "",
+        degree: "",
+        graduationMonth: ""
+      },
+      errors: {},
+      hasErrors: false
     };
   }
 
-  setAnswer(field, answer) {
-    const answers = this.state.answers;
-    answers[field] = answer;
-    this.setState({ answers });
+  setAuthAnswer(field, answer) {
+    if (!this.state.authAnswers.hasOwnProperty(field)) {
+      throw `No such field "${field}" in sign up form`;
+    }
+    const authAnswers = this.state.authAnswers;
+    authAnswers[field] = answer;
+    this.validateAnswer(field, answer, true);
+    this.setState({ authAnswers });
   }
 
-  setAnswerSelect(field) {
-    return (answer) => {
-      if (Array.isArray(answer)) {
-        this.setAnswer(field, answer.map((ans) => ans.value));
-      } else {
-        this.setAnswer(field, answer.value);
+  setApplicationAnswer(field, answer) {
+    if (!this.state.applicationAnswers.hasOwnProperty(field)) {
+      throw `No such field "${field}" in application form`;
+    }
+    const applicationAnswers = this.state.applicationAnswers;
+    applicationAnswers[field] = answer;
+    this.validateAnswer(field, answer);
+    this.setState({ applicationAnswers });
+  }
+
+  setError(field, err, auth = false) {
+    if (auth) {
+      if (!this.state.authAnswers.hasOwnProperty(field)) {
+        throw `No such field "${field} in authentication form`;
+      }
+    } else {
+      if (!this.state.applicationAnswers.hasOwnProperty(field)) {
+        throw `No such field "${field} in application form`;
+      }
+    }
+    const errors = this.state.errors;
+    errors[field] = err;
+    let hasErrors = false;
+    for (var property in errors) {
+      if (errors.hasOwnProperty(property) && errors[property]) {
+        hasErrors = true;
+      }
+    }
+    this.setState({ errors, hasErrors });
+  }
+
+  nextStep() {
+    if (this.validateAllAnswers()) {
+      this.props.nextStep();
+    }
+  }
+
+  validateAllAnswers() {
+    let valid = true;
+    for (var field in this.state.applicationAnswers) {
+      if (this.state.applicationAnswers.hasOwnProperty(field)) {
+        valid &= this.validateAnswer(
+          field,
+          this.state.applicationAnswers[field]
+        );
+      }
+    }
+    for (var field in this.state.authAnswers) {
+      if (this.state.authAnswers.hasOwnProperty(field)) {
+        valid &= this.validateAnswer(
+          field,
+          this.state.authAnswers[field],
+          true
+        );
+      }
+    }
+    return valid;
+  }
+
+  validateAnswer(field, answer, auth = false) {
+    if (auth) {
+      if (!this.state.authAnswers.hasOwnProperty(field)) {
+        throw `No such field "${field}" in authentication form`;
+      }
+    } else {
+      if (!this.state.applicationAnswers.hasOwnProperty(field)) {
+        throw `No such field "${field}" in application form`;
+      }
+    }
+    const validators = {
+      email: {
+        regex: /^.+@.+$/,
+        stepNum: 0,
+        message: "Please enter a valid email"
+      },
+      password: {
+        regex: /^.{8,}$/,
+        stepNum: 0,
+        message: "Please enter a valid password (at least 8 characters)"
+      },
+      confirmPassword: {
+        regex: new RegExp(
+          `^${escapeStringRegexp(this.state.authAnswers.password)}$`
+        ),
+        stepNum: 0,
+        message: "Please make sure your passwords match"
+      },
+      firstName: {
+        regex: /^[^0-9]+$/,
+        stepNum: 0,
+        forSignUp: true,
+        message: "Please enter a valid first name"
+      },
+      lastName: {
+        regex: /^[^0-9]+$/,
+        stepNum: 0,
+        forSignUp: true,
+        message: "Please enter a valid last name"
+      },
+      phoneNumber: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter a valid phone number"
+      },
+      birthday: {
+        regex: /^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/,
+        stepNum: 1,
+        message: "Please enter a valid date in the form YYYY-MM-DD"
+      },
+      program: {
+        regex: /^[^0-9]+$/,
+        stepNum: 1,
+        message: "Please enter a valid program"
+      },
+      graduationYear: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter a valid year in the form YYYY"
+      },
+      whyQHacks: {
+        regex: /^(.){0,2000}$/,
+        stepNum: 2,
+        message: "Please enter a valid answer (max 2000 chars)"
+      },
+      numAttendedHackathons: {
+        regex: /^[0-9]+$/,
+        stepNum: 2,
+        message: "Please enter a valid number"
+      },
+      fromLocation: {
+        regex: /^.+$/,
+        stepNum: 2,
+        message: "Please enter a valid location"
+      },
+      gender: {
+        regex: /^[^0-9]+$/,
+        stepNum: 1,
+        message: "Please enter your gender"
+      },
+      race: {
+        regex: /^[^0-9]+$/,
+        stepNum: 1,
+        message: "Please enter your race"
+      },
+      school: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter your school"
+      },
+      degree: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter your degree"
+      },
+      graduationMonth: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter a valid month"
       }
     };
+    if (this.state.returningHacker && validators[field].forSignUp) {
+      this.setError(field, "", auth);
+      return true;
+    }
+    if (
+      this.props.stepNum != validators[field].stepNum ||
+      validators[field].regex.test(answer)
+    ) {
+      this.setError(field, "", auth);
+      return true;
+    } else {
+      this.setError(field, validators[field].message, auth);
+      return false;
+    }
+  }
+
+  setApplicationAnswerSelect(field) {
+    return (answer) => this.setApplicationAnswer(field, answer.value);
   }
 
   changeSelected(i) {
@@ -153,14 +351,15 @@ class ApplicationForm extends Component {
                   >
                     <section css={inputRowStyle}>
                       <div>
-                        <label htmlFor="username">Username</label>
+                        <label htmlFor="email">Email</label>
                         <input
                           type="text"
-                          value={this.state.answers.username}
+                          value={this.state.authAnswers.email}
                           onChange={(e) =>
-                            this.setAnswer("username", e.target.value)
+                            this.setAuthAnswer("email", e.target.value)
                           }
                         />
+                        <ValidationError message={this.state.errors.email} />
                       </div>
                     </section>
                     <section css={inputRowStyle}>
@@ -168,19 +367,21 @@ class ApplicationForm extends Component {
                         <label htmlFor="password">Password</label>
                         <input
                           type="password"
-                          value={this.state.answers.password}
+                          value={this.state.authAnswers.password}
                           onChange={(e) =>
-                            this.setAnswer("password", e.target.value)
+                            this.setAuthAnswer("password", e.target.value)
                           }
                         />
+                        <ValidationError message={this.state.errors.password} />
                       </div>
                     </section>
                     <section css={inputRowStyle}>
                       <div>
                         <ActionButton
+                          disabled={this.state.hasErrors}
                           style={`margin-top: 50px;`}
                           color="red"
-                          onClick={() => this.props.nextStep()}
+                          onClick={() => this.nextStep()}
                         >
                           Login
                         </ActionButton>
@@ -204,10 +405,14 @@ class ApplicationForm extends Component {
                         <input
                           type="text"
                           id="firstName"
-                          value={this.state.answers.firstName}
+                          key="firstName"
+                          value={this.state.authAnswers.firstName}
                           onChange={(e) =>
-                            this.setAnswer("firstName", e.target.value)
+                            this.setAuthAnswer("firstName", e.target.value)
                           }
+                        />
+                        <ValidationError
+                          message={this.state.errors.firstName}
                         />
                       </div>
                       <div>
@@ -215,24 +420,28 @@ class ApplicationForm extends Component {
                         <input
                           type="text"
                           id="lastName"
-                          value={this.state.answers.lastName}
+                          key="lastName"
+                          value={this.state.authAnswers.lastName}
                           onChange={(e) =>
-                            this.setAnswer("lastName", e.target.value)
+                            this.setAuthAnswer("lastName", e.target.value)
                           }
                         />
+                        <ValidationError message={this.state.errors.lastName} />
                       </div>
                     </section>
                     <section css={inputRowStyle}>
                       <div>
-                        <label htmlFor="username">Username</label>
+                        <label htmlFor="email">Email</label>
                         <input
-                          id="username"
+                          id="email"
+                          key="email"
                           type="text"
-                          value={this.state.answers.username}
+                          value={this.state.authAnswers.email}
                           onChange={(e) =>
-                            this.setAnswer("username", e.target.value)
+                            this.setAuthAnswer("email", e.target.value)
                           }
                         />
+                        <ValidationError message={this.state.errors.email} />
                       </div>
                     </section>
                     <section css={inputRowStyle}>
@@ -240,12 +449,14 @@ class ApplicationForm extends Component {
                         <label htmlFor="password">Password</label>
                         <input
                           id="password"
+                          key="password"
                           type="password"
-                          value={this.state.answers.password}
+                          value={this.state.authAnswers.password}
                           onChange={(e) =>
-                            this.setAnswer("password", e.target.value)
+                            this.setAuthAnswer("password", e.target.value)
                           }
                         />
+                        <ValidationError message={this.state.errors.password} />
                       </div>
                     </section>
                     <section css={inputRowStyle}>
@@ -255,20 +466,28 @@ class ApplicationForm extends Component {
                         </label>
                         <input
                           id="confirmPassword"
+                          key="confirmPassword"
                           type="password"
-                          value={this.state.answers.confirmPassword}
+                          value={this.state.authAnswers.confirmPassword}
                           onChange={(e) =>
-                            this.setAnswer("confirmPassword", e.target.value)
+                            this.setAuthAnswer(
+                              "confirmPassword",
+                              e.target.value
+                            )
                           }
+                        />
+                        <ValidationError
+                          message={this.state.errors.confirmPassword}
                         />
                       </div>
                     </section>
                     <section css={inputRowStyle}>
                       <div>
                         <ActionButton
+                          disabled={this.state.hasErrors}
                           style={`margin-top: 50px;`}
                           color="red"
-                          onClick={() => this.props.nextStep()}
+                          onClick={() => this.nextStep()}
                         >
                           Create Account
                         </ActionButton>
@@ -294,20 +513,24 @@ class ApplicationForm extends Component {
                     <CreatableSelect
                       options={genderOptions}
                       id="gender"
+                      key="gender"
                       className="select"
-                      onChange={this.setAnswerSelect("gender")}
+                      onChange={this.setApplicationAnswerSelect("gender")}
                     />
+                    <ValidationError message={this.state.errors.gender} />
                   </div>
                   <div>
                     <label htmlFor="phoneNumber">Phone Number</label>
                     <input
                       id="phoneNumber"
+                      key="phoneNumber"
                       type="tel"
-                      value={this.state.answers.phoneNumber}
+                      value={this.state.applicationAnswers.phoneNumber}
                       onChange={(e) =>
-                        this.setAnswer("phoneNumber", e.target.value)
+                        this.setApplicationAnswer("phoneNumber", e.target.value)
                       }
                     />
+                    <ValidationError message={this.state.errors.phoneNumber} />
                   </div>
                 </section>
                 <section css={inputRowStyle}>
@@ -315,24 +538,27 @@ class ApplicationForm extends Component {
                     <label htmlFor="birthday">Birthday</label>
                     <input
                       id="birthday"
+                      key="birthday"
                       type="date"
-                      value={this.state.answers.birthday}
+                      value={this.state.applicationAnswers.birthday}
                       onChange={(e) =>
-                        this.setAnswer("birthday", e.target.value)
+                        this.setApplicationAnswer("birthday", e.target.value)
                       }
                     />
+                    <ValidationError message={this.state.errors.birthday} />
                   </div>
                 </section>
                 <section css={inputRowStyle}>
                   <div>
                     <label htmlFor="race">Race</label>
                     <CreatableSelect
-                      isMulti
                       options={raceOptions}
                       id="race"
+                      key="race"
                       className="select"
-                      onChange={this.setAnswerSelect("race")}
+                      onChange={this.setApplicationAnswerSelect("race")}
                     />
+                    <ValidationError message={this.state.errors.race} />
                   </div>
                 </section>
               </div>
@@ -346,20 +572,24 @@ class ApplicationForm extends Component {
                     <CreatableSelect
                       options={schoolOptions}
                       id="school"
+                      key="school"
                       className="select"
-                      onChange={this.setAnswerSelect("school")}
+                      onChange={this.setApplicationAnswerSelect("school")}
                     />
+                    <ValidationError message={this.state.errors.school} />
                   </div>
                   <div>
                     <label htmlFor="program">What is your program?</label>
                     <input
                       type="text"
                       id="program"
-                      value={this.state.answers.program}
+                      key="program"
+                      value={this.state.applicationAnswers.program}
                       onChange={(e) =>
-                        this.setAnswer("program", e.target.value)
+                        this.setApplicationAnswer("program", e.target.value)
                       }
                     />
+                    <ValidationError message={this.state.errors.program} />
                   </div>
                 </section>
                 <section css={inputRowStyle}>
@@ -368,9 +598,11 @@ class ApplicationForm extends Component {
                     <CreatableSelect
                       options={degreeOptions}
                       id="degree"
+                      key="degree"
                       className="select"
-                      onChange={this.setAnswerSelect("degree")}
+                      onChange={this.setApplicationAnswerSelect("degree")}
                     />
+                    <ValidationError message={this.state.errors.degree} />
                   </div>
                 </section>
                 <section css={inputRowStyle}>
@@ -379,21 +611,34 @@ class ApplicationForm extends Component {
                     <Select
                       options={monthOptions}
                       id="graduationMonth"
+                      key="graduationMonth"
                       className="select"
-                      onChange={this.setAnswerSelect("graduationMonth")}
+                      onChange={this.setApplicationAnswerSelect(
+                        "graduationMonth"
+                      )}
+                    />
+                    <ValidationError
+                      message={this.state.errors.graduationMonth}
                     />
                   </div>
                   <div>
                     <input
                       id="graduationYear"
+                      key="graduationYear"
                       type="number"
                       value={this.state.graduationYear}
                       css={`
                         margin-top: 31px !important;
                       `}
                       onChange={(e) =>
-                        this.setAnswer("graduationYear", e.target.value)
+                        this.setApplicationAnswer(
+                          "graduationYear",
+                          e.target.value
+                        )
                       }
+                    />
+                    <ValidationError
+                      message={this.state.errors.graduationYear}
                     />
                   </div>
                 </section>
@@ -406,9 +651,10 @@ class ApplicationForm extends Component {
                       Previous
                     </ActionButton>{" "}
                     <ActionButton
+                      disabled={this.state.hasErrors}
                       style={`margin-top: 50px;`}
                       color="red"
-                      onClick={() => this.props.nextStep()}
+                      onClick={() => this.nextStep()}
                     >
                       Continue
                     </ActionButton>
@@ -435,11 +681,12 @@ class ApplicationForm extends Component {
                       Why do you want to attend QHacks?
                     </label>
                     <textarea
-                      value={this.state.answers.whyQHacks}
+                      value={this.state.applicationAnswers.whyQHacks}
                       onChange={(e) =>
-                        this.setAnswer("whyQHacks", e.target.value)
+                        this.setApplicationAnswer("whyQHacks", e.target.value)
                       }
                     />
+                    <ValidationError message={this.state.errors.whyQHacks} />
                   </div>
                 </section>
                 <section css={inputRowStyle}>
@@ -449,10 +696,18 @@ class ApplicationForm extends Component {
                     </label>
                     <input
                       type="number"
-                      value={this.state.answers.numAttendedHackathons}
-                      onChange={(e) =>
-                        this.setAnswer("numAttendedHackathons", e.target.value)
+                      value={
+                        this.state.applicationAnswers.numAttendedHackathons
                       }
+                      onChange={(e) =>
+                        this.setApplicationAnswer(
+                          "numAttendedHackathons",
+                          e.target.value
+                        )
+                      }
+                    />
+                    <ValidationError
+                      message={this.state.errors.numAttendedHackathons}
                     />
                   </div>
                 </section>
@@ -463,11 +718,15 @@ class ApplicationForm extends Component {
                     </label>
                     <input
                       type="text"
-                      value={this.state.answers.fromLocation}
+                      value={this.state.applicationAnswers.fromLocation}
                       onChange={(e) =>
-                        this.setAnswer("fromLocation", e.target.value)
+                        this.setApplicationAnswer(
+                          "fromLocation",
+                          e.target.value
+                        )
                       }
                     />
+                    <ValidationError message={this.state.errors.fromLocation} />
                   </div>
                 </section>
                 <section css={inputRowStyle}>
@@ -479,9 +738,10 @@ class ApplicationForm extends Component {
                       Previous
                     </ActionButton>{" "}
                     <ActionButton
+                      disabled={this.state.hasErrors}
                       style={`margin-top: 50px;`}
                       color="red"
-                      onClick={() => this.props.nextStep()}
+                      onClick={() => this.nextStep()}
                     >
                       Submit
                     </ActionButton>

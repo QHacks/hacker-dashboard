@@ -23,6 +23,7 @@
     "axios": "^0.18.0",
     "dotenv": "^6.0.0",
     "emotion": "^9.2.12",
+    "escape-string-regexp": "^1.0.5",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
     "lodash": "^4.17.11",
