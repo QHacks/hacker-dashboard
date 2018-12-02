@@ -2,11 +2,12 @@ import { Route, Switch } from "react-router-dom";
 import React, { Component } from "react";
 import "normalize.css";
 
+import Login from "../Landing/Login";
 import ForgotPassword from "../Landing/ForgotPassword";
 import UpdatePassword from "../Landing/UpdatePassword";
 import * as constants from "../../assets/constants";
 import PrivateRoute from "../utils/PrivateRoute";
-import Dashboard from "../Dashboard";
+import Dashboard from "../Dashboard/Dashboard";
 import Login from "../Landing/Login";
 import Apply from "../Apply";
 
