@@ -1,21 +1,11 @@
-import { Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
-import gql from "graphql-tag";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import Landing from "./Landing";
 import { SERVER_HOST } from "../../Client";
 import * as constants from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
-
-const GET_AUTHENTICATION_STATUS = gql`
-  query {
-    authInfo @client {
-      isAuthenticated
-    }
-  }
-`;
 
 class UpdatePassword extends Component {
   constructor(props) {
@@ -24,16 +14,6 @@ class UpdatePassword extends Component {
     this.state = {
       password: ""
     };
-  }
-
-  getRedirectPath() {
-    const locationState = this.props.location.state;
-
-    if (locationState && locationState.from.pathname) {
-      return locationState.from.pathname;
-    }
-
-    return "/";
   }
 
   async updatePasswordForReset() {
@@ -60,21 +40,6 @@ class UpdatePassword extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props.data.authInfo;
-
-    if (isAuthenticated) {
-      return (
-        <Redirect
-          to={{
-            pathname: this.getRedirectPath(),
-            state: {
-              from: this.props.location
-            }
-          }}
-        />
-      );
-    }
-
     return (
       <Landing>
         <img
@@ -138,4 +103,4 @@ class UpdatePassword extends Component {
   }
 }
 
-export default graphql(GET_AUTHENTICATION_STATUS)(UpdatePassword);
+export default UpdatePassword;

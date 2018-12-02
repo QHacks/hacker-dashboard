@@ -1,13 +1,13 @@
-import { Route, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import React, { Component } from "react";
 import "normalize.css";
 
-import Login from "../Landing/Login";
 import ForgotPassword from "../Landing/ForgotPassword";
 import UpdatePassword from "../Landing/UpdatePassword";
 import * as constants from "../../assets/constants";
-import PrivateRoute from "../utils/PrivateRoute";
 import Dashboard from "../Dashboard/Dashboard";
+import Login from "../Landing/Login";
+import Route from "../utils/Route";
 import Apply from "../Apply";
 
 const globalStyles = `
@@ -121,17 +121,24 @@ export default class App extends Component {
     return (
       <div css={globalStyles}>
         <Switch>
-          {/* Public routes */}
-          <Route path="/login" component={Login} />
+          {/* Wildcard routes */}
           <Route path="/qhacks-2019/apply" component={Apply} />
-          <Route path="/forgot-password" component={ForgotPassword} />
+
+          {/* Public routes */}
+          <Route path="/login" component={Login} type="public" />
+          <Route
+            path="/forgot-password"
+            component={ForgotPassword}
+            type="public"
+          />
           <Route
             path="/update-password/:resetHash"
             component={UpdatePassword}
+            type="public"
           />
 
           {/* Authenticated routes */}
-          <PrivateRoute path="/" component={Dashboard} />
+          <Route path="/profile" component={Dashboard} type="private" />
         </Switch>
       </div>
     );
