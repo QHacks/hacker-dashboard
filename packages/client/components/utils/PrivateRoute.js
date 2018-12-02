@@ -5,14 +5,16 @@ import gql from "graphql-tag";
 
 const GET_AUTHENTICATION_STATUS = gql`
   query {
-    isAuthenticated @client
+    authInfo @client {
+      isAuthenticated
+    }
   }
 `;
 
 const PrivateRoute = ({ component: ComposedComponent, types, ...rest }) => {
   class Authentication extends Component {
     handleRender(props) {
-      const { isAuthenticated } = this.props;
+      const { isAuthenticated } = this.props.data.authInfo;
 
       if (!isAuthenticated) {
         return (
@@ -36,12 +38,9 @@ const PrivateRoute = ({ component: ComposedComponent, types, ...rest }) => {
     }
   }
 
-  const AuthenticationContainer = graphql(GET_AUTHENTICATION_STATUS, {
-    props: ({ data: { isAuthenticated }, ownProps }) => ({
-      ...ownProps,
-      isAuthenticated
-    })
-  })(Authentication);
+  const AuthenticationContainer = graphql(GET_AUTHENTICATION_STATUS)(
+    Authentication
+  );
 
   return <AuthenticationContainer />;
 };

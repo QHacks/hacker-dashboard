@@ -42,126 +42,134 @@ const getNewAccessToken = () => {
   return Promise.reject("No refresh token in local storage!");
 };
 
-// Cache used for local state and query caching
-const cache = new InMemoryCache();
+const apolloClientSetup = async () => {
+  // Cache used for local state and query caching
+  const cache = new InMemoryCache();
 
-// Link to manage local state via GraphQL
-const stateLink = withClientState({
-  cache,
-  resolvers,
-  defaults,
-  typeDefs
-});
-
-persistCache({
-  cache,
-  storage: window.localStorage
-});
-
-// Error handler link, will attempt operation retrys after refreshing access token
-const errorLink = onError(
-  ({ graphQLErrors, networkError, operation, forward }) => {
-    if (graphQLErrors) {
-      // Check for an unauthenticated error and retry with refreshed token
-      graphQLErrors.forEach((err) => {
-        if (err.extensions.code === 401) {
-          getNewAccessToken()
-            .then((res) => {
-              console.log(
-                "[Token Refresh Success]: Successfully refreshed access token!"
-              );
-
-              const newAccessToken = res.body.accessToken;
-              const newRefreshToken = res.body.refreshToken;
-
-              const oldHeaders = operation.getContext().headers;
-
-              operation.setContext({
-                headers: {
-                  ...oldHeaders,
-                  authorization: `Bearer ${newAccessToken}`
-                }
-              });
-
-              // Set the new tokens in storage
-              localStorage.setItem(ACCESS_TOKEN_STORAGE, newAccessToken);
-              localStorage.setItem(REFRESH_TOKEN_STORAGE, newRefreshToken);
-
-              // Retry the request!
-              return forward(operation);
-            })
-            .catch((err) => {
-              console.log(
-                `[Token Refresh Error]: Unable to refresh token: ${err}!`
-              );
-            });
-        }
-      });
-
-      // Print all errors out to console
-      graphQLErrors.map(({ message, locations, path }) =>
-        console.log(
-          `[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        )
-      );
-    }
-
-    // Print any network errors
-    if (networkError) {
-      console.log(`[Network Error]: ${networkError}`);
-    }
-  }
-);
-
-// Sets authorization headers in context
-const authLink = setContext((_, previousContext) => {
-  const accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE);
-
-  // Only set authorization headers if none exist
-  // Mainly becuase error handler sets new tokens on retries
-  if (previousContext.headers && !previousContext.headers.authorization) {
-    return {
-      ...previousContext,
-      headers: {
-        ...previousContext.headers,
-        authorization: accessToken ? `Bearer ${accessToken}` : ""
-      }
-    };
-  }
-
-  return previousContext;
-});
-
-// Identifies the client in Apollo Engine
-const clientIdentifierLink = new ApolloLink((operation, forward) => {
-  operation.extensions.clientInfo = {
-    clientName: CLIENT_NAME,
-    clientVersion: CLIENT_VERSION
-  };
-
-  operation.setContext({
-    http: {
-      includeExtensions: true
-    }
+  // Link to manage local state via GraphQL
+  const stateLink = withClientState({
+    cache,
+    resolvers,
+    defaults,
+    typeDefs
   });
 
-  return forward(operation);
-});
+  try {
+    await persistCache({
+      cache,
+      storage: window.localStorage,
+      debug: true
+    });
+  } catch (err) {
+    console.log("Could not restore local cache!");
+  }
 
-// Terminating link to fetch data from server
-// NOTE: Reads request headers from context
-const networkLink = new HttpLink({
-  uri: GRAPHQL_ENDPOINT
-});
+  // Error handler link, will attempt operation retrys after refreshing access token
+  const errorLink = onError(
+    ({ graphQLErrors, networkError, operation, forward }) => {
+      if (graphQLErrors) {
+        // Check for an unauthenticated error and retry with refreshed token
+        graphQLErrors.forEach((err) => {
+          if (err.extensions.code === 401) {
+            getNewAccessToken()
+              .then((res) => {
+                console.log(
+                  "[Token Refresh Success]: Successfully refreshed access token!"
+                );
 
-// Apollo client with cache and links
-export default new ApolloClient({
-  cache,
-  link: ApolloLink.from([
-    errorLink,
-    stateLink,
-    authLink,
-    clientIdentifierLink,
-    networkLink
-  ])
-});
+                const newAccessToken = res.body.accessToken;
+                const newRefreshToken = res.body.refreshToken;
+
+                const oldHeaders = operation.getContext().headers;
+
+                operation.setContext({
+                  headers: {
+                    ...oldHeaders,
+                    authorization: `Bearer ${newAccessToken}`
+                  }
+                });
+
+                // Set the new tokens in storage
+                localStorage.setItem(ACCESS_TOKEN_STORAGE, newAccessToken);
+                localStorage.setItem(REFRESH_TOKEN_STORAGE, newRefreshToken);
+
+                // Retry the request!
+                return forward(operation);
+              })
+              .catch((err) => {
+                console.log(
+                  `[Token Refresh Error]: Unable to refresh token: ${err}!`
+                );
+              });
+          }
+        });
+
+        // Print all errors out to console
+        graphQLErrors.map(({ message, locations, path }) =>
+          console.log(
+            `[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          )
+        );
+      }
+
+      // Print any network errors
+      if (networkError) {
+        console.log(`[Network Error]: ${networkError}`);
+      }
+    }
+  );
+
+  // Sets authorization headers in context
+  const authLink = setContext((_, previousContext) => {
+    const accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE);
+
+    // Only set authorization headers if none exist
+    // Mainly becuase error handler sets new tokens on retries
+    if (previousContext.headers && !previousContext.headers.authorization) {
+      return {
+        ...previousContext,
+        headers: {
+          ...previousContext.headers,
+          authorization: accessToken ? `Bearer ${accessToken}` : ""
+        }
+      };
+    }
+
+    return previousContext;
+  });
+
+  // Identifies the client in Apollo Engine
+  const clientIdentifierLink = new ApolloLink((operation, forward) => {
+    operation.extensions.clientInfo = {
+      clientName: CLIENT_NAME,
+      clientVersion: CLIENT_VERSION
+    };
+
+    operation.setContext({
+      http: {
+        includeExtensions: true
+      }
+    });
+
+    return forward(operation);
+  });
+
+  // Terminating link to fetch data from server
+  // NOTE: Reads request headers from context
+  const networkLink = new HttpLink({
+    uri: GRAPHQL_ENDPOINT
+  });
+
+  return new ApolloClient({
+    cache,
+    link: ApolloLink.from([
+      errorLink,
+      stateLink,
+      authLink,
+      clientIdentifierLink,
+      networkLink
+    ])
+  });
+};
+
+export default apolloClientSetup;

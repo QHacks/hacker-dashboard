@@ -11,7 +11,9 @@ import ActionButton from "../ActionButton/ActionButton";
 
 const GET_AUTHENTICATION_STATUS = gql`
   query {
-    isAuthenticated @client
+    authInfo @client {
+      isAuthenticated
+    }
   }
 `;
 
@@ -58,7 +60,7 @@ class UpdatePassword extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props.data;
+    const { isAuthenticated } = this.props.data.authInfo;
 
     if (isAuthenticated) {
       return (

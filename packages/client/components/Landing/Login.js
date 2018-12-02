@@ -13,14 +13,16 @@ const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
 const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
 
 const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
-  mutation UpdateAutheticationStatus($isAuthenticated: Boolean) {
-    updateAuthenticationStatus(isAuthenticated: $isAuthenticated) @client
+  mutation UpdateAutheticationStatus($input: AuthInfoInput!) {
+    authInfoUpdate(input: $input) @client
   }
 `;
 
 const GET_AUTHENTICATION_STATUS = gql`
   query {
-    isAuthenticated @client
+    authInfo @client {
+      isAuthenticated
+    }
   }
 `;
 
@@ -60,7 +62,9 @@ class Login extends Component {
 
       this.props.mutate({
         variables: {
-          isAuthenticated: true
+          input: {
+            isAuthenticated: true
+          }
         }
       });
     } catch (err) {
@@ -69,7 +73,7 @@ class Login extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props.data;
+    const { isAuthenticated } = this.props.data.authInfo;
 
     if (isAuthenticated) {
       return (
