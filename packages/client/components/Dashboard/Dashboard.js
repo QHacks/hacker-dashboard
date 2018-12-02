@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import DashboardMenu from "../DashboardMenu/DashboardMenu";
-import Events from "../DashboardSection/Events";
+import DashboardMenu from "./DashboardMenu";
+import Events from "./DashboardSection/Events";
 
 class Dashboard extends Component {
   render() {
@@ -10,7 +10,7 @@ class Dashboard extends Component {
         <div
           css={`
               margin-top: 84px;
-              background: url(${require("../../assets/img/landing.png")}) no-repeat center bottom;
+              background: url(${require("../../assets/img/circuits.png")}) no-repeat center bottom;
               background-size: cover;
               height: calc(100vh - 84px);
               padding: 50px;

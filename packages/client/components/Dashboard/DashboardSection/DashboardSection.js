@@ -8,7 +8,6 @@ class DashboardSection extends Component {
           border: 1px solid #a4b3bf;
           border-radius: 8px;
           overflow: hidden;
-          max-width: 900px;
           margin: 0 auto;
         `}
       >

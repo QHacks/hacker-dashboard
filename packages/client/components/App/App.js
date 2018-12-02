@@ -8,7 +8,6 @@ import UpdatePassword from "../Landing/UpdatePassword";
 import * as constants from "../../assets/constants";
 import PrivateRoute from "../utils/PrivateRoute";
 import Dashboard from "../Dashboard/Dashboard";
-import Login from "../Landing/Login";
 import Apply from "../Apply";
 
 const globalStyles = `

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ActionButton from "../ActionButton/ActionButton";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 import crown from "../../assets/img/qhacks-tricolor-logo.svg";
+import wordmark from "../../assets/img/qhacks-wordmark-colored.svg";
 
 class DashboardMenu extends Component {
   render() {
@@ -24,7 +25,21 @@ class DashboardMenu extends Component {
               display: inline-block;
             `}
           >
-            <img src={crown} alt="QHacks logo" />
+            <img
+              src={crown}
+              css={`
+                max-height: 32px;
+                margin-right: 6px;
+              `}
+              alt="QHacks crown"
+            />
+            <img
+              src={wordmark}
+              css={`
+                max-height: 24px;
+              `}
+              alt="QHacks wordmark"
+            />
           </div>
           <div
             css={`
