@@ -6,8 +6,7 @@ export default (props) => (
       max-width: 1400px;
       margin-left: auto;
       margin-right: auto;
-      padding-left: 145px;
-      padding-right: 145px;
+      padding: ${props.wide ? "0 80px" : "0 145px"};
       height: 100%;
       @media screen and (max-width: 1200px) and (min-width: 860px) {
         padding-left: 80px;

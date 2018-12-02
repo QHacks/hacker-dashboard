@@ -1,27 +1,54 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
+import Landing from "./Landing";
+import { SERVER_HOST } from "../../Client";
 import * as constants from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
-import Landing from "./Landing";
 
 class UpdatePassword extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      email: "",
       password: ""
     };
   }
+
+  async updatePasswordForReset() {
+    const { password } = this.state;
+    const { resetHash } = this.props.match.params;
+
+    try {
+      const response = await axios.post(
+        `${SERVER_HOST}/oauth/updatePasswordForReset`,
+        {
+          password,
+          resetHash
+        }
+      );
+
+      this.setState({
+        success: "Test Success"
+      });
+    } catch (err) {
+      this.setState({
+        error: "Test Error"
+      });
+    }
+  }
+
   render() {
     return (
       <Landing>
-        <h1
+        <img
+          src={"../../assets/img/qhacks-wordmark-colored.svg"}
           css={`
-            color: ${constants.blue};
+            max-height: 40px;
           `}
-        >
-          QHacks
-        </h1>
+          alt="QHacks"
+        />
         <h3
           css={`
             margin-top: 24px;
@@ -32,6 +59,7 @@ class UpdatePassword extends Component {
           Reset Password
         </h3>
         <p
+          className="blurb"
           css={`
             line-height: 1.6;
             margin-top: 16px;
@@ -46,13 +74,6 @@ class UpdatePassword extends Component {
           `}
         >
           <input
-            id="email"
-            type="text"
-            value={this.state.email}
-            onChange={(e) => this.setState({ email: e.target.value })}
-            placeholder="Enter your email address"
-          />
-          <input
             id="password"
             type="password"
             value={this.state.password}
@@ -65,10 +86,17 @@ class UpdatePassword extends Component {
             margin: 30px 0;
           `}
         >
-          <Link to="/login">Know you password? Login here!</Link>
+          <Link className="landingLink" to="/login">
+            Know you password? Login here!
+          </Link>
         </div>
         <div>
-          <ActionButton color="blue">Reset password</ActionButton>
+          <ActionButton
+            color="blue"
+            onClick={() => this.updatePasswordForReset()}
+          >
+            Reset password
+          </ActionButton>
         </div>
       </Landing>
     );

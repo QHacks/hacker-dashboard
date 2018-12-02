@@ -1,29 +1,69 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import * as constants from "../../assets/constants";
-import ActionButton from "../ActionButton/ActionButton";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+import axios from "axios";
+
 import Landing from "./Landing";
+import { SERVER_HOST } from "../../Client";
+import ActionButton from "../ActionButton/ActionButton";
+import StatusReport from "../StatusReport/StatusReport";
+
+const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
+const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
+
+const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
+  mutation UpdateAutheticationStatus($isAuthenticated: Boolean) {
+    updateAuthenticationStatus(isAuthenticated: $isAuthenticated) @client
+  }
+`;
 
 class Login extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       email: "",
       password: "",
       rememberMe: true
     };
   }
+
+  async login() {
+    const { email, password } = this.state;
+
+    try {
+      const response = await axios.post(`${SERVER_HOST}/oauth/session`, {
+        email,
+        password,
+        grantType: "password"
+      });
+
+      localStorage.setItem(ACCESS_TOKEN_STORAGE, response.data.accessToken);
+      localStorage.setItem(REFRESH_TOKEN_STORAGE, response.data.refreshToken);
+
+      this.props.mutate({
+        variables: {
+          isAuthenticated: true
+        }
+      });
+    } catch (err) {
+      this.setState({ error: "Test Error" });
+    }
+  }
+
   render() {
     return (
       <Landing>
-        <h1
+        <img
+          src={"../../assets/img/qhacks-wordmark-colored.svg"}
           css={`
-            color: ${constants.blue};
+            max-height: 40px;
           `}
-        >
-          QHacks
-        </h1>
+          alt="QHacks"
+        />
         <p
+          className="blurb"
           css={`
             margin-top: 24px;
             color: #8a929f;
@@ -32,6 +72,7 @@ class Login extends Component {
           Welcome back.
         </p>
         <p
+          className="blurb"
           css={`
             margin-top: 12px;
             color: #8a929f;
@@ -82,16 +123,27 @@ class Login extends Component {
               flex-grow: 1;
             `}
           >
-            <Link to="/forgot-password">Forgot password</Link>
+            <Link className="landingLink" to="/forgot-password">
+              Forgot password
+            </Link>
           </div>
         </div>
+        {this.state.error ? (
+          <StatusReport type="danger" message={this.state.error} />
+        ) : (
+          ""
+        )}
         <div>
-          <ActionButton color="blue">Login</ActionButton>{" "}
-          <ActionButton link="/apply">Apply</ActionButton>
+          <ActionButton color="blue" onClick={() => this.login()}>
+            Login
+          </ActionButton>{" "}
+          <ActionButton internal link="/qhacks-2019/apply">
+            Apply
+          </ActionButton>
         </div>
       </Landing>
     );
   }
 }
 
-export default Login;
+export default graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION)(Login);
