@@ -16,17 +16,19 @@ const config = {
     ...options
   },
   staging: {
-    username: process.env.STAGING_DB_USER,
-    password: process.env.STAGING_DB_PASSWORD,
-    database: process.env.STAGING_DB_NAME,
+    host: process.env.DB_HOST,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     dialect: "postgres",
     logging: false,
     ...options
   },
   production: {
-    username: process.env.PRODUCTION_DB_USER,
-    password: process.env.PRODUCTION_DB_PASSWORD,
-    database: process.env.PRODUCTION_DB_NAME,
+    host: process.env.DB_HOST,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     dialect: "postgres",
     logging: false,
     ...options

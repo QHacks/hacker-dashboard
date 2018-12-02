@@ -104,7 +104,7 @@ app.use(express.static(BUNDLE_DIR));
 
 // Database Synchronization
 db.sequelize
-  .sync()
+  .sync({ force: false })
   .then(() => {
     logger.info("Database has synchronized successfully!");
 
