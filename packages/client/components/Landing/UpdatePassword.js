@@ -4,7 +4,7 @@ import axios from "axios";
 
 import Landing from "./Landing";
 import { SERVER_HOST } from "../../Client";
-import * as constants from "../../assets/constants";
+import * as colors from "../../assets/colors";
 import ActionButton from "../ActionButton/ActionButton";
 
 class UpdatePassword extends Component {
@@ -52,7 +52,7 @@ class UpdatePassword extends Component {
         <h3
           css={`
             margin-top: 24px;
-            color: ${constants.blue};
+            color: ${colors.blue};
             font-weight: 700;
           `}
         >

@@ -1,18 +1,20 @@
 import { Switch } from "react-router-dom";
 import React, { Component } from "react";
 import "normalize.css";
-
 import ForgotPassword from "../Landing/ForgotPassword";
 import UpdatePassword from "../Landing/UpdatePassword";
-import * as constants from "../../assets/constants";
 import Dashboard from "../Dashboard/Dashboard";
 import NotFound from "../utils/NotFound";
+import { boxShadow } from "../../assets/constants";
+import * as colors from "../../assets/colors";
+import Dashboard from "../Dashboard";
 import Login from "../Landing/Login";
 import Route from "../utils/Route";
 import Apply from "../Apply";
 
 const globalStyles = `
 color: #020b1b;
+min-width: 800px;
 
 * {
   font-family: "Encode Sans", sans-serif !important;
@@ -23,12 +25,12 @@ color: #020b1b;
 
 a {
   text-decoration: none;
-  color:${constants.linkUnvisited};
+  color:${colors.linkUnvisited};
   :hover {
     text-decoration: underline;
   }
   :visited {
-    color:${constants.linkVisited};
+    color:${colors.linkVisited};
   }
 }
 
@@ -49,7 +51,7 @@ h3 {
 }
 
 h1, h2, h3, h4 {
-  color: ${constants.blue};
+  color: ${colors.blue};
 }
 
 strong {
@@ -74,7 +76,7 @@ input:not([type="checkbox"]) {
     margin-right: 0;
   }
   :focus {
-    box-shadow: ${constants.boxShadow};
+    box-shadow: ${boxShadow};
     background-color: white;
   }
   padding: 0 6px;
@@ -111,7 +113,7 @@ textarea {
   width: 100%;
   min-height: 200px;
   :focus {
-    box-shadow: ${constants.boxShadow};
+    box-shadow: ${boxShadow};
     background-color: white;
   }
 }

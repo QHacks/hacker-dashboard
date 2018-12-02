@@ -1,10 +1,10 @@
 import React, { PureComponent } from "react";
-import * as constants from "../../assets/constants";
+import * as colors from "../../assets/colors";
 
 class ApplicationStepsDesktop extends PureComponent {
   getBackgroundColor(num) {
     if (num === this.props.stepNum) {
-      return constants.red;
+      return colors.red;
     }
     if (num > this.props.stepNum) {
       return "white";
@@ -78,7 +78,7 @@ class ApplicationStepsDesktop extends PureComponent {
     if (num === this.props.stepNum) {
       return "white";
     }
-    return constants.red;
+    return colors.red;
   }
 
   render() {

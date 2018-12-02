@@ -1,11 +1,11 @@
 import React from "react";
-import * as constants from "../../assets/constants";
+import * as colors from "../../assets/colors";
 
 const ValidationError = (props) => {
   return props.message ? (
     <div
       css={`
-        color: ${constants.red};
+        color: ${colors.red};
         margin: 12px 0;
         text-align: left;
         > * {

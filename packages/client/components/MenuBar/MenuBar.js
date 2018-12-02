@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import * as constants from "../../assets/constants";
+import * as colors from "../../assets/colors";
 import ActionButton from "../ActionButton/ActionButton";
 import crown from "../../assets/img/qhacks-tricolor-logo.svg";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
@@ -37,13 +37,13 @@ class MenuBar extends Component {
               text-transform: uppercase;
               list-style-type: none;
               a:not(.actionButton) {
-                color: ${constants.blue};
+                color: ${colors.blue};
                 font-weight: 600;
                 padding-bottom: 2px;
                 padding-top: 2px;
                 :hover {
                   text-decoration: none;
-                  border-bottom: 2px solid ${constants.blue};
+                  border-bottom: 2px solid ${colors.blue};
                 }
               }
               a.actionButton {

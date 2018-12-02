@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react";
-import * as constants from "../../assets/constants";
+import * as colors from "../../assets/colors";
 
 class ApplicationStepsMobile extends PureComponent {
   getBackgroundColor(num) {
     if (num > this.props.stepNum) {
       return "#d2d2d2";
     }
-    return constants.red;
+    return colors.red;
   }
   render() {
     const pages = ["Introduction", "About You", "Why QHacks?", "Next Steps"];

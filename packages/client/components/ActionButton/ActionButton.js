@@ -1,5 +1,7 @@
 import React from "react";
-import * as constants from "../../assets/constants";
+import { boxShadow } from "../../assets/constants";
+import * as colors from "../../assets/colors";
+import { Link } from "react-router";
 
 const ActionButton = (props) => {
   const roundPadding = props.inline ? "24px" : "55px";
@@ -25,9 +27,9 @@ const ActionButton = (props) => {
     }
     switch (getColor()) {
       case "red":
-        return constants.red;
+        return colors.red;
       case "blue":
-        return constants.blue;
+        return colors.blue;
       default:
         return "white";
     }
@@ -40,7 +42,7 @@ const ActionButton = (props) => {
       case "blue":
         return "white";
       default:
-        return props.foregroundColor || constants.blue;
+        return props.foregroundColor || colors.blue;
     }
   };
 
@@ -61,9 +63,9 @@ const ActionButton = (props) => {
     }
     switch (getColor()) {
       case "red":
-        return constants.redLight;
+        return colors.redLight;
       case "blue":
-        return constants.blueLight;
+        return colors.blueLight;
       default:
         return "white";
     }
@@ -87,9 +89,7 @@ const ActionButton = (props) => {
       case "blue":
         return "none";
       default:
-        return props.inline
-          ? `2px solid ${constants.blue}`
-          : "1px solid #999da4";
+        return props.inline ? `2px solid ${colors.blue}` : "1px solid #999da4";
     }
   };
 
@@ -114,17 +114,17 @@ const ActionButton = (props) => {
         return "1px solid #c4c4c4";
       default:
         return props.inline
-          ? `2px solid ${constants.blue}`
-          : `1px solid ${constants.blue}`;
+          ? `2px solid ${colors.blue}`
+          : `1px solid ${colors.blue}`;
     }
   };
 
   const getClickBackgroundColor = () => {
     switch (getColor()) {
       case "red":
-        return constants.redDark;
+        return colors.redDark;
       case "blue":
-        return constants.blueDark;
+        return colors.blueDark;
       default:
         return "white";
     }
@@ -149,7 +149,7 @@ const ActionButton = (props) => {
     :hover {
       background-color: ${getHoverBackgroundColor()};
       border: ${getHoverBorder()};
-      box-shadow: ${constants.boxShadow};
+      box-shadow: ${boxShadow};
     }
     :active {
       background-color: ${getClickBackgroundColor()};
@@ -184,7 +184,7 @@ const ActionButton = (props) => {
   }
 
   return props.link ? (
-    <a
+    <Link
       css={`
         ${commonStyles}
         display: inline-block;
@@ -193,7 +193,7 @@ const ActionButton = (props) => {
       `}
       disabled={props.disabled}
       onClick={props.onClick}
-      href={props.link}
+      to={props.link}
       rel={props.internal ? null : "external noopener"}
       target={props.internal ? null : "_blank"}
       className={props.className || "actionButton"}
@@ -206,7 +206,7 @@ const ActionButton = (props) => {
       >
         {props.children}
       </div>
-    </a>
+    </Link>
   ) : (
     <button
       css={commonStyles}
