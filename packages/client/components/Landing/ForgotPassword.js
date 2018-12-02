@@ -1,11 +1,19 @@
+import { Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
 import axios from "axios";
 
 import Landing from "./Landing";
 import { SERVER_HOST } from "../../Client";
 import * as constants from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
+
+const GET_AUTHENTICATION_STATUS = gql`
+  query {
+    isAuthenticated @client
+  }
+`;
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -14,6 +22,16 @@ class ForgotPassword extends Component {
     this.state = {
       email: ""
     };
+  }
+
+  getRedirectPath() {
+    const locationState = this.props.location.state;
+
+    if (locationState && locationState.from.pathname) {
+      return locationState.from.pathname;
+    }
+
+    return "/";
   }
 
   async requestPasswordReset() {
@@ -38,6 +56,21 @@ class ForgotPassword extends Component {
   }
 
   render() {
+    const { isAuthenticated } = this.props.data;
+
+    if (isAuthenticated) {
+      return (
+        <Redirect
+          to={{
+            pathname: this.getRedirectPath(),
+            state: {
+              from: this.props.location
+            }
+          }}
+        />
+      );
+    }
+
     return (
       <Landing>
         <img
@@ -102,4 +135,4 @@ class ForgotPassword extends Component {
   }
 }
 
-export default ForgotPassword;
+export default graphql(GET_AUTHENTICATION_STATUS)(ForgotPassword);

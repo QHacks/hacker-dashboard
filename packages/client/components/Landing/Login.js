@@ -1,6 +1,6 @@
+import { Link, Redirect } from "react-router-dom";
+import { graphql, compose } from "react-apollo";
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import axios from "axios";
 
@@ -18,6 +18,12 @@ const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
   }
 `;
 
+const GET_AUTHENTICATION_STATUS = gql`
+  query {
+    isAuthenticated @client
+  }
+`;
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -27,6 +33,16 @@ class Login extends Component {
       password: "",
       rememberMe: true
     };
+  }
+
+  getRedirectPath() {
+    const locationState = this.props.location.state;
+
+    if (locationState && locationState.from.pathname) {
+      return locationState.from.pathname;
+    }
+
+    return "/";
   }
 
   async login() {
@@ -53,6 +69,21 @@ class Login extends Component {
   }
 
   render() {
+    const { isAuthenticated } = this.props.data;
+
+    if (isAuthenticated) {
+      return (
+        <Redirect
+          to={{
+            pathname: this.getRedirectPath(),
+            state: {
+              from: this.props.location
+            }
+          }}
+        />
+      );
+    }
+
     return (
       <Landing>
         <img
@@ -146,4 +177,7 @@ class Login extends Component {
   }
 }
 
-export default graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION)(Login);
+export default compose(
+  graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION),
+  graphql(GET_AUTHENTICATION_STATUS)
+)(Login);

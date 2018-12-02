@@ -1,5 +1,6 @@
 import { resolvers, defaults, typeDefs } from "./cache";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import { persistCache } from "apollo-cache-persist";
 import { withClientState } from "apollo-link-state";
 import { setContext } from "apollo-link-context";
 import { ApolloClient } from "apollo-client";
@@ -50,6 +51,11 @@ const stateLink = withClientState({
   resolvers,
   defaults,
   typeDefs
+});
+
+persistCache({
+  cache,
+  storage: window.localStorage
 });
 
 // Error handler link, will attempt operation retrys after refreshing access token
