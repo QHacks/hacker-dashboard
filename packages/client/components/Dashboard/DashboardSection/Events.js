@@ -45,7 +45,7 @@ class Events extends Component {
             </strong>
             <p>
               Your application is in and the QHacks’s team is working hard to
-              review it carefully. Stay in tuned for updates.
+              review it carefully. Stay tuned for updates.
             </p>
           </div>
         </Card>
