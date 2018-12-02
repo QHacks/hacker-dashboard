@@ -18,6 +18,7 @@ class StatusReport extends Component {
       }
     }
   }
+
   getIcon() {
     switch (this.props.type.toLowerCase()) {
       case "caution": {
@@ -34,6 +35,7 @@ class StatusReport extends Component {
       }
     }
   }
+
   getStatus() {
     if (this.props.status) return this.props.status;
     switch (this.props.type.toLowerCase()) {
@@ -51,6 +53,7 @@ class StatusReport extends Component {
       }
     }
   }
+
   render() {
     return (
       <div

@@ -1,8 +1,16 @@
 import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+
 import MenuBar from "../MenuBar/index.js";
 import * as constants from "../../assets/constants";
 
+const GET_AUTHENTICATION_STATUS = gql`
+  query {
+    isAuthenticated @client
+  }
+`;
 class Landing extends Component {
   getRedirectPath() {
     const locationState = this.props.location.state;
@@ -15,9 +23,9 @@ class Landing extends Component {
   }
 
   render() {
-    const authenticated = false;
+    const { isAuthenticated } = this.props.data;
 
-    if (authenticated) {
+    if (!isAuthenticated) {
       return (
         <Redirect
           to={{
@@ -29,6 +37,7 @@ class Landing extends Component {
         />
       );
     }
+
     return (
       <div>
         <MenuBar wide={true} />
@@ -102,4 +111,4 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+export default graphql(GET_AUTHENTICATION_STATUS)(Landing);

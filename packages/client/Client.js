@@ -9,6 +9,8 @@ import React from "react";
 
 const rootElement = document.getElementById("root");
 
+export const SERVER_HOST = "http://localhost:3000";
+
 const Client = () => (
   <ApolloProvider client={apolloClient}>
     <BrowserRouter>

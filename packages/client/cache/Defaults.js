@@ -1,3 +1,3 @@
 export default {
-  isConnected: true
+  isAuthenticated: false
 };

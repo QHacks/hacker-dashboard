@@ -1,22 +1,25 @@
 import { Route, Switch } from "react-router-dom";
-import PrivateRoute from "../utils/PrivateRoute";
 import React, { Component } from "react";
-import Dashboard from "../Dashboard";
-import Login from "../Landing/Login";
+import "normalize.css";
+
 import ForgotPassword from "../Landing/ForgotPassword";
 import UpdatePassword from "../Landing/UpdatePassword";
-import Apply from "../Apply";
 import * as constants from "../../assets/constants";
-import "normalize.css";
+import PrivateRoute from "../utils/PrivateRoute";
+import Dashboard from "../Dashboard";
+import Login from "../Landing/Login";
+import Apply from "../Apply";
 
 const globalStyles = `
 color: #020b1b;
+
 * {
   font-family: "Encode Sans", sans-serif !important;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
+
 a {
   text-decoration: none;
   color:${constants.linkUnvisited};
@@ -27,15 +30,18 @@ a {
     color:${constants.linkVisited};
   }
 }
+
 h1 {
   font-size: 44px;
   font-weight: 700;
   margin: 16px 0;
 }
+
 h2 {
   font-size: 24px
   font-weight: 600;
 }
+
 h3 {
   font-size: 18px
   font-weight: 600;
@@ -44,9 +50,11 @@ h3 {
 h1, h2, h3, h4 {
   color: ${constants.blue};
 }
+
 strong {
   font-weight: 600;
 }
+
 label {
   font-size: 14px;
   margin: 6px 0;
@@ -55,6 +63,7 @@ label {
   font-weight: 600;
   text-transform: uppercase;
 }
+
 input:not([type="checkbox"]) {
   height: 42.4px;
   border: 1px solid #b2b7c2;
@@ -72,14 +81,17 @@ input:not([type="checkbox"]) {
   width: calc(100% - 12px);
   background-color: #f8f8f8;
 }
+
 input:not([type="checkbox"]):only-of-type {
   width: 100%;
   margin: 6px 0;
 }
+
 div.select > div {
   border: 1px solid #b2b7c2;
   background-color: #f8f8f8;
 }
+
 div.select input {
   height: unset;
   line-height: unset;
@@ -88,6 +100,7 @@ div.select input {
   box-shadow: none !important;
   background-color: unset !important;
 }
+
 textarea {
   border: 1px solid #b2b7c2;
   background-color: #f8f8f8;
@@ -109,10 +122,13 @@ export default class App extends Component {
       <div css={globalStyles}>
         <Switch>
           {/* Public routes */}
-          <Route path="/qhacks-2019/apply" component={Apply} />
           <Route path="/login" component={Login} />
+          <Route path="/qhacks-2019/apply" component={Apply} />
           <Route path="/forgot-password" component={ForgotPassword} />
-          <Route path="/update-password/:hash" component={UpdatePassword} />
+          <Route
+            path="/update-password/:resetHash"
+            component={UpdatePassword}
+          />
 
           {/* Authenticated routes */}
           <PrivateRoute path="/" component={Dashboard} />

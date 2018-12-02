@@ -1,13 +1,27 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import ActionButton from "../ActionButton/ActionButton";
-import Landing from "./Landing";
-import StatusReport from "../StatusReport/StatusReport";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
 import axios from "axios";
+
+import Landing from "./Landing";
+import { SERVER_HOST } from "../../Client";
+import ActionButton from "../ActionButton/ActionButton";
+import StatusReport from "../StatusReport/StatusReport";
+
+const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
+const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
+
+const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
+  mutation UpdateAutheticationStatus($isAuthenticated: Boolean) {
+    updateAuthenticationStatus(isAuthenticated: $isAuthenticated) @client
+  }
+`;
 
 class Login extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       email: "",
       password: "",
@@ -17,18 +31,24 @@ class Login extends Component {
 
   async login() {
     const { email, password } = this.state;
-    try {
-      const response = await axios.post(
-        "https://localhost:3000/oauth/session",
-        {
-          email,
-          password
-        }
-      );
 
-      console.log(response);
+    try {
+      const response = await axios.post(`${SERVER_HOST}/oauth/session`, {
+        email,
+        password,
+        grantType: "password"
+      });
+
+      localStorage.setItem(ACCESS_TOKEN_STORAGE, response.data.accessToken);
+      localStorage.setItem(REFRESH_TOKEN_STORAGE, response.data.refreshToken);
+
+      this.props.mutate({
+        variables: {
+          isAuthenticated: true
+        }
+      });
     } catch (err) {
-      console.error(err);
+      this.setState({ error: "Test Error" });
     }
   }
 
@@ -109,7 +129,7 @@ class Login extends Component {
           </div>
         </div>
         {this.state.error ? (
-          <StatusReport type="caution" message={this.state.error} />
+          <StatusReport type="danger" message={this.state.error} />
         ) : (
           ""
         )}
@@ -126,4 +146,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION)(Login);

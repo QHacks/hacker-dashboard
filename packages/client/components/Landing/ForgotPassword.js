@@ -1,16 +1,42 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
+import Landing from "./Landing";
+import { SERVER_HOST } from "../../Client";
 import * as constants from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
-import Landing from "./Landing";
 
 class ForgotPassword extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       email: ""
     };
   }
+
+  async requestPasswordReset() {
+    const { email } = this.state;
+
+    try {
+      const response = await axios.post(
+        `${SERVER_HOST}/oauth/createResetHash`,
+        {
+          email
+        }
+      );
+
+      this.setState({
+        success: "Test Success"
+      });
+    } catch (err) {
+      this.setState({
+        error: "Test Error"
+      });
+    }
+  }
+
   render() {
     return (
       <Landing>
@@ -64,7 +90,12 @@ class ForgotPassword extends Component {
           </Link>
         </div>
         <div>
-          <ActionButton color="blue">Send reset link</ActionButton>
+          <ActionButton
+            color="blue"
+            onClick={() => this.requestPasswordReset()}
+          >
+            Send reset link
+          </ActionButton>
         </div>
       </Landing>
     );

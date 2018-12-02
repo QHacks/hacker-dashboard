@@ -1,12 +1,20 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+
+const GET_AUTHENTICATION_STATUS = gql`
+  query {
+    isAuthenticated @client
+  }
+`;
 
 const PrivateRoute = ({ component: ComposedComponent, types, ...rest }) => {
   class Authentication extends Component {
     handleRender(props) {
-      const authenticated = false;
+      const { isAuthenticated } = this.props;
 
-      if (!authenticated) {
+      if (!isAuthenticated) {
         return (
           <Redirect
             to={{
@@ -20,18 +28,6 @@ const PrivateRoute = ({ component: ComposedComponent, types, ...rest }) => {
         );
       }
 
-      // const authType =
-      //   (isAdmin && "admin") ||
-      //   (isHacker && "hacker") ||
-      //   (isSuperAdmin && "superAdmin");
-
-      // let isNecessaryRole;
-      // if (types) {
-      //   isNecessaryRole = types.includes(authType);
-      // }
-
-      // if (types && !isNecessaryRole) return null;
-
       return <ComposedComponent {...props} />;
     }
 
@@ -40,7 +36,14 @@ const PrivateRoute = ({ component: ComposedComponent, types, ...rest }) => {
     }
   }
 
-  return <Authentication />;
+  const AuthenticationContainer = graphql(GET_AUTHENTICATION_STATUS, {
+    props: ({ data: { isAuthenticated }, ownProps }) => ({
+      ...ownProps,
+      isAuthenticated
+    })
+  })(Authentication);
+
+  return <AuthenticationContainer />;
 };
 
 export default PrivateRoute;
