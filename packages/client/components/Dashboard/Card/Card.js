@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 
-class Class extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+class Card extends Component {
   render() {
     return (
       <div
@@ -43,4 +39,4 @@ class Class extends Component {
   }
 }
 
-export default Class;
+export default Card;
