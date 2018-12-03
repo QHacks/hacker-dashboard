@@ -29,7 +29,7 @@ class ApplicationAuthSlider extends Component {
       "@media screen and (max-width: 760px)": { width: "100%" },
       maxWidth: "600px",
       margin: "20px auto 35px auto",
-      backgroundColor: { offWhite },
+      backgroundColor: offWhite,
       height: "44px",
       position: "relative",
       zIndex: 2,
