@@ -5,7 +5,7 @@ import ActionButton from "../ActionButton/ActionButton";
 import crown from "../../assets/img/qhacks-tricolor-logo.svg";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 
-const MenuBar = (props) => (
+const MenuBar = ({ wide, hideItems, showLogin }) => (
   <header
     css="
       width: 100%;
@@ -17,7 +17,7 @@ const MenuBar = (props) => (
       left: 0;
     "
   >
-    <ContentWrapper wide={props.wide}>
+    <ContentWrapper wide={wide}>
       <div
         css="
           display: inline-block;
@@ -28,9 +28,9 @@ const MenuBar = (props) => (
       <ul
         css={`
           font-size: 14px;
-          display: ${props.hideItems ? "none" : "float"};
+          display: ${hideItems ? "none" : "float"};
           float: right;
-          width: 490px;
+          width: ${showLogin ? "590px" : "490px"};
           justify-content: space-between;
           line-height: 44px;
           text-transform: uppercase;
@@ -74,15 +74,27 @@ const MenuBar = (props) => (
           </a>
         </li>
         <li>
-          <ActionButton
-            style="font-size: 16px;"
-            type="rounded"
-            internal
-            inline
-            link="/qhacks-2019/apply"
-          >
-            Apply
-          </ActionButton>
+          {showLogin ? (
+            <ActionButton
+              style="font-size: 16px;"
+              type="rounded"
+              internal
+              inline
+              link="/login"
+            >
+              Dashboard Login
+            </ActionButton>
+          ) : (
+            <ActionButton
+              style="font-size: 16px;"
+              type="rounded"
+              internal
+              inline
+              link="/qhacks-2019/apply"
+            >
+              Apply
+            </ActionButton>
+          )}
         </li>
       </ul>
     </ContentWrapper>
