@@ -5,6 +5,7 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
+import { steel } from "../../assets/colors";
 
 class ApplicationForm extends Component {
   constructor(props) {
@@ -47,8 +48,11 @@ class ApplicationForm extends Component {
     this.nextStep = this.nextStep.bind(this);
     this.previousStep = this.previousStep.bind(this);
     this.resetConfirmPassword = this.resetConfirmPassword.bind(this);
+    this.submit = this.submit.bind(this);
+  }
 
-    this.validators = (authAnswers) => ({
+  validators(authAnswers) {
+    return {
       email: {
         regex: /^.+@.+$/,
         stepNum: 0,
@@ -158,7 +162,13 @@ class ApplicationForm extends Component {
         stepNum: 1,
         message: "Please enter a valid month"
       }
-    });
+    };
+  }
+
+  submit() {
+    const answers = this.state.applicationAnswers;
+    // send request
+    this.props.nextStep();
   }
 
   setAuthAnswer(field, answer) {
@@ -208,9 +218,7 @@ class ApplicationForm extends Component {
   }
 
   previousStep() {
-    if (this.validateAllAnswers()) {
-      this.props.previousStep();
-    }
+    this.props.previousStep();
   }
 
   validateAllAnswers() {
@@ -290,7 +298,7 @@ class ApplicationForm extends Component {
       display: flex;
       margin: 36px 0;
       :not(:last-child) {
-        border-bottom: 2px solid #dddddd;
+        border-bottom: 2px solid ${steel};
       }
       padding-bottom: 64px;
     `;
@@ -376,6 +384,7 @@ class ApplicationForm extends Component {
             hasErrors={this.state.hasErrors}
             nextStep={this.nextStep}
             previousStep={this.previousStep}
+            submit={this.submit}
             {...allStyles}
           />
         );

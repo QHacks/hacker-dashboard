@@ -30,11 +30,11 @@ class UpdatePassword extends Component {
       );
 
       this.setState({
-        success: "Test Success"
+        success: "Password successfully reset"
       });
     } catch (err) {
       this.setState({
-        error: "Test Error"
+        error: "Something went wrong. Refresh and try again in a minute."
       });
     }
   }

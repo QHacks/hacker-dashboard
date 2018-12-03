@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import { offWhite } from "../../assets/colors";
 
 class ApplicationHeader extends Component {
   render() {
     return (
       <div
         css={`
-          background-color: #fafafa;
+          background-color: ${offWhite};
           height: 325px;
           text-align: center;
           padding-top: 155px;

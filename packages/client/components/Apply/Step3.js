@@ -1,6 +1,7 @@
 import React from "react";
 import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
+import { relExternalTrusted } from "../../assets/constants";
 
 const Step3 = (props) => {
   const mlhSectionStyle = `
@@ -124,7 +125,14 @@ const Step3 = (props) => {
                 }
               />
               <label htmlFor="agreeMlhCodeConduct">
-                I have read and agree to the MLH code of conduct
+                I have read and agree to the{" "}
+                <a
+                  rel={relExternalTrusted}
+                  target="_blank"
+                  href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf"
+                >
+                  MLH code of conduct
+                </a>
               </label>
               <ValidationError message={props.errors.agreeMlhCodeConduct} />
             </div>
@@ -146,9 +154,31 @@ const Step3 = (props) => {
                 I authorize you to share my application/registration information
                 for event administration, ranking, MLH administration, pre- and
                 post-event informational e-mails, and occasional messages about
-                hackathons in-line with the MLH Privacy Policy. Further, I agree
-                to the terms of both the MLH contest Terms and Conditions and
-                the MLH Privacy Policy.
+                hackathons in-line with the{" "}
+                <a
+                  rel={relExternalTrusted}
+                  target="_blank"
+                  href="https://mlh.io/privacy"
+                >
+                  MLH Privacy Policy
+                </a>
+                . Further, I agree to the terms of both the{" "}
+                <a
+                  rel={relExternalTrusted}
+                  target="_blank"
+                  href="https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md"
+                >
+                  MLH contest Terms and Conditions
+                </a>{" "}
+                and the{" "}
+                <a
+                  rel={relExternalTrusted}
+                  target="_blank"
+                  href="https://mlh.io/privacy"
+                >
+                  MLH Privacy Policy
+                </a>
+                .
               </label>
               <ValidationError
                 message={props.errors.agreeMlhTosAndPrivacyPolicy}
@@ -168,7 +198,7 @@ const Step3 = (props) => {
                 disabled={props.hasErrors}
                 style={`margin-top: 50px;`}
                 color="red"
-                onClick={() => props.nextStep()}
+                onClick={() => props.submit()}
               >
                 Submit
               </ActionButton>

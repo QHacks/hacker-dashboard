@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 import Modal from "react-modal";
-import { relative } from "path";
+import { offWhite } from "../../assets/colors";
 
 Modal.setAppElement("#root");
 
@@ -22,7 +22,7 @@ const PrivacyPolicyModal = (props) => {
     >
       <div
         css={`
-          background-color: #f8f8f8;
+          background-color: ${offWhite};
           text-align: center;
           padding: 20px 0;
           width: 100%;

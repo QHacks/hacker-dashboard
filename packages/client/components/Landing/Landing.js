@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-
 import MenuBar from "../MenuBar/index.js";
-import { grey } from "../../assets/colors";
+import { grey, steel } from "../../assets/colors";
 
 class Landing extends Component {
   render() {
@@ -61,7 +60,7 @@ class Landing extends Component {
               justify-content: center;
               align-items: flex-start;
               height: 100%;
-              border-left: 1px solid #ccd3df;
+              border-left: 1px solid ${steel};
               padding: 175px calc(50vw - 615px) 100px 64px;
               @media screen and (max-width: 1400px) and (min-width: 860px) {
                 padding-right: 80px;

@@ -6,7 +6,9 @@ import {
   redLight,
   blueLight,
   redDark,
-  blueDark
+  blueDark,
+  steel,
+  offWhite
 } from "../../assets/colors";
 import { Link } from "react-router-dom";
 
@@ -81,9 +83,9 @@ const ActionButton = (props) => {
   const getDisabledBackgroundColor = () => {
     switch (getColor()) {
       case "red":
-        return "#f5f5f5";
+        return offWhite;
       case "blue":
-        return "#f5f5f5";
+        return offWhite;
       default:
         return "white";
     }
@@ -116,9 +118,9 @@ const ActionButton = (props) => {
   const getDisabledBorder = () => {
     switch (getColor()) {
       case "red":
-        return "1px solid #c4c4c4";
+        return `1px solid ${steel}`;
       case "blue":
-        return "1px solid #c4c4c4";
+        return `1px solid ${steel}`;
       default:
         return props.inline ? `2px solid ${blue}` : `1px solid ${blue}`;
     }

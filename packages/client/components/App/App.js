@@ -6,13 +6,18 @@ import UpdatePassword from "../Landing/UpdatePassword";
 import Dashboard from "../Dashboard/Dashboard";
 import NotFound from "../utils/NotFound";
 import { boxShadow } from "../../assets/constants";
-import { blue, linkVisited, linkUnvisited } from "../../assets/colors";
+import {
+  blue,
+  steel,
+  offWhite,
+  linkVisited,
+  linkUnvisited
+} from "../../assets/colors";
 import Login from "../Landing/Login";
 import Route from "../utils/Route";
 import Apply from "../Apply";
 
 const globalStyles = `
-color: #020b1b;
 min-width: 800px;
 
 * {
@@ -24,6 +29,7 @@ min-width: 800px;
 
 a {
   text-decoration: none;
+  font-weight: 600;
   color:${linkUnvisited};
   :hover {
     text-decoration: underline;
@@ -66,9 +72,13 @@ label {
   text-transform: uppercase;
 }
 
+button:focus, input:focus {
+  outline: none;
+}
+
 input:not([type="checkbox"]) {
   height: 42.4px;
-  border: 1px solid #b2b7c2;
+  border: 1px solid ${steel};
   border-radius: 4px;
   margin: 6px 0;
   :last-child {
@@ -81,7 +91,7 @@ input:not([type="checkbox"]) {
   padding: 0 6px;
   line-height: 42px;
   width: calc(100% - 12px);
-  background-color: #f8f8f8;
+  background-color: ${offWhite};
 }
 
 input:not([type="checkbox"]):only-of-type {
@@ -90,8 +100,8 @@ input:not([type="checkbox"]):only-of-type {
 }
 
 div.select > div {
-  border: 1px solid #b2b7c2;
-  background-color: #f8f8f8;
+  border: 1px solid ${steel};
+  background-color: ${offWhite};
 }
 
 div.select input {
@@ -104,8 +114,8 @@ div.select input {
 }
 
 textarea {
-  border: 1px solid #b2b7c2;
-  background-color: #f8f8f8;
+  border: 1px solid ${steel};
+  background-color: ${offWhite};
   border-radius: 4px;
   line-height: 1.43;
   margin: 6px 0;

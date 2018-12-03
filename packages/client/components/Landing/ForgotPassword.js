@@ -28,11 +28,11 @@ class ForgotPassword extends Component {
       );
 
       this.setState({
-        success: "Test Success"
+        success: "Check your email!"
       });
     } catch (err) {
       this.setState({
-        error: "Test Error"
+        error: "Something went wrong. Refresh and try again in a minute."
       });
     }
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { css } from "emotion";
-import { red, redDark } from "../../assets/colors";
+import { red, redDark, offWhite, steel } from "../../assets/colors";
 
 class ApplicationAuthSlider extends Component {
   changeSelected(index) {
@@ -29,12 +29,12 @@ class ApplicationAuthSlider extends Component {
       "@media screen and (max-width: 760px)": { width: "100%" },
       maxWidth: "600px",
       margin: "20px auto 35px auto",
-      backgroundColor: "#F6F6F6",
+      backgroundColor: { offWhite },
       height: "44px",
       position: "relative",
       zIndex: 2,
       boxSizing: "content-box",
-      border: "1px solid #b2b7c2",
+      border: `1px solid ${steel}`,
       borderRadius: "44px",
       "> button.item": {
         textAlign: "center",

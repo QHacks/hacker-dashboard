@@ -50,7 +50,7 @@ class Login extends Component {
         }
       });
     } catch (err) {
-      this.setState({ error: "Test Error" });
+      this.setState({ error: "Unable to log in" });
     }
   }
 

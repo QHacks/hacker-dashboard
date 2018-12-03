@@ -22,5 +22,11 @@ export const redDark = redBase.darken(10).toString();
 const greyBase = tinycolor("#404554");
 export const grey = greyBase.toString();
 
-export const linkUnvisited = blueLight;
-export const linkVisited = blueDark;
+const steelBase = tinycolor("#c5c9d1");
+export const steel = steelBase.toString();
+
+export const linkUnvisited = grey;
+export const linkVisited = grey;
+
+const offWhiteBase = tinycolor("#F7F7F7");
+export const offWhite = offWhiteBase.toString();
