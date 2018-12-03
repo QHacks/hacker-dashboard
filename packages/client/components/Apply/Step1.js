@@ -3,6 +3,8 @@ import FinePrint from "../FinePrint/FinePrint";
 import ApplicationAuthSlider from "./ApplicationAuthSlider";
 import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
+import { Link } from "react-router-dom";
+import { grey } from "../../assets/colors";
 
 const Step1 = (props) => {
   return (
@@ -59,6 +61,18 @@ const Step1 = (props) => {
               </section>
               <section css={props.inputRowStyle}>
                 <div>
+                  <Link
+                    css={`
+                      font-weight: 600;
+                      color: ${grey};
+                      text-decoration: underline;
+                      float: right;
+                    `}
+                    to="/forgot-password"
+                  >
+                    Forgot password
+                  </Link>
+                  <br />
                   <ActionButton
                     disabled={props.hasErrors}
                     style={`margin-top: 50px;`}

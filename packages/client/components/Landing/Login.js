@@ -117,7 +117,7 @@ class Login extends Component {
               type="checkbox"
               id="rememberMe"
               onChange={(e) => this.setState({ rememberMe: e.target.checked })}
-            />
+            />{" "}
             <label htmlFor="rememberMe">Remember me</label>
           </div>
           <div

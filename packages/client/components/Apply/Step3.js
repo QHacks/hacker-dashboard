@@ -3,6 +3,20 @@ import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
 
 const Step3 = (props) => {
+  const mlhSectionStyle = `
+    margin: 16px 0 8px;
+    label {
+      ${props.inputRowStyle}
+      color: black;
+      text-transform: unset;
+      font-weight: 500;
+      width: unset;
+      display: inline;
+      padding-left: 8px;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+  `;
   return (
     <div css={props.formStyle}>
       <h2>Hackathon Information</h2>
@@ -96,19 +110,7 @@ const Step3 = (props) => {
               <ValidationError message={props.errors.fromLocation} />
             </div>
           </section>
-          <section
-            css={`
-              label {
-                ${props.inputRowStyle}
-                color: black;
-                text-transform: unset;
-                font-weight: 500;
-                width: unset;
-                display: inline;
-                padding-left: 8px;
-              }
-            `}
-          >
+          <section css={mlhSectionStyle}>
             <div>
               <input
                 id="agreeMlhCodeConduct"
@@ -124,21 +126,10 @@ const Step3 = (props) => {
               <label htmlFor="agreeMlhCodeConduct">
                 I have read and agree to the MLH code of conduct
               </label>
+              <ValidationError message={props.errors.agreeMlhCodeConduct} />
             </div>
           </section>
-          <section
-            css={`
-              label {
-                ${props.inputRowStyle}
-                color: black;
-                text-transform: unset;
-                font-weight: 500;
-                width: unset;
-                display: inline;
-                padding-left: 8px;
-              }
-            `}
-          >
+          <section css={mlhSectionStyle}>
             <div>
               <input
                 id="agreeMlhTosAndPrivacyPolicy"
@@ -159,6 +150,9 @@ const Step3 = (props) => {
                 to the terms of both the MLH contest Terms and Conditions and
                 the MLH Privacy Policy.
               </label>
+              <ValidationError
+                message={props.errors.agreeMlhTosAndPrivacyPolicy}
+              />
             </div>
           </section>
           <section css={props.inputRowStyle}>
