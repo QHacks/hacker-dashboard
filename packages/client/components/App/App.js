@@ -6,6 +6,7 @@ import ForgotPassword from "../Landing/ForgotPassword";
 import UpdatePassword from "../Landing/UpdatePassword";
 import * as constants from "../../assets/constants";
 import Dashboard from "../Dashboard/Dashboard";
+import NotFound from "../utils/NotFound";
 import Login from "../Landing/Login";
 import Route from "../utils/Route";
 import Apply from "../Apply";
@@ -139,6 +140,9 @@ export default class App extends Component {
 
           {/* Authenticated routes */}
           <Route path="/profile" component={Dashboard} type="private" />
+
+          {/* Catch all routes */}
+          <Route path="*" component={NotFound} />
         </Switch>
       </div>
     );

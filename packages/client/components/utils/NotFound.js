@@ -4,7 +4,7 @@ import React from "react";
 export default ({ location }) => (
   <Redirect
     to={{
-      pathname: "/",
+      pathname: "/profile",
       state: {
         from: location,
         message: "Page not found!"
