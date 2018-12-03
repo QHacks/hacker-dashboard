@@ -18,6 +18,22 @@ class StatusReport extends Component {
       }
     }
   }
+  getBackgroundColor() {
+    switch (this.props.type.toLowerCase()) {
+      case "caution": {
+        return "#fffbf6";
+      }
+      case "danger": {
+        return "#fffbfc";
+      }
+      case "success": {
+        return "#f5fdf7";
+      }
+      default: {
+        return "#fcfeff";
+      }
+    }
+  }
 
   getIcon() {
     switch (this.props.type.toLowerCase()) {
@@ -60,11 +76,12 @@ class StatusReport extends Component {
         css={`
           border: 1px solid ${this.getBorderColor()};
           border-radius: 6px;
-          background-color: white;
-          padding: 12px;
+          background-color: ${this.getBackgroundColor()};
+          padding: 12px !important;
           margin: 12px 0;
           line-height: 24px;
           width: 100%;
+          text-align: left;
           > * {
             vertical-align: middle;
           }

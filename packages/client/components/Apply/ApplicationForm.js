@@ -1,3 +1,5 @@
+import { graphql, compose } from "react-apollo";
+import gql from "graphql-tag";
 import React, { Component } from "react";
 import escapeStringRegexp from "escape-string-regexp";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
@@ -6,10 +8,23 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
 import { steel } from "../../assets/colors";
+import axios from "axios";
+import { SERVER_HOST } from "../../Client";
+import StatusReport from "../StatusReport/StatusReport";
+
+const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
+const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
+
+const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
+  mutation UpdateAutheticationStatus($input: AuthInfoInput!) {
+    authInfoUpdate(input: $input) @client
+  }
+`;
 
 class ApplicationForm extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       returningHacker: false,
       authAnswers: {
@@ -42,16 +57,100 @@ class ApplicationForm extends Component {
         personalWebsite: ""
       },
       errors: {},
-      hasErrors: false
+      hasErrors: false,
+      alert: {
+        type: "",
+        status: null,
+        message: ""
+      },
+      alertShown: false
     };
 
+    this.setApplicationAnswer = this.setApplicationAnswer.bind(this);
     this.changeSelected = this.changeSelected.bind(this);
     this.setAuthAnswer = this.setAuthAnswer.bind(this);
-    this.setApplicationAnswer = this.setApplicationAnswer.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.previousStep = this.previousStep.bind(this);
     this.resetConfirmPassword = this.resetConfirmPassword.bind(this);
     this.submit = this.submit.bind(this);
+    this.login = this.login.bind(this);
+    this.createAccount = this.createAccount.bind(this);
+  }
+
+  async login() {
+    if (this.validateAllAnswers()) {
+      const { email, password } = this.state.authAnswers;
+
+      try {
+        const response = await axios.post(`${SERVER_HOST}/oauth/session`, {
+          email,
+          password,
+          grantType: "password"
+        });
+
+        localStorage.setItem(ACCESS_TOKEN_STORAGE, response.data.accessToken);
+        localStorage.setItem(REFRESH_TOKEN_STORAGE, response.data.refreshToken);
+
+        this.props.authInfoUpdate({
+          variables: {
+            input: {
+              isAuthenticated: true
+            }
+          }
+        });
+
+        this.nextStep();
+      } catch (err) {
+        this.setState({
+          alert: {
+            type: "danger",
+            message: "Login failed",
+            status: null
+          },
+          alertShown: true
+        });
+        setTimeout(() => this.setState({ alertShown: false }), 5000);
+      }
+    }
+  }
+
+  async createAccount() {
+    if (this.validateAllAnswers()) {
+      console.log("validated");
+      const { firstName, lastName, email, password } = this.state.authAnswers;
+
+      try {
+        const response = await axios.post(`${SERVER_HOST}/oauth/signup`, {
+          firstName,
+          lastName,
+          email,
+          password
+        });
+
+        localStorage.setItem(ACCESS_TOKEN_STORAGE, response.data.accessToken);
+        localStorage.setItem(REFRESH_TOKEN_STORAGE, response.data.refreshToken);
+
+        this.props.authInfoUpdate({
+          variables: {
+            input: {
+              isAuthenticated: true
+            }
+          }
+        });
+
+        this.nextStep();
+      } catch (err) {
+        this.setState({
+          alert: {
+            type: "danger",
+            message: "Create account failed",
+            status: null
+          },
+          alertShown: true
+        });
+        setTimeout(() => this.setState({ alertShown: false }), 5000);
+      }
+    }
   }
 
   validators() {
@@ -281,6 +380,7 @@ class ApplicationForm extends Component {
       this.setError(field, "", auth);
       return true;
     }
+
     if (
       this.props.stepNum !== validators[field].stepNum ||
       validators[field].regex.test(answer)
@@ -288,6 +388,7 @@ class ApplicationForm extends Component {
       this.setError(field, "", auth);
       return true;
     }
+
     this.setError(field, validators[field].message, auth);
     return false;
   }
@@ -370,15 +471,18 @@ class ApplicationForm extends Component {
       default: {
         return (
           <Step1
+            alert={this.state.alert}
+            alertShown={this.state.alertShown}
             returningHacker={this.state.returningHacker}
             changeSelected={this.changeSelected}
             authAnswers={this.state.authAnswers}
             setAuthAnswer={this.setAuthAnswer}
-            setApplicationAnswer={this.setApplicationAnswer}
             errors={this.state.errors}
             hasErrors={this.state.hasErrors}
             nextStep={this.nextStep}
             resetConfirmPassword={this.resetConfirmPassword}
+            login={this.login}
+            createAccount={this.createAccount}
             {...allStyles}
           />
         );
@@ -421,4 +525,8 @@ class ApplicationForm extends Component {
   }
 }
 
-export default ApplicationForm;
+export default compose(
+  graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION, {
+    name: "authInfoUpdate"
+  })
+)(ApplicationForm);

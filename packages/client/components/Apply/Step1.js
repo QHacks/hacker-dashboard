@@ -5,12 +5,12 @@ import ApplicationAuthSlider from "./ApplicationAuthSlider";
 import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
 import { grey } from "../../assets/colors";
+import StatusReport from "../StatusReport/StatusReport";
 
 const Step1 = (props) => (
   <div
     css={`
-      ${props.formStyle}
-      text-align: center;
+      ${props.formStyle} text-align: center;
     `}
   >
     <h3>
@@ -57,6 +57,9 @@ const Step1 = (props) => (
               </div>
             </section>
             <section css={props.inputRowStyle}>
+              {props.alertShown ? <StatusReport {...props.alert} /> : ""}
+            </section>
+            <section css={props.inputRowStyle}>
               <div>
                 <Link
                   css={`
@@ -74,7 +77,7 @@ const Step1 = (props) => (
                   disabled={props.hasErrors}
                   style="margin-top: 50px;"
                   color="red"
-                  onClick={() => props.nextStep()}
+                  onClick={async () => await props.login()}
                 >
                   Login
                 </ActionButton>
@@ -170,12 +173,15 @@ const Step1 = (props) => (
               </div>
             </section>
             <section css={props.inputRowStyle}>
+              {props.alertShown ? <StatusReport {...props.alert} /> : ""}
+            </section>
+            <section css={props.inputRowStyle}>
               <div>
                 <ActionButton
                   disabled={props.hasErrors}
                   style="margin-top: 50px;"
                   color="red"
-                  onClick={() => props.nextStep()}
+                  onClick={async () => await props.createAccount()}
                 >
                   Create Account
                 </ActionButton>

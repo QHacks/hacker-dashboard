@@ -124,18 +124,18 @@ const apolloClientSetup = async () => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE);
 
     // Only set authorization headers if none exist
-    // Mainly becuase error handler sets new tokens on retries
-    if (previousContext.headers && !previousContext.headers.authorization) {
-      return {
-        ...previousContext,
-        headers: {
-          ...previousContext.headers,
-          authorization: accessToken ? `Bearer ${accessToken}` : ""
-        }
-      };
-    }
-
-    return previousContext;
+    // Mainly because error handler sets new tokens on retries
+    //if (!previousContext.headers && !previousContext.headers.authorization) {
+    return {
+      ...previousContext,
+      headers: {
+        ...previousContext.headers,
+        authorization: accessToken ? `Bearer ${accessToken}` : ""
+      }
+    };
+    //}
+    // console.log("HERE", previousContext);
+    // return previousContext;
   });
 
   // Identifies the client in Apollo Engine

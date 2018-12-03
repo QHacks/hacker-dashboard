@@ -1,21 +1,48 @@
-import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
+import { compose, graphql } from "react-apollo";
+import gql from "graphql-tag";
+
 import MenuBar from "../MenuBar/index";
+import ApplicationForm from "./ApplicationForm";
 import ApplicationHeader from "./ApplicationHeader";
 import ApplicationNavigation from "./ApplicationSteps/index";
-import ApplicationForm from "./ApplicationForm";
+
+const GET_AUTHENTICATION_STATUS = gql`
+  query {
+    user {
+      firstName
+      lastName
+      oauthInfo {
+        role
+      }
+      ... on Hacker {
+        hasApplied(eventSlug: "qhacks-2019")
+      }
+    }
+    authInfo @client {
+      isAuthenticated
+    }
+  }
+`;
 
 class Apply extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       stepNum: 0
     };
   }
 
-  handleApply() {
-    // eslint-disable-line class-methods-use-this
-    // make api request to apply
+  componentDidMount() {
+    // console.log(this.props);
+    // const { isAuthenticated } = this.props.data.authInfo;
+    // // also need to check if they have already applied
+    // if (isAuthenticated) {
+    //   this.setState({
+    //     stepNum: 1
+    //   });
+    // }
   }
 
   previousStep() {
@@ -26,29 +53,11 @@ class Apply extends Component {
     this.setState((prevState) => ({ stepNum: prevState.stepNum + 1 }));
   }
 
-  getRedirectPath() {
-    const locationState = this.props.location.state;
-
-    if (locationState && locationState.from.pathname) {
-      return locationState.from.pathname;
-    }
-
-    return "/";
-  }
-
   render() {
-    const authenticated = false;
-    if (authenticated) {
-      return (
-        <Redirect
-          to={{
-            pathname: this.getRedirectPath(),
-            state: {
-              from: this.props.location
-            }
-          }}
-        />
-      );
+    console.log("PROPS", this.props);
+
+    if (this.props.data.loading) {
+      return <div>Loading...</div>;
     }
 
     return (
@@ -74,4 +83,8 @@ class Apply extends Component {
   }
 }
 
-export default Apply;
+export default graphql(GET_AUTHENTICATION_STATUS, {
+  options: {
+    errorPolicy: "all"
+  }
+})(Apply);

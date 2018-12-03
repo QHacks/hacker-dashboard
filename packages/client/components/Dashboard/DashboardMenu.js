@@ -3,8 +3,16 @@ import ActionButton from "../ActionButton/ActionButton";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 import crown from "../../assets/img/qhacks-tricolor-logo.svg";
 import wordmark from "../../assets/img/qhacks-wordmark-colored.svg";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
 
-const DashboardMenu = () => (
+const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
+  mutation UpdateAutheticationStatus($input: AuthInfoInput!) {
+    authInfoUpdate(input: $input) @client
+  }
+`;
+
+const DashboardMenu = (props) => (
   <header
     css="
       width: 100%;
@@ -51,6 +59,15 @@ const DashboardMenu = () => (
           type="rounded"
           internal
           link="/logout"
+          onClick={() =>
+            props.mutate({
+              variables: {
+                input: {
+                  isAuthenticated: false
+                }
+              }
+            })
+          }
         >
           Log out
         </ActionButton>
@@ -59,4 +76,4 @@ const DashboardMenu = () => (
   </header>
 );
 
-export default DashboardMenu;
+export default graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION)(DashboardMenu);

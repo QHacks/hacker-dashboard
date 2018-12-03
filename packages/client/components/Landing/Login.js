@@ -1,6 +1,6 @@
-import { graphql, compose } from "react-apollo";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import axios from "axios";
 
@@ -25,7 +25,13 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      rememberMe: true
+      rememberMe: true,
+      alert: {
+        type: "",
+        message: "",
+        status: ""
+      },
+      alertShown: false
     };
   }
 
@@ -42,7 +48,7 @@ class Login extends Component {
       localStorage.setItem(ACCESS_TOKEN_STORAGE, response.data.accessToken);
       localStorage.setItem(REFRESH_TOKEN_STORAGE, response.data.refreshToken);
 
-      this.props.mutate({
+      this.props.authInfoUpdate({
         variables: {
           input: {
             isAuthenticated: true
@@ -50,7 +56,15 @@ class Login extends Component {
         }
       });
     } catch (err) {
-      this.setState({ error: "Unable to log in" });
+      this.setState({
+        alert: {
+          message: "Unable to log in",
+          type: "danger",
+          status: null
+        },
+        alertShown: true
+      });
+      setTimeout(() => this.setState({ alertShown: false }), 5000);
     }
   }
 
@@ -130,8 +144,11 @@ class Login extends Component {
             </Link>
           </div>
         </div>
-        {this.state.error ? (
-          <StatusReport type="danger" message={this.state.error} />
+        {this.state.alertShown ? (
+          <StatusReport
+            type={this.state.alert.type}
+            message={this.state.alert.message}
+          />
         ) : (
           ""
         )}
@@ -148,4 +165,6 @@ class Login extends Component {
   }
 }
 
-export default compose(graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION))(Login);
+export default graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION, {
+  name: "authInfoUpdate"
+})(Login);
