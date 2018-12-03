@@ -9,6 +9,7 @@ class FinePrint extends Component {
       modalIsOpen: false
     };
   }
+
   render() {
     return (
       <Fragment>
@@ -18,28 +19,33 @@ class FinePrint extends Component {
             max-width: 300px;
             line-height: 1.43;
             margin: 24px auto;
-            strong {
+            button {
+              background: none;
+              border: none;
+              font-weight: 600;
               color: black;
               cursor: pointer;
             }
           `}
         >
           By signing up, you agree to QHacks’s{" "}
-          <strong
+          <button
             onClick={() =>
               this.setState({ showTos: true, showPrivacyPolicy: false })
             }
+            type="button"
           >
             Terms and Conditions
-          </strong>{" "}
+          </button>{" "}
           &{" "}
-          <strong
+          <button
             onClick={() =>
               this.setState({ showTos: false, showPrivacyPolicy: true })
             }
+            type="button"
           >
             Privacy Policy
-          </strong>
+          </button>
         </p>
         <TosModal
           modalIsOpen={this.state.showTos}

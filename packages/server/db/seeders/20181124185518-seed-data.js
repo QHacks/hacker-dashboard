@@ -32,14 +32,13 @@ module.exports = {
       queryInterface.bulkInsert("User", hackers)
     ]);
   },
-  down: (queryInterface, Sequelize) => {
-    return Promise.all([
+  down: (queryInterface, Sequelize) =>
+    Promise.all([
       queryInterface.bulkDelete("OAuthRefreshToken", null, {}),
       queryInterface.bulkDelete("OAuthClient", null, {}),
       queryInterface.bulkDelete("OAuthUser", null, {}),
       queryInterface.bulkDelete("User", null, {})
-    ]);
-  }
+    ])
 };
 
 function generateHackersWithAuthInfo(clientId, numHackers) {
@@ -52,7 +51,7 @@ function generateHackersWithAuthInfo(clientId, numHackers) {
   for (let i = 0; i < numHackers; i++) {
     oauthRefreshTokens.push({
       id: uuidv4(),
-      clientId: clientId,
+      clientId,
       refreshToken: "test",
       expires: faker.date.future(),
       createdAt: new Date(),

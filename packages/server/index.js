@@ -1,16 +1,16 @@
 require("dotenv").config();
 
-const { GraphQLAuthenticationError } = require("./errors");
 const { ApolloServer } = require("apollo-server-express");
 const history = require("connect-history-api-fallback");
 const compression = require("compression");
 const bodyParser = require("body-parser");
-const logger = require("./utils/logger");
-const db = require("./db")(logger);
 const express = require("express");
 const helmet = require("helmet");
 const path = require("path");
 const cors = require("cors");
+const db = require("./db")(logger);
+const logger = require("./utils/logger");
+const { GraphQLAuthenticationError } = require("./errors");
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const FORCE_SSL = process.env.FORCE_SSL === "true";
@@ -40,7 +40,7 @@ if (IS_PROD) {
       if (req.secure) {
         next();
       } else {
-        res.redirect("https://" + req.headers.host + req.url);
+        res.redirect(`https://${req.headers.host}${req.url}`);
       }
     });
   }
@@ -53,7 +53,7 @@ app.use(compression());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//app.use(auth(db));
+// app.use(auth(db));
 
 // Public REST Endpoints
 // TODO: Remove completely!
@@ -104,7 +104,7 @@ app.use(express.static(BUNDLE_DIR));
 
 // Database Synchronization
 db.sequelize
-  .sync()
+  .sync({ force: false })
   .then(() => {
     logger.info("Database has synchronized successfully!");
 

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from "react";
 import { map, pick } from "lodash";
 import uuid from "uuid/v4";
@@ -23,13 +25,11 @@ class Profile extends Component {
 
     return (
       <div>
-        {map(fields, (value, key) => {
-          return (
-            <p key={uuid()}>
-              {FIELD_TITLES[key]}: {value}
-            </p>
-          );
-        })}
+        {map(fields, (value, key) => (
+          <p key={uuid()}>
+            {FIELD_TITLES[key]}:{value}
+          </p>
+        ))}
       </div>
     );
   }

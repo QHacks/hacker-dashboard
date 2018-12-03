@@ -11,11 +11,10 @@ module.exports = (db) => {
 
   mailingListApi.post(
     `/${SUBSCRIBE}/`,
-    ({ body: { event, name, email } }, res) => {
-      return createMailingListSubscription(event, name, email)
+    ({ body: { event, name, email } }, res) =>
+      createMailingListSubscription(event, name, email)
         .then(() => res.status(201).json("OK"))
-        .catch((err) => res.status(err.status).json(err));
-    }
+        .catch((err) => res.status(err.status).json(err))
   );
 
   return mailingListApi;

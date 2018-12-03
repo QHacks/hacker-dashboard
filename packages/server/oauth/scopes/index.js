@@ -1,6 +1,7 @@
 const { isArray } = require("lodash");
 
 const scopes = require("./scopes");
+
 const READ_SUFFIX = ":read";
 const WRITE_SUFFIX = ":write";
 

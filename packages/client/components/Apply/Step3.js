@@ -23,9 +23,9 @@ const Step3 = (props) => {
       <h2>Hackathon Information</h2>
       <div css={props.subsectionStyle}>
         <div
-          css={`
+          css="
             width: 100%;
-          `}
+          "
         >
           <section css={props.inputRowStyle}>
             <div>
@@ -82,9 +82,9 @@ const Step3 = (props) => {
                 type="text"
                 placeholder="#"
                 value={props.applicationAnswers.numAttendedHackathons}
-                css={`
+                css="
                   max-width: 125px;
-                `}
+                "
                 onChange={(e) =>
                   props.setApplicationAnswer(
                     "numAttendedHackathons",
@@ -178,7 +178,7 @@ const Step3 = (props) => {
           <section css={props.inputRowStyle}>
             <div>
               <ActionButton
-                style={`margin-top: 50px;`}
+                style="margin-top: 50px;"
                 foregroundColor="black"
                 onClick={() => props.previousStep()}
               >
@@ -186,7 +186,7 @@ const Step3 = (props) => {
               </ActionButton>{" "}
               <ActionButton
                 disabled={props.hasErrors}
-                style={`margin-top: 50px;`}
+                style="margin-top: 50px;"
                 color="red"
                 onClick={() => props.submit()}
               >

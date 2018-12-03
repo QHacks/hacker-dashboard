@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { red, steel } from "../../../assets/colors";
+import check from "../../../assets/img/red-circle-check.png";
 
 class ApplicationStepsMobile extends PureComponent {
   getBackgroundColor(num) {
@@ -8,11 +9,12 @@ class ApplicationStepsMobile extends PureComponent {
     }
     return red;
   }
+
   render() {
     const pages = ["Introduction", "About You", "Why QHacks?", "Next Steps"];
     return (
       <div
-        css={`
+        css="
           width: 100%;
           max-width: 350px;
           margin: -45px auto 0;
@@ -20,7 +22,7 @@ class ApplicationStepsMobile extends PureComponent {
           display: flex;
           flex-direction: row;
           justify-content: center;
-        `}
+        "
       >
         {pages.map((text, i) => (
           <div
@@ -46,12 +48,13 @@ class ApplicationStepsMobile extends PureComponent {
             >
               {this.props.stepNum > i ? (
                 <img
-                  css={`
+                  css="
                     width: 30px;
                     height: 30px;
                     margin: 0;
-                  `}
-                  src={require("../../../assets/img/red-circle-check.png")}
+                  "
+                  alt={`Step ${i + 1} completed`}
+                  src={check}
                 />
               ) : (
                 i + 1

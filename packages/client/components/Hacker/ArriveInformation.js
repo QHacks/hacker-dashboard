@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import Emoji from "react-emoji-render";
 import React from "react";
 
@@ -18,7 +20,7 @@ export default () => (
         <b>Toronto, Waterloo, Montreal and Ottawa</b>. In order to reserve a
         spot on one of the buses, you must email{" "}
         <a href="mailto:travel@qhacks.io">travel@qhacks.io</a>. The buses will
-        be filled on a <b>first-come-first-serve basis</b>, so make sure to send
+        be filled on a<b>first-come-first-serve basis</b>, so make sure to send
         us an email as soon as possible.
       </p>
       <p>

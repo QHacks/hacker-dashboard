@@ -1,7 +1,7 @@
 const _ = require("lodash");
+const sendgrid = require("@sendgrid/mail");
 const emails = require("./emails");
 const logger = require("../utils/logger");
-const sendgrid = require("@sendgrid/mail");
 const { validateEmail } = require("../utils/custom-validator");
 
 const {

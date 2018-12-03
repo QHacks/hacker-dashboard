@@ -1,43 +1,38 @@
-import React, { Component } from "react";
+import React from "react";
 import { steel } from "../../../assets/colors";
+import circuits from "../../../assets/img/circuits.png";
 
-class Card extends Component {
-  render() {
-    return (
-      <div
-        css={`
-          border: 1px solid ${steel};
-          border-radius: 8px;
-          max-width: 285px;
-        `}
+const Card = ({ image, title, children }) => (
+  <div
+    css={`
+      border: 1px solid ${steel};
+      border-radius: 8px;
+      max-width: 285px;
+    `}
+  >
+    <div
+      css={`
+        height: 80px;
+        background: url(${image || circuits}) no-repeat center center;
+        background-size: cover;
+      `}
+    />
+    <div
+      css={`
+        padding: 16px;
+        border-top: 1px solid ${steel};
+      `}
+    >
+      <h3
+        css="
+          margin-bottom: 8px;
+        "
       >
-        <div
-          css={`
-            height: 80px;
-            background: url(${this.props.image ||
-                require("../../../assets/img/circuits.png")})
-              no-repeat center center;
-            background-size: cover;
-          `}
-        />
-        <div
-          css={`
-            padding: 16px;
-            border-top: 1px solid ${steel};
-          `}
-        >
-          <h3
-            css={`
-              margin-bottom: 8px;
-            `}
-          >
-            {this.props.title}
-          </h3>
-          <div>{this.props.children}</div>
-        </div>
-      </div>
-    );
-  }
-}
+        {title}
+      </h3>
+      <div>{children}</div>
+    </div>
+  </div>
+);
 
 export default Card;

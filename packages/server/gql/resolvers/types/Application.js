@@ -108,8 +108,8 @@ module.exports = {
               );
             }
 
-            applicationTable[label]["answer"] = answer;
-            applicationTable[label]["applicationId"] = application.id;
+            applicationTable[label].answer = answer;
+            applicationTable[label].applicationId = application.id;
           });
 
           // Filter out any unanswered fields that are not required

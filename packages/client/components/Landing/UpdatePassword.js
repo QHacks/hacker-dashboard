@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
 import Landing from "./Landing";
 import { SERVER_HOST } from "../../Client";
 import { blue } from "../../assets/colors";
@@ -12,7 +11,9 @@ class UpdatePassword extends Component {
     super(props);
 
     this.state = {
-      password: ""
+      password: "",
+      success: "",
+      error: ""
     };
   }
 
@@ -21,13 +22,11 @@ class UpdatePassword extends Component {
     const { resetHash } = this.props.match.params;
 
     try {
-      const response = await axios.post(
-        `${SERVER_HOST}/oauth/updatePasswordForReset`,
-        {
-          password,
-          resetHash
-        }
-      );
+      // const response =
+      await axios.post(`${SERVER_HOST}/oauth/updatePasswordForReset`, {
+        password,
+        resetHash
+      });
 
       this.setState({
         success: "Password successfully reset"
@@ -43,10 +42,10 @@ class UpdatePassword extends Component {
     return (
       <Landing>
         <img
-          src={"../../assets/img/qhacks-wordmark-colored.svg"}
-          css={`
+          src="../../assets/img/qhacks-wordmark-colored.svg"
+          css="
             max-height: 40px;
-          `}
+          "
           alt="QHacks"
         />
         <h3
@@ -60,18 +59,18 @@ class UpdatePassword extends Component {
         </h3>
         <p
           className="blurb"
-          css={`
+          css="
             line-height: 1.6;
             margin-top: 16px;
             color: #8a929f;
-          `}
+          "
         >
           Please enter your new password!
         </p>
         <div
-          css={`
+          css="
             margin-top: 64px;
-          `}
+          "
         >
           <input
             id="password"
@@ -82,9 +81,9 @@ class UpdatePassword extends Component {
           />
         </div>
         <div
-          css={`
+          css="
             margin: 30px 0;
-          `}
+          "
         >
           <Link className="landingLink" to="/login">
             Know you password? Login here!

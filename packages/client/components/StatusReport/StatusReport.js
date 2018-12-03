@@ -72,16 +72,17 @@ class StatusReport extends Component {
       >
         <img
           src={this.getIcon()}
-          css={`
+          alt={this.getStatus()}
+          css="
             margin-right: 12px;
             height: 24px;
             width: 24px;
-          `}
+          "
         />
         <strong
-          css={`
+          css="
             margin-right: 12px;
-          `}
+          "
         >
           {this.getStatus()}:
         </strong>

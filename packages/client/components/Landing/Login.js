@@ -58,34 +58,34 @@ class Login extends Component {
     return (
       <Landing>
         <img
-          src={"../../assets/img/qhacks-wordmark-colored.svg"}
-          css={`
+          src="../../assets/img/qhacks-wordmark-colored.svg"
+          css="
             max-height: 40px;
-          `}
+          "
           alt="QHacks"
         />
         <p
           className="blurb"
-          css={`
+          css="
             margin-top: 24px;
             color: #8a929f;
-          `}
+          "
         >
           Welcome back.
         </p>
         <p
           className="blurb"
-          css={`
+          css="
             margin-top: 12px;
             color: #8a929f;
-          `}
+          "
         >
           Please login to your account.
         </p>
         <div
-          css={`
+          css="
             margin-top: 64px;
-          `}
+          "
         >
           <input
             id="email"
@@ -103,15 +103,15 @@ class Login extends Component {
           />
         </div>
         <div
-          css={`
+          css="
             margin: 40px 0;
             display: flex;
-          `}
+          "
         >
           <div
-            css={`
+            css="
               flex-grow: 1;
-            `}
+            "
           >
             <input
               type="checkbox"
@@ -121,9 +121,9 @@ class Login extends Component {
             <label htmlFor="rememberMe">Remember me</label>
           </div>
           <div
-            css={`
+            css="
               flex-grow: 1;
-            `}
+            "
           >
             <Link className="landingLink" to="/forgot-password">
               Forgot password
