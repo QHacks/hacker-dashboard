@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import { offWhite } from "../../assets/colors";
+import { linkExternalTrusted } from "../../assets/constants";
 
 Modal.setAppElement("#root");
 
@@ -61,8 +62,11 @@ const PrivacyPolicyModal = (props) => {
         <p>
           Your privacy is important to us. It is QHacks&apos; policy to respect
           your privacy regarding any information we may collect from you across
-          our website, <a href="https://qhacks.io">https://qhacks.io</a>, and
-          other sites we own and operate.
+          our website,{" "}
+          <a {...linkExternalTrusted} href="https://qhacks.io">
+            https://qhacks.io
+          </a>
+          , and other sites we own and operate.
         </p>
         <h3>1. Information We Collect</h3>
         <h4>Log Data</h4>

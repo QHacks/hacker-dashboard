@@ -1,8 +1,14 @@
 export const boxShadow =
   "0 2px 4px rgba(10,10,10,0.1), 0 2px 4px rgba(10,10,10,0.15);";
 
-export const relExternalTrusted = "external noopener";
-export const relExternalTrustedUntrusted = "nofollow noopener";
+export const linkExternalTrusted = {
+  rel: "external noopener",
+  target: "_blank"
+};
+export const linkExternalUntrusted = {
+  rel: "nofollow noopener",
+  target: "_blank"
+};
 
 export const races = [
   "American Indian or Alaskan Native",

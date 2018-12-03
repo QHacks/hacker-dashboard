@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { blue } from "../../assets/colors";
+import { linkExternalTrusted } from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import crown from "../../assets/img/qhacks-tricolor-logo.svg";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
@@ -55,22 +56,24 @@ class MenuBar extends Component {
             `}
           >
             <li>
-              <a
-                href="https://qhacks.io"
-                rel="external noopener"
-                target="_blank"
-              >
+              <a href="https://qhacks.io" {...linkExternalTrusted}>
                 QHacks 2019
               </a>
             </li>
             <li>
-              <a href="#">Past Events</a>
+              <a {...linkExternalTrusted} href="https://2018.qhacks.io">
+                Past Events
+              </a>
             </li>
             <li>
-              <a href="https://medium.com/qhacks">Blog</a>
+              <a {...linkExternalTrusted} href="https://medium.com/qhacks">
+                Blog
+              </a>
             </li>
             <li>
-              <a href="https://github.com/qhacks">Code</a>
+              <a {...linkExternalTrusted} href="https://github.com/qhacks">
+                Code
+              </a>
             </li>
             <li>
               <ActionButton

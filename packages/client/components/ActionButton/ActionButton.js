@@ -201,7 +201,7 @@ const ActionButton = (props) => {
       disabled={props.disabled}
       onClick={props.onClick}
       to={props.link}
-      rel={props.internal ? null : "external noopener"}
+      rel={props.internal ? null : "nofollow noopener"}
       target={props.internal ? null : "_blank"}
       className={props.className || "actionButton"}
     >

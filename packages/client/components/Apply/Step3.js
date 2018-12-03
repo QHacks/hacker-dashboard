@@ -1,7 +1,7 @@
 import React from "react";
 import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
-import { relExternalTrusted } from "../../assets/constants";
+import { linkExternalTrusted } from "../../assets/constants";
 
 const Step3 = (props) => {
   const mlhSectionStyle = `
@@ -127,8 +127,7 @@ const Step3 = (props) => {
               <label htmlFor="agreeMlhCodeConduct">
                 I have read and agree to the{" "}
                 <a
-                  rel={relExternalTrusted}
-                  target="_blank"
+                  {...linkExternalTrusted}
                   href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf"
                 >
                   MLH code of conduct
@@ -155,27 +154,18 @@ const Step3 = (props) => {
                 for event administration, ranking, MLH administration, pre- and
                 post-event informational e-mails, and occasional messages about
                 hackathons in-line with the{" "}
-                <a
-                  rel={relExternalTrusted}
-                  target="_blank"
-                  href="https://mlh.io/privacy"
-                >
+                <a {...linkExternalTrusted} href="https://mlh.io/privacy">
                   MLH Privacy Policy
                 </a>
                 . Further, I agree to the terms of both the{" "}
                 <a
-                  rel={relExternalTrusted}
-                  target="_blank"
+                  {...linkExternalTrusted}
                   href="https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md"
                 >
                   MLH contest Terms and Conditions
                 </a>{" "}
                 and the{" "}
-                <a
-                  rel={relExternalTrusted}
-                  target="_blank"
-                  href="https://mlh.io/privacy"
-                >
+                <a {...linkExternalTrusted} href="https://mlh.io/privacy">
                   MLH Privacy Policy
                 </a>
                 .
