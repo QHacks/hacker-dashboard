@@ -1,8 +1,12 @@
 export default {
   Mutation: {
-    updateAuthenticationStatus: (parent, args, context, info) => {
-      const { isAuthenticated } = args;
-      context.cache.writeData({ data: { isAuthenticated } });
+    authInfoUpdate: (parent, args, context, info) => {
+      const { isAuthenticated } = args.input;
+
+      context.cache.writeData({
+        data: { authInfo: { isAuthenticated, __typename: "AuthInfo" } }
+      });
+
       return null;
     }
   }

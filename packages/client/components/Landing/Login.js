@@ -1,6 +1,6 @@
+import { graphql, compose } from "react-apollo";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import axios from "axios";
 
@@ -13,8 +13,8 @@ const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
 const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
 
 const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
-  mutation UpdateAutheticationStatus($isAuthenticated: Boolean) {
-    updateAuthenticationStatus(isAuthenticated: $isAuthenticated) @client
+  mutation UpdateAutheticationStatus($input: AuthInfoInput!) {
+    authInfoUpdate(input: $input) @client
   }
 `;
 
@@ -44,7 +44,9 @@ class Login extends Component {
 
       this.props.mutate({
         variables: {
-          isAuthenticated: true
+          input: {
+            isAuthenticated: true
+          }
         }
       });
     } catch (err) {
@@ -146,4 +148,4 @@ class Login extends Component {
   }
 }
 
-export default graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION)(Login);
+export default compose(graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION))(Login);

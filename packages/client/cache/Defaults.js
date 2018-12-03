@@ -1,3 +1,6 @@
 export default {
-  isAuthenticated: false
+  authInfo: {
+    __typename: "AuthInfo",
+    isAuthenticated: false
+  }
 };
