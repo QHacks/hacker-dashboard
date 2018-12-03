@@ -3,6 +3,7 @@ const {
   GraphQLNotFoundError,
   GraphQLForbiddenError
 } = require("../../../errors");
+const { isEmpty } = require("lodash");
 
 module.exports = {
   QueryRoot: {
@@ -91,6 +92,22 @@ module.exports = {
           scopes: formatScopes(oauthUser.scopes)
         });
       });
+    },
+    // Check if a hacker has applied to a given event
+    async hasApplied(parent, args, context) {
+      const { Event } = context.db;
+      const { eventSlug: slug } = args;
+
+      const applications = await parent.getApplications({
+        include: [
+          {
+            model: Event,
+            where: { slug }
+          }
+        ]
+      });
+
+      return !isEmpty(applications);
     }
   }
 };
