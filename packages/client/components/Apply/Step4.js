@@ -1,5 +1,7 @@
 import React from "react";
 import ActionButton from "../ActionButton/ActionButton";
+import { decorativeElement } from "../../assets/constants";
+import threeGears from "../../assets/img/3-gears.png";
 
 const Step4 = (props) => {
   const pStyle = `
@@ -15,16 +17,18 @@ const Step4 = (props) => {
       `}
     >
       <img
-        src={require("../../assets/img/3-gears.png")}
-        css={`
+        src={threeGears}
+        alt=""
+        {...decorativeElement}
+        css="
           height: 133px;
           width: 240px;
-        `}
+        "
       />
       <h2
-        css={`
+        css="
           margin: 32px 0;
-        `}
+        "
       >
         Thank-you for Applying to QHacks 2019!
       </h2>
@@ -34,9 +38,9 @@ const Step4 = (props) => {
         application. So stay tuned!
       </p>
       <div
-        css={`
+        css="
           margin: 40px 0;
-        `}
+        "
       >
         <ActionButton internal link="/profile" color="red">
           View Dashoard
@@ -50,9 +54,9 @@ const Step4 = (props) => {
       >
         For more information regarding QHacks 2019, please visit our website at{" "}
         <a
-          css={`
+          css="
             font-weight: 600;
-          `}
+          "
           href="https://qhacks.io/"
         >
           qhacks.io

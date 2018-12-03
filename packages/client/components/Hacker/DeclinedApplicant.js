@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import Emoji from "react-emoji-render";
 import React from "react";
 

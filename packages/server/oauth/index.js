@@ -1,6 +1,6 @@
-const oauthRoutes = require("./routes/oauth.routes");
 const Router = require("express").Router;
 const jwt = require("jsonwebtoken");
+const oauthRoutes = require("./routes/oauth.routes");
 
 const { AUTH_SECRET } = process.env;
 

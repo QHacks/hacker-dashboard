@@ -3,7 +3,8 @@ import React from "react";
 export default () => (
   <div>
     <p>
-      We've closed applications for 2018, but we hope to see you next winter!{" "}
+      We&apos;ve closed applications for 2018, but we hope to see you next
+      winter!{" "}
     </p>
     <p>
       <a href="https://qhacks.io">

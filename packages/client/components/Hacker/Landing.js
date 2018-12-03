@@ -1,9 +1,11 @@
+/* eslint-disable */
+
+import React, { Component } from "react";
 import ApplicationSubmitted from "./ApplicationSubmitted";
 import ApplicationWithdrawn from "./ApplicationWithdrawn";
 import SuccessfulApplicant from "./SuccessfulApplicant";
 import WaitlistedApplicant from "./WaitlistedApplicant";
 import DeclinedApplicant from "./DeclinedApplicant";
-import React, { Component } from "react";
 
 const RSVP_FIELDS = [
   "favSnack",

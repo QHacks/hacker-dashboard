@@ -1,16 +1,14 @@
 import React from "react";
-import ValidationError from "../ValidationError/ValidationError";
-import ActionButton from "../ActionButton/ActionButton";
 import Select from "react-select";
 import CreatableSelect from "react-select/lib/Creatable";
+import ValidationError from "../ValidationError/ValidationError";
+import ActionButton from "../ActionButton/ActionButton";
 import { races, schools } from "../../assets/constants";
 
-const toOptions = (str) => {
-  return {
-    label: str,
-    value: str
-  };
-};
+const toOptions = (str) => ({
+  label: str,
+  value: str
+});
 
 const raceOptions = races.map((str) => toOptions(str));
 
@@ -65,9 +63,8 @@ const monthOptions = [
 ].map((str) => toOptions(str));
 
 const Step2 = (props) => {
-  const setApplicationAnswerSelect = (field) => {
-    return (answer) => props.setApplicationAnswer(field, answer.value);
-  };
+  const setApplicationAnswerSelect = (field) => (answer) =>
+    props.setApplicationAnswer(field, answer.value);
 
   const getApplicationAnswerSelect = (field) => {
     const val = props.applicationAnswers[field];
@@ -207,9 +204,9 @@ const Step2 = (props) => {
                 placeholder="Year"
                 type="text"
                 value={props.applicationAnswers.graduationYear}
-                css={`
+                css="
                   margin-top: 28px !important;
-                `}
+                "
                 onChange={(e) =>
                   props.setApplicationAnswer("graduationYear", e.target.value)
                 }
@@ -221,7 +218,7 @@ const Step2 = (props) => {
             <div>
               <ActionButton
                 disabled={props.hasErrors}
-                style={`margin-top: 50px; float: right;`}
+                style="margin-top: 50px; float: right;"
                 color="red"
                 onClick={() => props.nextStep()}
               >

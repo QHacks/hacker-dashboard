@@ -51,7 +51,7 @@ class ApplicationForm extends Component {
     this.submit = this.submit.bind(this);
   }
 
-  validators(authAnswers) {
+  validators() {
     return {
       email: {
         regex: /^.+@.+$/,
@@ -64,7 +64,9 @@ class ApplicationForm extends Component {
         message: "Please enter a valid password (at least 8 characters)"
       },
       confirmPassword: {
-        regex: new RegExp(`^${escapeStringRegexp(authAnswers.password)}$`),
+        regex: new RegExp(
+          `^${escapeStringRegexp(this.state.authAnswers.password)}$`
+        ),
         stepNum: 0,
         forSignUp: true,
         message: "Please make sure your passwords match"
@@ -166,27 +168,37 @@ class ApplicationForm extends Component {
   }
 
   submit() {
-    const answers = this.state.applicationAnswers;
+    // const answers = this.state.applicationAnswers;
     // send request
     this.nextStep();
   }
 
+  validApplicationField(field) {
+    return Object.prototype.hasOwnProperty.call(
+      this.state.applicationAnswers,
+      field
+    );
+  }
+
+  validAuthField(field) {
+    return Object.prototype.hasOwnProperty.call(this.state.authAnswers, field);
+  }
+
   setAuthAnswer(field, answer) {
-    if (!this.state.authAnswers.hasOwnProperty(field)) {
-      throw `No such field "${field}" in sign up form`;
+    if (!this.validAuthField(field)) {
+      throw new Error(`No such field "${field}" in sign up form`);
     }
-    const authAnswers = this.state.authAnswers;
+    const { authAnswers } = this.state;
     authAnswers[field] = answer;
     this.validateAnswer(field, answer, true);
     this.setState({ authAnswers });
   }
 
   setApplicationAnswer(field, answer) {
-    answer = answer;
-    if (!this.state.applicationAnswers.hasOwnProperty(field)) {
-      throw `No such field "${field}" in application form`;
+    if (!this.validApplicationField(field)) {
+      throw new Error(`No such field "${field}" in application form`);
     }
-    const applicationAnswers = this.state.applicationAnswers;
+    const { applicationAnswers } = this.state;
     applicationAnswers[field] = answer;
     this.validateAnswer(field, answer);
     this.setState({ applicationAnswers });
@@ -194,20 +206,17 @@ class ApplicationForm extends Component {
 
   setError(field, err, auth = false) {
     if (auth) {
-      if (!this.state.authAnswers.hasOwnProperty(field)) {
-        throw `No such field "${field} in authentication form`;
+      if (!this.validAuthField(field)) {
+        throw new Error(`No such field "${field} in authentication form`);
       }
-    } else if (!this.state.applicationAnswers.hasOwnProperty(field)) {
-      throw `No such field "${field} in application form`;
+    } else if (!this.validApplicationField(field)) {
+      throw new Error(`No such field "${field} in application form`);
     }
-    const errors = this.state.errors;
+    const { errors } = this.state;
     errors[field] = err;
-    let hasErrors = false;
-    for (var property in errors) {
-      if (errors.hasOwnProperty(property) && errors[property]) {
-        hasErrors = true;
-      }
-    }
+
+    const hasErrors = Object.keys(errors).some((key) => errors[key]);
+
     this.setState({ errors, hasErrors });
   }
 
@@ -223,37 +232,31 @@ class ApplicationForm extends Component {
 
   validateAllAnswers() {
     let valid = true;
-    for (var field in this.state.applicationAnswers) {
-      if (this.state.applicationAnswers.hasOwnProperty(field)) {
-        valid &= this.validateAnswer(
-          field,
-          this.state.applicationAnswers[field]
-        );
-      }
-    }
-    for (var field in this.state.authAnswers) {
-      if (this.state.authAnswers.hasOwnProperty(field)) {
-        valid &= this.validateAnswer(
-          field,
-          this.state.authAnswers[field],
-          true
-        );
-      }
-    }
+
+    Object.keys(this.state.applicationAnswers).forEach((field) => {
+      valid =
+        this.validateAnswer(field, this.state.applicationAnswers[field]) &&
+        valid;
+    });
+
+    Object.keys(this.state.authAnswers).forEach((field) => {
+      valid =
+        this.validateAnswer(field, this.state.authAnswers[field], true) &&
+        valid;
+    });
+
     return valid;
   }
 
-  validateAnswer(field, answer, auth = false) {
-    const validators = this.validators(this.state.authAnswers);
-    answer = String(answer);
+  validateAnswer(field, inAnswer, auth = false) {
+    const validators = this.validators();
+    const answer = String(inAnswer);
     if (auth) {
-      if (!this.state.authAnswers.hasOwnProperty(field)) {
-        throw `No such field "${field}" in authentication form`;
+      if (!this.validAuthField(field)) {
+        throw new Error(`No such field "${field}" in authentication form`);
       }
-    } else {
-      if (!this.state.applicationAnswers.hasOwnProperty(field)) {
-        throw `No such field "${field}" in application form`;
-      }
+    } else if (!this.validApplicationField(field)) {
+      throw new Error(`No such field "${field}" in application form`);
     }
 
     if (this.state.returningHacker && validators[field].forSignUp) {
@@ -261,19 +264,18 @@ class ApplicationForm extends Component {
       return true;
     }
     if (
-      this.props.stepNum != validators[field].stepNum ||
+      this.props.stepNum !== validators[field].stepNum ||
       validators[field].regex.test(answer)
     ) {
       this.setError(field, "", auth);
       return true;
-    } else {
-      this.setError(field, validators[field].message, auth);
-      return false;
     }
+    this.setError(field, validators[field].message, auth);
+    return false;
   }
 
   changeSelected(i) {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     Object.keys(errors).forEach((key) => {
       errors[key] = "";
     });
@@ -393,6 +395,7 @@ class ApplicationForm extends Component {
       }
     }
   }
+
   render() {
     return (
       <ContentWrapper>{this.getQuestions(this.props.stepNum)}</ContentWrapper>

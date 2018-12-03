@@ -10,6 +10,12 @@ export const linkExternalUntrusted = {
   target: "_blank"
 };
 
+export const decorativeElement = {
+  alt: "",
+  role: "none presentation",
+  "aria-hidden": true
+};
+
 export const races = [
   "American Indian or Alaskan Native",
   "Asian / Pacific Islander",

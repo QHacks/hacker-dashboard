@@ -1,8 +1,8 @@
 import React from "react";
 import { red } from "../../assets/colors";
 
-const ValidationError = (props) => {
-  return props.message ? (
+const ValidationError = ({ message }) =>
+  message ? (
     <div
       css={`
         color: ${red};
@@ -17,15 +17,15 @@ const ValidationError = (props) => {
     >
       <img
         src="../../assets/img/danger.svg"
-        css={`
+        alt="Error"
+        css="
           margin-right: 12px;
-        `}
+        "
       />
-      <strong>{props.message}</strong>
+      <strong>{message}</strong>
     </div>
   ) : (
     ""
   );
-};
 
 export default ValidationError;

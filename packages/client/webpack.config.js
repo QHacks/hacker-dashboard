@@ -12,11 +12,13 @@ const isProd = process.env.NODE_ENV === "production";
 
 const mode = isProd ? "production" : "development";
 
-isProd
-  ? console.log("Running production build!")
-  : console.log("Running development build!");
+if (isProd) {
+  console.log("Running production build!"); // eslint-disable-line no-console
+} else {
+  console.log("Running development build!"); // eslint-disable-line no-console
+}
 
-const DEV_PROXY = process.env.DEV_PROXY;
+const { DEV_PROXY } = process.env;
 
 const CLIENT_DIR = path.resolve(__dirname, "./");
 const CLIENT_ENTRY = path.resolve(CLIENT_DIR, "Client.js");

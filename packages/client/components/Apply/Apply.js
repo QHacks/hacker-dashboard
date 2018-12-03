@@ -13,16 +13,17 @@ class Apply extends Component {
     };
   }
 
-  handleApply(values) {
+  handleApply() {
+    // eslint-disable-line class-methods-use-this
     // make api request to apply
   }
 
   previousStep() {
-    this.setState({ stepNum: this.state.stepNum - 1 });
+    this.setState((prevState) => ({ stepNum: prevState.stepNum - 1 }));
   }
 
   nextStep() {
-    this.setState({ stepNum: this.state.stepNum + 1 });
+    this.setState((prevState) => ({ stepNum: prevState.stepNum + 1 }));
   }
 
   getRedirectPath() {

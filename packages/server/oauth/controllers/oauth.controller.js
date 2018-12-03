@@ -180,14 +180,12 @@ module.exports = (db) => {
           refreshToken,
           expiryDate
         });
-
-        return;
       });
 
       return Promise.resolve({
         scopes: JSON.parse(oauthUser.scopes),
-        accessToken: accessToken,
-        refreshToken: refreshToken,
+        accessToken,
+        refreshToken,
         expiresIn: ACCESS_TOKEN_EXPIRE_SECONDS
       });
     } catch (err) {
@@ -242,8 +240,6 @@ module.exports = (db) => {
             refreshToken: newTokens.refreshToken,
             expiryDate
           });
-
-          return;
         });
 
         return Promise.resolve({

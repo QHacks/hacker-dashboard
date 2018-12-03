@@ -125,7 +125,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       getterMethods: {
         fullName() {
-          return this.firstName + " " + this.lastName;
+          return `${this.firstName} ${this.lastName}`;
         }
       },
       setterMethods: {
@@ -169,13 +169,11 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  User.addHook("beforeCreate", (user) => {
-    return user.hashPassword();
-  });
+  User.addHook("beforeCreate", (user) => user.hashPassword());
 
-  User.addHook("beforeBulkCreate", (users) => {
-    return Promise.all(users.map((user) => user.hashPassword()));
-  });
+  User.addHook("beforeBulkCreate", (users) =>
+    Promise.all(users.map((user) => user.hashPassword()))
+  );
 
   User.addHook("beforeUpdate", async (user, _) => {
     if (user.changed("password")) {
@@ -194,12 +192,8 @@ module.exports = (sequelize, DataTypes) => {
 
         user
           .validPassword(password)
-          .then(() => {
-            return resolve(user);
-          })
-          .catch(() => {
-            return reject(new OAuthInvalidCredentialsError());
-          });
+          .then(() => resolve(user))
+          .catch(() => reject(new OAuthInvalidCredentialsError()));
       });
     });
   };

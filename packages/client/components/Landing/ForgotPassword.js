@@ -20,12 +20,10 @@ class ForgotPassword extends Component {
     const { email } = this.state;
 
     try {
-      const response = await axios.post(
-        `${SERVER_HOST}/oauth/createResetHash`,
-        {
-          email
-        }
-      );
+      // const response =
+      await axios.post(`${SERVER_HOST}/oauth/createResetHash`, {
+        email
+      });
 
       this.setState({
         success: "Check your email!"
@@ -41,10 +39,10 @@ class ForgotPassword extends Component {
     return (
       <Landing>
         <img
-          src={"../../assets/img/qhacks-wordmark-colored.svg"}
-          css={`
+          src="../../assets/img/qhacks-wordmark-colored.svg"
+          css="
             max-height: 40px;
-          `}
+          "
           alt="QHacks"
         />
         <h3
@@ -58,19 +56,19 @@ class ForgotPassword extends Component {
         </h3>
         <p
           className="blurb"
-          css={`
+          css="
             line-height: 1.6;
             margin-top: 16px;
             color: #8a929f;
-          `}
+          "
         >
           Please provide the email associated with your account to reset your
           password
         </p>
         <div
-          css={`
+          css="
             margin-top: 64px;
-          `}
+          "
         >
           <input
             id="email"
@@ -81,9 +79,9 @@ class ForgotPassword extends Component {
           />
         </div>
         <div
-          css={`
+          css="
             margin: 30px 0;
-          `}
+          "
         >
           <Link className="landingLink" to="/login">
             Know you password? Login here!
