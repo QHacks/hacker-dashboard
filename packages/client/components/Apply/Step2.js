@@ -14,15 +14,39 @@ const toOptions = (str) => {
 
 const raceOptions = races.map((str) => toOptions(str));
 
-const genderOptions = ["Male", "Female"].map((str) => toOptions(str));
+const genderOptions = ["Male", "Female", "Prefer not to answer"].map((str) =>
+  toOptions(str)
+);
 
 const schoolOptions = schools.map((str) => toOptions(str));
 
 const degreeOptions = [
-  "Bachelor of Science",
-  "Bachelor of Arts",
+  "Bachelor of Architecture",
+  "Bachelor of Biomedical Science",
+  "Bachelor of Business Administration",
+  "Bachelor of Clinical Science",
+  "Bachelor of Commerce",
+  "Bachelor of Computer Applications",
+  "Bachelor of Community Health",
+  "Bachelor of Computer Information Systems",
+  "Bachelor of Computing",
+  "Bachelor of Science in Construction Technology",
+  "Bachelor of Criminal Justice",
+  "Bachelor of Divinity",
+  "Bachelor of Economics",
+  "Bachelor of Education",
   "Bachelor of Engineering",
-  "Bachelor of Computing"
+  "Bachelor of Fine Arts",
+  "Bachelor of Letters",
+  "Bachelor of Information Systems",
+  "Bachelor of Management",
+  "Bachelor of Music",
+  "Bachelor of Pharmacy",
+  "Bachelor of Philosophy",
+  "Bachelor of Social Work",
+  "Bachelor of Technology",
+  "Bachelor of Accountancy",
+  "Bachelor of Science"
 ].map((str) => toOptions(str));
 
 const monthOptions = [

@@ -60,9 +60,9 @@ const Step3 = (props) => {
           <section css={props.inputRowStyle}>
             <div>
               <label htmlFor="dreamProject">
-                You're given $10,000 to spend on building a project or running
-                an event at QHacks this year. What do you spend it on? (&lt; 100
-                words)
+                You&apos;re given $10,000 to spend on building a project or
+                running an event at QHacks this year. What do you spend it on?
+                (&lt; 100 words)
               </label>
               <textarea
                 value={props.applicationAnswers.dreamProject}

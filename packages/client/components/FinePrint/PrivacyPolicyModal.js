@@ -59,10 +59,10 @@ const PrivacyPolicyModal = (props) => {
         `}
       >
         <p>
-          Your privacy is important to us. It is QHacks' policy to respect your
-          privacy regarding any information we may collect from you across our
-          website, <a href="https://qhacks.io">https://qhacks.io</a>, and other
-          sites we own and operate.
+          Your privacy is important to us. It is QHacks&apos; policy to respect
+          your privacy regarding any information we may collect from you across
+          our website, <a href="https://qhacks.io">https://qhacks.io</a>, and
+          other sites we own and operate.
         </p>
         <h3>1. Information We Collect</h3>
         <h4>Log Data</h4>

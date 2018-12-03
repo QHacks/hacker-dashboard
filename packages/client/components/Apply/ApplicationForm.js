@@ -168,7 +168,7 @@ class ApplicationForm extends Component {
   submit() {
     const answers = this.state.applicationAnswers;
     // send request
-    this.props.nextStep();
+    this.nextStep();
   }
 
   setAuthAnswer(field, answer) {
@@ -382,7 +382,6 @@ class ApplicationForm extends Component {
             applicationAnswers={this.state.applicationAnswers}
             errors={this.state.errors}
             hasErrors={this.state.hasErrors}
-            nextStep={this.nextStep}
             previousStep={this.previousStep}
             submit={this.submit}
             {...allStyles}

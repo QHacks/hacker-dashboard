@@ -73,15 +73,15 @@ const TosModal = (props) => {
         <h3>2. Use License</h3>
         <p>
           Permission is granted to temporarily download one copy of the
-          materials (information or software) on QHacks' website for personal,
-          non-commercial transitory viewing only. This is the grant of a
-          license, not a transfer of title, and under this license you may not:
-          modify or copy the materials, use the materials for any commercial
-          purpose, or for any public display (commercial or non-commercial),
-          attempt to decompile or reverse engineer any software contained on
-          QHacks' website, remove any copyright or other proprietary notations
-          from the materials, transfer the materials to another person or
-          "mirror" the materials on any other server.
+          materials (information or software) on QHacks&apos; website for
+          personal, non-commercial transitory viewing only. This is the grant of
+          a license, not a transfer of title, and under this license you may
+          not: modify or copy the materials, use the materials for any
+          commercial purpose, or for any public display (commercial or
+          non-commercial), attempt to decompile or reverse engineer any software
+          contained on QHacks&apos; website, remove any copyright or other
+          proprietary notations from the materials, transfer the materials to
+          another person or "mirror" the materials on any other server.
         </p>
         <p>
           This license shall automatically terminate if you violate any of these
@@ -92,12 +92,12 @@ const TosModal = (props) => {
         </p>
         <h3>3. Disclaimer</h3>
         <p>
-          The materials on QHacks' website are provided on an 'as is' basis.
-          QHacks makes no warranties, expressed or implied, and hereby disclaims
-          and negates all other warranties including, without limitation,
-          implied warranties or conditions of merchantability, fitness for a
-          particular purpose, or non-infringement of intellectual property or
-          other violation of rights.
+          The materials on QHacks&apos; website are provided on an &lsquo;as
+          is&rsquo; basis. QHacks makes no warranties, expressed or implied, and
+          hereby disclaims and negates all other warranties including, without
+          limitation, implied warranties or conditions of merchantability,
+          fitness for a particular purpose, or non-infringement of intellectual
+          property or other violation of rights.
         </p>
         <p>
           Further, QHacks does not warrant or make any representations
@@ -110,7 +110,7 @@ const TosModal = (props) => {
           In no event shall QHacks or its suppliers be liable for any damages
           (including, without limitation, damages for loss of data or profit, or
           due to business interruption) arising out of the use or inability to
-          use the materials on QHacks' website, even if QHacks or a QHacks
+          use the materials on QHacks&apos; website, even if QHacks or a QHacks
           authorized representative has been notified orally or in writing of
           the possibility of such damage. Because some jurisdictions do not
           allow limitations on implied warranties, or limitations of liability
@@ -119,19 +119,19 @@ const TosModal = (props) => {
         </p>
         <h3>5. Accuracy of Materials</h3>
         <p>
-          The materials appearing on QHacks' website could include technical,
-          typographical, or photographic errors. QHacks does not warrant that
-          any of the materials on its website are accurate, complete or current.
-          QHacks may make changes to the materials contained on its website at
-          any time without notice. However QHacks does not make any commitment
-          to update the materials.
+          The materials appearing on QHacks&apos; website could include
+          technical, typographical, or photographic errors. QHacks does not
+          warrant that any of the materials on its website are accurate,
+          complete or current. QHacks may make changes to the materials
+          contained on its website at any time without notice. However QHacks
+          does not make any commitment to update the materials.
         </p>
         <h3>6. Links</h3>
         <p>
           QHacks has not reviewed all of the sites linked to its website and is
           not responsible for the contents of any such linked site. The
           inclusion of any link does not imply endorsement by QHacks of the
-          site. Use of any such linked website is at the user's own risk.
+          site. Use of any such linked website is at the user&apos;s own risk.
         </p>
         <h3>7. Modifications</h3>
         <p>
