@@ -136,9 +136,10 @@ const Step1 = (props) => {
                     type="password"
                     placeholder="Password"
                     value={props.authAnswers.password}
-                    onChange={(e) =>
-                      props.setAuthAnswer("password", e.target.value)
-                    }
+                    onChange={(e) => {
+                      props.resetConfirmPassword();
+                      props.setAuthAnswer("password", e.target.value);
+                    }}
                   />
                   <ValidationError message={props.errors.password} />
                 </div>

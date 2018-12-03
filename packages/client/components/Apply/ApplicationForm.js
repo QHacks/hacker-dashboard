@@ -33,7 +33,9 @@ class ApplicationForm extends Component {
         graduationMonth: "",
         whyApply: "",
         dreamProject: "",
-        passionProject: ""
+        passionProject: "",
+        agreeMlhCodeConduct: "",
+        agreeMlhTosAndPrivacyPolicy: ""
       },
       errors: {},
       hasErrors: false
@@ -43,6 +45,8 @@ class ApplicationForm extends Component {
     this.setAuthAnswer = this.setAuthAnswer.bind(this);
     this.setApplicationAnswer = this.setApplicationAnswer.bind(this);
     this.nextStep = this.nextStep.bind(this);
+    this.previousStep = this.previousStep.bind(this);
+    this.resetConfirmPassword = this.resetConfirmPassword.bind(this);
 
     this.validators = (authAnswers) => ({
       email: {
@@ -94,19 +98,30 @@ class ApplicationForm extends Component {
         message: "Please enter a valid year in the form YYYY"
       },
       whyApply: {
-        regex: /^[-\w]+(?:\W+[-\w]+){0,300}\W*$/,
+        regex: /^\s*[-\w]+(?:\W+[-\w]+){0,300}\W*\s*$/,
         stepNum: 2,
         message: "Please enter a valid answer (max 300 words)"
       },
       passionProject: {
-        regex: /^[-\w]+(?:\W+[-\w]+){0,300}\W*$/,
+        regex: /^\s*[-\w]+(?:\W+[-\w]+){0,300}\W*\s*$/,
         stepNum: 2,
         message: "Please enter a valid answer (max 300 words)"
       },
       dreamProject: {
-        regex: /^[-\w]+(?:\W+[-\w]+){0,100}\W*$/,
+        regex: /^\s*[-\w]+(?:\W+[-\w]+){0,100}\W*\s*$/,
         stepNum: 2,
         message: "Please enter a valid answer (max 100 words)"
+      },
+      agreeMlhTosAndPrivacyPolicy: {
+        regex: /^true$/,
+        stepNum: 2,
+        message:
+          "Please accept MLH's terms of service and privacy policy to apply"
+      },
+      agreeMlhCodeConduct: {
+        regex: /^true$/,
+        stepNum: 2,
+        message: "Please accept MLH's code of conduct to apply"
       },
       numAttendedHackathons: {
         regex: /^[0-9]+$/,
@@ -192,6 +207,12 @@ class ApplicationForm extends Component {
     }
   }
 
+  previousStep() {
+    if (this.validateAllAnswers()) {
+      this.props.previousStep();
+    }
+  }
+
   validateAllAnswers() {
     let valid = true;
     for (var field in this.state.applicationAnswers) {
@@ -249,6 +270,13 @@ class ApplicationForm extends Component {
       errors[key] = "";
     });
     this.setState({ returningHacker: i === 1, hasErrors: false, errors });
+  }
+
+  resetConfirmPassword() {
+    const { authAnswers, errors } = this.state;
+    authAnswers.confirmPassword = "";
+    errors.confirmPassword = "";
+    this.setState({ authAnswers, errors });
   }
 
   getQuestions(num) {
@@ -322,6 +350,7 @@ class ApplicationForm extends Component {
             errors={this.state.errors}
             hasErrors={this.state.hasErrors}
             nextStep={this.nextStep}
+            resetConfirmPassword={this.resetConfirmPassword}
             {...allStyles}
           />
         );
@@ -346,6 +375,7 @@ class ApplicationForm extends Component {
             errors={this.state.errors}
             hasErrors={this.state.hasErrors}
             nextStep={this.nextStep}
+            previousStep={this.previousStep}
             {...allStyles}
           />
         );

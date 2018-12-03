@@ -181,7 +181,7 @@ const Step2 = (props) => {
                 id="graduationYear"
                 key="graduationYear"
                 placeholder="Year"
-                type="number"
+                type="text"
                 value={props.applicationAnswers.graduationYear}
                 css={`
                   margin-top: 28px !important;

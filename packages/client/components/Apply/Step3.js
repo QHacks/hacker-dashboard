@@ -64,7 +64,7 @@ const Step3 = (props) => {
                 How many hackathons have you attended?
               </label>
               <input
-                type="number"
+                type="text"
                 placeholder="#"
                 value={props.applicationAnswers.numAttendedHackathons}
                 css={`
@@ -141,17 +141,17 @@ const Step3 = (props) => {
           >
             <div>
               <input
-                id="agreeMlhTocAndPrivacyPolicy"
+                id="agreeMlhTosAndPrivacyPolicy"
                 type="checkbox"
-                value={props.applicationAnswers.agreeMlhTocAndPrivacyPolicy}
+                value={props.applicationAnswers.agreeMlhTosAndPrivacyPolicy}
                 onChange={(e) =>
                   props.setApplicationAnswer(
-                    "agreeMlhTocAndPrivacyPolicy",
+                    "agreeMlhTosAndPrivacyPolicy",
                     e.target.checked
                   )
                 }
               />
-              <label htmlFor="agreeMlhTocAndPrivacyPolicy">
+              <label htmlFor="agreeMlhTosAndPrivacyPolicy">
                 I authorize you to share my application/registration information
                 for event administration, ranking, MLH administration, pre- and
                 post-event informational e-mails, and occasional messages about
@@ -166,7 +166,7 @@ const Step3 = (props) => {
               <ActionButton
                 style={`margin-top: 50px;`}
                 foregroundColor="black"
-                onClick={() => props.props.previousStep()}
+                onClick={() => props.previousStep()}
               >
                 Back
               </ActionButton>{" "}
