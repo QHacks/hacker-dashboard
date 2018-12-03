@@ -7,7 +7,6 @@ import Dashboard from "../Dashboard/Dashboard";
 import NotFound from "../utils/NotFound";
 import { boxShadow } from "../../assets/constants";
 import * as colors from "../../assets/colors";
-import Dashboard from "../Dashboard";
 import Login from "../Landing/Login";
 import Route from "../utils/Route";
 import Apply from "../Apply";

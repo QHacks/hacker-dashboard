@@ -12,18 +12,18 @@ const toOptions = (str) => {
   };
 };
 
-const raceOptions = races.map((str) => props.toOptions(str));
+const raceOptions = races.map((str) => toOptions(str));
 
-const genderOptions = ["Male", "Female"].map((str) => props.toOptions(str));
+const genderOptions = ["Male", "Female"].map((str) => toOptions(str));
 
-const schoolOptions = schools.map((str) => props.toOptions(str));
+const schoolOptions = schools.map((str) => toOptions(str));
 
 const degreeOptions = [
   "Bachelor of Science",
   "Bachelor of Arts",
   "Bachelor of Engineering",
   "Bachelor of Computing"
-].map((str) => props.toOptions(str));
+].map((str) => toOptions(str));
 
 const monthOptions = [
   "January",
@@ -38,9 +38,21 @@ const monthOptions = [
   "October",
   "November",
   "December"
-].map((str) => props.toOptions(str));
+].map((str) => toOptions(str));
 
 const Step2 = (props) => {
+  const setApplicationAnswerSelect = (field) => {
+    return (answer) => props.setApplicationAnswer(field, answer.value);
+  };
+
+  const getApplicationAnswerSelect = (field) => {
+    const val = props.applicationAnswers[field];
+    return {
+      label: val,
+      value: val
+    };
+  };
+
   return (
     <div css={props.formStyle}>
       <h2>Tell us about yourself</h2>
@@ -55,8 +67,8 @@ const Step2 = (props) => {
                 id="gender"
                 key="gender"
                 className="select"
-                value={props.getApplicationAnswerSelect("gender")}
-                onChange={props.setApplicationAnswerSelect("gender")}
+                value={getApplicationAnswerSelect("gender")}
+                onChange={setApplicationAnswerSelect("gender")}
               />
               <ValidationError message={props.errors.gender} />
             </div>
@@ -98,8 +110,8 @@ const Step2 = (props) => {
                 id="race"
                 key="race"
                 className="select"
-                value={props.getApplicationAnswerSelect("race")}
-                onChange={props.setApplicationAnswerSelect("race")}
+                value={getApplicationAnswerSelect("race")}
+                onChange={setApplicationAnswerSelect("race")}
               />
               <ValidationError message={props.errors.race} />
             </div>
@@ -117,8 +129,8 @@ const Step2 = (props) => {
                 id="school"
                 key="school"
                 className="select"
-                value={props.getApplicationAnswerSelect("school")}
-                onChange={props.setApplicationAnswerSelect("school")}
+                value={getApplicationAnswerSelect("school")}
+                onChange={setApplicationAnswerSelect("school")}
               />
               <ValidationError message={props.errors.school} />
             </div>
@@ -145,8 +157,8 @@ const Step2 = (props) => {
                 id="degree"
                 key="degree"
                 className="select"
-                value={props.getApplicationAnswerSelect("degree")}
-                onChange={props.setApplicationAnswerSelect("degree")}
+                value={getApplicationAnswerSelect("degree")}
+                onChange={setApplicationAnswerSelect("degree")}
               />
               <ValidationError message={props.errors.degree} />
             </div>
@@ -159,8 +171,8 @@ const Step2 = (props) => {
                 id="graduationMonth"
                 key="graduationMonth"
                 className="select"
-                value={props.getApplicationAnswerSelect("graduationMonth")}
-                onChange={props.setApplicationAnswerSelect("graduationMonth")}
+                value={getApplicationAnswerSelect("graduationMonth")}
+                onChange={setApplicationAnswerSelect("graduationMonth")}
               />
               <ValidationError message={props.errors.graduationMonth} />
             </div>

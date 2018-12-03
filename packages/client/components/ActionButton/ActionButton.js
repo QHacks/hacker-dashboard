@@ -1,7 +1,7 @@
 import React from "react";
 import { boxShadow } from "../../assets/constants";
 import * as colors from "../../assets/colors";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const ActionButton = (props) => {
   const roundPadding = props.inline ? "24px" : "55px";

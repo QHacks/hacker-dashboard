@@ -40,14 +40,7 @@ class ApplicationForm extends Component {
     this.changeSelected = this.changeSelected.bind(this);
     this.setAuthAnswer = this.setAuthAnswer.bind(this);
     this.setApplicationAnswer = this.setApplicationAnswer.bind(this);
-    this.getApplicationAnswerSelect = this.getApplicationAnswerSelect.bind(
-      this
-    );
-    this.setApplicationAnswerSelect = this.setApplicationAnswerSelect.bind(
-      this
-    );
     this.nextStep = this.nextStep.bind(this);
-    this.toOptions = this.toOptions.bind(this);
   }
 
   setAuthAnswer(field, answer) {
@@ -57,7 +50,6 @@ class ApplicationForm extends Component {
     const authAnswers = this.state.authAnswers;
     authAnswers[field] = answer;
     this.validateAnswer(field, answer, true);
-    console.log(authAnswers);
     this.setState({ authAnswers });
   }
 
@@ -150,18 +142,6 @@ class ApplicationForm extends Component {
     }
   }
 
-  setApplicationAnswerSelect(field) {
-    return (answer) => this.setApplicationAnswer(field, answer.value);
-  }
-
-  getApplicationAnswerSelect(field) {
-    const val = this.state.applicationAnswers[field];
-    return {
-      label: val,
-      value: val
-    };
-  }
-
   changeSelected(i) {
     const errors = this.state.errors;
     Object.keys(errors).forEach((key) => {
@@ -249,13 +229,10 @@ class ApplicationForm extends Component {
         return (
           <Step2
             setApplicationAnswer={this.setApplicationAnswer}
-            getApplicationAnswerSelect={this.getApplicationAnswerSelect}
-            setApplicationAnswerSelect={this.setApplicationAnswerSelect}
             applicationAnswers={this.state.applicationAnswers}
             errors={this.state.errors}
             hasErrors={this.state.hasErrors}
             nextStep={this.nextStep}
-            toOptions={this.toOptions}
             {...allStyles}
           />
         );
