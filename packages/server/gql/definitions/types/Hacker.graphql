@@ -14,7 +14,7 @@ extend type MutationRoot {
   """
   Updates a hacker by ID.
   """
-  hackerUpdate(id: ID!, input: HackerInput!): HackerUpdatePayload!
+  hackerUpdate(id: ID, input: HackerInput!): HackerUpdatePayload!
 }
 
 """
@@ -49,7 +49,19 @@ type Hacker implements User {
   """
   Check if the hacker has applied to a given event.
   """
-  hasApplied(eventSlug: String): Boolean
+  hasApplied(eventSlug: String!): Boolean!
+  """
+  The hacker's github profile.
+  """
+  githubLink: String
+  """
+  The hacker's linkedin profile
+  """
+  linkedinLink: String
+  """
+  The hacker's personal website
+  """
+  personalWebsiteLink: String
   """
   The hackers auth information.
   """
@@ -60,15 +72,15 @@ input HackerInput {
   """
   The hackers first name.
   """
-  firstName: String!
+  firstName: String
   """
   The hackers last name.
   """
-  lastName: String!
+  lastName: String
   """
   The hackers email.
   """
-  email: String!
+  email: String
   """
   The hackers phone number.
   """
@@ -77,6 +89,18 @@ input HackerInput {
   The hackers date of birth.
   """
   dateOfBirth: String
+  """
+  The hacker's github profile.
+  """
+  githubLink: String
+  """
+  The hacker's linkedin profile
+  """
+  linkedinLink: String
+  """
+  The hacker's personal website
+  """
+  personalWebsiteLink: String
 }
 
 type HackerDeletePayload {
