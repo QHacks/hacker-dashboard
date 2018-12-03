@@ -8,8 +8,8 @@ const express = require("express");
 const helmet = require("helmet");
 const path = require("path");
 const cors = require("cors");
-const db = require("./db")(logger);
 const logger = require("./utils/logger");
+const db = require("./db")(logger);
 const { GraphQLAuthenticationError } = require("./errors");
 
 const IS_PROD = process.env.NODE_ENV === "production";
