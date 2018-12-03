@@ -59,16 +59,22 @@ class Landing extends Component {
               background-size: cover;
               display: flex;
               justify-content: center;
-              align-items: center;
+              align-items: flex-start;
               height: 100%;
               border-left: 1px solid #ccd3df;
-              padding-top: 84px;
+              padding: 175px calc(50vw - 615px) 100px 64px;
+              @media screen and (max-width: 1400px) and (min-width: 860px) {
+                padding-right: 80px;
+              }
+              @media screen and (max-width: 860px) {
+                padding-right: 5vw;
+              }
             `}
           >
             <img
               src={".././assets/img/queens-building.svg"}
               css={`
-                max-width: 80%;
+                width: 80%;
               `}
             />
           </div>
