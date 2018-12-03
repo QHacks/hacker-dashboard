@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import * as constants from "../../assets/constants";
+import { blue } from "../../assets/colors";
+import { linkExternalTrusted } from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import crown from "../../assets/img/qhacks-tricolor-logo.svg";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
@@ -37,13 +38,13 @@ class MenuBar extends Component {
               text-transform: uppercase;
               list-style-type: none;
               a:not(.actionButton) {
-                color: ${constants.blue};
+                color: ${blue};
                 font-weight: 600;
                 padding-bottom: 2px;
                 padding-top: 2px;
                 :hover {
                   text-decoration: none;
-                  border-bottom: 2px solid ${constants.blue};
+                  border-bottom: 2px solid ${blue};
                 }
               }
               a.actionButton {
@@ -55,22 +56,24 @@ class MenuBar extends Component {
             `}
           >
             <li>
-              <a
-                href="https://qhacks.io"
-                rel="external noopener"
-                target="_blank"
-              >
+              <a href="https://qhacks.io" {...linkExternalTrusted}>
                 QHacks 2019
               </a>
             </li>
             <li>
-              <a href="#">Past Events</a>
+              <a {...linkExternalTrusted} href="https://2018.qhacks.io">
+                Past Events
+              </a>
             </li>
             <li>
-              <a href="https://medium.com/qhacks">Blog</a>
+              <a {...linkExternalTrusted} href="https://medium.com/qhacks">
+                Blog
+              </a>
             </li>
             <li>
-              <a href="https://github.com/qhacks">Code</a>
+              <a {...linkExternalTrusted} href="https://github.com/qhacks">
+                Code
+              </a>
             </li>
             <li>
               <ActionButton

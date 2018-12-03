@@ -4,7 +4,7 @@ import axios from "axios";
 
 import Landing from "./Landing";
 import { SERVER_HOST } from "../../Client";
-import * as constants from "../../assets/constants";
+import { blue } from "../../assets/colors";
 import ActionButton from "../ActionButton/ActionButton";
 
 class UpdatePassword extends Component {
@@ -30,11 +30,11 @@ class UpdatePassword extends Component {
       );
 
       this.setState({
-        success: "Test Success"
+        success: "Password successfully reset"
       });
     } catch (err) {
       this.setState({
-        error: "Test Error"
+        error: "Something went wrong. Refresh and try again in a minute."
       });
     }
   }
@@ -52,7 +52,7 @@ class UpdatePassword extends Component {
         <h3
           css={`
             margin-top: 24px;
-            color: ${constants.blue};
+            color: ${blue};
             font-weight: 700;
           `}
         >

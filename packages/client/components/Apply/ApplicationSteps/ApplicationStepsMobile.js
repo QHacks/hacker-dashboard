@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react";
-import * as constants from "../../assets/constants";
+import { red, steel } from "../../../assets/colors";
 
 class ApplicationStepsMobile extends PureComponent {
   getBackgroundColor(num) {
     if (num > this.props.stepNum) {
-      return "#d2d2d2";
+      return steel;
     }
-    return constants.red;
+    return red;
   }
   render() {
     const pages = ["Introduction", "About You", "Why QHacks?", "Next Steps"];
@@ -51,7 +51,7 @@ class ApplicationStepsMobile extends PureComponent {
                     height: 30px;
                     margin: 0;
                   `}
-                  src={require("../../assets/img/red-circle-check.png")}
+                  src={require("../../../assets/img/red-circle-check.png")}
                 />
               ) : (
                 i + 1

@@ -1,10 +1,10 @@
 import React, { PureComponent } from "react";
-import * as constants from "../../assets/constants";
+import { red, offWhite, steel } from "../../../assets/colors";
 
 class ApplicationStepsDesktop extends PureComponent {
   getBackgroundColor(num) {
     if (num === this.props.stepNum) {
-      return constants.red;
+      return red;
     }
     if (num > this.props.stepNum) {
       return "white";
@@ -42,7 +42,7 @@ class ApplicationStepsDesktop extends PureComponent {
             height: 32px;
             width: 32px;
           `}
-          src={require("../../assets/img/circle-check.svg")}
+          src={require("../../../assets/img/circle-check.svg")}
         />
       );
     }
@@ -67,7 +67,7 @@ class ApplicationStepsDesktop extends PureComponent {
           margin-right: 16px;
           height: 32px;
           width: 32px;
-          border: 2px solid #d2d2d2;
+          border: 2px solid ${steel};
           border-radius: 50%;
         `}
       />
@@ -78,7 +78,7 @@ class ApplicationStepsDesktop extends PureComponent {
     if (num === this.props.stepNum) {
       return "white";
     }
-    return constants.red;
+    return red;
   }
 
   render() {
@@ -86,14 +86,14 @@ class ApplicationStepsDesktop extends PureComponent {
     return (
       <div
         css={`
-          background-color: #f8f8f8;
+          background-color: ${offWhite};
           width: 100%;
           height: 80px;
           display: flex;
           flex-direction: row;
           justify-content: center;
-          border-top: 1px solid #d2d2d2;
-          border-bottom: 1px solid #d2d2d2;
+          border-top: 1px solid ${steel};
+          border-bottom: 1px solid ${steel};
         `}
       >
         {pages.map((text, i) => (
@@ -105,10 +105,10 @@ class ApplicationStepsDesktop extends PureComponent {
               padding: 20px;
               color: ${this.getForegroundColor(i)};
               background-color: ${this.getBackgroundColor(i)};
-              border-left: 1px solid #d2d2d2;
+              border-left: 1px solid ${steel};
               align-items: center;
               :last-child {
-                border-right: 1px solid #d2d2d2;
+                border-right: 1px solid ${steel};
               }
             `}
           >

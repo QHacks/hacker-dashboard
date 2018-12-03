@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import { steel } from "../../../assets/colors";
 
 class Card extends Component {
   render() {
     return (
       <div
         css={`
-          border: 1px solid #ced4da;
+          border: 1px solid ${steel};
           border-radius: 8px;
           max-width: 285px;
         `}
@@ -22,7 +23,7 @@ class Card extends Component {
         <div
           css={`
             padding: 16px;
-            border-top: 1px solid #ced4da;
+            border-top: 1px solid ${steel};
           `}
         >
           <h3

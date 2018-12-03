@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { offWhite } from "../../../assets/colors";
 
 class DashboardSection extends Component {
   render() {
@@ -15,7 +16,7 @@ class DashboardSection extends Component {
           css={`
             padding: 16px 24px;
             height: 56px;
-            background-color: #f8f8f8;
+            background-color: ${offWhite};
             border-bottom: 1px solid #a4b3bf;
             border-radius-top: 8px;
             overflow: hidden;
