@@ -6,7 +6,7 @@ import UpdatePassword from "../Landing/UpdatePassword";
 import Dashboard from "../Dashboard/Dashboard";
 import NotFound from "../utils/NotFound";
 import { boxShadow } from "../../assets/constants";
-import * as colors from "../../assets/colors";
+import { blue, linkVisited, linkUnvisited } from "../../assets/colors";
 import Login from "../Landing/Login";
 import Route from "../utils/Route";
 import Apply from "../Apply";
@@ -24,12 +24,12 @@ min-width: 800px;
 
 a {
   text-decoration: none;
-  color:${colors.linkUnvisited};
+  color:${linkUnvisited};
   :hover {
     text-decoration: underline;
   }
   :visited {
-    color:${colors.linkVisited};
+    color:${linkVisited};
   }
 }
 
@@ -50,7 +50,7 @@ h3 {
 }
 
 h1, h2, h3, h4 {
-  color: ${colors.blue};
+  color: ${blue};
 }
 
 strong {

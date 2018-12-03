@@ -1,20 +1,20 @@
 import React, { Component } from "react";
-import * as colors from "../../assets/colors";
+import { orange, red, green, cyan } from "../../assets/colors";
 
 class StatusReport extends Component {
   getBorderColor() {
     switch (this.props.type.toLowerCase()) {
       case "caution": {
-        return colors.orange;
+        return orange;
       }
       case "danger": {
-        return colors.red;
+        return red;
       }
       case "success": {
-        return colors.green;
+        return green;
       }
       default: {
-        return colors.cyan;
+        return cyan;
       }
     }
   }

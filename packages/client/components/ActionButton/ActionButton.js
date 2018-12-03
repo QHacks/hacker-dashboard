@@ -1,6 +1,13 @@
 import React from "react";
 import { boxShadow } from "../../assets/constants";
-import * as colors from "../../assets/colors";
+import {
+  red,
+  blue,
+  redLight,
+  blueLight,
+  redDark,
+  blueDark
+} from "../../assets/colors";
 import { Link } from "react-router-dom";
 
 const ActionButton = (props) => {
@@ -27,9 +34,9 @@ const ActionButton = (props) => {
     }
     switch (getColor()) {
       case "red":
-        return colors.red;
+        return red;
       case "blue":
-        return colors.blue;
+        return blue;
       default:
         return "white";
     }
@@ -42,7 +49,7 @@ const ActionButton = (props) => {
       case "blue":
         return "white";
       default:
-        return props.foregroundColor || colors.blue;
+        return props.foregroundColor || blue;
     }
   };
 
@@ -63,9 +70,9 @@ const ActionButton = (props) => {
     }
     switch (getColor()) {
       case "red":
-        return colors.redLight;
+        return redLight;
       case "blue":
-        return colors.blueLight;
+        return blueLight;
       default:
         return "white";
     }
@@ -89,7 +96,7 @@ const ActionButton = (props) => {
       case "blue":
         return "none";
       default:
-        return props.inline ? `2px solid ${colors.blue}` : "1px solid #999da4";
+        return props.inline ? `2px solid ${blue}` : "1px solid #999da4";
     }
   };
 
@@ -113,18 +120,16 @@ const ActionButton = (props) => {
       case "blue":
         return "1px solid #c4c4c4";
       default:
-        return props.inline
-          ? `2px solid ${colors.blue}`
-          : `1px solid ${colors.blue}`;
+        return props.inline ? `2px solid ${blue}` : `1px solid ${blue}`;
     }
   };
 
   const getClickBackgroundColor = () => {
     switch (getColor()) {
       case "red":
-        return colors.redDark;
+        return redDark;
       case "blue":
-        return colors.blueDark;
+        return blueDark;
       default:
         return "white";
     }

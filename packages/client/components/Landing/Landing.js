@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import MenuBar from "../MenuBar/index.js";
-import * as colors from "../../assets/colors";
+import { grey } from "../../assets/colors";
 
 class Landing extends Component {
   render() {
@@ -45,7 +45,7 @@ class Landing extends Component {
               }
               a.landingLink {
                 font-weight: 600;
-                color: ${colors.grey};
+                color: ${grey};
                 text-decoration: underline;
               }
             `}
