@@ -36,7 +36,10 @@ class ApplicationForm extends Component {
         dreamProject: "",
         passionProject: "",
         agreeMlhCodeConduct: "",
-        agreeMlhTosAndPrivacyPolicy: ""
+        agreeMlhTosAndPrivacyPolicy: "",
+        github: "",
+        linkedIn: "",
+        personalWebsite: ""
       },
       errors: {},
       hasErrors: false
@@ -53,6 +56,21 @@ class ApplicationForm extends Component {
 
   validators() {
     return {
+      linkedIn: {
+        regex: /^.*$/,
+        stepNum: 1,
+        message: "Please enter a valid URL"
+      },
+      github: {
+        regex: /^.*$/,
+        stepNum: 1,
+        message: "Please enter a valid URL"
+      },
+      personalWebsite: {
+        regex: /^.*$/,
+        stepNum: 1,
+        message: "Please enter a valid URL"
+      },
       email: {
         regex: /^.+@.+$/,
         stepNum: 0,
