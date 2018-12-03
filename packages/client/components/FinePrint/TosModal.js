@@ -10,12 +10,12 @@ const TosModal = (props) => (
     onRequestClose={() => props.closeModal()}
     style={{
       overlay: {
-        backgroundColor: "rgba(0, 0, 0, 0.5)"
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        zIndex: 10000
       },
       content: {
         padding: 0,
-        margin: 0,
-        zIndex: 10000
+        margin: 0
       }
     }}
   >
@@ -30,8 +30,9 @@ const TosModal = (props) => (
       `}
     >
       QHacks Terms and Conditions
-      <img
+      <input
         src="../../assets/img/times.svg"
+        type="image"
         css="
             max-height: 40px;
             max-width: 40px;
@@ -39,6 +40,7 @@ const TosModal = (props) => (
             margin-right: 24px;
             cursor: pointer;
           "
+        alt="Close modal"
         onClick={props.closeModal}
       />
     </div>
@@ -79,8 +81,8 @@ const TosModal = (props) => (
         any public display (commercial or non-commercial), attempt to decompile
         or reverse engineer any software contained on QHacks&apos; website,
         remove any copyright or other proprietary notations from the materials,
-        transfer the materials to another person or "mirror" the materials on
-        any other server.
+        transfer the materials to another person or &ldquo;mirror&ldquo; the
+        materials on any other server.
       </p>
       <p>
         This license shall automatically terminate if you violate any of these

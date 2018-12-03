@@ -39,7 +39,7 @@ const getNewAccessToken = () => {
     });
   }
 
-  return Promise.reject("No refresh token in local storage!");
+  return Promise.reject(new Error("No refresh token in local storage!"));
 };
 
 const apolloClientSetup = async () => {
@@ -60,8 +60,8 @@ const apolloClientSetup = async () => {
       storage: window.localStorage,
       debug: true
     });
-  } catch (err) {
-    console.log("Could not restore local cache!");
+  } catch (caughtError) {
+    console.log("Could not restore local cache!", caughtError);
   }
 
   // Error handler link, will attempt operation retrys after refreshing access token
@@ -139,7 +139,8 @@ const apolloClientSetup = async () => {
   });
 
   // Identifies the client in Apollo Engine
-  const clientIdentifierLink = new ApolloLink((operation, forward) => {
+  const clientIdentifierLink = new ApolloLink((operationArg, forward) => {
+    const operation = operationArg;
     operation.extensions.clientInfo = {
       clientName: CLIENT_NAME,
       clientVersion: CLIENT_VERSION

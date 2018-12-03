@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from "react";
 import { map, pick } from "lodash";
 import uuid from "uuid/v4";

@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { red, steel } from "../../../assets/colors";
+import check from "../../../assets/img/red-circle-check.png";
 
 class ApplicationStepsMobile extends PureComponent {
   getBackgroundColor(num) {
@@ -52,7 +53,8 @@ class ApplicationStepsMobile extends PureComponent {
                     height: 30px;
                     margin: 0;
                   "
-                  src={require("../../../assets/img/red-circle-check.png")}
+                  alt={`Step ${i + 1} completed`}
+                  src={check}
                 />
               ) : (
                 i + 1

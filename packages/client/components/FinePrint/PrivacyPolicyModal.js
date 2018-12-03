@@ -12,7 +12,7 @@ const PrivacyPolicyModal = (props) => (
     style={{
       overlay: {
         backgroundColor: "rgba(0, 0, 0, 0.5)",
-        zIndex: 1000
+        zIndex: 10000
       },
       content: {
         padding: 0,
@@ -31,8 +31,9 @@ const PrivacyPolicyModal = (props) => (
       `}
     >
       QHacks Privacy Policy
-      <img
+      <input
         src="../../assets/img/times.svg"
+        type="image"
         css="
             max-height: 40px;
             max-width: 40px;
@@ -40,6 +41,7 @@ const PrivacyPolicyModal = (props) => (
             margin-right: 24px;
             cursor: pointer;
           "
+        alt="Close modal"
         onClick={props.closeModal}
       />
     </div>

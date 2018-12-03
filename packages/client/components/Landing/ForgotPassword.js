@@ -20,12 +20,10 @@ class ForgotPassword extends Component {
     const { email } = this.state;
 
     try {
-      const response = await axios.post(
-        `${SERVER_HOST}/oauth/createResetHash`,
-        {
-          email
-        }
-      );
+      // const response =
+      await axios.post(`${SERVER_HOST}/oauth/createResetHash`, {
+        email
+      });
 
       this.setState({
         success: "Check your email!"

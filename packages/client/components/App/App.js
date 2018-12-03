@@ -1,5 +1,5 @@
 import { Switch } from "react-router-dom";
-import React, { Component } from "react";
+import React from "react";
 import "normalize.css";
 import ForgotPassword from "../Landing/ForgotPassword";
 import UpdatePassword from "../Landing/UpdatePassword";
@@ -129,34 +129,28 @@ textarea {
 }
 `;
 
-export default class App extends Component {
-  render() {
-    return (
-      <div css={globalStyles}>
-        <Switch>
-          {/* Wildcard routes */}
-          <Route path="/qhacks-2019/apply" component={Apply} />
+const App = () => (
+  <div css={globalStyles}>
+    <Switch>
+      {/* Wildcard routes */}
+      <Route path="/qhacks-2019/apply" component={Apply} />
 
-          {/* Public routes */}
-          <Route path="/login" component={Login} type="public" />
-          <Route
-            path="/forgot-password"
-            component={ForgotPassword}
-            type="public"
-          />
-          <Route
-            path="/update-password/:resetHash"
-            component={UpdatePassword}
-            type="public"
-          />
+      {/* Public routes */}
+      <Route path="/login" component={Login} type="public" />
+      <Route path="/forgot-password" component={ForgotPassword} type="public" />
+      <Route
+        path="/update-password/:resetHash"
+        component={UpdatePassword}
+        type="public"
+      />
 
-          {/* Authenticated routes */}
-          <Route path="/profile" component={Dashboard} type="private" />
+      {/* Authenticated routes */}
+      <Route path="/profile" component={Dashboard} type="private" />
 
-          {/* Catch all routes */}
-          <Route path="*" component={NotFound} />
-        </Switch>
-      </div>
-    );
-  }
-}
+      {/* Catch all routes */}
+      <Route path="*" component={NotFound} />
+    </Switch>
+  </div>
+);
+
+export default App;

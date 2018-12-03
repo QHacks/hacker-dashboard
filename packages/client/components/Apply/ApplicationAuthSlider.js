@@ -63,6 +63,7 @@ class ApplicationAuthSlider extends Component {
         key={item}
         onClick={() => this.changeSelected(i)}
         className={this.props.selectedItem === i ? "selectedItem item" : "item"}
+        type="button"
       >
         {item}
       </button>

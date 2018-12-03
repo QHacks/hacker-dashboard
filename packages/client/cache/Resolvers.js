@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export default {
   Mutation: {
     authInfoUpdate: (parent, args, context, info) => {

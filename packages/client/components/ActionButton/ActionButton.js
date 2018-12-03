@@ -218,6 +218,7 @@ const ActionButton = (props) => {
       disabled={props.disabled}
       onClick={props.onClick}
       className={props.className || "actionButton"}
+      type="button"
     >
       <div
         css={`

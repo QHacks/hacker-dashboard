@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { red, offWhite, steel } from "../../../assets/colors";
+import check from "../../../assets/img/circle-check.svg";
 
 class ApplicationStepsDesktop extends PureComponent {
   getBackgroundColor(num) {
@@ -42,7 +43,8 @@ class ApplicationStepsDesktop extends PureComponent {
             height: 32px;
             width: 32px;
           "
-          src={require("../../../assets/img/circle-check.svg")}
+          alt={`Step ${num + 1} completed`}
+          src={check}
         />
       );
     }

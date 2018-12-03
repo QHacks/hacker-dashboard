@@ -1,5 +1,7 @@
 import React from "react";
 import ActionButton from "../ActionButton/ActionButton";
+import { decorativeElement } from "../../assets/constants";
+import threeGears from "../../assets/img/3-gears.png";
 
 const Step4 = (props) => {
   const pStyle = `
@@ -15,7 +17,9 @@ const Step4 = (props) => {
       `}
     >
       <img
-        src={require("../../assets/img/3-gears.png")}
+        src={threeGears}
+        alt=""
+        {...decorativeElement}
         css="
           height: 133px;
           width: 240px;

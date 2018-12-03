@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
 import Landing from "./Landing";
 import { SERVER_HOST } from "../../Client";
 import { blue } from "../../assets/colors";
@@ -12,7 +11,9 @@ class UpdatePassword extends Component {
     super(props);
 
     this.state = {
-      password: ""
+      password: "",
+      success: "",
+      error: ""
     };
   }
 
@@ -21,13 +22,11 @@ class UpdatePassword extends Component {
     const { resetHash } = this.props.match.params;
 
     try {
-      const response = await axios.post(
-        `${SERVER_HOST}/oauth/updatePasswordForReset`,
-        {
-          password,
-          resetHash
-        }
-      );
+      // const response =
+      await axios.post(`${SERVER_HOST}/oauth/updatePasswordForReset`, {
+        password,
+        resetHash
+      });
 
       this.setState({
         success: "Password successfully reset"

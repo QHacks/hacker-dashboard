@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Route as ReactRouterRoute, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
