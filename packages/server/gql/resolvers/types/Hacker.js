@@ -1,7 +1,8 @@
 const { hasPermission, formatScopes } = require("../../../oauth/scopes");
 const {
   GraphQLNotFoundError,
-  GraphQLForbiddenError
+  GraphQLForbiddenError,
+  GraphQLUserInputError
 } = require("../../../errors");
 const { isEmpty } = require("lodash");
 
@@ -34,16 +35,21 @@ module.exports = {
   },
   MutationRoot: {
     hackerUpdate(parent, args, context, info) {
-      if (!hasPermission("hacker", "write", context.access.scopes)) {
-        throw new GraphQLForbiddenError("Invalid permissions!");
+      // TODO: Let admins update hackers
+      if (!args.id && context.access.role !== "HACKER") {
+        throw new GraphQLUserInputError(
+          "Must provide an id to update another hacker!"
+        );
       }
 
-      const { db } = context;
-      const { id, input } = args;
+      const { input: hackerInput } = args;
 
-      // db.User.findOne({ where: { id }}).then((hacker) => {
-      //   hacker.update)
-      // });
+      return context.user
+        .update(hackerInput)
+        .catch(() => {
+          new GraphQLUserInputError("Could not update hacker!");
+        })
+        .then((hacker) => ({ hacker }));
     },
     hackerDelete(parent, args, context, info) {
       if (!hasPermission("hacker", "write", context.access.scopes)) {
