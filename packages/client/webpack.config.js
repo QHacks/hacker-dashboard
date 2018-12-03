@@ -3,6 +3,7 @@ require("dotenv").config();
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const path = require("path");
@@ -78,6 +79,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: CLIENT_TEMPLATE
     }),
+    new CopyWebpackPlugin([
+      {
+        from: `${CLIENT_DIR}/assets`,
+        to: "assets"
+      }
+    ]),
     new CompressionPlugin({
       asset: "[path].gz[query]",
       algorithm: "gzip",
