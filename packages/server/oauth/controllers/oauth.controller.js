@@ -278,7 +278,9 @@ module.exports = (db) => {
         {
           to: email,
           dataForTemplate: {
-            resetPasswordHash: newResetPasswordHash
+            firstName: user.firstName,
+            resetPasswordHash: newResetPasswordHash,
+            email: email
           }
         }
       ]);
@@ -315,7 +317,11 @@ module.exports = (db) => {
 
       await sendEmails("reset-password-success", [
         {
-          to: user.email
+          to: user.email,
+          dataForTemplate: {
+            email: user.email,
+            firstName: user.firstName
+          }
         }
       ]);
 
