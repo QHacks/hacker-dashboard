@@ -8,7 +8,8 @@ const {
   ValidationError,
   OAuthInvalidRefreshTokenError,
   OAuthClientNotRegisteredError,
-  OAuthClientNotPrivilegedError
+  OAuthClientNotPrivilegedError,
+  DatabaseError
 } = require("../../errors");
 
 const JWT_ISSUER = "QHacks";
@@ -145,7 +146,15 @@ module.exports = (db) => {
         expiresIn: ACCESS_TOKEN_EXPIRE_SECONDS
       });
     } catch (err) {
-      return Promise.reject(new ValidationError("Database validation failed!"));
+      if (err.name === "SequelizeUniqueConstraintError") {
+        return Promise.reject(
+          new DatabaseError(`${email} is already signed up!`, 422)
+        );
+      }
+
+      return Promise.reject(
+        new RestApiError("Unable to sign up at this time.", 500)
+      );
     }
   }
 
