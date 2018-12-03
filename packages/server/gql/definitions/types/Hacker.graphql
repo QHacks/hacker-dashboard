@@ -47,6 +47,10 @@ type Hacker implements User {
   """
   dateOfBirth: String
   """
+  Check if the hacker has applied to a given event.
+  """
+  hasApplied(eventSlug: String): Boolean
+  """
   The hackers auth information.
   """
   oauthInfo: OAuthInfo!
