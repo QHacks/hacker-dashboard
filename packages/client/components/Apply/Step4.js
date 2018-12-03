@@ -38,7 +38,7 @@ const Step4 = (props) => {
           margin: 40px 0;
         `}
       >
-        <ActionButton internal link="/dashboard" color="red">
+        <ActionButton internal link="/profile" color="red">
           View Dashoard
         </ActionButton>
       </div>
