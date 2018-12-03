@@ -1,18 +1,24 @@
 import { Switch } from "react-router-dom";
 import React, { Component } from "react";
 import "normalize.css";
-
 import ForgotPassword from "../Landing/ForgotPassword";
 import UpdatePassword from "../Landing/UpdatePassword";
-import * as constants from "../../assets/constants";
 import Dashboard from "../Dashboard/Dashboard";
 import NotFound from "../utils/NotFound";
+import { boxShadow } from "../../assets/constants";
+import {
+  blue,
+  steel,
+  offWhite,
+  linkVisited,
+  linkUnvisited
+} from "../../assets/colors";
 import Login from "../Landing/Login";
 import Route from "../utils/Route";
 import Apply from "../Apply";
 
 const globalStyles = `
-color: #020b1b;
+min-width: 800px;
 
 * {
   font-family: "Encode Sans", sans-serif !important;
@@ -23,12 +29,13 @@ color: #020b1b;
 
 a {
   text-decoration: none;
-  color:${constants.linkUnvisited};
+  font-weight: 600;
+  color:${linkUnvisited};
   :hover {
     text-decoration: underline;
   }
   :visited {
-    color:${constants.linkVisited};
+    color:${linkVisited};
   }
 }
 
@@ -49,7 +56,7 @@ h3 {
 }
 
 h1, h2, h3, h4 {
-  color: ${constants.blue};
+  color: ${blue};
 }
 
 strong {
@@ -65,22 +72,26 @@ label {
   text-transform: uppercase;
 }
 
+button:focus, input:focus {
+  outline: none;
+}
+
 input:not([type="checkbox"]) {
   height: 42.4px;
-  border: 1px solid #b2b7c2;
+  border: 1px solid ${steel};
   border-radius: 4px;
   margin: 6px 0;
   :last-child {
     margin-right: 0;
   }
   :focus {
-    box-shadow: ${constants.boxShadow};
+    box-shadow: ${boxShadow};
     background-color: white;
   }
   padding: 0 6px;
   line-height: 42px;
   width: calc(100% - 12px);
-  background-color: #f8f8f8;
+  background-color: ${offWhite};
 }
 
 input:not([type="checkbox"]):only-of-type {
@@ -89,8 +100,8 @@ input:not([type="checkbox"]):only-of-type {
 }
 
 div.select > div {
-  border: 1px solid #b2b7c2;
-  background-color: #f8f8f8;
+  border: 1px solid ${steel};
+  background-color: ${offWhite};
 }
 
 div.select input {
@@ -103,15 +114,16 @@ div.select input {
 }
 
 textarea {
-  border: 1px solid #b2b7c2;
-  background-color: #f8f8f8;
+  border: 1px solid ${steel};
+  background-color: ${offWhite};
   border-radius: 4px;
+  line-height: 1.43;
   margin: 6px 0;
   padding: 6px;
   width: 100%;
   min-height: 200px;
   :focus {
-    box-shadow: ${constants.boxShadow};
+    box-shadow: ${boxShadow};
     background-color: white;
   }
 }
