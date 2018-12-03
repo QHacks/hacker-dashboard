@@ -27,9 +27,9 @@ class Card extends Component {
           `}
         >
           <h3
-            css={`
+            css="
               margin-bottom: 8px;
-            `}
+            "
           >
             {this.props.title}
           </h3>

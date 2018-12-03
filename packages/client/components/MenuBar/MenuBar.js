@@ -9,7 +9,7 @@ class MenuBar extends Component {
   render() {
     return (
       <header
-        css={`
+        css="
           width: 100%;
           height: 84px;
           line-height: 44px;
@@ -17,13 +17,13 @@ class MenuBar extends Component {
           position: absolute;
           top: 0;
           left: 0;
-        `}
+        "
       >
         <ContentWrapper wide={this.props.wide}>
           <div
-            css={`
+            css="
               display: inline-block;
-            `}
+            "
           >
             <img src={crown} alt="QHacks logo" />
           </div>
@@ -77,7 +77,7 @@ class MenuBar extends Component {
             </li>
             <li>
               <ActionButton
-                style={`font-size: 16px;`}
+                style="font-size: 16px;"
                 type="rounded"
                 internal
                 inline

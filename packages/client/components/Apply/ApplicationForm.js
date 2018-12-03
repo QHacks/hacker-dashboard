@@ -203,7 +203,7 @@ class ApplicationForm extends Component {
     const errors = this.state.errors;
     errors[field] = err;
     let hasErrors = false;
-    for (var property in errors) {
+    for (const property in errors) {
       if (errors.hasOwnProperty(property) && errors[property]) {
         hasErrors = true;
       }
@@ -250,10 +250,8 @@ class ApplicationForm extends Component {
       if (!this.state.authAnswers.hasOwnProperty(field)) {
         throw `No such field "${field}" in authentication form`;
       }
-    } else {
-      if (!this.state.applicationAnswers.hasOwnProperty(field)) {
-        throw `No such field "${field}" in application form`;
-      }
+    } else if (!this.state.applicationAnswers.hasOwnProperty(field)) {
+      throw `No such field "${field}" in application form`;
     }
 
     if (this.state.returningHacker && validators[field].forSignUp) {
@@ -266,10 +264,9 @@ class ApplicationForm extends Component {
     ) {
       this.setError(field, "", auth);
       return true;
-    } else {
-      this.setError(field, validators[field].message, auth);
-      return false;
     }
+    this.setError(field, validators[field].message, auth);
+    return false;
   }
 
   changeSelected(i) {
@@ -393,6 +390,7 @@ class ApplicationForm extends Component {
       }
     }
   }
+
   render() {
     return (
       <ContentWrapper>{this.getQuestions(this.props.stepNum)}</ContentWrapper>

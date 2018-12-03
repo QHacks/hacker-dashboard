@@ -1,6 +1,6 @@
-const { ValidationError } = require("../errors");
 const validator = require("validator");
 const _ = require("lodash");
+const { ValidationError } = require("../errors");
 
 const NAME_REGEX = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]+$/;
 

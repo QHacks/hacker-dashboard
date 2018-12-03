@@ -2,10 +2,10 @@ import "@babel/polyfill";
 
 import { BrowserRouter } from "react-router-dom";
 import { ApolloProvider } from "react-apollo";
-import getApolloClient from "./ApolloClient";
-import App from "./components/App";
 import { render } from "react-dom";
 import React, { Component } from "react";
+import getApolloClient from "./ApolloClient";
+import App from "./components/App";
 
 const rootElement = document.getElementById("root");
 

@@ -1,4 +1,3 @@
-import { resolvers, defaults, typeDefs } from "./cache";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { persistCache } from "apollo-cache-persist";
 import { withClientState } from "apollo-link-state";
@@ -8,6 +7,7 @@ import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import axios from "axios";
+import { resolvers, defaults, typeDefs } from "./cache";
 
 const isProd = process.env.NODE_ENV === "production";
 const isStaging = process.env.NODE_ENV === "staging";
@@ -21,8 +21,8 @@ const CLIENT_VERSION = "1.3.4";
 const CLIENT_NAME = isProd
   ? "dashboard-web-client-prod"
   : isStaging
-    ? "dashboard-web-client-staging"
-    : "dashboard-web-dev";
+  ? "dashboard-web-client-staging"
+  : "dashboard-web-dev";
 
 const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
 const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";

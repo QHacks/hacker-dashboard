@@ -6,7 +6,7 @@ class Landing extends Component {
   render() {
     return (
       <div>
-        <MenuBar wide={true} />
+        <MenuBar wide />
         <div
           css={`
             display: grid;
@@ -71,10 +71,10 @@ class Landing extends Component {
             `}
           >
             <img
-              src={".././assets/img/queens-building.svg"}
-              css={`
+              src=".././assets/img/queens-building.svg"
+              css="
                 width: 80%;
-              `}
+              "
             />
           </div>
         </div>

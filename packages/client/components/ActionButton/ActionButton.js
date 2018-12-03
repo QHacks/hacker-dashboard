@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { boxShadow } from "../../assets/constants";
 import {
   red,
@@ -10,7 +11,6 @@ import {
   steel,
   offWhite
 } from "../../assets/colors";
-import { Link } from "react-router-dom";
 
 const ActionButton = (props) => {
   const roundPadding = props.inline ? "24px" : "55px";
@@ -26,9 +26,7 @@ const ActionButton = (props) => {
     padding: 0 25px;
   `;
 
-  const getColor = () => {
-    return (props.color && props.color.toLowerCase()) || "white";
-  };
+  const getColor = () => (props.color && props.color.toLowerCase()) || "white";
 
   const getBackgroundColor = () => {
     if (props.inline && !props.color) {

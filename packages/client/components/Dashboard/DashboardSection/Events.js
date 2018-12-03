@@ -35,11 +35,11 @@ class Events extends Component {
           </table>
           <div>
             <strong
-              css={`
+              css="
                 display: block;
                 margin: 30px 0 8px;
                 font-size: 18px;
-              `}
+              "
             >
               Thanks for applying!
             </strong>

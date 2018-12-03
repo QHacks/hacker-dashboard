@@ -37,11 +37,11 @@ class ApplicationStepsDesktop extends PureComponent {
     if (num < this.props.stepNum) {
       return (
         <img
-          css={`
+          css="
             margin-right: 16px;
             height: 32px;
             width: 32px;
-          `}
+          "
           src={require("../../../assets/img/circle-check.svg")}
         />
       );
@@ -50,13 +50,13 @@ class ApplicationStepsDesktop extends PureComponent {
     if (num === this.props.stepNum) {
       return (
         <div
-          css={`
+          css="
             margin-right: 16px;
             height: 32px;
             width: 32px;
             border: 2px solid white;
             border-radius: 50%;
-          `}
+          "
         />
       );
     }

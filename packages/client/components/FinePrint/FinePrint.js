@@ -9,6 +9,7 @@ class FinePrint extends Component {
       modalIsOpen: false
     };
   }
+
   render() {
     return (
       <Fragment>

@@ -2,3 +2,4 @@ node_modules
 packages/client/bundle/*
 packages/server/emails/dist/*
 coverage
+__tests__/

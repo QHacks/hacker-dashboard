@@ -53,14 +53,10 @@ module.exports = {
       const { id } = args;
 
       db.User.findOne({ where: { id } })
-        .then((hacker) => {
-          return hacker.destroy();
-        })
-        .then(() => {
-          return {
-            deletedHackerId: id
-          };
-        });
+        .then((hacker) => hacker.destroy())
+        .then(() => ({
+          deletedHackerId: id
+        }));
     }
   },
   Hacker: {
