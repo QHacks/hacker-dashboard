@@ -107,6 +107,7 @@ textarea {
   border: 1px solid #b2b7c2;
   background-color: #f8f8f8;
   border-radius: 4px;
+  line-height: 1.43;
   margin: 6px 0;
   padding: 6px;
   width: 100%;

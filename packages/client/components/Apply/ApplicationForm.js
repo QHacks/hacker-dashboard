@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import escapeStringRegexp from "escape-string-regexp";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
-import { validators } from "../../assets/constants";
 
 class ApplicationForm extends Component {
   constructor(props) {
@@ -19,28 +19,131 @@ class ApplicationForm extends Component {
         lastName: ""
       },
       applicationAnswers: {
+        // if you modify this, remember to update the validators
         phoneNumber: "",
         birthday: "",
         program: "",
         graduationYear: "",
-        whyQHacks: "",
         numAttendedHackathons: "",
         fromLocation: "",
         gender: "",
         race: "",
         school: "",
         degree: "",
-        graduationMonth: ""
+        graduationMonth: "",
+        whyApply: "",
+        dreamProject: "",
+        passionProject: ""
       },
       errors: {},
       hasErrors: false
     };
 
-    // this.doSomething = this.doSomething.bind(this);
     this.changeSelected = this.changeSelected.bind(this);
     this.setAuthAnswer = this.setAuthAnswer.bind(this);
     this.setApplicationAnswer = this.setApplicationAnswer.bind(this);
     this.nextStep = this.nextStep.bind(this);
+
+    this.validators = (authAnswers) => ({
+      email: {
+        regex: /^.+@.+$/,
+        stepNum: 0,
+        message: "Please enter a valid email"
+      },
+      password: {
+        regex: /^.{8,}$/,
+        stepNum: 0,
+        message: "Please enter a valid password (at least 8 characters)"
+      },
+      confirmPassword: {
+        regex: new RegExp(`^${escapeStringRegexp(authAnswers.password)}$`),
+        stepNum: 0,
+        forSignUp: true,
+        message: "Please make sure your passwords match"
+      },
+      firstName: {
+        regex: /^[^0-9]+$/,
+        stepNum: 0,
+        forSignUp: true,
+        message: "Please enter a valid first name"
+      },
+      lastName: {
+        regex: /^[^0-9]+$/,
+        stepNum: 0,
+        forSignUp: true,
+        message: "Please enter a valid last name"
+      },
+      phoneNumber: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter a valid phone number"
+      },
+      birthday: {
+        regex: /^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/,
+        stepNum: 1,
+        message: "Please enter a valid date"
+      },
+      program: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter a valid program"
+      },
+      graduationYear: {
+        regex: /^[0-9]{4}$/,
+        stepNum: 1,
+        message: "Please enter a valid year in the form YYYY"
+      },
+      whyApply: {
+        regex: /^[-\w]+(?:\W+[-\w]+){0,300}\W*$/,
+        stepNum: 2,
+        message: "Please enter a valid answer (max 300 words)"
+      },
+      passionProject: {
+        regex: /^[-\w]+(?:\W+[-\w]+){0,300}\W*$/,
+        stepNum: 2,
+        message: "Please enter a valid answer (max 300 words)"
+      },
+      dreamProject: {
+        regex: /^[-\w]+(?:\W+[-\w]+){0,100}\W*$/,
+        stepNum: 2,
+        message: "Please enter a valid answer (max 100 words)"
+      },
+      numAttendedHackathons: {
+        regex: /^[0-9]+$/,
+        stepNum: 2,
+        message: "Please enter a valid number"
+      },
+      fromLocation: {
+        regex: /^.+$/,
+        stepNum: 2,
+        message: "Please enter a valid location"
+      },
+      gender: {
+        regex: /^[^0-9]+$/,
+        stepNum: 1,
+        message: "Please enter your gender"
+      },
+      race: {
+        regex: /^[^0-9]+$/,
+        stepNum: 1,
+        message: "Please enter your race"
+      },
+      school: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter your school"
+      },
+      degree: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter your degree"
+      },
+      graduationMonth: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter a valid month"
+      }
+    });
   }
 
   setAuthAnswer(field, answer) {
@@ -69,10 +172,8 @@ class ApplicationForm extends Component {
       if (!this.state.authAnswers.hasOwnProperty(field)) {
         throw `No such field "${field} in authentication form`;
       }
-    } else {
-      if (!this.state.applicationAnswers.hasOwnProperty(field)) {
-        throw `No such field "${field} in application form`;
-      }
+    } else if (!this.state.applicationAnswers.hasOwnProperty(field)) {
+      throw `No such field "${field} in application form`;
     }
     const errors = this.state.errors;
     errors[field] = err;
@@ -114,7 +215,7 @@ class ApplicationForm extends Component {
   }
 
   validateAnswer(field, answer, auth = false) {
-    const validator = validators(this.state.authAnswers);
+    const validators = this.validators(this.state.authAnswers);
     answer = String(answer);
     if (auth) {
       if (!this.state.authAnswers.hasOwnProperty(field)) {
@@ -126,18 +227,18 @@ class ApplicationForm extends Component {
       }
     }
 
-    if (this.state.returningHacker && validator[field].forSignUp) {
+    if (this.state.returningHacker && validators[field].forSignUp) {
       this.setError(field, "", auth);
       return true;
     }
     if (
-      this.props.stepNum != validator[field].stepNum ||
-      validator[field].regex.test(answer)
+      this.props.stepNum != validators[field].stepNum ||
+      validators[field].regex.test(answer)
     ) {
       this.setError(field, "", auth);
       return true;
     } else {
-      this.setError(field, validator[field].message, auth);
+      this.setError(field, validators[field].message, auth);
       return false;
     }
   }

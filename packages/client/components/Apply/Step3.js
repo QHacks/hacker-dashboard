@@ -14,16 +14,48 @@ const Step3 = (props) => {
         >
           <section css={props.inputRowStyle}>
             <div>
-              <label htmlFor="whyQHacks">
-                Why do you want to attend QHacks?
+              <label htmlFor="passionProject">
+                Tell us about a time you brought a dream or passion project of
+                yours to life. (&lt; 300 words)
               </label>
               <textarea
-                value={props.applicationAnswers.whyQHacks}
+                value={props.applicationAnswers.passionProject}
                 onChange={(e) =>
-                  props.setApplicationAnswer("whyQHacks", e.target.value)
+                  props.setApplicationAnswer("passionProject", e.target.value)
                 }
               />
-              <ValidationError message={props.errors.whyQHacks} />
+              <ValidationError message={props.errors.passionProject} />
+            </div>
+          </section>
+          <section css={props.inputRowStyle}>
+            <div>
+              <label htmlFor="whyApply">
+                What about QHacks has driven you to apply this year? (&lt; 300
+                words)
+              </label>
+              <textarea
+                value={props.applicationAnswers.whyApply}
+                onChange={(e) =>
+                  props.setApplicationAnswer("whyApply", e.target.value)
+                }
+              />
+              <ValidationError message={props.errors.whyApply} />
+            </div>
+          </section>
+          <section css={props.inputRowStyle}>
+            <div>
+              <label htmlFor="dreamProject">
+                You're given $10,000 to spend on building a project or running
+                an event at QHacks this year. What do you spend it on? (&lt; 100
+                words)
+              </label>
+              <textarea
+                value={props.applicationAnswers.dreamProject}
+                onChange={(e) =>
+                  props.setApplicationAnswer("dreamProject", e.target.value)
+                }
+              />
+              <ValidationError message={props.errors.dreamProject} />
             </div>
           </section>
           <section css={props.inputRowStyle}>
