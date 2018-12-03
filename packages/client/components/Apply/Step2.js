@@ -137,6 +137,56 @@ const Step2 = (props) => {
               <ValidationError message={props.errors.race} />
             </div>
           </section>
+          <section css={props.inputRowStyle}>
+            <div>
+              <label htmlFor="github">GitHub link (optional)</label>
+              <input
+                type="text"
+                id="github"
+                key="github"
+                placeholder="Your GitHub URL"
+                value={props.applicationAnswers.github}
+                onChange={(e) =>
+                  props.setApplicationAnswer("github", e.target.value)
+                }
+              />
+              <ValidationError message={props.errors.linkedIn} />
+            </div>
+          </section>
+          <section css={props.inputRowStyle}>
+            <div>
+              <label htmlFor="linkedIn">LinkedIn link (optional)</label>
+              <input
+                type="text"
+                id="linkedIn"
+                key="linkedIn"
+                placeholder="Your LinkedIn URL"
+                value={props.applicationAnswers.linkedIn}
+                onChange={(e) =>
+                  props.setApplicationAnswer("linkedIn", e.target.value)
+                }
+              />
+              <ValidationError message={props.errors.github} />
+            </div>
+          </section>
+          <section css={props.inputRowStyle}>
+            <div>
+              <label htmlFor="personalWebsite">
+                Personal website link (optional)
+              </label>
+              <input
+                type="text"
+                id="personalWebsite"
+                key="personalWebsite"
+                placeholder="Your personal website URL"
+                value={props.applicationAnswers.personalWebsite}
+                onChange={(e) =>
+                  props.setApplicationAnswer("personalWebsite", e.target.value)
+                }
+              />
+              <ValidationError message={props.errors.personalWebsite} />
+            </div>
+          </section>
         </div>
       </div>
       <div css={props.subsectionStyle}>

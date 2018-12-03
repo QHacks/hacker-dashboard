@@ -122,6 +122,7 @@ textarea {
   padding: 6px;
   width: 100%;
   min-height: 200px;
+  resize: vertical;
   :focus {
     box-shadow: ${boxShadow};
     background-color: white;
