@@ -61,7 +61,7 @@ class Apply extends Component {
           }
         `}
       >
-        <MenuBar hideItems={this.state.stepNum > 0} />
+        <MenuBar showLogin hideItems={this.state.stepNum > 0} />
         <ApplicationHeader />
         <ApplicationNavigation stepNum={this.state.stepNum} />
         <ApplicationForm

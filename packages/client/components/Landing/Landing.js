@@ -26,7 +26,8 @@ const Landing = ({ children }) => (
       <div
         css={`
           height: 100%;
-          padding: 125px 64px 100px calc(50vw - 615px);
+          max-height: 100vh;
+          padding: 170px 64px 100px calc(50vw - 615px);
           @media screen and (max-width: 1400px) and (min-width: 860px) {
             padding-left: 80px;
           }
@@ -59,6 +60,7 @@ const Landing = ({ children }) => (
           justify-content: center;
           align-items: flex-start;
           height: 100%;
+          max-height: 100vh;
           border-left: 1px solid ${steel};
           padding: 175px calc(50vw - 615px) 100px 64px;
           @media screen and (max-width: 1400px) and (min-width: 860px) {
