@@ -90,6 +90,10 @@ input HackerInput {
   """
   dateOfBirth: String
   """
+  The school that the hacker attends
+  """
+  schoolName: String
+  """
   The hacker's github profile.
   """
   githubLink: String
