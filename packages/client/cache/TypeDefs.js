@@ -2,7 +2,8 @@ import gql from "graphql-tag";
 
 export default gql`
   type Mutation {
-    authInfoUpdate(input: AuthInfoInput!): AuthInfo
+    login(input: LoginInput!): AuthInfo
+    logout: AuthInfo
   }
 
   type Query {
@@ -13,7 +14,8 @@ export default gql`
     isAuthenticated: Boolean!
   }
 
-  input AuthInfoInput {
-    isAuthenticated: Boolean!
+  input LoginInput {
+    accessToken: String!
+    refreshToken: String!
   }
 `;

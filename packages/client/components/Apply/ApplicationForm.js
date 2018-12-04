@@ -1,23 +1,21 @@
-import { graphql, compose } from "react-apollo";
-import gql from "graphql-tag";
-import React, { Component } from "react";
 import escapeStringRegexp from "escape-string-regexp";
+import { graphql, compose } from "react-apollo";
+import React, { Component } from "react";
+import gql from "graphql-tag";
+import axios from "axios";
+
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
+import StatusReport from "../StatusReport/StatusReport";
+import { steel } from "../../assets/colors";
+import { SERVER_HOST } from "../../Client";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
-import { steel } from "../../assets/colors";
-import axios from "axios";
-import { SERVER_HOST } from "../../Client";
-import StatusReport from "../StatusReport/StatusReport";
 
-const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
-const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
-
-const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
-  mutation UpdateAutheticationStatus($input: AuthInfoInput!) {
-    authInfoUpdate(input: $input) @client
+const LOGIN_MUTATION = gql`
+  mutation login($input: LoginInput!) {
+    login(input: $input) @client
   }
 `;
 
@@ -88,13 +86,11 @@ class ApplicationForm extends Component {
           grantType: "password"
         });
 
-        localStorage.setItem(ACCESS_TOKEN_STORAGE, response.data.accessToken);
-        localStorage.setItem(REFRESH_TOKEN_STORAGE, response.data.refreshToken);
-
-        this.props.authInfoUpdate({
+        this.props.login({
           variables: {
             input: {
-              isAuthenticated: true
+              accessToken: response.data.accessToken,
+              refreshToken: response.data.refreshToken
             }
           }
         });
@@ -116,7 +112,6 @@ class ApplicationForm extends Component {
 
   async createAccount() {
     if (this.validateAllAnswers()) {
-      console.log("validated");
       const { firstName, lastName, email, password } = this.state.authAnswers;
 
       try {
@@ -127,13 +122,11 @@ class ApplicationForm extends Component {
           password
         });
 
-        localStorage.setItem(ACCESS_TOKEN_STORAGE, response.data.accessToken);
-        localStorage.setItem(REFRESH_TOKEN_STORAGE, response.data.refreshToken);
-
-        this.props.authInfoUpdate({
+        this.props.login({
           variables: {
             input: {
-              isAuthenticated: true
+              accessToken: response.data.accessToken,
+              refreshToken: response.data.refreshToken
             }
           }
         });
@@ -526,7 +519,7 @@ class ApplicationForm extends Component {
 }
 
 export default compose(
-  graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION, {
-    name: "authInfoUpdate"
+  graphql(LOGIN_MUTATION, {
+    name: "login"
   })
 )(ApplicationForm);

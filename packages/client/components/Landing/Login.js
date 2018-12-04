@@ -8,13 +8,11 @@ import Landing from "./Landing";
 import { SERVER_HOST } from "../../Client";
 import ActionButton from "../ActionButton/ActionButton";
 import StatusReport from "../StatusReport/StatusReport";
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "../../Client";
 
-const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
-const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
-
-const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
-  mutation UpdateAutheticationStatus($input: AuthInfoInput!) {
-    authInfoUpdate(input: $input) @client
+const LOGIN_MUTATION = gql`
+  mutation LoginUser($input: LoginInput!) {
+    login(input: $input) @client
   }
 `;
 
@@ -45,13 +43,11 @@ class Login extends Component {
         grantType: "password"
       });
 
-      localStorage.setItem(ACCESS_TOKEN_STORAGE, response.data.accessToken);
-      localStorage.setItem(REFRESH_TOKEN_STORAGE, response.data.refreshToken);
-
-      this.props.authInfoUpdate({
+      this.props.login({
         variables: {
           input: {
-            isAuthenticated: true
+            accessToken: response.data.accessToken,
+            refreshToken: response.data.refreshToken
           }
         }
       });
@@ -165,6 +161,4 @@ class Login extends Component {
   }
 }
 
-export default graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION, {
-  name: "authInfoUpdate"
-})(Login);
+export default graphql(LOGIN_MUTATION, { name: "login" })(Login);

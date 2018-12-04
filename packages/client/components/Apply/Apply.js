@@ -1,5 +1,6 @@
+import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import { compose, graphql } from "react-apollo";
+import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 import MenuBar from "../MenuBar/index";
@@ -35,7 +36,31 @@ class Apply extends Component {
   }
 
   componentDidMount() {
-    // console.log(this.props);
+    const { authInfo, user } = this.props.data;
+
+    if (authInfo && user) {
+      const { isAuthenticated } = authInfo;
+      const { hasApplied } = user;
+
+      if (isAuthenticated && hasApplied) {
+        return (
+          <Redirect
+            to={{
+              pathname: "/profile",
+              state: {
+                from: location,
+                message: "Already applied!"
+              }
+            }}
+          />
+        );
+      } else if (isAuthenticated) {
+        this.setState({
+          stepNum: 1
+        });
+      }
+    }
+
     // const { isAuthenticated } = this.props.data.authInfo;
     // // also need to check if they have already applied
     // if (isAuthenticated) {
@@ -54,8 +79,6 @@ class Apply extends Component {
   }
 
   render() {
-    console.log("PROPS", this.props);
-
     if (this.props.data.loading) {
       return <div>Loading...</div>;
     }

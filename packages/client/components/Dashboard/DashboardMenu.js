@@ -6,9 +6,9 @@ import wordmark from "../../assets/img/qhacks-wordmark-colored.svg";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 
-const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
-  mutation UpdateAutheticationStatus($input: AuthInfoInput!) {
-    authInfoUpdate(input: $input) @client
+const LOGOUT_MUTATION = gql`
+  mutation LogoutUser {
+    logout @client
   }
 `;
 
@@ -59,15 +59,7 @@ const DashboardMenu = (props) => (
           type="rounded"
           internal
           link="/logout"
-          onClick={() =>
-            props.mutate({
-              variables: {
-                input: {
-                  isAuthenticated: false
-                }
-              }
-            })
-          }
+          onClick={() => props.logout()}
         >
           Log out
         </ActionButton>
@@ -76,4 +68,4 @@ const DashboardMenu = (props) => (
   </header>
 );
 
-export default graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION)(DashboardMenu);
+export default graphql(LOGOUT_MUTATION, { name: "logout" })(DashboardMenu);

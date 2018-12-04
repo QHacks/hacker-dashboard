@@ -1,5 +1,5 @@
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { persistCache } from "apollo-cache-persist";
+import { CachePersistor } from "apollo-cache-persist";
 import { withClientState } from "apollo-link-state";
 import { setContext } from "apollo-link-context";
 import { ApolloClient } from "apollo-client";
@@ -7,6 +7,8 @@ import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import axios from "axios";
+
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "./Client";
 import { resolvers, defaults, typeDefs } from "./cache";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -21,17 +23,14 @@ const CLIENT_VERSION = "1.3.4";
 const CLIENT_NAME = isProd
   ? "dashboard-web-client-prod"
   : isStaging
-  ? "dashboard-web-client-staging"
-  : "dashboard-web-dev";
-
-const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
-const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
+    ? "dashboard-web-client-staging"
+    : "dashboard-web-dev";
 
 // Gets a new access token using an existing refresh token
 const getNewAccessToken = () => {
   console.log("[Token Refresh Info]: Attempting to refresh access token!");
 
-  const refreshToken = localStorage.getItem(REFRESH_TOKEN_STORAGE);
+  const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
 
   if (refreshToken) {
     return axios.post("/oauth/refresh", {
@@ -54,15 +53,11 @@ const apolloClientSetup = async () => {
     typeDefs
   });
 
-  try {
-    await persistCache({
-      cache,
-      storage: window.localStorage,
-      debug: true
-    });
-  } catch (caughtError) {
-    console.log("Could not restore local cache!", caughtError);
-  }
+  const persistor = await new CachePersistor({
+    cache,
+    storage: window.localStorage,
+    debug: true
+  });
 
   // Error handler link, will attempt operation retrys after refreshing access token
   const errorLink = onError(
@@ -90,8 +85,8 @@ const apolloClientSetup = async () => {
                 });
 
                 // Set the new tokens in storage
-                localStorage.setItem(ACCESS_TOKEN_STORAGE, newAccessToken);
-                localStorage.setItem(REFRESH_TOKEN_STORAGE, newRefreshToken);
+                localStorage.setItem(ACCESS_TOKEN_KEY, newAccessToken);
+                localStorage.setItem(REFRESH_TOKEN_KEY, newRefreshToken);
 
                 // Retry the request!
                 return forward(operation);
@@ -121,7 +116,7 @@ const apolloClientSetup = async () => {
 
   // Sets authorization headers in context
   const authLink = setContext((_, previousContext) => {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE);
+    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
 
     // Only set authorization headers if none exist
     // Mainly because error handler sets new tokens on retries
@@ -161,7 +156,7 @@ const apolloClientSetup = async () => {
     uri: GRAPHQL_ENDPOINT
   });
 
-  return new ApolloClient({
+  const apolloClient = new ApolloClient({
     cache,
     link: ApolloLink.from([
       errorLink,
@@ -171,6 +166,11 @@ const apolloClientSetup = async () => {
       networkLink
     ])
   });
+
+  return {
+    apolloClient,
+    persistor
+  };
 };
 
 export default apolloClientSetup;

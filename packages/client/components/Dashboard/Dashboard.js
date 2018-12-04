@@ -1,8 +1,9 @@
 import React from "react";
-import DashboardMenu from "./DashboardMenu";
-import Events from "./DashboardSection/Events";
+
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 import circuits from "../../assets/img/circuits.png";
+import Events from "./DashboardSection/Events";
+import DashboardMenu from "./DashboardMenu";
 
 const Dashboard = () => (
   <div
