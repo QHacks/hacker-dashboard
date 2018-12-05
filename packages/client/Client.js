@@ -6,6 +6,7 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 import axios from "axios";
 
+import loader from "./assets/img/qhacks-loader.gif";
 import getApolloClient from "./ApolloClient";
 import App from "./components/App/App";
 
@@ -75,7 +76,29 @@ class Client extends Component {
     const { apolloClient, loaded } = this.state;
 
     if (!loaded) {
-      return <div>Loading...</div>;
+      return (
+        <div
+          css="
+          min-height:100vh;
+          text-align: center;
+        "
+        >
+          <div>
+            <img
+              src={loader}
+              css="
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: 70px;
+              height: 70px;
+              margin-top: -35px;
+              margin-left: -35px;
+            "
+            />
+          </div>
+        </div>
+      );
     }
 
     return (

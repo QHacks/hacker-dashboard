@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 
 import ApplicationNavigation from "./ApplicationSteps/index";
+import loader from "../../assets/img/qhacks-loader.gif";
 import ApplicationHeader from "./ApplicationHeader";
 import ApplicationForm from "./ApplicationForm";
 import MenuBar from "../MenuBar/MenuBar";
@@ -50,6 +51,10 @@ class Apply extends Component {
   }
 
   nextStep() {
+    if (this.state.stepNum === 1 && this.props.refetchHacker) {
+      this.props.refetchHacker();
+    }
+
     this.setState((prevState) => ({ stepNum: prevState.stepNum + 1 }));
   }
 
@@ -61,7 +66,29 @@ class Apply extends Component {
     const { loadingHacker, loadingAuth } = this.props;
 
     if (loadingHacker || loadingAuth) {
-      return <div>Loading...</div>;
+      return (
+        <div
+          css="
+          min-height:100vh;
+          text-align: center;
+        "
+        >
+          <div>
+            <img
+              src={loader}
+              css="
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: 70px;
+              height: 70px;
+              margin-top: -35px;
+              margin-left: -35px;
+            "
+            />
+          </div>
+        </div>
+      );
     }
 
     if (this.props.authInfo && this.props.hackerInfo) {
@@ -119,11 +146,12 @@ const clientQuery = graphql(AUTHENTICATION_STATUS_QUERY, {
 
 const hackerQuery = graphql(HACKER_INFORMATION_QUERY, {
   options: {
-    fetchPolicy: "cache-and-network"
+    fetchPolicy: "network-only"
   },
   props: ({ data }) => ({
     hackerInfo: data.user,
-    loadingHacker: data.loading
+    loadingHacker: data.loading,
+    refetchHacker: data.refetch
   })
 });
 

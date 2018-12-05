@@ -128,9 +128,6 @@ const apolloClientSetup = async () => {
         authorization: accessToken ? `Bearer ${accessToken}` : ""
       }
     };
-    //}
-    // console.log("HERE", previousContext);
-    // return previousContext;
   });
 
   // Identifies the client in Apollo Engine

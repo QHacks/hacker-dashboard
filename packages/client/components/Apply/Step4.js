@@ -29,11 +29,11 @@ const Step4 = (props) => {
           margin: 32px 0;
         "
       >
-        Thank you for Applying to QHacks 2019!
+        Thank you for applying to QHacks 2019!
       </h2>
       <p css={pStyle}>
-        The QHacks’s team is working hard to review your application carefully.
-        We will be contacting you via email regarding the status of your
+        The QHacks team is working hard to review your application carefully. We
+        will be contacting you via email regarding the status of your
         application. So stay tuned!
       </p>
       <div
@@ -42,7 +42,7 @@ const Step4 = (props) => {
         "
       >
         <ActionButton internal link="/profile" color="red">
-          View Dashoard
+          View Dashboard
         </ActionButton>
       </div>
       <p
