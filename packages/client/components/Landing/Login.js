@@ -1,20 +1,17 @@
-import { graphql, compose } from "react-apollo";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import axios from "axios";
 
-import Landing from "./Landing";
-import { SERVER_HOST } from "../../Client";
 import ActionButton from "../ActionButton/ActionButton";
-import StatusReport from "../StatusReport/StatusReport";
+import { SERVER_HOST } from "../../Client";
+import Alert from "../Alert/Alert";
+import Landing from "./Landing";
 
-const ACCESS_TOKEN_STORAGE = "qhacksAccessToken";
-const REFRESH_TOKEN_STORAGE = "qhacksRefreshToken";
-
-const UPDATE_AUTHENTICATION_STATUS_MUTATION = gql`
-  mutation UpdateAutheticationStatus($input: AuthInfoInput!) {
-    authInfoUpdate(input: $input) @client
+const LOGIN_MUTATION = gql`
+  mutation LoginUser($input: LoginInput!) {
+    login(input: $input) @client
   }
 `;
 
@@ -25,8 +22,27 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      rememberMe: true
+      rememberMe: true,
+      alertShown: false,
+      alert: {
+        type: "",
+        message: "",
+        status: ""
+      }
     };
+  }
+
+  showAlert(message, type, status = null) {
+    this.setState({
+      alert: {
+        message,
+        type,
+        status
+      },
+      alertShown: true
+    });
+
+    setTimeout(() => this.setState({ alertShown: false }), 6000);
   }
 
   async login() {
@@ -39,18 +55,16 @@ class Login extends Component {
         grantType: "password"
       });
 
-      localStorage.setItem(ACCESS_TOKEN_STORAGE, response.data.accessToken);
-      localStorage.setItem(REFRESH_TOKEN_STORAGE, response.data.refreshToken);
-
-      this.props.mutate({
+      this.props.login({
         variables: {
           input: {
-            isAuthenticated: true
+            accessToken: response.data.accessToken,
+            refreshToken: response.data.refreshToken
           }
         }
       });
     } catch (err) {
-      this.setState({ error: "Unable to log in" });
+      this.showAlert("Invalid credentials!", "danger");
     }
   }
 
@@ -130,11 +144,6 @@ class Login extends Component {
             </Link>
           </div>
         </div>
-        {this.state.error ? (
-          <StatusReport type="danger" message={this.state.error} />
-        ) : (
-          ""
-        )}
         <div>
           <ActionButton color="blue" onClick={() => this.login()}>
             Login
@@ -143,9 +152,10 @@ class Login extends Component {
             Apply
           </ActionButton>
         </div>
+        {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
       </Landing>
     );
   }
 }
 
-export default compose(graphql(UPDATE_AUTHENTICATION_STATUS_MUTATION))(Login);
+export default graphql(LOGIN_MUTATION, { name: "login" })(Login);

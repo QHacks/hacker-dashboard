@@ -1,10 +1,11 @@
-import React from "react";
 import Modal from "react-modal";
+import React from "react";
+
 import { offWhite } from "../../assets/colors";
 
 Modal.setAppElement("#root");
 
-const TosModal = (props) => (
+const TOSModal = (props) => (
   <Modal
     isOpen={props.modalIsOpen}
     onRequestClose={() => props.closeModal()}
@@ -150,4 +151,4 @@ const TosModal = (props) => (
   </Modal>
 );
 
-export default TosModal;
+export default TOSModal;

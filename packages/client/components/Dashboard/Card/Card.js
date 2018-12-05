@@ -1,6 +1,7 @@
 import React from "react";
-import { steel } from "../../../assets/colors";
+
 import circuits from "../../../assets/img/circuits.png";
+import { steel } from "../../../assets/colors";
 
 const Card = ({ image, title, children }) => (
   <div

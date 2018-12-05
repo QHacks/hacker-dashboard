@@ -28,7 +28,7 @@
               The QHacks team is working hard to review your application carefully. We will be contacting you via email regarding the status of your application. So stay in tune!
             </p>
           </mj-text>
-          <mj-button background-color="#002b7a" color="white" align="center" text-transform="uppercase" font-weight="700" href="https://{{dashboardHostname}}/update-password/{{resetPasswordHash}}" rel="noopener noreferrer" target="_blank">
+          <mj-button background-color="#002b7a" color="white" align="center" text-transform="uppercase" font-weight="700" href="https://{{dashboardHostname}}/" rel="noopener noreferrer" target="_blank">
             View dashboard
           </mj-button>
         </mj-column>

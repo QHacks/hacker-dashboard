@@ -1,11 +1,15 @@
 import { Switch } from "react-router-dom";
 import React from "react";
 import "normalize.css";
+
 import ForgotPassword from "../Landing/ForgotPassword";
 import UpdatePassword from "../Landing/UpdatePassword";
+import { boxShadow } from "../../assets/constants";
 import Dashboard from "../Dashboard/Dashboard";
 import NotFound from "../utils/NotFound";
-import { boxShadow } from "../../assets/constants";
+import Login from "../Landing/Login";
+import Route from "../utils/Route";
+import Apply from "../Apply";
 import {
   blue,
   steel,
@@ -13,9 +17,6 @@ import {
   linkVisited,
   linkUnvisited
 } from "../../assets/colors";
-import Login from "../Landing/Login";
-import Route from "../utils/Route";
-import Apply from "../Apply";
 
 const globalStyles = `
 min-width: 800px;

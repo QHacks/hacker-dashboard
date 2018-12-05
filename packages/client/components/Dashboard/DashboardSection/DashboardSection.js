@@ -1,4 +1,5 @@
 import React from "react";
+
 import { offWhite } from "../../../assets/colors";
 
 const DashboardSection = ({ title, children }) => (

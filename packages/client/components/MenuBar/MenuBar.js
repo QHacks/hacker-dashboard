@@ -1,9 +1,10 @@
 import React from "react";
-import { blue } from "../../assets/colors";
+
+import ContentWrapper from "../ContentWrapper/ContentWrapper";
+import crown from "../../assets/img/qhacks-tricolor-logo.svg";
 import { linkExternalTrusted } from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
-import crown from "../../assets/img/qhacks-tricolor-logo.svg";
-import ContentWrapper from "../ContentWrapper/ContentWrapper";
+import { blue } from "../../assets/colors";
 
 const MenuBar = ({ wide, hideItems, showLogin }) => (
   <header

@@ -1,6 +1,6 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { boxShadow } from "../../assets/constants";
+import React from "react";
+
 import {
   red,
   blue,
@@ -11,6 +11,7 @@ import {
   steel,
   offWhite
 } from "../../assets/colors";
+import { boxShadow } from "../../assets/constants";
 
 const ActionButton = (props) => {
   const roundPadding = props.inline ? "24px" : "55px";
@@ -32,6 +33,7 @@ const ActionButton = (props) => {
     if (props.inline && !props.color) {
       return "transparent";
     }
+
     switch (getColor()) {
       case "red":
         return red;
@@ -68,6 +70,7 @@ const ActionButton = (props) => {
     if (props.inline && !getColor()) {
       return "transparent";
     }
+
     switch (getColor()) {
       case "red":
         return redLight;
@@ -191,8 +194,7 @@ const ActionButton = (props) => {
   return props.link ? (
     <Link
       css={`
-        ${commonStyles}
-        display: inline-block;
+        ${commonStyles} display: inline-block;
         boxsizing: content-box;
         text-decoration: none !important;
       `}

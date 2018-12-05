@@ -1,8 +1,9 @@
 import React from "react";
-import MenuBar from "../MenuBar/index";
-import { grey, steel } from "../../assets/colors";
+
 import { decorativeElement } from "../../assets/constants";
 import circuits from "../../assets/img/circuits.png";
+import { grey, steel } from "../../assets/colors";
+import MenuBar from "../MenuBar/MenuBar";
 
 const Landing = ({ children }) => (
   <div>

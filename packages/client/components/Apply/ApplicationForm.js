@@ -1,15 +1,48 @@
-import React, { Component } from "react";
 import escapeStringRegexp from "escape-string-regexp";
+import { graphql, compose } from "react-apollo";
+import React, { Component } from "react";
+import gql from "graphql-tag";
+import axios from "axios";
+
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
+import { steel } from "../../assets/colors";
+import { SERVER_HOST } from "../../Client";
+import Alert from "../Alert/Alert";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
-import { steel } from "../../assets/colors";
+
+const LOGIN_MUTATION = gql`
+  mutation Login($input: LoginInput!) {
+    login(input: $input) @client
+  }
+`;
+
+const SUBMIT_APPLICATION_MUTATION = gql`
+  mutation CreateApplication($eventSlug: String!, $input: ApplicationInput!) {
+    createApplication(eventSlug: $eventSlug, input: $input) {
+      application {
+        status
+      }
+    }
+  }
+`;
+
+const UPDATE_HACKER_INFO_MUTATION = gql`
+  mutation UpdateHackerInformation($input: HackerInput!) {
+    hackerUpdate(input: $input) {
+      hacker {
+        firstName
+      }
+    }
+  }
+`;
 
 class ApplicationForm extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       returningHacker: false,
       authAnswers: {
@@ -42,35 +75,157 @@ class ApplicationForm extends Component {
         personalWebsite: ""
       },
       errors: {},
-      hasErrors: false
+      hasErrors: false,
+      alert: {
+        type: "",
+        status: null,
+        message: ""
+      },
+      alertShown: false
     };
 
+    this.setApplicationAnswer = this.setApplicationAnswer.bind(this);
     this.changeSelected = this.changeSelected.bind(this);
     this.setAuthAnswer = this.setAuthAnswer.bind(this);
-    this.setApplicationAnswer = this.setApplicationAnswer.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.previousStep = this.previousStep.bind(this);
     this.resetConfirmPassword = this.resetConfirmPassword.bind(this);
     this.submit = this.submit.bind(this);
+    this.login = this.login.bind(this);
+    this.createAccount = this.createAccount.bind(this);
+  }
+
+  async login() {
+    if (this.validateAllAnswers()) {
+      const { email, password } = this.state.authAnswers;
+
+      try {
+        const response = await axios.post(`${SERVER_HOST}/oauth/session`, {
+          email,
+          password,
+          grantType: "password"
+        });
+
+        this.props.login({
+          variables: {
+            input: {
+              accessToken: response.data.accessToken,
+              refreshToken: response.data.refreshToken
+            }
+          }
+        });
+
+        this.nextStep();
+      } catch (err) {
+        this.setState({
+          alert: {
+            type: "danger",
+            message: "Login failed",
+            status: null
+          },
+          alertShown: true
+        });
+        setTimeout(() => this.setState({ alertShown: false }), 5000);
+      }
+    }
+  }
+
+  async createAccount() {
+    if (this.validateAllAnswers()) {
+      const { firstName, lastName, email, password } = this.state.authAnswers;
+
+      try {
+        const response = await axios.post(`${SERVER_HOST}/oauth/signup`, {
+          firstName,
+          lastName,
+          email,
+          password
+        });
+
+        this.props.login({
+          variables: {
+            input: {
+              accessToken: response.data.accessToken,
+              refreshToken: response.data.refreshToken
+            }
+          }
+        });
+
+        this.nextStep();
+      } catch (err) {
+        this.setState({
+          alert: {
+            type: "danger",
+            message: "Create account failed",
+            status: null
+          },
+          alertShown: true
+        });
+        setTimeout(() => this.setState({ alertShown: false }), 5000);
+      }
+    }
+  }
+
+  async submit() {
+    const answers = this.state.applicationAnswers;
+
+    const responses = Object.keys(answers).reduce((acc, item) => {
+      let answer = answers[item];
+
+      answer = answer.toString();
+
+      acc.push({
+        label: item,
+        answer
+      });
+
+      return acc;
+    }, []);
+
+    try {
+      await this.props.submitApplication({
+        variables: {
+          eventSlug: "qhacks-2019",
+          input: {
+            responses
+          }
+        }
+      });
+
+      const newHackerInfo = {
+        phoneNumber: "4166057919",
+        personalWebsiteLink: "https://github.com/",
+        githubLink: "https://github.com/",
+        linkedinLink: "https://github.com/",
+        schoolName: "Queen's Universitys"
+      };
+
+      await this.props.updateHacker({
+        variables: {
+          input: {
+            ...newHackerInfo
+          }
+        }
+      });
+
+      this.nextStep();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  nextStep() {
+    if (this.validateAllAnswers()) {
+      this.props.nextStep();
+    }
+  }
+
+  previousStep() {
+    this.props.previousStep();
   }
 
   validators() {
     return {
-      linkedIn: {
-        regex: /^.*$/,
-        stepNum: 1,
-        message: "Please enter a valid URL"
-      },
-      github: {
-        regex: /^.*$/,
-        stepNum: 1,
-        message: "Please enter a valid URL"
-      },
-      personalWebsite: {
-        regex: /^.*$/,
-        stepNum: 1,
-        message: "Please enter a valid URL"
-      },
       email: {
         regex: /^.+@.+$/,
         stepNum: 0,
@@ -101,6 +256,11 @@ class ApplicationForm extends Component {
         forSignUp: true,
         message: "Please enter a valid last name"
       },
+      gender: {
+        regex: /^[^0-9]+$/,
+        stepNum: 1,
+        message: "Please enter your gender"
+      },
       phoneNumber: {
         regex: /^.+$/,
         stepNum: 1,
@@ -111,10 +271,45 @@ class ApplicationForm extends Component {
         stepNum: 1,
         message: "Please enter a valid date"
       },
+      race: {
+        regex: /^[^0-9]+$/,
+        stepNum: 1,
+        message: "Please enter your race"
+      },
+      linkedIn: {
+        regex: /^.*$/,
+        stepNum: 1,
+        message: "Please enter a valid URL"
+      },
+      github: {
+        regex: /^.*$/,
+        stepNum: 1,
+        message: "Please enter a valid URL"
+      },
+      personalWebsite: {
+        regex: /^.*$/,
+        stepNum: 1,
+        message: "Please enter a valid URL"
+      },
+      school: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter your school"
+      },
       program: {
         regex: /^.+$/,
         stepNum: 1,
         message: "Please enter a valid program"
+      },
+      degree: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter your degree"
+      },
+      graduationMonth: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter a valid month"
       },
       graduationYear: {
         regex: /^[0-9]{4}$/,
@@ -156,39 +351,8 @@ class ApplicationForm extends Component {
         regex: /^.+$/,
         stepNum: 2,
         message: "Please enter a valid location"
-      },
-      gender: {
-        regex: /^[^0-9]+$/,
-        stepNum: 1,
-        message: "Please enter your gender"
-      },
-      race: {
-        regex: /^[^0-9]+$/,
-        stepNum: 1,
-        message: "Please enter your race"
-      },
-      school: {
-        regex: /^.+$/,
-        stepNum: 1,
-        message: "Please enter your school"
-      },
-      degree: {
-        regex: /^.+$/,
-        stepNum: 1,
-        message: "Please enter your degree"
-      },
-      graduationMonth: {
-        regex: /^.+$/,
-        stepNum: 1,
-        message: "Please enter a valid month"
       }
     };
-  }
-
-  submit() {
-    // const answers = this.state.applicationAnswers;
-    // send request
-    this.nextStep();
   }
 
   validApplicationField(field) {
@@ -238,16 +402,6 @@ class ApplicationForm extends Component {
     this.setState({ errors, hasErrors });
   }
 
-  nextStep() {
-    if (this.validateAllAnswers()) {
-      this.props.nextStep();
-    }
-  }
-
-  previousStep() {
-    this.props.previousStep();
-  }
-
   validateAllAnswers() {
     let valid = true;
 
@@ -281,6 +435,7 @@ class ApplicationForm extends Component {
       this.setError(field, "", auth);
       return true;
     }
+
     if (
       this.props.stepNum !== validators[field].stepNum ||
       validators[field].regex.test(answer)
@@ -288,6 +443,7 @@ class ApplicationForm extends Component {
       this.setError(field, "", auth);
       return true;
     }
+
     this.setError(field, validators[field].message, auth);
     return false;
   }
@@ -370,15 +526,18 @@ class ApplicationForm extends Component {
       default: {
         return (
           <Step1
+            alert={this.state.alert}
+            alertShown={this.state.alertShown}
             returningHacker={this.state.returningHacker}
             changeSelected={this.changeSelected}
             authAnswers={this.state.authAnswers}
             setAuthAnswer={this.setAuthAnswer}
-            setApplicationAnswer={this.setApplicationAnswer}
             errors={this.state.errors}
             hasErrors={this.state.hasErrors}
             nextStep={this.nextStep}
             resetConfirmPassword={this.resetConfirmPassword}
+            login={this.login}
+            createAccount={this.createAccount}
             {...allStyles}
           />
         );
@@ -421,4 +580,14 @@ class ApplicationForm extends Component {
   }
 }
 
-export default ApplicationForm;
+export default compose(
+  graphql(LOGIN_MUTATION, {
+    name: "login"
+  }),
+  graphql(SUBMIT_APPLICATION_MUTATION, {
+    name: "submitApplication"
+  }),
+  graphql(UPDATE_HACKER_INFO_MUTATION, {
+    name: "updateHacker"
+  })
+)(ApplicationForm);
