@@ -1,11 +1,12 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import FinePrint from "../FinePrint/FinePrint";
-import ApplicationAuthSlider from "./ApplicationAuthSlider";
+import React from "react";
+
 import ValidationError from "../ValidationError/ValidationError";
+import ApplicationAuthSlider from "./ApplicationAuthSlider";
 import ActionButton from "../ActionButton/ActionButton";
+import FinePrint from "../FinePrint/FinePrint";
 import { grey } from "../../assets/colors";
-import StatusReport from "../StatusReport/StatusReport";
+import Alert from "../Alert/Alert";
 
 const Step1 = (props) => (
   <div
@@ -57,7 +58,7 @@ const Step1 = (props) => (
               </div>
             </section>
             <section css={props.inputRowStyle}>
-              {props.alertShown ? <StatusReport {...props.alert} /> : ""}
+              {props.alertShown ? <Alert {...props.alert} /> : ""}
             </section>
             <section css={props.inputRowStyle}>
               <div>
@@ -173,7 +174,7 @@ const Step1 = (props) => (
               </div>
             </section>
             <section css={props.inputRowStyle}>
-              {props.alertShown ? <StatusReport {...props.alert} /> : ""}
+              {props.alertShown ? <Alert {...props.alert} /> : ""}
             </section>
             <section css={props.inputRowStyle}>
               <div>

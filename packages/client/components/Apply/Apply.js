@@ -3,12 +3,12 @@ import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import gql from "graphql-tag";
 
-import MenuBar from "../MenuBar/index";
-import ApplicationForm from "./ApplicationForm";
-import ApplicationHeader from "./ApplicationHeader";
 import ApplicationNavigation from "./ApplicationSteps/index";
+import ApplicationHeader from "./ApplicationHeader";
+import ApplicationForm from "./ApplicationForm";
+import MenuBar from "../MenuBar/MenuBar";
 
-const GET_AUTHENTICATION_STATUS = gql`
+const AUTHENTICATION_STATUS_QUERY = gql`
   query {
     authInfo @client {
       isAuthenticated
@@ -16,7 +16,7 @@ const GET_AUTHENTICATION_STATUS = gql`
   }
 `;
 
-const GET_HACKER_INFORMATION = gql`
+const HACKER_INFORMATION_QUERY = gql`
   query {
     user {
       ... on Hacker {
@@ -36,9 +36,9 @@ class Apply extends Component {
   }
 
   componentDidMount() {
-    const { authInfo, hackerInfo } = this.props;
+    const { authInfo } = this.props;
 
-    if (authInfo && hackerInfo) {
+    if (authInfo) {
       const { isAuthenticated } = authInfo;
 
       if (isAuthenticated) {
@@ -49,12 +49,12 @@ class Apply extends Component {
     }
   }
 
-  previousStep() {
-    this.setState((prevState) => ({ stepNum: prevState.stepNum - 1 }));
-  }
-
   nextStep() {
     this.setState((prevState) => ({ stepNum: prevState.stepNum + 1 }));
+  }
+
+  previousStep() {
+    this.setState((prevState) => ({ stepNum: prevState.stepNum - 1 }));
   }
 
   render() {
@@ -110,14 +110,14 @@ class Apply extends Component {
   }
 }
 
-const clientQuery = graphql(GET_AUTHENTICATION_STATUS, {
+const clientQuery = graphql(AUTHENTICATION_STATUS_QUERY, {
   props: ({ data }) => ({
     authInfo: data.authInfo,
     loadingAuth: data.loading
   })
 });
 
-const hackerQuery = graphql(GET_HACKER_INFORMATION, {
+const hackerQuery = graphql(HACKER_INFORMATION_QUERY, {
   options: {
     fetchPolicy: "cache-and-network"
   },

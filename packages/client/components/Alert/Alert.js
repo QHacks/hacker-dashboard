@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+
 import { orange, red, green, cyan } from "../../assets/colors";
 
-class StatusReport extends Component {
+class Alert extends Component {
   getBorderColor() {
     switch (this.props.type.toLowerCase()) {
       case "caution": {
@@ -18,6 +19,7 @@ class StatusReport extends Component {
       }
     }
   }
+
   getBackgroundColor() {
     switch (this.props.type.toLowerCase()) {
       case "caution": {
@@ -54,18 +56,19 @@ class StatusReport extends Component {
 
   getStatus() {
     if (this.props.status) return this.props.status;
+
     switch (this.props.type.toLowerCase()) {
       case "caution": {
-        return "Caution";
+        return "Caution:";
       }
       case "danger": {
-        return "Error";
+        return "Error:";
       }
       case "success": {
-        return "Success";
+        return "Success:";
       }
       default: {
-        return "Helpful Tip";
+        return "Helpful Tip:";
       }
     }
   }
@@ -98,10 +101,10 @@ class StatusReport extends Component {
         />
         <strong
           css="
-            margin-right: 12px;
+            margin-right: 6px;
           "
         >
-          {this.getStatus()}:
+          {this.getStatus()}
         </strong>
         <span>{this.props.message}</span>
       </div>
@@ -109,4 +112,4 @@ class StatusReport extends Component {
   }
 }
 
-export default StatusReport;
+export default Alert;

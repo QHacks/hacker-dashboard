@@ -1,11 +1,9 @@
-/* eslint-disable */
-
 import { Route as ReactRouterRoute, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 
-const GET_AUTHENTICATION_STATUS = gql`
+const AUTHENTICATION_STATUS_QUERY = gql`
   query {
     authInfo @client {
       isAuthenticated
@@ -15,16 +13,6 @@ const GET_AUTHENTICATION_STATUS = gql`
 
 const Route = ({ component: ComposedComponent, type, ...rest }) => {
   class Authentication extends Component {
-    getRedirectPath() {
-      const locationState = props.location.state;
-
-      if (locationState && locationState.from.pathname) {
-        return locationState.from.pathname;
-      }
-
-      return "/profile";
-    }
-
     handleRender(props) {
       const { isAuthenticated } = this.props.data.authInfo;
 
@@ -36,7 +24,11 @@ const Route = ({ component: ComposedComponent, type, ...rest }) => {
                 pathname: "/login",
                 state: {
                   from: props.location,
-                  message: "You need to login!"
+                  alert: {
+                    type: "info",
+                    message: "You must login first to view that page!",
+                    status: "Oops!"
+                  }
                 }
               }}
             />
@@ -46,9 +38,10 @@ const Route = ({ component: ComposedComponent, type, ...rest }) => {
             <Redirect
               to={{
                 pathname: "/profile",
-                state: {
-                  from: props.location,
-                  message: "Cannot access public pages while logged in!"
+                alert: {
+                  type: "info",
+                  message: "You cannot access public pages while logged in!",
+                  status: "Oops!"
                 }
               }}
             />
@@ -66,7 +59,7 @@ const Route = ({ component: ComposedComponent, type, ...rest }) => {
     }
   }
 
-  const AuthenticationContainer = graphql(GET_AUTHENTICATION_STATUS)(
+  const AuthenticationContainer = graphql(AUTHENTICATION_STATUS_QUERY)(
     Authentication
   );
 

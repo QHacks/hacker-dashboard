@@ -4,11 +4,10 @@ import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import axios from "axios";
 
-import Landing from "./Landing";
-import { SERVER_HOST } from "../../Client";
 import ActionButton from "../ActionButton/ActionButton";
-import StatusReport from "../StatusReport/StatusReport";
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "../../Client";
+import { SERVER_HOST } from "../../Client";
+import Alert from "../Alert/Alert";
+import Landing from "./Landing";
 
 const LOGIN_MUTATION = gql`
   mutation LoginUser($input: LoginInput!) {
@@ -24,13 +23,26 @@ class Login extends Component {
       email: "",
       password: "",
       rememberMe: true,
+      alertShown: false,
       alert: {
         type: "",
         message: "",
         status: ""
-      },
-      alertShown: false
+      }
     };
+  }
+
+  showAlert(message, type, status = null) {
+    this.setState({
+      alert: {
+        message,
+        type,
+        status
+      },
+      alertShown: true
+    });
+
+    setTimeout(() => this.setState({ alertShown: false }), 6000);
   }
 
   async login() {
@@ -52,15 +64,7 @@ class Login extends Component {
         }
       });
     } catch (err) {
-      this.setState({
-        alert: {
-          message: "Unable to log in",
-          type: "danger",
-          status: null
-        },
-        alertShown: true
-      });
-      setTimeout(() => this.setState({ alertShown: false }), 5000);
+      this.showAlert("Invalid credentials!", "danger");
     }
   }
 
@@ -140,14 +144,6 @@ class Login extends Component {
             </Link>
           </div>
         </div>
-        {this.state.alertShown ? (
-          <StatusReport
-            type={this.state.alert.type}
-            message={this.state.alert.message}
-          />
-        ) : (
-          ""
-        )}
         <div>
           <ActionButton color="blue" onClick={() => this.login()}>
             Login
@@ -156,6 +152,7 @@ class Login extends Component {
             Apply
           </ActionButton>
         </div>
+        {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
       </Landing>
     );
   }

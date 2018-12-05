@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from "react";
-import TosModal from "./TosModal";
+
 import PrivacyPolicyModal from "./PrivacyPolicyModal";
+import TOSModal from "./TOSModal";
 
 class FinePrint extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       modalIsOpen: false
     };
@@ -47,7 +49,7 @@ class FinePrint extends Component {
             Privacy Policy
           </button>
         </p>
-        <TosModal
+        <TOSModal
           modalIsOpen={this.state.showTos}
           closeModal={() => this.setState({ showTos: false })}
         />

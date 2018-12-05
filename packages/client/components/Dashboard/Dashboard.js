@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
-import StatusReport from "../StatusReport/StatusReport";
 import circuits from "../../assets/img/circuits.png";
 import Events from "./DashboardSection/Events";
 import DashboardMenu from "./DashboardMenu";
+import Alert from "../Alert/Alert";
 
 class Dashboard extends Component {
-  renderStatusReports() {
+  renderAlerts() {
     if (this.props.location.state) {
       const { alert } = this.props.location.state;
 
       if (alert) {
-        return <StatusReport {...alert} />;
+        return <Alert {...alert} />;
       }
     }
   }
@@ -30,7 +30,7 @@ class Dashboard extends Component {
       >
         <DashboardMenu />
         <ContentWrapper>
-          {this.renderStatusReports()}
+          {this.renderAlerts()}
           <Events />
         </ContentWrapper>
       </div>

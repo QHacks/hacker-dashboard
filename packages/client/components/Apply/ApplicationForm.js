@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 import axios from "axios";
 
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
-import StatusReport from "../StatusReport/StatusReport";
+import Alert from "../Alert/Alert";
 import { steel } from "../../assets/colors";
 import { SERVER_HOST } from "../../Client";
 import Step1 from "./Step1";

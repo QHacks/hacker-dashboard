@@ -1,10 +1,11 @@
-import React from "react";
-import ActionButton from "../ActionButton/ActionButton";
-import ContentWrapper from "../ContentWrapper/ContentWrapper";
-import crown from "../../assets/img/qhacks-tricolor-logo.svg";
-import wordmark from "../../assets/img/qhacks-wordmark-colored.svg";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
+import React from "react";
+
+import wordmark from "../../assets/img/qhacks-wordmark-colored.svg";
+import ContentWrapper from "../ContentWrapper/ContentWrapper";
+import crown from "../../assets/img/qhacks-tricolor-logo.svg";
+import ActionButton from "../ActionButton/ActionButton";
 
 const LOGOUT_MUTATION = gql`
   mutation LogoutUser {
