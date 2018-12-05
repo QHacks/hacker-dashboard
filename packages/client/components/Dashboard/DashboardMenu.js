@@ -1,10 +1,19 @@
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
 import React from "react";
-import ActionButton from "../ActionButton/ActionButton";
+
+import wordmark from "../../assets/img/qhacks-wordmark-colored.svg";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 import crown from "../../assets/img/qhacks-tricolor-logo.svg";
-import wordmark from "../../assets/img/qhacks-wordmark-colored.svg";
+import ActionButton from "../ActionButton/ActionButton";
 
-const DashboardMenu = () => (
+const LOGOUT_MUTATION = gql`
+  mutation LogoutUser {
+    logout @client
+  }
+`;
+
+const DashboardMenu = (props) => (
   <header
     css="
       width: 100%;
@@ -51,6 +60,7 @@ const DashboardMenu = () => (
           type="rounded"
           internal
           link="/logout"
+          onClick={() => props.logout()}
         >
           Log out
         </ActionButton>
@@ -59,4 +69,4 @@ const DashboardMenu = () => (
   </header>
 );
 
-export default DashboardMenu;
+export default graphql(LOGOUT_MUTATION, { name: "logout" })(DashboardMenu);

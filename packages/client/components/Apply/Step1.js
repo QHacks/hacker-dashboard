@@ -1,16 +1,17 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import FinePrint from "../FinePrint/FinePrint";
-import ApplicationAuthSlider from "./ApplicationAuthSlider";
+import React from "react";
+
 import ValidationError from "../ValidationError/ValidationError";
+import ApplicationAuthSlider from "./ApplicationAuthSlider";
 import ActionButton from "../ActionButton/ActionButton";
+import FinePrint from "../FinePrint/FinePrint";
 import { grey } from "../../assets/colors";
+import Alert from "../Alert/Alert";
 
 const Step1 = (props) => (
   <div
     css={`
-      ${props.formStyle}
-      text-align: center;
+      ${props.formStyle} text-align: center;
     `}
   >
     <h3>
@@ -57,6 +58,9 @@ const Step1 = (props) => (
               </div>
             </section>
             <section css={props.inputRowStyle}>
+              {props.alertShown ? <Alert {...props.alert} /> : ""}
+            </section>
+            <section css={props.inputRowStyle}>
               <div>
                 <Link
                   css={`
@@ -74,7 +78,7 @@ const Step1 = (props) => (
                   disabled={props.hasErrors}
                   style="margin-top: 50px;"
                   color="red"
-                  onClick={() => props.nextStep()}
+                  onClick={async () => await props.login()}
                 >
                   Login
                 </ActionButton>
@@ -170,12 +174,15 @@ const Step1 = (props) => (
               </div>
             </section>
             <section css={props.inputRowStyle}>
+              {props.alertShown ? <Alert {...props.alert} /> : ""}
+            </section>
+            <section css={props.inputRowStyle}>
               <div>
                 <ActionButton
                   disabled={props.hasErrors}
                   style="margin-top: 50px;"
                   color="red"
-                  onClick={() => props.nextStep()}
+                  onClick={async () => await props.createAccount()}
                 >
                   Create Account
                 </ActionButton>

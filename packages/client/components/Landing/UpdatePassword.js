@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Landing from "./Landing";
+
+import ActionButton from "../ActionButton/ActionButton";
 import { SERVER_HOST } from "../../Client";
 import { blue } from "../../assets/colors";
-import ActionButton from "../ActionButton/ActionButton";
+import Alert from "../Alert/Alert";
+import Landing from "./Landing";
 
 class UpdatePassword extends Component {
   constructor(props) {
@@ -12,9 +14,26 @@ class UpdatePassword extends Component {
 
     this.state = {
       password: "",
-      success: "",
-      error: ""
+      alertShown: false,
+      alert: {
+        type: "",
+        message: "",
+        status: ""
+      }
     };
+  }
+
+  showAlert(message, type, status = null) {
+    this.setState({
+      alert: {
+        message,
+        type,
+        status
+      },
+      alertShown: true
+    });
+
+    setTimeout(() => this.setState({ alertShown: false }), 5000);
   }
 
   async updatePasswordForReset() {
@@ -22,19 +41,17 @@ class UpdatePassword extends Component {
     const { resetHash } = this.props.match.params;
 
     try {
-      // const response =
       await axios.post(`${SERVER_HOST}/oauth/updatePasswordForReset`, {
         password,
         resetHash
       });
 
-      this.setState({
-        success: "Password successfully reset"
-      });
+      this.showAlert("Password has been successfully reset!", "success");
     } catch (err) {
-      this.setState({
-        error: "Something went wrong. Refresh and try again in a minute."
-      });
+      this.showAlert(
+        "Could not submit request to reset password! Please try again!",
+        "danger"
+      );
     }
   }
 
@@ -97,6 +114,14 @@ class UpdatePassword extends Component {
             Reset password
           </ActionButton>
         </div>
+        {this.state.alertShown ? (
+          <Alert
+            type={this.state.alert.type}
+            message={this.state.alert.message}
+          />
+        ) : (
+          ""
+        )}
       </Landing>
     );
   }

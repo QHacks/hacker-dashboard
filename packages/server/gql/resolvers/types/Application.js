@@ -137,7 +137,11 @@ module.exports = {
 
           await sendEmails("application-success", [
             {
-              to: user.email
+              to: user.email,
+              dataForTemplate: {
+                firstName: user.firstName,
+                email: user.email
+              }
             }
           ]);
 

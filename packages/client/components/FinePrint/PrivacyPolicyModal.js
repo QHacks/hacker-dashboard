@@ -1,7 +1,8 @@
-import React from "react";
 import Modal from "react-modal";
-import { offWhite } from "../../assets/colors";
+import React from "react";
+
 import { linkExternalTrusted } from "../../assets/constants";
+import { offWhite } from "../../assets/colors";
 
 Modal.setAppElement("#root");
 

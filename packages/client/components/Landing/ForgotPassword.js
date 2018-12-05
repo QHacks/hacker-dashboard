@@ -2,36 +2,57 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-import Landing from "./Landing";
-import { SERVER_HOST } from "../../Client";
-import { blue } from "../../assets/colors";
 import ActionButton from "../ActionButton/ActionButton";
+import { blue } from "../../assets/colors";
+import { SERVER_HOST } from "../../Client";
+import Alert from "../Alert/Alert";
+import Landing from "./Landing";
 
 class ForgotPassword extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: ""
+      email: "",
+      alertShown: false,
+      alert: {
+        type: "",
+        message: "",
+        status: ""
+      }
     };
+  }
+
+  showAlert(message, type, status = null) {
+    this.setState({
+      alert: {
+        message,
+        type,
+        status
+      },
+      alertShown: true
+    });
+
+    setTimeout(() => this.setState({ alertShown: false }), 6000);
   }
 
   async requestPasswordReset() {
     const { email } = this.state;
 
     try {
-      // const response =
       await axios.post(`${SERVER_HOST}/oauth/createResetHash`, {
         email
       });
 
-      this.setState({
-        success: "Check your email!"
-      });
+      this.showAlert(
+        "Password reset link has been successfully sent!",
+        "success"
+      );
     } catch (err) {
-      this.setState({
-        error: "Something went wrong. Refresh and try again in a minute."
-      });
+      this.showAlert(
+        "Could not submit request to reset password! Please try again!",
+        "danger"
+      );
     }
   }
 
@@ -63,7 +84,7 @@ class ForgotPassword extends Component {
           "
         >
           Please provide the email associated with your account to reset your
-          password
+          password.
         </p>
         <div
           css="
@@ -84,7 +105,7 @@ class ForgotPassword extends Component {
           "
         >
           <Link className="landingLink" to="/login">
-            Know you password? Login here!
+            Know your password? Login here!
           </Link>
         </div>
         <div>
@@ -95,6 +116,14 @@ class ForgotPassword extends Component {
             Send reset link
           </ActionButton>
         </div>
+        {this.state.alertShown ? (
+          <Alert
+            type={this.state.alert.type}
+            message={this.state.alert.message}
+          />
+        ) : (
+          ""
+        )}
       </Landing>
     );
   }
