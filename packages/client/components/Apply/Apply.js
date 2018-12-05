@@ -1,6 +1,6 @@
+import { graphql, compose } from "react-apollo";
 import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 import MenuBar from "../MenuBar/index";
@@ -10,18 +10,18 @@ import ApplicationNavigation from "./ApplicationSteps/index";
 
 const GET_AUTHENTICATION_STATUS = gql`
   query {
+    authInfo @client {
+      isAuthenticated
+    }
+  }
+`;
+
+const GET_HACKER_INFORMATION = gql`
+  query {
     user {
-      firstName
-      lastName
-      oauthInfo {
-        role
-      }
       ... on Hacker {
         hasApplied(eventSlug: "qhacks-2019")
       }
-    }
-    authInfo @client {
-      isAuthenticated
     }
   }
 `;
@@ -36,38 +36,17 @@ class Apply extends Component {
   }
 
   componentDidMount() {
-    const { authInfo, user } = this.props.data;
+    const { authInfo, hackerInfo } = this.props;
 
-    if (authInfo && user) {
+    if (authInfo && hackerInfo) {
       const { isAuthenticated } = authInfo;
-      const { hasApplied } = user;
 
-      if (isAuthenticated && hasApplied) {
-        return (
-          <Redirect
-            to={{
-              pathname: "/profile",
-              state: {
-                from: location,
-                message: "Already applied!"
-              }
-            }}
-          />
-        );
-      } else if (isAuthenticated) {
+      if (isAuthenticated) {
         this.setState({
           stepNum: 1
         });
       }
     }
-
-    // const { isAuthenticated } = this.props.data.authInfo;
-    // // also need to check if they have already applied
-    // if (isAuthenticated) {
-    //   this.setState({
-    //     stepNum: 1
-    //   });
-    // }
   }
 
   previousStep() {
@@ -79,8 +58,33 @@ class Apply extends Component {
   }
 
   render() {
-    if (this.props.data.loading) {
+    const {
+      authInfo: { isAuthenticated },
+      hackerInfo: { hasApplied },
+      loadingHacker,
+      loadingAuth
+    } = this.props;
+
+    if (loadingHacker || loadingAuth) {
       return <div>Loading...</div>;
+    }
+
+    if (isAuthenticated && hasApplied) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/profile",
+            state: {
+              from: this.props.location,
+              alert: {
+                type: "info",
+                message: "You've already applied to QHacks 2019!",
+                status: "Yay!"
+              }
+            }
+          }}
+        />
+      );
     }
 
     return (
@@ -106,8 +110,24 @@ class Apply extends Component {
   }
 }
 
-export default graphql(GET_AUTHENTICATION_STATUS, {
+const clientQuery = graphql(GET_AUTHENTICATION_STATUS, {
+  props: ({ data }) => ({
+    authInfo: data.authInfo,
+    loadingAuth: data.loading
+  })
+});
+
+const hackerQuery = graphql(GET_HACKER_INFORMATION, {
   options: {
-    errorPolicy: "all"
-  }
-})(Apply);
+    fetchPolicy: "cache-and-network"
+  },
+  props: ({ data }) => ({
+    hackerInfo: data.user,
+    loadingHacker: data.loading
+  })
+});
+
+export default compose(
+  clientQuery,
+  hackerQuery
+)(Apply);

@@ -12,8 +12,7 @@ const Step4 = (props) => {
   return (
     <div
       css={`
-        ${props.formStyle}
-        text-align: center;
+        ${props.formStyle} text-align: center;
       `}
     >
       <img
@@ -30,7 +29,7 @@ const Step4 = (props) => {
           margin: 32px 0;
         "
       >
-        Thank-you for Applying to QHacks 2019!
+        Thank you for Applying to QHacks 2019!
       </h2>
       <p css={pStyle}>
         The QHacks’s team is working hard to review your application carefully.
@@ -48,8 +47,7 @@ const Step4 = (props) => {
       </div>
       <p
         css={`
-          ${pStyle}
-          margin-bottom: 100px;
+          ${pStyle} margin-bottom: 100px;
         `}
       >
         For more information regarding QHacks 2019, please visit our website at{" "}

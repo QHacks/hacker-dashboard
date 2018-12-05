@@ -280,7 +280,7 @@ class ApplicationForm extends Component {
   submit() {
     // const answers = this.state.applicationAnswers;
     // send request
-    this.nextStep();
+    // this.nextStep();
   }
 
   validApplicationField(field) {

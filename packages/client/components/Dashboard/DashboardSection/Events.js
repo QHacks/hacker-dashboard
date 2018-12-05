@@ -19,7 +19,7 @@ const HACKER_INFO = gql`
 
 class Events extends Component {
   renderUserEvents() {
-    if (this.props.data.hasApplied) {
+    if (this.props.data.user.hasApplied) {
       return (
         <Card title="QHacks 2019" image={abstractTech}>
           <table
@@ -122,4 +122,8 @@ class Events extends Component {
   }
 }
 
-export default graphql(HACKER_INFO)(Events);
+export default graphql(HACKER_INFO, {
+  options: {
+    fetchPolicy: "cache-and-network"
+  }
+})(Events);
