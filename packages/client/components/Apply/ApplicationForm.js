@@ -14,8 +14,28 @@ import Step3 from "./Step3";
 import Step4 from "./Step4";
 
 const LOGIN_MUTATION = gql`
-  mutation login($input: LoginInput!) {
+  mutation Login($input: LoginInput!) {
     login(input: $input) @client
+  }
+`;
+
+const SUBMIT_APPLICATION_MUTATION = gql`
+  mutation CreateApplication($eventSlug: String!, $input: ApplicationInput!) {
+    createApplication(eventSlug: $eventSlug, input: $input) {
+      application {
+        status
+      }
+    }
+  }
+`;
+
+const UPDATE_HACKER_INFO_MUTATION = gql`
+  mutation UpdateHackerInformation($input: HackerInput!) {
+    hackerUpdate(input: $input) {
+      hacker {
+        firstName
+      }
+    }
   }
 `;
 
@@ -146,23 +166,66 @@ class ApplicationForm extends Component {
     }
   }
 
+  async submit() {
+    const answers = this.state.applicationAnswers;
+
+    const responses = Object.keys(answers).reduce((acc, item) => {
+      let answer = answers[item];
+
+      answer = answer.toString();
+
+      acc.push({
+        label: item,
+        answer
+      });
+
+      return acc;
+    }, []);
+
+    try {
+      await this.props.submitApplication({
+        variables: {
+          eventSlug: "qhacks-2019",
+          input: {
+            responses
+          }
+        }
+      });
+
+      const newHackerInfo = {
+        phoneNumber: "4166057919",
+        personalWebsiteLink: "https://github.com/",
+        githubLink: "https://github.com/",
+        linkedinLink: "https://github.com/",
+        schoolName: "Queen's Universitys"
+      };
+
+      await this.props.updateHacker({
+        variables: {
+          input: {
+            ...newHackerInfo
+          }
+        }
+      });
+
+      this.nextStep();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  nextStep() {
+    if (this.validateAllAnswers()) {
+      this.props.nextStep();
+    }
+  }
+
+  previousStep() {
+    this.props.previousStep();
+  }
+
   validators() {
     return {
-      linkedIn: {
-        regex: /^.*$/,
-        stepNum: 1,
-        message: "Please enter a valid URL"
-      },
-      github: {
-        regex: /^.*$/,
-        stepNum: 1,
-        message: "Please enter a valid URL"
-      },
-      personalWebsite: {
-        regex: /^.*$/,
-        stepNum: 1,
-        message: "Please enter a valid URL"
-      },
       email: {
         regex: /^.+@.+$/,
         stepNum: 0,
@@ -193,6 +256,11 @@ class ApplicationForm extends Component {
         forSignUp: true,
         message: "Please enter a valid last name"
       },
+      gender: {
+        regex: /^[^0-9]+$/,
+        stepNum: 1,
+        message: "Please enter your gender"
+      },
       phoneNumber: {
         regex: /^.+$/,
         stepNum: 1,
@@ -203,10 +271,45 @@ class ApplicationForm extends Component {
         stepNum: 1,
         message: "Please enter a valid date"
       },
+      race: {
+        regex: /^[^0-9]+$/,
+        stepNum: 1,
+        message: "Please enter your race"
+      },
+      linkedIn: {
+        regex: /^.*$/,
+        stepNum: 1,
+        message: "Please enter a valid URL"
+      },
+      github: {
+        regex: /^.*$/,
+        stepNum: 1,
+        message: "Please enter a valid URL"
+      },
+      personalWebsite: {
+        regex: /^.*$/,
+        stepNum: 1,
+        message: "Please enter a valid URL"
+      },
+      school: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter your school"
+      },
       program: {
         regex: /^.+$/,
         stepNum: 1,
         message: "Please enter a valid program"
+      },
+      degree: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter your degree"
+      },
+      graduationMonth: {
+        regex: /^.+$/,
+        stepNum: 1,
+        message: "Please enter a valid month"
       },
       graduationYear: {
         regex: /^[0-9]{4}$/,
@@ -248,39 +351,8 @@ class ApplicationForm extends Component {
         regex: /^.+$/,
         stepNum: 2,
         message: "Please enter a valid location"
-      },
-      gender: {
-        regex: /^[^0-9]+$/,
-        stepNum: 1,
-        message: "Please enter your gender"
-      },
-      race: {
-        regex: /^[^0-9]+$/,
-        stepNum: 1,
-        message: "Please enter your race"
-      },
-      school: {
-        regex: /^.+$/,
-        stepNum: 1,
-        message: "Please enter your school"
-      },
-      degree: {
-        regex: /^.+$/,
-        stepNum: 1,
-        message: "Please enter your degree"
-      },
-      graduationMonth: {
-        regex: /^.+$/,
-        stepNum: 1,
-        message: "Please enter a valid month"
       }
     };
-  }
-
-  submit() {
-    // const answers = this.state.applicationAnswers;
-    // send request
-    // this.nextStep();
   }
 
   validApplicationField(field) {
@@ -328,16 +400,6 @@ class ApplicationForm extends Component {
     const hasErrors = Object.keys(errors).some((key) => errors[key]);
 
     this.setState({ errors, hasErrors });
-  }
-
-  nextStep() {
-    if (this.validateAllAnswers()) {
-      this.props.nextStep();
-    }
-  }
-
-  previousStep() {
-    this.props.previousStep();
   }
 
   validateAllAnswers() {
@@ -521,5 +583,11 @@ class ApplicationForm extends Component {
 export default compose(
   graphql(LOGIN_MUTATION, {
     name: "login"
+  }),
+  graphql(SUBMIT_APPLICATION_MUTATION, {
+    name: "submitApplication"
+  }),
+  graphql(UPDATE_HACKER_INFO_MUTATION, {
+    name: "updateHacker"
   })
 )(ApplicationForm);

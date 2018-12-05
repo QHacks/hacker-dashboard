@@ -58,33 +58,33 @@ class Apply extends Component {
   }
 
   render() {
-    const {
-      authInfo: { isAuthenticated },
-      hackerInfo: { hasApplied },
-      loadingHacker,
-      loadingAuth
-    } = this.props;
+    const { loadingHacker, loadingAuth } = this.props;
 
     if (loadingHacker || loadingAuth) {
       return <div>Loading...</div>;
     }
 
-    if (isAuthenticated && hasApplied) {
-      return (
-        <Redirect
-          to={{
-            pathname: "/profile",
-            state: {
-              from: this.props.location,
-              alert: {
-                type: "info",
-                message: "You've already applied to QHacks 2019!",
-                status: "Yay!"
+    if (this.props.authInfo && this.props.hackerInfo) {
+      const { isAuthenticated } = this.props.authInfo;
+      const { hasApplied } = this.props.hackerInfo;
+
+      if (isAuthenticated && hasApplied) {
+        return (
+          <Redirect
+            to={{
+              pathname: "/profile",
+              state: {
+                from: this.props.location,
+                alert: {
+                  type: "info",
+                  message: "You've already applied to QHacks 2019!",
+                  status: "Yay!"
+                }
               }
-            }
-          }}
-        />
-      );
+            }}
+          />
+        );
+      }
     }
 
     return (
