@@ -33,7 +33,7 @@ module.exports = {
         responses: applicationDBResponse.ApplicationFields.map(
           ({ dataValues, ApplicationFieldResponse }) => ({
             type: dataValues.type,
-            label: dataValues.label,
+            label: dataValues.shortLabel,
             answer: ApplicationFieldResponse.answer
           })
         )
@@ -95,7 +95,7 @@ module.exports = {
           const applicationTable = {};
           event.ApplicationFields.forEach(
             (field) =>
-              (applicationTable[field.label] = {
+              (applicationTable[field.shortLabel] = {
                 applicationFieldId: field.id,
                 required: field.required
               })

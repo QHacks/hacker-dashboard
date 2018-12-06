@@ -5,6 +5,7 @@ describe("ApplicationField Model", () => {
     const { id: eventId } = await Event.findOne({});
     const { id } = await ApplicationField.create({
       label: "check this box if you're cool",
+      shortLabel: "coolBox",
       type: "CHECKBOX",
       eventId
     });

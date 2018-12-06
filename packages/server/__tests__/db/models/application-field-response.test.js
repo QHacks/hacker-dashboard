@@ -18,6 +18,7 @@ describe("ApplicationFieldResponse Model", () => {
     const { id: applicationFieldId } = await ApplicationField.create({
       eventId,
       type: "TEXT_INPUT",
+      shortLabel: "bigEvent",
       label: "What's the biggest event of 2019"
     });
     const answer = "qhacks ;)";

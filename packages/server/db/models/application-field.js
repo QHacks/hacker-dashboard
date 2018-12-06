@@ -9,6 +9,13 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     label: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
+    shortLabel: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
