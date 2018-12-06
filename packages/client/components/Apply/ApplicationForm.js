@@ -161,48 +161,54 @@ class ApplicationForm extends Component {
   }
 
   async submit() {
-    const answers = this.state.applicationAnswers;
-    const dontInclude = ["agreeMlhCodeConduct", "agreeMlhTosAndPrivacyPolicy"];
-    const responses = Object.keys(answers)
-      .map((label) => ({
-        label: label,
-        answer: answers[label]
-      }))
-      .filter((item) => !dontInclude.includes(item.label));
+    if (this.validateAllAnswers()) {
+      const answers = this.state.applicationAnswers;
+      const dontInclude = [
+        "agreeMlhCodeConduct",
+        "agreeMlhTosAndPrivacyPolicy"
+      ];
+      const responses = Object.keys(answers)
+        .map((label) => ({
+          label: label,
+          answer: answers[label]
+        }))
+        .filter((item) => !dontInclude.includes(item.label));
 
-    try {
-      await this.props.submitApplication({
-        variables: {
-          eventSlug: "qhacks-2019",
-          input: {
-            responses
+      try {
+        await this.props.submitApplication({
+          variables: {
+            eventSlug: "qhacks-2019",
+            input: {
+              responses
+            }
           }
-        }
-      });
+        });
 
-      const newHackerInfo = {
-        phoneNumber: this.state.applicationAnswers.phoneNumber,
-        personalWebsiteLink: this.state.applicationAnswers.personalWebsite,
-        githubLink: this.state.applicationAnswers.githubLink,
-        linkedinLink: this.state.applicationAnswers.linkedinLink,
-        schoolName: this.state.applicationAnswers.school
-      };
+        const newHackerInfo = {
+          phoneNumber: this.state.applicationAnswers.phoneNumber,
+          personalWebsiteLink: this.state.applicationAnswers.personalWebsite,
+          githubLink: this.state.applicationAnswers.githubLink,
+          linkedinLink: this.state.applicationAnswers.linkedinLink,
+          schoolName: this.state.applicationAnswers.school
+        };
 
-      if (!newHackerInfo.githubLink) delete newHackerInfo.githubLink;
-      if (!newHackerInfo.linkedinLink) delete newHackerInfo.linkedinLink;
-      if (!newHackerInfo.personalWebsite) delete newHackerInfo.personalWebsite;
+        if (!newHackerInfo.githubLink) delete newHackerInfo.githubLink;
+        if (!newHackerInfo.linkedinLink) delete newHackerInfo.linkedinLink;
+        if (!newHackerInfo.personalWebsite)
+          delete newHackerInfo.personalWebsite;
 
-      await this.props.updateHacker({
-        variables: {
-          input: {
-            ...newHackerInfo
+        await this.props.updateHacker({
+          variables: {
+            input: {
+              ...newHackerInfo
+            }
           }
-        }
-      });
+        });
 
-      this.nextStep();
-    } catch (err) {
-      this.showAlert("Could not submit application at this time!", "danger");
+        this.nextStep();
+      } catch (err) {
+        this.showAlert("Could not submit application at this time!", "danger");
+      }
     }
   }
 
