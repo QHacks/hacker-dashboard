@@ -59,24 +59,24 @@ const Step3 = (props) => {
           </section>
           <section css={props.inputRowStyle}>
             <div>
-              <label htmlFor="numAttendedHackathons">
+              <label htmlFor="numberOfHackathons">
                 How many hackathons have you attended?
               </label>
               <input
                 type="text"
                 placeholder="#"
-                value={props.applicationAnswers.numAttendedHackathons}
+                value={props.applicationAnswers.numberOfHackathons}
                 css="
                   max-width: 125px;
                 "
                 onChange={(e) =>
                   props.setApplicationAnswer(
-                    "numAttendedHackathons",
+                    "numberOfHackathons",
                     e.target.value
                   )
                 }
               />
-              <ValidationError message={props.errors.numAttendedHackathons} />
+              <ValidationError message={props.errors.numberOfHackathons} />
             </div>
           </section>
           <section css={props.inputRowStyle}>

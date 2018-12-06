@@ -57,7 +57,7 @@ class ApplicationForm extends Component {
         birthday: "",
         program: "",
         graduationYear: "",
-        numAttendedHackathons: "",
+        numberOfHackathons: "",
         travelOrigin: "",
         gender: "",
         race: "",
@@ -335,7 +335,7 @@ class ApplicationForm extends Component {
         stepNum: 2,
         message: "Please accept MLH's code of conduct to apply"
       },
-      numAttendedHackathons: {
+      numberOfHackathons: {
         regex: /^[0-9]+$/,
         stepNum: 2,
         message: "Please enter a valid number"
