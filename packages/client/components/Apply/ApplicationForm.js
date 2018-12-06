@@ -68,7 +68,7 @@ class ApplicationForm extends Component {
         agreeMlhCodeConduct: "",
         agreeMlhTosAndPrivacyPolicy: "",
         githubLink: "",
-        linkedinlink: "",
+        linkedinLink: "",
         personalWebsite: ""
       },
       errors: {},
@@ -184,7 +184,7 @@ class ApplicationForm extends Component {
         phoneNumber: this.state.applicationAnswers.phoneNumber,
         personalWebsiteLink: this.state.applicationAnswers.personalWebsite,
         githubLink: this.state.applicationAnswers.githubLink,
-        linkedinLink: this.state.applicationAnswers.linkedinlink,
+        linkedinLink: this.state.applicationAnswers.linkedinLink,
         schoolName: this.state.applicationAnswers.school
       };
 
@@ -277,7 +277,7 @@ class ApplicationForm extends Component {
         stepNum: 1,
         message: "Please enter your race"
       },
-      linkedinlink: {
+      linkedinLink: {
         regex: /^.*$/,
         stepNum: 1,
         message: "Please enter a valid URL"

@@ -1,6 +1,7 @@
 import React from "react";
 import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
+import Alert from "../Alert/Alert";
 import { linkExternalTrusted } from "../../assets/constants";
 
 const Step3 = (props) => {
