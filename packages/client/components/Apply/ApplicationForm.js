@@ -53,20 +53,18 @@ class ApplicationForm extends Component {
         lastName: ""
       },
       applicationAnswers: {
-        // if you modify this, remember to update the validators
         phoneNumber: "",
         birthday: "",
         program: "",
         graduationYear: "",
         numAttendedHackathons: "",
-        fromLocation: "",
+        travelOrigin: "",
         gender: "",
         race: "",
         school: "",
         degree: "",
         graduationMonth: "",
-        whyApply: "",
-        dreamProject: "",
+        whyQhacks: "",
         passionProject: "",
         agreeMlhCodeConduct: "",
         agreeMlhTosAndPrivacyPolicy: "",
@@ -316,7 +314,7 @@ class ApplicationForm extends Component {
         stepNum: 1,
         message: "Please enter a valid year in the form YYYY"
       },
-      whyApply: {
+      whyQhacks: {
         regex: /^\s*[-\w]+(?:\W+[-\w]+){0,300}\W*\s*$/,
         stepNum: 2,
         message: "Please enter a valid answer (max 300 words)"
@@ -325,11 +323,6 @@ class ApplicationForm extends Component {
         regex: /^\s*[-\w]+(?:\W+[-\w]+){0,300}\W*\s*$/,
         stepNum: 2,
         message: "Please enter a valid answer (max 300 words)"
-      },
-      dreamProject: {
-        regex: /^\s*[-\w]+(?:\W+[-\w]+){0,100}\W*\s*$/,
-        stepNum: 2,
-        message: "Please enter a valid answer (max 100 words)"
       },
       agreeMlhTosAndPrivacyPolicy: {
         regex: /^true$/,
@@ -347,7 +340,7 @@ class ApplicationForm extends Component {
         stepNum: 2,
         message: "Please enter a valid number"
       },
-      fromLocation: {
+      travelOrigin: {
         regex: /^.+$/,
         stepNum: 2,
         message: "Please enter a valid location"

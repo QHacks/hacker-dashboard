@@ -32,7 +32,8 @@ class Apply extends Component {
     super(props);
 
     this.state = {
-      stepNum: 0
+      stepNum: 0,
+      alreadyApplied: false
     };
   }
 

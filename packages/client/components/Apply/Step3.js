@@ -44,33 +44,17 @@ const Step3 = (props) => {
           </section>
           <section css={props.inputRowStyle}>
             <div>
-              <label htmlFor="whyApply">
+              <label htmlFor="whyQhacks">
                 What about QHacks has driven you to apply this year? (&lt; 300
                 words)
               </label>
               <textarea
-                value={props.applicationAnswers.whyApply}
+                value={props.applicationAnswers.whyQhacks}
                 onChange={(e) =>
-                  props.setApplicationAnswer("whyApply", e.target.value)
+                  props.setApplicationAnswer("whyQhacks", e.target.value)
                 }
               />
-              <ValidationError message={props.errors.whyApply} />
-            </div>
-          </section>
-          <section css={props.inputRowStyle}>
-            <div>
-              <label htmlFor="dreamProject">
-                You&apos;re given $10,000 to spend on building a project or
-                running an event at QHacks this year. What do you spend it on?
-                (&lt; 100 words)
-              </label>
-              <textarea
-                value={props.applicationAnswers.dreamProject}
-                onChange={(e) =>
-                  props.setApplicationAnswer("dreamProject", e.target.value)
-                }
-              />
-              <ValidationError message={props.errors.dreamProject} />
+              <ValidationError message={props.errors.whyQhacks} />
             </div>
           </section>
           <section css={props.inputRowStyle}>
@@ -97,18 +81,18 @@ const Step3 = (props) => {
           </section>
           <section css={props.inputRowStyle}>
             <div>
-              <label htmlFor="fromLocation">
+              <label htmlFor="travelOrigin">
                 Where are you travelling from?
               </label>
               <input
                 type="text"
                 placeholder="Location"
-                value={props.applicationAnswers.fromLocation}
+                value={props.applicationAnswers.travelOrigin}
                 onChange={(e) =>
-                  props.setApplicationAnswer("fromLocation", e.target.value)
+                  props.setApplicationAnswer("travelOrigin", e.target.value)
                 }
               />
-              <ValidationError message={props.errors.fromLocation} />
+              <ValidationError message={props.errors.travelOrigin} />
             </div>
           </section>
           <section css={mlhSectionStyle}>

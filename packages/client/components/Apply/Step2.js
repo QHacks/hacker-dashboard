@@ -274,6 +274,9 @@ const Step2 = (props) => {
               >
                 Continue
               </ActionButton>
+              <ActionButton internal link="/profile">
+                Profile
+              </ActionButton>
             </div>
           </section>
         </div>
