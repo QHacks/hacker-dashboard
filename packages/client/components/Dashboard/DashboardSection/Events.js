@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-
+import ActionButton from "../../ActionButton/ActionButton";
 import abstractTech from "../../../assets/img/abstractTech.svg";
 import DashboardSection from "./DashboardSection";
 import Card from "../Card/Card";
@@ -19,7 +19,7 @@ const HACKER_INFO = gql`
 
 class Events extends Component {
   renderUserEvents() {
-    if (this.props.data.user.hasApplied) {
+    if (this.props.data.user && this.props.data.user.hasApplied) {
       return (
         <Card title="QHacks 2019" image={abstractTech}>
           <table
@@ -103,7 +103,10 @@ class Events extends Component {
           >
             Apply now to QHacks 2019!
           </strong>
-          <Link to="/qhacks-2019/apply">Apply here</Link>
+          <br />
+          <ActionButton color="red" internal link="/qhacks-2019/apply">
+            Apply here
+          </ActionButton>
         </div>
       </Card>
     );

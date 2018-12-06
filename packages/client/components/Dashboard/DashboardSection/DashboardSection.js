@@ -1,15 +1,16 @@
 import React from "react";
-
 import { offWhite } from "../../../assets/colors";
 
 const DashboardSection = ({ title, children }) => (
   <div
-    css="
+    css={`
       border: 1px solid #a4b3bf;
       border-radius: 8px;
       overflow: hidden;
       margin: 0 auto;
-    "
+      box-shadow: 0 4px 6px rgba(10, 10, 10, 0.1),
+        0 4px 6px rgba(10, 10, 10, 0.15);
+    `}
   >
     <div
       css={`

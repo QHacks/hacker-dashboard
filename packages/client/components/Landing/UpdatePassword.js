@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
 import { SERVER_HOST } from "../../Client";
 import { blue } from "../../assets/colors";
@@ -13,7 +13,8 @@ class UpdatePassword extends Component {
     super(props);
 
     this.state = {
-      password: "",
+      password: null,
+      confirmPassword: null,
       alertShown: false,
       alert: {
         type: "",
@@ -89,9 +90,36 @@ class UpdatePassword extends Component {
           <input
             id="password"
             type="password"
+            key="password"
             value={this.state.password}
             onChange={(e) => this.setState({ password: e.target.value })}
             placeholder="Enter your password"
+          />
+          <br />
+          <ValidationError
+            message={
+              this.state.password !== null && this.state.password.length < 8
+                ? "Password must be at least 8 characters"
+                : ""
+            }
+          />
+          <br />
+          <input
+            id="confirmPassword"
+            type="password"
+            key="confirmPassword"
+            value={this.state.confirmPassword}
+            onChange={(e) => this.setState({ confirmPassword: e.target.value })}
+            placeholder="Confirm your password"
+          />
+          <br />
+          <ValidationError
+            message={
+              this.state.confirmPassword !== null &&
+              this.state.confirmPassword !== this.state.password
+                ? "Passwords don't match!"
+                : ""
+            }
           />
         </div>
         <div
