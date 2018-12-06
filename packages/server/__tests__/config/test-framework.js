@@ -118,18 +118,21 @@ beforeEach(async () => {
       eventId: QHACKS_EVENT_ID,
       type: "CHECKBOX",
       label: "Field 1",
+      shortLabel: "Field 1",
       required: true
     },
     {
       eventId: QHACKS_EVENT_ID,
       type: "CHECKBOX",
       label: "Field 2",
+      shortLabel: "Field 2",
       required: false
     },
     {
       eventId: QHACKS_EVENT_ID,
       type: "CHECKBOX",
       label: "Field 3",
+      shortLabel: "Field 3",
       required: true
     }
   ]);
