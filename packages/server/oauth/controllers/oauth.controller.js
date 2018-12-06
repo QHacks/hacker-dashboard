@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 const {
+  ERROR_CODES,
   RestApiError,
   ValidationError,
   OAuthInvalidRefreshTokenError,
@@ -148,7 +149,11 @@ module.exports = (db) => {
     } catch (err) {
       if (err.name === "SequelizeUniqueConstraintError") {
         return Promise.reject(
-          new DatabaseError(`${email} is already signed up!`, 422)
+          new DatabaseError(
+            `${email} is already signed up!`,
+            422,
+            ERROR_CODES.DUPLICATE_EMAIL
+          )
         );
       }
 

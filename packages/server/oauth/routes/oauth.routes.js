@@ -3,9 +3,12 @@ const {
   validatePassword,
   validateName
 } = require("../../utils/custom-validator");
+const { omit } = require("lodash");
+
 const Router = require("express").Router;
 
 const {
+  ERROR_CODES,
   RestApiError,
   ValidationError,
   OAuthInvalidGrantTypeError
@@ -19,7 +22,7 @@ function sendError(res, err) {
     return res.status(apiErr.status).json(apiErr);
   }
 
-  return res.status(err.status).json(err);
+  return res.status(err.status).json(omit(err, "status"));
 }
 
 // Request Validation Methods
@@ -28,7 +31,8 @@ function validateSessionRequest(email, password, grantType) {
   if (!email || !password || !grantType) {
     return Promise.reject(
       new ValidationError(
-        "The request does not have all the required fields! Please make sure to pass a email, password, and valid grantType."
+        "The request does not have all the required fields! Please make sure to pass a email, password, and valid grantType.",
+        ERROR_CODES.INVALID_CREDENTIALS
       )
     );
   }
@@ -40,7 +44,8 @@ function validateSignupRequest(firstName, lastName, email, password) {
   if (!firstName || !lastName || !email || !password) {
     return Promise.reject(
       new ValidationError(
-        "The request does not have all the required fields! Please make sure to pass a firstName, lastName, email, and password!"
+        "The request does not have all the required fields! Please make sure to pass a firstName, lastName, email, and password!",
+        ERROR_CODES.INVALID_CREDENTIALS
       )
     );
   }
@@ -56,7 +61,8 @@ function validateRefreshRequest(refreshToken, grantType) {
   if (!refreshToken || !grantType) {
     return Promise.reject(
       new ValidationError(
-        "The request does not have all the required fields! Please make sure to pass a refreshToken and a valid grantType!"
+        "The request does not have all the required fields! Please make sure to pass a refreshToken and a valid grantType!",
+        ERROR_CODES.INVALID_GRANT_TYPE
       )
     );
   }
@@ -80,7 +86,8 @@ function validateUpdatePasswordRequest(password, resetHash) {
   if (!password || !resetHash) {
     return Promise.reject(
       new ValidationError(
-        "The request does not have all the required fields! Please make sure to pass email and resetHash!"
+        "The request does not have all the required fields! Please make sure to pass email and resetHash!",
+        ERROR_CODES.INVALID_CREDENTIALS
       )
     );
   }
