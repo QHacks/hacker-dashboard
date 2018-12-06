@@ -24,13 +24,19 @@ class Dashboard extends Component {
           margin-top: 84px;
           background: url(${blueCircuits}) no-repeat center bottom;
           background-size: cover;
-          padding: 40px 0;
+          padding: 30px 0;
           height: calc(100vh - 84px);
         `}
       >
         <DashboardMenu />
         <ContentWrapper>
-          {this.renderAlerts()}
+          <div
+            css="
+            margin-bottom: 30px;
+          "
+          >
+            {this.renderAlerts()}
+          </div>
           <Events />
         </ContentWrapper>
       </div>

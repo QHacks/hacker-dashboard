@@ -55,6 +55,7 @@ class Alert extends Component {
   }
 
   getStatus() {
+    if (this.props.status === "none") return "";
     if (this.props.status) return this.props.status;
 
     switch (this.props.type.toLowerCase()) {
@@ -80,8 +81,7 @@ class Alert extends Component {
           border: 1px solid ${this.getBorderColor()};
           border-radius: 6px;
           background-color: ${this.getBackgroundColor()};
-          padding: 12px !important;
-          margin: 12px 0;
+          padding: 12px 12px 6px 12px;
           line-height: 24px;
           width: 100%;
           text-align: left;

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-import ActionButton from "../../ActionButton/ActionButton";
+
 import abstractTech from "../../../assets/img/abstractTech.svg";
+import ActionButton from "../../ActionButton/ActionButton";
 import DashboardSection from "./DashboardSection";
 import Card from "../Card/Card";
 
@@ -19,52 +19,7 @@ const HACKER_INFO = gql`
 
 class Events extends Component {
   renderUserEvents() {
-    if (this.props.data.user && this.props.data.user.hasApplied) {
-      return (
-        <Card title="QHacks 2019" image={abstractTech}>
-          <table
-            css={`
-              border: none;
-              margin: 0 -4px;
-              td {
-                border: none;
-                :first-child {
-                  color: #626b7b;
-                  font-weight: 600;
-                }
-                padding: 4px;
-              }
-            `}
-          >
-            <tbody>
-              <tr>
-                <td>Date:</td>
-                <td>February 1-3, 2019</td>
-              </tr>
-              <tr>
-                <td>Status:</td>
-                <td>Applied</td>
-              </tr>
-            </tbody>
-          </table>
-          <div>
-            <strong
-              css="
-                display: block;
-                margin: 30px 0 8px;
-                font-size: 18px;
-              "
-            >
-              Thanks for applying!
-            </strong>
-            <p>
-              Your application is in and the QHacks’s team is working hard to
-              review it carefully. Stay tuned for updates.
-            </p>
-          </div>
-        </Card>
-      );
-    }
+    const { user } = this.props.data;
 
     return (
       <Card title="QHacks 2019" image={abstractTech}>
@@ -74,11 +29,14 @@ class Events extends Component {
             margin: 0 -4px;
             td {
               border: none;
+              padding: 4px;
+              font-size: 15px;
+              font-weight: 500;
               :first-child {
                 color: #626b7b;
                 font-weight: 600;
+                text-transform: uppercase;
               }
-              padding: 4px;
             }
           `}
         >
@@ -89,7 +47,7 @@ class Events extends Component {
             </tr>
             <tr>
               <td>Status:</td>
-              <td>Not Applied</td>
+              <td>{user && user.hasApplied ? "Applied" : "Not Applied"}</td>
             </tr>
           </tbody>
         </table>
@@ -97,16 +55,35 @@ class Events extends Component {
           <strong
             css="
               display: block;
-              margin: 30px 0 8px;
+              margin: 25px 0 10px;
               font-size: 18px;
             "
           >
-            Apply now to QHacks 2019!
+            {user && user.hasApplied
+              ? "Thanks for applying!"
+              : "Apply to attend now!"}
           </strong>
-          <br />
-          <ActionButton color="red" internal link="/qhacks-2019/apply">
-            Apply here
-          </ActionButton>
+          {user && user.hasApplied ? (
+            <p
+              css="
+                  line-height: 1.47;
+                  font-size: 15px;
+                "
+            >
+              Your application is in and the QHacks team is working hard to
+              review it carefully. Stay tuned for updates!
+            </p>
+          ) : (
+            <div
+              css="
+                  margin: 20px 0px 0px 0px;
+                "
+            >
+              <ActionButton color="red" internal link="/qhacks-2019/apply">
+                Apply Here
+              </ActionButton>
+            </div>
+          )}
         </div>
       </Card>
     );
