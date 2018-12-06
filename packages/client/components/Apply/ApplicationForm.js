@@ -53,25 +53,23 @@ class ApplicationForm extends Component {
         lastName: ""
       },
       applicationAnswers: {
-        // if you modify this, remember to update the validators
         phoneNumber: "",
         birthday: "",
         program: "",
         graduationYear: "",
-        numAttendedHackathons: "",
-        fromLocation: "",
+        numberOfHackathons: "",
+        travelOrigin: "",
         gender: "",
         race: "",
         school: "",
         degree: "",
         graduationMonth: "",
-        whyApply: "",
-        dreamProject: "",
+        whyQhacks: "",
         passionProject: "",
         agreeMlhCodeConduct: "",
         agreeMlhTosAndPrivacyPolicy: "",
-        github: "",
-        linkedIn: "",
+        githubLink: "",
+        linkedinlink: "",
         personalWebsite: ""
       },
       errors: {},
@@ -169,18 +167,13 @@ class ApplicationForm extends Component {
   async submit() {
     const answers = this.state.applicationAnswers;
 
-    const responses = Object.keys(answers).reduce((acc, item) => {
-      let answer = answers[item];
+    const responses = Object.keys(answers).map((item) => ({
+      label: item,
+      answer: answers[item]
+    }));
 
-      answer = answer.toString();
-
-      acc.push({
-        label: item,
-        answer
-      });
-
-      return acc;
-    }, []);
+    delete responses.agreeMlhCodeConduct;
+    delete responses.agreeMlhTosAndPrivacyPolicy;
 
     try {
       await this.props.submitApplication({
@@ -193,11 +186,11 @@ class ApplicationForm extends Component {
       });
 
       const newHackerInfo = {
-        phoneNumber: "4166057919",
-        personalWebsiteLink: "https://github.com/",
-        githubLink: "https://github.com/",
-        linkedinLink: "https://github.com/",
-        schoolName: "Queen's Universitys"
+        phoneNumber: this.state.applicationAnswers.phoneNumber,
+        personalWebsiteLink: this.state.applicationAnswers.personalWebsite,
+        githubLink: this.state.applicationAnswers.githubLink,
+        linkedinLink: this.state.applicationAnswers.linkedinlink,
+        schoolName: this.state.applicationAnswers.school
       };
 
       await this.props.updateHacker({
@@ -276,12 +269,12 @@ class ApplicationForm extends Component {
         stepNum: 1,
         message: "Please enter your race"
       },
-      linkedIn: {
+      linkedinlink: {
         regex: /^.*$/,
         stepNum: 1,
         message: "Please enter a valid URL"
       },
-      github: {
+      githubLink: {
         regex: /^.*$/,
         stepNum: 1,
         message: "Please enter a valid URL"
@@ -316,7 +309,7 @@ class ApplicationForm extends Component {
         stepNum: 1,
         message: "Please enter a valid year in the form YYYY"
       },
-      whyApply: {
+      whyQhacks: {
         regex: /^\s*[-\w]+(?:\W+[-\w]+){0,300}\W*\s*$/,
         stepNum: 2,
         message: "Please enter a valid answer (max 300 words)"
@@ -325,11 +318,6 @@ class ApplicationForm extends Component {
         regex: /^\s*[-\w]+(?:\W+[-\w]+){0,300}\W*\s*$/,
         stepNum: 2,
         message: "Please enter a valid answer (max 300 words)"
-      },
-      dreamProject: {
-        regex: /^\s*[-\w]+(?:\W+[-\w]+){0,100}\W*\s*$/,
-        stepNum: 2,
-        message: "Please enter a valid answer (max 100 words)"
       },
       agreeMlhTosAndPrivacyPolicy: {
         regex: /^true$/,
@@ -342,12 +330,12 @@ class ApplicationForm extends Component {
         stepNum: 2,
         message: "Please accept MLH's code of conduct to apply"
       },
-      numAttendedHackathons: {
+      numberOfHackathons: {
         regex: /^[0-9]+$/,
         stepNum: 2,
         message: "Please enter a valid number"
       },
-      fromLocation: {
+      travelOrigin: {
         regex: /^.+$/,
         stepNum: 2,
         message: "Please enter a valid location"

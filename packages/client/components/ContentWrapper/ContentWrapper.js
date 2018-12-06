@@ -1,12 +1,12 @@
 import React from "react";
 
-export default (props) => (
+export default ({ children }) => (
   <div
     css={`
       max-width: 1400px;
       margin-left: auto;
       margin-right: auto;
-      padding: ${props.wide ? "0 80px" : "0 145px"};
+      padding: 0 80px;
       height: 100%;
       @media screen and (max-width: 1200px) and (min-width: 860px) {
         padding-left: 80px;
@@ -18,6 +18,6 @@ export default (props) => (
       }
     `}
   >
-    {props.children}
+    {children}
   </div>
 );
