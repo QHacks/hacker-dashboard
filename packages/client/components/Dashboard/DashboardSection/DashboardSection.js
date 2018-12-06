@@ -1,5 +1,4 @@
 import React from "react";
-import { boxShadow } from "../../../assets/constants";
 import { offWhite } from "../../../assets/colors";
 
 const DashboardSection = ({ title, children }) => (
