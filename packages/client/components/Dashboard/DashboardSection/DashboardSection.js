@@ -8,8 +8,7 @@ const DashboardSection = ({ title, children }) => (
       border-radius: 8px;
       overflow: hidden;
       margin: 0 auto;
-      box-shadow: 0 4px 6px rgba(10, 10, 10, 0.1),
-        0 4px 6px rgba(10, 10, 10, 0.15);
+      box-shadow: 0px 2px 16px rgba(212, 217, 225, 0.4);
     `}
   >
     <div
@@ -22,7 +21,7 @@ const DashboardSection = ({ title, children }) => (
         overflow: hidden;
       `}
     >
-      <h3>{title}</h3>
+      <h3 css="text-transform: uppercase; font-weight: 800;">{title}</h3>
     </div>
     <div
       css="

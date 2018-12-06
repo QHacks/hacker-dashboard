@@ -37,6 +37,7 @@ const DashboardMenu = (props) => (
           css="
             max-height: 32px;
             margin-right: 6px;
+            margin-top: 5px;
           "
           alt="QHacks crown"
         />

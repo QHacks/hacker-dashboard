@@ -103,9 +103,10 @@ class Apply extends Component {
               state: {
                 from: this.props.location,
                 alert: {
-                  type: "info",
-                  message: "You've already applied to QHacks 2019!",
-                  status: "Yay!"
+                  type: "caution",
+                  message:
+                    "Looks like you've already applied to QHacks 2019! Check below for the status of your application.",
+                  status: "none"
                 }
               }
             }}
