@@ -59,6 +59,7 @@ const DashboardMenu = (props) => (
           style="font-size: 16px;"
           type="rounded"
           internal
+          inline
           link="/logout"
           onClick={() => props.logout()}
         >

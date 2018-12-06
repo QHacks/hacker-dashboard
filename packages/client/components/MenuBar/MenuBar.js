@@ -6,7 +6,7 @@ import { linkExternalTrusted } from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import { blue } from "../../assets/colors";
 
-const MenuBar = ({ wide, hideItems, showLogin }) => (
+const MenuBar = ({ hideItems, showLogin }) => (
   <header
     css="
       width: 100%;
@@ -18,7 +18,7 @@ const MenuBar = ({ wide, hideItems, showLogin }) => (
       left: 0;
     "
   >
-    <ContentWrapper wide={wide}>
+    <ContentWrapper>
       <div
         css="
           display: inline-block;

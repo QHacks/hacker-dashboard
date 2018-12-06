@@ -139,34 +139,34 @@ const Step2 = (props) => {
           </section>
           <section css={props.inputRowStyle}>
             <div>
-              <label htmlFor="github">GitHub link (optional)</label>
+              <label htmlFor="githubLink">GitHub link (optional)</label>
               <input
                 type="text"
-                id="github"
-                key="github"
+                id="githubLink"
+                key="githubLink"
                 placeholder="Your GitHub URL"
-                value={props.applicationAnswers.github}
+                value={props.applicationAnswers.githubLink}
                 onChange={(e) =>
-                  props.setApplicationAnswer("github", e.target.value)
+                  props.setApplicationAnswer("githubLink", e.target.value)
                 }
               />
-              <ValidationError message={props.errors.linkedIn} />
+              <ValidationError message={props.errors.linkedinlink} />
             </div>
           </section>
           <section css={props.inputRowStyle}>
             <div>
-              <label htmlFor="linkedIn">LinkedIn link (optional)</label>
+              <label htmlFor="linkedinlink">LinkedIn link (optional)</label>
               <input
                 type="text"
-                id="linkedIn"
-                key="linkedIn"
+                id="linkedinlink"
+                key="linkedinlink"
                 placeholder="Your LinkedIn URL"
-                value={props.applicationAnswers.linkedIn}
+                value={props.applicationAnswers.linkedinlink}
                 onChange={(e) =>
-                  props.setApplicationAnswer("linkedIn", e.target.value)
+                  props.setApplicationAnswer("linkedinlink", e.target.value)
                 }
               />
-              <ValidationError message={props.errors.github} />
+              <ValidationError message={props.errors.githubLink} />
             </div>
           </section>
           <section css={props.inputRowStyle}>
