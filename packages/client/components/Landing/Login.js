@@ -64,7 +64,7 @@ class Login extends Component {
         }
       });
     } catch (err) {
-      this.showAlert("Invalid credentials!", "danger");
+      this.showAlert(err.response.data.message, "danger");
     }
   }
 

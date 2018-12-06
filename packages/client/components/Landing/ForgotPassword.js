@@ -49,10 +49,7 @@ class ForgotPassword extends Component {
         "success"
       );
     } catch (err) {
-      this.showAlert(
-        "Could not submit request to reset password! Please try again!",
-        "danger"
-      );
+      this.showAlert(err.response.data.message, "danger");
     }
   }
 
