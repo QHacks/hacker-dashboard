@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import { orange, red, green, cyan } from "../../assets/colors";
 
 class Alert extends Component {
