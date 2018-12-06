@@ -1,0 +1,34 @@
+interface User {
+  """
+  The users first name.
+  """
+  firstName: String!
+  """
+  The users last name.
+  """
+  lastName: String!
+  """
+  The users full name.
+  """
+  fullName: String!
+  """
+  The users email.
+  """
+  email: String!
+  """
+  The users phone number.
+  """
+  phoneNumber: String
+  """
+  The users date of birth.
+  """
+  dateOfBirth: String
+  """
+  The users auth information.
+  """
+  oauthInfo: OAuthInfo!
+}
+
+extend type QueryRoot {
+  user: User
+}

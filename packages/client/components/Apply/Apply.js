@@ -1,139 +1,161 @@
-import { actionCreators, selectors } from "../../HackerStore";
-import ApplicationsClosed from "./ApplicationsClosed";
-import { Divider, Header } from "semantic-ui-react";
-import { Link, Redirect } from "react-router-dom";
+import { graphql, compose } from "react-apollo";
+import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { MISC } from "../../strings";
-import { ApplyForm } from "../Forms";
-import "./Apply.less";
+import gql from "graphql-tag";
 
-const {
-  getApplicationLoading,
-  getApplicationError,
-  getApplicationPage,
-  getAuthenticated,
-  getApplicationsStatus
-} = selectors;
-const { apply, applicationPageUpdate } = actionCreators;
+import ApplicationNavigation from "./ApplicationSteps/index";
+import loader from "../../assets/img/qhacks-loader.gif";
+import ApplicationHeader from "./ApplicationHeader";
+import ApplicationForm from "./ApplicationForm";
+import MenuBar from "../MenuBar/MenuBar";
 
-const { APPLICATION_CLOSED_STATUS } = MISC;
+const AUTHENTICATION_STATUS_QUERY = gql`
+  query {
+    authInfo @client {
+      isAuthenticated
+    }
+  }
+`;
+
+const HACKER_INFORMATION_QUERY = gql`
+  query {
+    user {
+      ... on Hacker {
+        hasApplied(eventSlug: "qhacks-2019")
+      }
+    }
+  }
+`;
 
 class Apply extends Component {
-  handleApply(values) {
-    this.props.apply(values);
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      stepNum: 0
+    };
   }
 
-  handlePageUpdate(applicationPage) {
-    this.props.applicationPageUpdate({ applicationPage });
+  componentDidMount() {
+    const { authInfo } = this.props;
+
+    if (authInfo) {
+      const { isAuthenticated } = authInfo;
+
+      if (isAuthenticated) {
+        this.setState({
+          stepNum: 1
+        });
+      }
+    }
   }
 
-  getRedirectPath() {
-    const locationState = this.props.location.state;
-
-    if (locationState && locationState.from.pathname) {
-      return locationState.from.pathname;
+  nextStep() {
+    if (this.state.stepNum === 1 && this.props.refetchHacker) {
+      this.props.refetchHacker();
     }
 
-    return "/";
+    this.setState((prevState) => ({ stepNum: prevState.stepNum + 1 }));
   }
 
-  renderApplicationForm() {
-    const {
-      applicationError,
-      applicationLoading,
-      applicationPage,
-      applicationsStatus
-    } = this.props;
-
-    if (applicationsStatus === APPLICATION_CLOSED_STATUS) {
-      return <ApplicationsClosed />;
-    }
-
-    return (
-      <ApplyForm
-        onSubmit={this.handleApply.bind(this)}
-        applicationError={applicationError}
-        applicationLoading={applicationLoading}
-        applicationPage={applicationPage}
-        onPageUpdate={this.handlePageUpdate.bind(this)}
-      />
-    );
-  }
-  renderApplicationHeader() {
-    const { applicationsStatus } = this.props;
-    const headerContent =
-      applicationsStatus === APPLICATION_CLOSED_STATUS
-        ? "Applications are now closed"
-        : "Complete the form to apply!";
-    return (
-      <div className="application-header">
-        <img
-          src={require("../../assets/img/qhacks-tricolor-logo.svg")}
-          className="qhacks-logo"
-        />
-        <Header
-          as="h2"
-          content={headerContent}
-          color="red"
-          textAlign="center"
-          className="form apply header"
-        />
-      </div>
-    );
-  }
-
-  renderApplicationFooter() {
-    return (
-      <div className="application-footer">
-        <Divider />
-        <p className="fontSize-medium textAlign-center">
-          Have an account? <Link to="/login">Login here</Link>
-        </p>
-      </div>
-    );
+  previousStep() {
+    this.setState((prevState) => ({ stepNum: prevState.stepNum - 1 }));
   }
 
   render() {
-    const { authenticated, applicationsStatus } = this.props;
+    const { loadingHacker, loadingAuth } = this.props;
 
-    if (authenticated) {
+    if (loadingHacker || loadingAuth) {
       return (
-        <Redirect
-          to={{
-            pathname: this.getRedirectPath(),
-            state: {
-              from: this.props.location
-            }
-          }}
-        />
+        <div
+          css="
+          min-height:100vh;
+          text-align: center;
+        "
+        >
+          <div>
+            <img
+              src={loader}
+              css="
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: 70px;
+              height: 70px;
+              margin-top: -35px;
+              margin-left: -35px;
+            "
+            />
+          </div>
+        </div>
       );
     }
 
+    if (this.props.authInfo && this.props.hackerInfo) {
+      const { isAuthenticated } = this.props.authInfo;
+      const { hasApplied } = this.props.hackerInfo;
+
+      if (isAuthenticated && hasApplied) {
+        return (
+          <Redirect
+            to={{
+              pathname: "/profile",
+              state: {
+                from: this.props.location,
+                alert: {
+                  type: "info",
+                  message: "You've already applied to QHacks 2019!",
+                  status: "Yay!"
+                }
+              }
+            }}
+          />
+        );
+      }
+    }
+
     return (
-      <div className="application-container">
-        <div className="application-graphics" />
-        <div className="application-form-container">
-          {this.renderApplicationHeader()}
-          {this.renderApplicationForm()}
-          {this.renderApplicationFooter()}
-        </div>
+      <div
+        css={`
+          h1,
+          h2,
+          h3 {
+            color: black;
+          }
+        `}
+      >
+        <MenuBar showLogin hideItems={this.state.stepNum > 0} />
+        <ApplicationHeader />
+        <ApplicationNavigation stepNum={this.state.stepNum} />
+        <ApplicationForm
+          previousStep={() => this.previousStep()}
+          nextStep={() => this.nextStep()}
+          stepNum={this.state.stepNum}
+        />
       </div>
     );
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    ...ownProps,
-    applicationError: getApplicationError(state),
-    applicationLoading: getApplicationLoading(state),
-    applicationPage: getApplicationPage(state),
-    authenticated: getAuthenticated(state),
-    applicationsStatus: getApplicationsStatus(state)
-  };
-}
+const clientQuery = graphql(AUTHENTICATION_STATUS_QUERY, {
+  props: ({ data }) => ({
+    authInfo: data.authInfo,
+    loadingAuth: data.loading
+  })
+});
 
-export default connect(mapStateToProps, { apply, applicationPageUpdate })(
-  Apply
-);
+const hackerQuery = graphql(HACKER_INFORMATION_QUERY, {
+  options: {
+    fetchPolicy: "network-only"
+  },
+  props: ({ data }) => ({
+    hackerInfo: data.user,
+    loadingHacker: data.loading,
+    refetchHacker: data.refetch
+  })
+});
+
+export default compose(
+  clientQuery,
+  hackerQuery
+)(Apply);

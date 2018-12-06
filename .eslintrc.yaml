@@ -1,0 +1,51 @@
+parser: babel-eslint
+plugins:
+  - react
+extends:
+  - prettier # - airbnb
+parserOptions:
+  ecmaFeatures: { jsx: true }
+env:
+  browser: true
+  es6: true
+  node: true
+rules:
+  strict: 0
+  indent: [2, 2, { SwitchCase: 1 }]
+  semi: [2, always]
+  no-extra-semi: 2
+  no-irregular-whitespace: 2
+  no-mixed-spaces-and-tabs: 2
+  semi-spacing: [2, { before: false, after: true }]
+  eqeqeq: 2
+  comma-dangle: [2, never]
+  comma-spacing: [2, { before: false, after: true }]
+  space-in-parens: [2, never]
+  space-before-function-paren:
+    [2, { anonymous: never, named: never, asyncArrow: always }]
+  space-before-blocks: 2
+  keyword-spacing: 2
+  no-unneeded-ternary: 2
+  curly: [2, multi-line]
+  space-infix-ops: 2
+  no-else-return: [2, { allowElseIf: true }]
+  multiline-ternary: [2, always-multiline]
+  key-spacing: [2, { mode: strict }]
+  arrow-parens: [2, always]
+  react/jsx-wrap-multilines: 2
+  prefer-const: 2
+  no-debugger: 2
+  react/jsx-filename-extension: 0
+  react/prop-types: 0 # TODO: eventually require prop types
+  react/destructuring-assignment: 0
+  react/no-unused-state: 0 # TODO: eventually remove this
+  # jsx-a11y/label-has-for: 0 # depreciated for below
+  # jsx-a11y/label-has-associated-control: [2, {assert: "htmlFor"}]
+  react/style-prop-object: 0 # eventually rename ActionButton style prop and reenable
+  react/sort-comp: 0 # this rule is too nitpicky
+  import/prefer-default-export: 0
+  no-nested-ternary: 0
+  camelcase: 0
+  no-unused-vars: 0 # eventually upgrade this to 2
+  import/order: 0 # nitpicky
+

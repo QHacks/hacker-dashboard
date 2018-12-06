@@ -1,40 +1,78 @@
 process.env.AUTH_SECRET = "ABC123";
 
-const bodyParser = require("body-parser");
 const request = require("supertest");
-const jwt = require("jsonwebtoken");
-const express = require("express");
 
-const controllers = require("../../controllers");
-const auth = require("../../auth");
-const api = require("../../api");
+const { GraphQLAuthenticationError } = require("../../errors");
+const { ApolloServer } = require("apollo-server-express");
+const compression = require("compression");
+const bodyParser = require("body-parser");
+
+const db = require("./mock-db");
+const { verifyAccessToken } = require("../../oauth")(db);
+const express = require("express");
+const helmet = require("helmet");
+const cors = require("cors");
+const jwt = require("jsonwebtoken");
+
+const resolvers = require("../../gql/resolvers");
+const typeDefs = require("../../gql/definitions");
 
 const app = express();
-const { AUTH_SECRET } = process.env;
 
-app.use(bodyParser.urlencoded({ extended: true }));
+// Third Party Middleware
+app.use(cors());
+app.use(helmet());
+app.use(compression());
 app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/api/", auth(), api(controllers));
+// Protected GraphQL Endpoint
+const graphqlServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: async ({ req, res }) => {
+    try {
+      const { user, access } = await verifyAccessToken(req);
+
+      return {
+        db,
+        user,
+        access
+      };
+    } catch (err) {
+      throw new GraphQLAuthenticationError("Invalid access token!");
+    }
+  }
+});
+
+// Apply Express Middleware
+graphqlServer.applyMiddleware({ app });
+
+// Creates an access token for testing
+function createMockAccessToken(userId) {
+  return jwt.sign(
+    {
+      userId
+    },
+    process.env.AUTH_SECRET,
+    {
+      expiresIn: 300,
+      issuer: "QHacks Testing"
+    }
+  );
+}
 
 module.exports = {
-  request: request(app),
-  createAccessToken: (userId) => {
-    return jwt.sign({ userId }, process.env.AUTH_SECRET, {
-      expiresIn: "5 minutes",
-      issuer: "QHacks Authentication"
-    });
-  },
-  createRefreshToken: (userId) =>
-    jwt.sign(
-      {
-        type: "refresh",
-        userId
-      },
-      AUTH_SECRET,
-      {
-        expiresIn: "60 minutes",
-        issuer: "QHacks Authentication"
-      }
-    )
+  /**
+   * Make a GraphQL Request to the mock API
+   * userId is provided to create an access token
+   */
+  gql(userId, query) {
+    const accessToken = createMockAccessToken(userId);
+    return request(app)
+      .post("/graphql")
+      .set("authorization", `Bearer ${accessToken}`)
+      .send({ operationName: null, query, variables: {} })
+      .then(({ body }) => body);
+  }
 };

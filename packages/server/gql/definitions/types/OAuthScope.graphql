@@ -1,0 +1,13 @@
+"""
+Represents a single OAuth scope.
+"""
+type OAuthScope {
+  """
+  The entity the scope is for.
+  """
+  entity: String!
+  """
+  The highest level of permission to the entity.
+  """
+  permission: OAuthScopePermission!
+}

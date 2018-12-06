@@ -6,63 +6,35 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install NPM Dependencies
+          name: Install dependencies
           command: npm run bootstrap
       - run:
-          name: Check Code Style
+          name: Check code style
           command: npm run style
 
   test:
     docker:
       - image: circleci/node:latest
+        environment:
+          DB_ENVIRONMENT: test
+      - image: circleci/postgres:9.6.5-alpine-ram
     steps:
       - checkout
       - run:
-          name: Install NPM Dependencies
-          command: npm run bootstrap
+          name: Wait for PostgreSQL
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
-          name: Build MJML Email Templates
-          command: npm run build-emails
-      - run:
-          name: Perform Unit Tests and Send Coverage Data
-          command: npm run test-with-coverage
-
-  dev-deploy:
-    docker:
-      - image: lakoo/node-gcloud-docker:latest
-    steps:
-      - checkout
-      - run:
-          name: Install NPM Dependencies
-          command: npm run bootstrap
-      - run:
-          name: Build React Client and MJML Email Templates
-          command: npm run build
-      - run:
-          name: Create .env File
+          name: Install dependencies
           command: |
-            echo "AUTH_SECRET=${AUTH_SECRET}" > .env
-            echo "MONGO_AUTH_SOURCE=${MONGO_AUTH_SOURCE}" >> .env
-            echo "MONGO_DBNAME=${MONGO_DBNAME}" >> .env
-            echo "MONGO_HOST=${MONGO_HOST}" >> .env
-            echo "MONGO_PASS=${MONGO_PASS}" >> .env
-            echo "MONGO_USER=${MONGO_USER}" >> .env
-            echo "SENDGRID_API_KEY=${SENDGRID_API_KEY}" >> .env
-            echo "EMAIL_URL_HOST=${EMAIL_URL_HOST}" >> .env
-            echo "SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}" >> .env
-            echo "FORCE_SSL=${FORCE_SSL}" >> .env
+            npm run bootstrap
+            sudo apt-get install postgresql-client
       - run:
-          name: Dump Google Cloud Credentials to File
-          command: echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
+          name: Create test database
+          command: |
+            psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE \"qhacks-test-database\";"
       - run:
-          name: Add Google Cloud Service Account Credentials to GCloud SDK
-          command: gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
-      - run:
-          name: Set GCloud Project
-          command: gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-      - deploy:
-          name: Deploy to Google App Engine
-          command: gcloud app deploy app-stage.yaml --quiet
+          name: Run tests and send coverage data
+          command: npm run test-with-coverage
 
 workflows:
   version: 2
