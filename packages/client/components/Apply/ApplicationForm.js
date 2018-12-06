@@ -166,14 +166,13 @@ class ApplicationForm extends Component {
 
   async submit() {
     const answers = this.state.applicationAnswers;
-
-    const responses = Object.keys(answers).map((item) => ({
-      label: item,
-      answer: answers[item]
-    }));
-
-    delete responses.agreeMlhCodeConduct;
-    delete responses.agreeMlhTosAndPrivacyPolicy;
+    const dontInclude = ["agreeMlhCodeConduct", "agreeMlhTosAndPrivacyPolicy"];
+    const responses = Object.keys(answers)
+      .map((label) => ({
+        label: label,
+        answer: answers[label]
+      }))
+      .filter((item) => !dontInclude.includes(item.label));
 
     try {
       await this.props.submitApplication({
@@ -192,6 +191,10 @@ class ApplicationForm extends Component {
         linkedinLink: this.state.applicationAnswers.linkedinlink,
         schoolName: this.state.applicationAnswers.school
       };
+
+      if (!newHackerInfo.githubLink) delete newHackerInfo.githubLink;
+      if (!newHackerInfo.linkedinLink) delete newHackerInfo.linkedinLink;
+      if (!newHackerInfo.personalWebsite) delete newHackerInfo.personalWebsite;
 
       await this.props.updateHacker({
         variables: {

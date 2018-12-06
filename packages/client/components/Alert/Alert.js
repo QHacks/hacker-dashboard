@@ -85,28 +85,38 @@ class Alert extends Component {
           line-height: 24px;
           width: 100%;
           text-align: left;
+          display: flex;
           > * {
             vertical-align: middle;
           }
         `}
       >
-        <img
-          src={this.getIcon()}
-          alt={this.getStatus()}
-          css="
-            margin-right: 12px;
-            height: 24px;
-            width: 24px;
-          "
-        />
-        <strong
-          css="
-            margin-right: 6px;
-          "
+        <div
+          css={`
+            max-width: 24px;
+            padding-right: 12px;
+            box-sizing: content-box;
+          `}
         >
-          {this.getStatus()}
-        </strong>
-        <span>{this.props.message}</span>
+          <img
+            src={this.getIcon()}
+            alt={this.getStatus()}
+            css="
+              height: 24px;
+              width: 24px;
+            "
+          />
+        </div>
+        <div>
+          <strong
+            css="
+              margin-right: 6px;
+            "
+          >
+            {this.getStatus()}
+          </strong>
+          <span>{this.props.message}</span>
+        </div>
       </div>
     );
   }
