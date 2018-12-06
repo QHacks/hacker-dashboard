@@ -68,8 +68,8 @@ class ApplicationForm extends Component {
         passionProject: "",
         agreeMlhCodeConduct: "",
         agreeMlhTosAndPrivacyPolicy: "",
-        github: "",
-        linkedIn: "",
+        githubLink: "",
+        linkedinlink: "",
         personalWebsite: ""
       },
       errors: {},
@@ -167,18 +167,13 @@ class ApplicationForm extends Component {
   async submit() {
     const answers = this.state.applicationAnswers;
 
-    const responses = Object.keys(answers).reduce((acc, item) => {
-      let answer = answers[item];
+    const responses = Object.keys(answers).map((item) => ({
+      label: item,
+      answer: answers[item]
+    }));
 
-      answer = answer.toString();
-
-      acc.push({
-        label: item,
-        answer
-      });
-
-      return acc;
-    }, []);
+    delete responses.agreeMlhCodeConduct;
+    delete responses.agreeMlhTosAndPrivacyPolicy;
 
     try {
       await this.props.submitApplication({
@@ -191,11 +186,11 @@ class ApplicationForm extends Component {
       });
 
       const newHackerInfo = {
-        phoneNumber: "4166057919",
-        personalWebsiteLink: "https://github.com/",
-        githubLink: "https://github.com/",
-        linkedinLink: "https://github.com/",
-        schoolName: "Queen's Universitys"
+        phoneNumber: this.state.applicationAnswers.phoneNumber,
+        personalWebsiteLink: this.state.applicationAnswers.personalWebsite,
+        githubLink: this.state.applicationAnswers.githubLink,
+        linkedinLink: this.state.applicationAnswers.linkedinlink,
+        schoolName: this.state.applicationAnswers.school
       };
 
       await this.props.updateHacker({
@@ -274,12 +269,12 @@ class ApplicationForm extends Component {
         stepNum: 1,
         message: "Please enter your race"
       },
-      linkedIn: {
+      linkedinlink: {
         regex: /^.*$/,
         stepNum: 1,
         message: "Please enter a valid URL"
       },
-      github: {
+      githubLink: {
         regex: /^.*$/,
         stepNum: 1,
         message: "Please enter a valid URL"
