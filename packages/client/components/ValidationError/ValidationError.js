@@ -10,23 +10,22 @@ const ValidationError = ({ message }) =>
         margin: 12px 0;
         text-align: left;
         display: flex;
-        > * {
+        * {
           height: 16px;
+          line-height: 16px;
+          vertical-align: middle;
         }
       `}
     >
-      <div css={"padding-right: 12px;"}>
-        <img src="../../assets/img/danger.svg" alt="Error" />
+      <div
+        css={`
+          padding-right: 12px;
+        `}
+      >
+        <img src="../../assets/img/danger-solid.svg" alt="Error" />
       </div>
       <div>
-        <strong
-          css={`
-            line-height: 16px;
-            vertical-align: middle;
-          `}
-        >
-          {message}
-        </strong>
+        <strong>{message}</strong>
       </div>
     </div>
   ) : (

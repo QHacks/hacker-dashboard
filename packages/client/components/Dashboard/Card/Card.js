@@ -1,7 +1,7 @@
 import React from "react";
-
 import circuits from "../../../assets/img/circuits.png";
 import { steel } from "../../../assets/colors";
+import { boxShadow } from "../../../assets/constants";
 
 const Card = ({ image, title, children }) => (
   <div
@@ -9,6 +9,10 @@ const Card = ({ image, title, children }) => (
       border: 1px solid ${steel};
       border-radius: 8px;
       max-width: 285px;
+      :hover {
+        box-shadow: ${boxShadow};
+      }
+      transition: 0.25s ease;
     `}
   >
     <div
