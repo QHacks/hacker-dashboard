@@ -7,7 +7,6 @@ import axios from "axios";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 import { steel } from "../../assets/colors";
 import { SERVER_HOST } from "../../Client";
-import Alert from "../Alert/Alert";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
@@ -93,6 +92,19 @@ class ApplicationForm extends Component {
     this.createAccount = this.createAccount.bind(this);
   }
 
+  showAlert(message, type, status = null) {
+    this.setState({
+      alert: {
+        message,
+        type,
+        status
+      },
+      alertShown: true
+    });
+
+    setTimeout(() => this.setState({ alertShown: false }), 6000);
+  }
+
   async login() {
     if (this.validateAllAnswers()) {
       const { email, password } = this.state.authAnswers;
@@ -115,15 +127,7 @@ class ApplicationForm extends Component {
 
         this.nextStep();
       } catch (err) {
-        this.setState({
-          alert: {
-            type: "danger",
-            message: "Login failed",
-            status: null
-          },
-          alertShown: true
-        });
-        setTimeout(() => this.setState({ alertShown: false }), 5000);
+        this.showAlert(err.response.data.message, "danger");
       }
     }
   }
@@ -151,15 +155,7 @@ class ApplicationForm extends Component {
 
         this.nextStep();
       } catch (err) {
-        this.setState({
-          alert: {
-            type: "danger",
-            message: "Create account failed",
-            status: null
-          },
-          alertShown: true
-        });
-        setTimeout(() => this.setState({ alertShown: false }), 5000);
+        this.showAlert(err.response.data.message, "danger");
       }
     }
   }
@@ -206,12 +202,21 @@ class ApplicationForm extends Component {
 
       this.nextStep();
     } catch (err) {
-      console.log(err);
+      this.showAlert("Could not submit application at this time!", "danger");
     }
   }
 
   nextStep() {
     if (this.validateAllAnswers()) {
+      this.setState({
+        alertShown: false,
+        alert: {
+          type: "",
+          status: null,
+          message: ""
+        }
+      });
+
       this.props.nextStep();
     }
   }
@@ -548,6 +553,8 @@ class ApplicationForm extends Component {
       case 2: {
         return (
           <Step3
+            alert={this.state.alert}
+            alertShown={this.state.alertShown}
             setApplicationAnswer={this.setApplicationAnswer}
             applicationAnswers={this.state.applicationAnswers}
             errors={this.state.errors}

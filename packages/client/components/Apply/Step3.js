@@ -177,6 +177,9 @@ const Step3 = (props) => {
                 Submit
               </ActionButton>
             </div>
+            <div css={props.inputRowStyle}>
+              {props.alertShown ? <Alert {...props.alert} /> : ""}
+            </div>
           </section>
         </div>
       </div>

@@ -33,7 +33,7 @@ class UpdatePassword extends Component {
       alertShown: true
     });
 
-    setTimeout(() => this.setState({ alertShown: false }), 5000);
+    setTimeout(() => this.setState({ alertShown: false }), 6000);
   }
 
   async updatePasswordForReset() {
@@ -48,10 +48,7 @@ class UpdatePassword extends Component {
 
       this.showAlert("Password has been successfully reset!", "success");
     } catch (err) {
-      this.showAlert(
-        "Could not submit request to reset password! Please try again!",
-        "danger"
-      );
+      this.showAlert(err.response.data.message, "danger");
     }
   }
 
@@ -114,14 +111,7 @@ class UpdatePassword extends Component {
             Reset password
           </ActionButton>
         </div>
-        {this.state.alertShown ? (
-          <Alert
-            type={this.state.alert.type}
-            message={this.state.alert.message}
-          />
-        ) : (
-          ""
-        )}
+        {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
       </Landing>
     );
   }
