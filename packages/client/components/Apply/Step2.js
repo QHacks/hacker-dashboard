@@ -150,20 +150,20 @@ const Step2 = (props) => {
                   props.setApplicationAnswer("githubLink", e.target.value)
                 }
               />
-              <ValidationError message={props.errors.linkedinlink} />
+              <ValidationError message={props.errors.linkedinLink} />
             </div>
           </section>
           <section css={props.inputRowStyle}>
             <div>
-              <label htmlFor="linkedinlink">LinkedIn link (optional)</label>
+              <label htmlFor="linkedinLink">LinkedIn link (optional)</label>
               <input
                 type="text"
-                id="linkedinlink"
-                key="linkedinlink"
+                id="linkedinLink"
+                key="linkedinLink"
                 placeholder="Your LinkedIn URL"
-                value={props.applicationAnswers.linkedinlink}
+                value={props.applicationAnswers.linkedinLink}
                 onChange={(e) =>
-                  props.setApplicationAnswer("linkedinlink", e.target.value)
+                  props.setApplicationAnswer("linkedinLink", e.target.value)
                 }
               />
               <ValidationError message={props.errors.githubLink} />
