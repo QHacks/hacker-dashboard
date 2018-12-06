@@ -152,7 +152,13 @@ class Login extends Component {
             Apply
           </ActionButton>
         </div>
-        {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
+        <div
+          css="
+          margin: 30px 0px 0px;
+        "
+        >
+          {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
+        </div>
       </Landing>
     );
   }

@@ -80,7 +80,7 @@ class UpdatePassword extends Component {
             color: #8a929f;
           "
         >
-          Please enter your new password!
+          Please enter your new password.
         </p>
         <div
           css="
@@ -139,7 +139,13 @@ class UpdatePassword extends Component {
             Reset password
           </ActionButton>
         </div>
-        {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
+        <div
+          css="
+          margin: 30px 0px 0px;
+        "
+        >
+          {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
+        </div>
       </Landing>
     );
   }

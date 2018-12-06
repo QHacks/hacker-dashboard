@@ -10,7 +10,11 @@ import loader from "./assets/img/qhacks-loader.gif";
 import getApolloClient from "./ApolloClient";
 import App from "./components/App/App";
 
-export const SERVER_HOST = "http://localhost:3000";
+const isProd = process.env.NODE_ENV === "production";
+
+export const SERVER_HOST = isProd
+  ? `https://${window.location.host}`
+  : "http://localhost:3000";
 
 export const REFRESH_TOKEN_KEY = "qhacksRefreshToken";
 export const ACCESS_TOKEN_KEY = "qhacksAccessToken";

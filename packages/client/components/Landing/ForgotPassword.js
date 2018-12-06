@@ -113,14 +113,13 @@ class ForgotPassword extends Component {
             Send reset link
           </ActionButton>
         </div>
-        {this.state.alertShown ? (
-          <Alert
-            type={this.state.alert.type}
-            message={this.state.alert.message}
-          />
-        ) : (
-          ""
-        )}
+        <div
+          css="
+          margin: 30px 0px 0px;
+        "
+        >
+          {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
+        </div>
       </Landing>
     );
   }
