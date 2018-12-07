@@ -1,0 +1,4 @@
+"""
+An RFC 3986 and RFC 3987 compliant URI string.
+"""
+scalar URL

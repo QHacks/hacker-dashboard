@@ -1,98 +1,133 @@
-# QHacks Hacker Dashboard
+# QHacks Dashboard
 
-[![CircleCI](https://circleci.com/gh/qhacks/hacker-dashboard.svg?style=svg)](https://circleci.com/gh/qhacks/hacker-dashboard)
+[![CircleCI
+Status](https://circleci.com/gh/qhacks/qhacks-dashboard.svg?style=shield&circle-token=865c145070c9fe7a2d039310976c7a296f71920e)](https://circleci.com/gh/qhacks/qhacks-dashboard)
+[![Coverage
+Status](https://coveralls.io/repos/github/qhacks/qhacks-dashboard/badge.svg?branch=dev)](https://coveralls.io/github/qhacks/qhacks-dashboard?branch=dev)
 
-This repository encapsulates a monolithic implementation of the QHacks Hacker Dashboard. This dashboard is to serve as a hub for judges, mentors, partners and hackers participating in [QHacks](http://qhacks.io/). The dashboard implements a suite of features to make the process and experience of attending a hackathon a richer and more pleasant one.
+This repository is a
+[mono-repo](https://developer.atlassian.com/blog/2015/10/monorepos-in-git/)
+containing the QHacks Dashboard. This dashboard is to serve as a hub for judges,
+mentors, partners and hackers participating in [QHacks](https://qhacks.io/). The
+dashboard implements a suite of features to make the process and experience of
+attending a hackathon a richer and more pleasant one for all parties.
 
-The back end application is built using a Node server using Express to serve a RESTful API. The front end is implemented using [ReactJS](https://reactjs.org/), and [Redux](http://redux.js.org/docs/introduction/) for state management, all of which are bundled with [Webpack](https://webpack.github.io/). For more information about the technical specifications please refer to the [wiki](https://github.com/qhacks/hacker-dashboard/wiki).
-
-## Configuration
-
-For development this project uses `dotenv` to allow you tp specify environment variables in a static file.
-
-> NOTE: You will need to create a .env file at the root your project with the desired environment variables that are outlined below. You can check out example.env in the project root to see a standard configuration.
-
-### Back End
-
-See the environment variables below for the back end to operate:
-
-Name | Description | Required | Default
---- | --- | --- | ---
-`APPLICATIONS_STATUS` | Whether applications are open to new submissions. Accepts `open` or `closed` | No | closed
-`AUTH_SECRET` | The secret used to encrypt auth tokens | Yes | None
-`DEV_PROXY` | When running the `webpack-dev-server` all API calls will be proxied to this host. | No | `http://localhost:PORT`
-`EMAIL_URL_HOST` | Host to be used in the email urls. | No | None
-`MONGO_AUTH_SOURCE` | The database name used to authenticate the connection to MongoDB | No | None
-`MONGO_DBNAME` | The database name to use inside the instance of MongoDB. | Yes | None
-`MONGO_HOST` | The hostname to use to access the MongoDB instance. | Yes | None
-`MONGO_PASS` | The password to access the MongoDB instance. | No | None
-`MONGO_PORT` | The port to use to access the MongoDB instance. | No | 27017
-`MONGO_USER` | The username to access the MongoDB instance. | No | None
-`PORT` | Port to run the Express sever on. | No | 3000
-`REVIEWS_PER_APPLICATION` | The number of reviews that must be applied to an application before it is considered complete. | Yes | 1
-`SENDGRID_API_KEY` | SendGrid transactional email service api key. | No | None
-`SLACK_WEBHOOK_URL` | The webhook URL you wish to send Slack messages to | No | None
-`FORCE_SSL` | If this is set to true, then any non-SSL access will be redirected to SSL. | No | 'false'
-
-### Front End
-
-There are currently no environment variables needed for the front end, update this as necessary.
-
-However, within the `client/assets` directory there is `semantic-ui/` directory. This holds our theming and customization on top of the default [Semantic UI](https://react.semantic-ui.com/introduction) framework. Webpack has been configured to bundle LESS, so we have added the `semantic-ui-less` package and configured appropriately.
+The back end application is built with [Node](https://nodejs.org/en/) using
+[Express](https://expressjs.com/) to serve a RESTful API. For persistence we use
+[MongoDB](https://www.mongodb.com/) and [Mongoose](https://mongoosejs.com/) as
+our ODM to interact with that database. The front end is implemented using
+[ReactJS](https://reactjs.org/), and
+[Redux](http://redux.js.org/docs/introduction/) for state management, all of
+which are bundled with [Webpack](https://webpack.github.io/). For more
+information about the technical specifications please refer to the
+[wiki](https://github.com/qhacks/qhacks-dashboard/wiki).
 
 ## Usage
 
-Utilize the scripts below to use the application:
+Utilize the scripts below in the root of the project to get started:
 
-```
-# install dependancies
-npm install
+**Setup the project and install dependencies:**
 
-# run the server in development mode with nodemon
-npm run server-dev
+`npm run bootstrap`
 
-# run the server in debug mode
-npm run server-debug
+> NOTE: This project uses [Lerna](https://github.com/lerna/lerna) as it is a
+> mono-repo. This command installs all dependencies within individual projects
+> and hoists the common package versions out to the `node_modules` directory in
+> the root of the repo.
 
-# run the server in production mode
-npm run start
+**Run the application in development mode:**
 
-# runs webpack-dev-server for ui development
-npm run client-dev
+`npm run dev`
 
-# build the front end for production
-npm run client-prod
+> NOTE: This builds the emails and starts the server in development mode.
+> Additionally, this will start a webpack dev server to host a bundled version
+> of our client. The webpack dev server will track your changes and continually
+> generate bundles when changes occur.
 
-# test the server code (lints code, checks for security vulnerabilities in dependencies and outdated dependencies)
-npm run test
-```
+**Build both the emails and the client:**
 
-## Deploying
+`npm run build`
 
-The application is deployed using the Google Cloud Platform, in order to deploy the application you can run the command:
+**Build only the emails:**
 
-```npm run deploy```
+`npm run build-emails`
 
-> NOTE: This assumes you have already installed the GCP SDK onto your machine and configured it to be associated with the account that we deploy the hacker dashboard from, refer the resources [here](https://cloud.google.com/sdk/docs/) to do that. You will need to contact one of the team members to get this level of access.
+**Build only the client:**
 
-## Slack Webhook
+`npm run build-client`
 
-This dashboard can send updates about completed basic applications to a Slack webhook URL. To configure this, add `SLACK_WEBHOOK_URL` to your environment variables. See [Configuration/Back End](#back-end) for more information.
+**Start the server in production mode:**
+
+`npm run start`
+
+> NOTE: You need to run the build command before starting the server.
+
+**Run the linter to check coding style:**
+
+`npm run style`
+
+**Run the formatter to fix code style issues:**
+
+`npm run format`
+
+**Run the test suite in all projects:**
+
+`npm run test`
+
+**Run the test suite and watch for changes in all projects:**
+
+`npm run test-watch`
+
+**Run the test suite with coverage data being sent to Coveralls:**
+
+`npm run test-with-coverage`
+
+> NOTE: You likely won't need to do this and it will fail because some
+> environment variables are required.
+
+When developing locally make sure to use the Lerna commands to run scripts
+across projects and to add dependencies to individual or multiple projects.
+Lerna has a concept called scopes, this allows you to scope commands to specific
+projects. If the Lerna commands are not used it will likely cause dependency
+issues and synchronization issues between projects. Find the list of Lerna
+commands [here](https://github.com/lerna/lerna).
+
+> See the [wiki](https://github.com/qhacks/qhacks-dashboard/wiki) for more
+> information about environment setup.
 
 ## Contributing
 
+A general guide to contribute in this repository is:
+
 1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
+2. Create your feature branch: `git checkout -b feature/my-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+4. Push to the branch: `git push origin feature/my-feature`
+5. Submit a pull request :rocket:
+
+> See more information in our [contributing
+> guide](https://github.com/qhacks/qhacks-dashboard/blob/dev/CONTRIBUTING.md).
 
 ## License
 
-Copyright 2017 QHacks
+Copyright 2018 QHacks
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+> See the entire license in our [license
+> file](https://github.com/qhacks/qhacks-dashboard/blob/dev/LICENSE).

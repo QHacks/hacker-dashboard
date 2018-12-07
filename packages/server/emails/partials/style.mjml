@@ -1,0 +1,5 @@
+<mj-style>
+  * {
+    font-family: 'Encode Sans', 'MaisonNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+</mj-style>

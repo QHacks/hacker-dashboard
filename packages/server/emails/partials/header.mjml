@@ -1,0 +1,9 @@
+<mj-raw>
+  <!-- Email Hero -->
+</mj-raw>
+<mj-section padding="0 0">
+  <mj-column width="600px">
+    <mj-image src="https://qhacks.nyc3.cdn.digitaloceanspaces.com/emails/emails/header-wide.png" padding="0 0"/>
+    <mj-divider border-width="8px"border-color="#00205b" padding="0 0" />
+  </mj-column>
+</mj-section>

@@ -2,6 +2,9 @@ node_modules
 .idea
 *.log
 .env
-client/bundle
-email/dist
+packages/client/bundle/*
+packages/server/emails/dist/*
 .DS_STORE
+package-lock.json
+.vscode
+coverage
