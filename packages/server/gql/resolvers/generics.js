@@ -13,7 +13,7 @@ const isAuthenticated = (parent, args, ctx, info) => {
 
   if (!user) {
     throw new GraphQLAuthenticationError(
-      "Invalid authentication information! You must be authenticated to perform this action."
+      "Invalid authentication information! You must be authenticated to perform this operation."
     );
   }
 
@@ -40,13 +40,13 @@ const isAuthorized = (scopes = null, requiredRole = null) => (
 
   if (!access) {
     throw new GraphQLForbiddenError(
-      "Invalid authorization information! You must be authorized to perform this action."
+      "Invalid authorization information! You must be authorized to perform this operation."
     );
   }
 
   if (requiredRole && requiredRole !== access.role) {
     throw new GraphQLForbiddenError(
-      "Not authorized! You are not the required user role to perform this action."
+      "Not authorized! You are not the required user role to perform this operation."
     );
   }
 
@@ -56,7 +56,7 @@ const isAuthorized = (scopes = null, requiredRole = null) => (
         !scopeUtils.isAuthorized(scope.entity, scope.permission, access.scopes)
       ) {
         throw new GraphQLForbiddenError(
-          "Not authorized! You do not have the required scopes to perform this action."
+          "Not authorized! You do not have the required scopes to perform this operation."
         );
       }
     });

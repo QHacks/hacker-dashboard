@@ -40,6 +40,7 @@
     "winston": "^3.1.0"
   },
   "devDependencies": {
+    "apollo-server-testing": "^2.2.6",
     "jest": "^23.6.0",
     "jest-environment-node": "^23.4.0",
     "nodemon": "^1.18.4",

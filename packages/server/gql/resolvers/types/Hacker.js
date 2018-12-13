@@ -21,12 +21,12 @@ const scopes = [
 const hacker = combineResolvers(
   isAuthenticatedAndAuthorized(scopes),
   async (parent, args, ctx, info) => {
-    const { access, db } = ctx;
+    const { db } = ctx;
 
     const oauthUser = await db.OAuthUser.findOne({
       where: { role: "HACKER" },
       include: {
-        model: User,
+        model: db.User,
         where: { id: args.id }
       }
     });
