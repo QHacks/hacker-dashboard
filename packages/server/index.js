@@ -10,7 +10,6 @@ const path = require("path");
 const cors = require("cors");
 const logger = require("./utils/logger");
 const db = require("./db")(logger);
-const { GraphQLAuthenticationError } = require("./errors");
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const FORCE_SSL = process.env.FORCE_SSL === "true";
@@ -62,11 +61,11 @@ app.use("/api/", restApi());
 // Public OAuth Endpoints
 app.use("/oauth/", oauthApi());
 
-// Protected GraphQL Endpoint
+// GraphQL Endpoint
 const graphqlServer = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async ({ req, res }) => {
+  context: async ({ req }) => {
     try {
       const { user, access } = await verifyAccessToken(req);
 
@@ -76,7 +75,7 @@ const graphqlServer = new ApolloServer({
         access
       };
     } catch (err) {
-      throw new GraphQLAuthenticationError("Invalid access token!");
+      return { db };
     }
   },
   playground: {

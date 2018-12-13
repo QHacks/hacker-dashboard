@@ -2,22 +2,21 @@ const { isArray } = require("lodash");
 
 const scopes = require("./scopes");
 
-const READ_SUFFIX = ":read";
 const WRITE_SUFFIX = ":write";
+const READ_SUFFIX = ":read";
 
-function hasPermission(type, level, scopes) {
-  switch (level) {
+function isAuthorized(entity, permission, scopes) {
+  switch (permission) {
     case "read":
       return (
-        scopes.includes(type.concat(READ_SUFFIX)) ||
-        scopes.includes(type.concat(WRITE_SUFFIX))
+        scopes.includes(entity.concat(READ_SUFFIX)) ||
+        scopes.includes(entity.concat(WRITE_SUFFIX))
       );
     case "write":
-      return scopes.includes(type.concat(WRITE_SUFFIX));
+      return scopes.includes(entity.concat(WRITE_SUFFIX));
   }
 }
 
-// Converts scopes to { entity, permission } format
 function formatScopes(scopes) {
   if (!isArray(scopes)) {
     scopes = JSON.parse(scopes);
@@ -25,6 +24,7 @@ function formatScopes(scopes) {
 
   return scopes.map((scope) => {
     const [entity, permission] = scope.split(":");
+
     return {
       entity,
       permission: permission.toUpperCase()
@@ -34,6 +34,6 @@ function formatScopes(scopes) {
 
 module.exports = {
   ...scopes,
-  formatScopes,
-  hasPermission
+  isAuthorized,
+  formatScopes
 };
