@@ -46,17 +46,14 @@ if (IS_PROD) {
 }
 
 // Third Party Middleware
-app.use(cors());
 app.use(helmet());
 app.use(compression());
-app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// app.use(auth(db));
 
 // Public REST Endpoints
 // TODO: Remove completely!
-app.use("/api/", restApi());
+app.use("/api/", cors({ origin: "https://qhacks.io" }), restApi());
 
 // Public OAuth Endpoints
 app.use("/oauth/", oauthApi());
@@ -81,15 +78,8 @@ const graphqlServer = new ApolloServer({
   playground: {
     endpoint: "/graphql"
   },
-  tracing: true,
-  formatError: (error) => {
-    console.log(error);
-    return error;
-  },
-  formatResponse: (response) => {
-    console.log(response);
-    return response;
-  }
+  introspection: true,
+  tracing: true
 });
 
 // Apply Express Middleware
@@ -112,6 +102,6 @@ db.sequelize
       logger.info(`QHacks Dashboard is running on port ${port}!`);
     });
   })
-  .catch((err) => {
+  .catch(() => {
     logger.error("Database could not synchronize! Cannot start server!");
   });
