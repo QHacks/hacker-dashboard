@@ -1,8 +1,8 @@
-const { OAuthUser } = require("../../config/mock-db");
+const { db } = global;
 
-describe("OAuthUser Model", () => {
-  it("creates a uuid on save", async () => {
-    const { dataValues: oauthUser } = await OAuthUser.create({
+escribe("OAuthUser Model", () => {
+  it("saves with a uuid", async () => {
+    const { dataValues: oauthUser } = await db.OAuthUser.create({
       scopes: JSON.stringify([{ user: "read", user: "write" }]),
       role: "ADMIN"
     });

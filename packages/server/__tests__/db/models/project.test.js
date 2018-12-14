@@ -1,9 +1,9 @@
-const { Project, Event } = require("../../config/mock-db");
+const { db } = global;
 
 describe("Project Model", () => {
-  it("creates a uuid on save", async () => {
-    const { id: eventId } = await Event.findOne({});
-    const { id } = await Project.create({
+  it("saves with a uuid", async () => {
+    const { id: eventId } = await db.Event.findOne({});
+    const { id } = await db.Project.create({
       eventId,
       name: "Lorem Ipsum",
       description: "lorem ipsum"

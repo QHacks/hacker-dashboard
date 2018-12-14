@@ -1,17 +1,13 @@
-const {
-  OAuthRefreshToken,
-  OAuthUser,
-  OAuthClient
-} = require("../../config/mock-db");
+const { db } = global;
 
 describe("OAuthRefreshToken Model", () => {
-  it("creates a uuid on save", async () => {
-    const { dataValues: oauthUser } = await OAuthUser.create({
+  it("saves with a uuid", async () => {
+    const { dataValues: oauthUser } = await db.OAuthUser.create({
       scopes: JSON.stringify([{ user: "read", user: "write" }]),
       role: "ADMIN"
     });
 
-    const { dataValues: oauthClient } = await OAuthClient.create({
+    const { dataValues: oauthClient } = await db.OAuthClient.create({
       name: "test-client",
       clientSecret: "ABC123",
       firstParty: false,
@@ -20,7 +16,7 @@ describe("OAuthRefreshToken Model", () => {
 
     const {
       dataValues: { id }
-    } = await OAuthRefreshToken.create({
+    } = await db.OAuthRefreshToken.create({
       oauthUserId: oauthUser.id,
       clientId: oauthClient.id,
       expiryDate: new Date(),

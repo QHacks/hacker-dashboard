@@ -1,8 +1,8 @@
-const { Location } = require("../../config/mock-db");
+const { db } = global;
 
 describe("Location Model", () => {
   it("saves with a uuid", async () => {
-    const { id } = await Location.create({
+    const { id } = await db.Location.create({
       name: "Mitchell Hall",
       addressLine1: "69 Union St",
       addressCity: "Kingston",

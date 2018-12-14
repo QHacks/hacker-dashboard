@@ -1,9 +1,9 @@
-const { Activity, Location, Event } = require("../../config/mock-db");
+const { db } = global;
 
 describe("Activity Model", () => {
   it("saves with a uuid", async () => {
-    const { id: eventId } = await Event.findOne({});
-    const { id: locationId } = await Location.create({
+    const { id: eventId } = await db.Event.findOne({});
+    const { id: locationId } = await db.Location.create({
       name: "Mitchell Hall",
       addressLine1: "69 Union St",
       addressCity: "Kingston",
@@ -16,7 +16,7 @@ describe("Activity Model", () => {
       addressLongitude: -76.493939
     });
 
-    const { id } = await Activity.create({
+    const { id } = await db.Activity.create({
       eventId,
       locationId,
       name: "HOW TO WRITE TESTS",

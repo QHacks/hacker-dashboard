@@ -1,6 +1,3 @@
-const { gql } = require("../../../config/mock-api");
-const { User } = require("../../../config/mock-db");
-
 describe("User Interface", () => {
   it("returns data about the current user", async () => {
     const { id: userId } = await User.findOne({

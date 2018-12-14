@@ -18,12 +18,6 @@ sendgrid.setApiKey = jest.fn();
 sendgrid.send = jest.fn(() => Promise.resolve());
 
 const { gql } = require("../../../config/mock-api");
-const {
-  User,
-  Event,
-  Application,
-  ApplicationField
-} = require("../../../config/mock-db");
 
 describe("Application Type", () => {
   it("returns the current user's application", async () => {
