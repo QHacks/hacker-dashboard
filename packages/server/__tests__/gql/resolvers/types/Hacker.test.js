@@ -1,9 +1,6 @@
 const { gql } = require("apollo-server-express");
 
-const {
-  graphqlClient: { query },
-  db
-} = global;
+const { db, graphqlClient } = global;
 
 const GET_HACKER_BY_ID = gql`
   query GetHackerById($id: ID!) {
@@ -16,10 +13,12 @@ const GET_HACKER_BY_ID = gql`
 `;
 
 describe("Hacker Type", () => {
-  it("queries individual hackers", async (done) => {
+  it("queries individual hackers by id", async () => {
+    const { query } = await graphqlClient();
+
     const { id } = await db.User.findOne({
       where: {
-        email: "hacker1@gmail.com"
+        email: "hacker1@test.com"
       }
     });
 
@@ -27,12 +26,15 @@ describe("Hacker Type", () => {
       query: GET_HACKER_BY_ID,
       variables: {
         id
-      },
-      headers: { Authorization: "Bearer bla" }
+      }
     });
 
-    console.log(res);
-
-    done();
+    expect(res.data).toEqual({
+      hacker: {
+        firstName: "Vinith",
+        lastName: "Suriyakumar",
+        email: "hacker1@test.com"
+      }
+    });
   });
 });

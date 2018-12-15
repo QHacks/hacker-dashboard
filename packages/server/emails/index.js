@@ -18,6 +18,8 @@ async function sendSendgridEmail(email) {
   }
 
   try {
+    console.log("HERE", sendgrid);
+
     await sendgrid.send(email.messages);
 
     return Promise.resolve();

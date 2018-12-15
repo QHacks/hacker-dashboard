@@ -68,7 +68,7 @@ module.exports = async () => {
         firstName: "Ross",
         lastName: "Hill",
         dateOfBirth: new Date(),
-        email: "ross.hill@rosshill.ca",
+        email: "admin@test.com",
         phoneNumber: "(123)-456-789",
         schoolName: "Queen's",
         password: "password"
@@ -78,7 +78,7 @@ module.exports = async () => {
         firstName: "Robert",
         lastName: "Saunders",
         dateOfBirth: new Date(),
-        email: "bob@yopmail.com",
+        email: "volunteer@test.com",
         phoneNumber: "(123)-456-789",
         schoolName: "Queen's",
         password: "password"
@@ -88,16 +88,16 @@ module.exports = async () => {
         firstName: "Joey",
         lastName: "Tepperman",
         dateOfBirth: new Date(),
-        email: "jmichaelt98@gmail.com",
+        email: "hacker@test.com",
         phoneNumber: "(123)-456-789",
         schoolName: "Queen's",
         password: "password"
       },
       {
-        firstName: "Hacker",
-        lastName: "1",
+        firstName: "Vinith",
+        lastName: "Suriyakumar",
         dateOfBirth: new Date(),
-        email: "hacker1@gmail.com",
+        email: "hacker1@test.com",
         phoneNumber: "(123)-456-789",
         schoolName: "Queen's",
         password: "password"

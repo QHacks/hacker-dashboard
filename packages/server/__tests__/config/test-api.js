@@ -12,9 +12,48 @@ const cors = require("cors");
 const resolvers = require("../../gql/resolvers");
 const typeDefs = require("../../gql/definitions");
 
+async function getAccessForUser(user) {
+  const oauthUser = await user.getOAuthUser();
+
+  return {
+    scopes: JSON.parse(oauthUser.scopes),
+    role: oauthUser.role
+  };
+}
+
 module.exports = (db) => {
+  async function graphqlClient(user = null) {
+    try {
+      if (!user) {
+        user = await db.User.findOne({
+          where: {
+            email: "hacker@test.com"
+          }
+        });
+      }
+
+      const access = await getAccessForUser(user);
+
+      const context = () => ({
+        db,
+        user,
+        access
+      });
+
+      const graphqlServer = new ApolloServer({
+        typeDefs,
+        resolvers,
+        context
+      });
+
+      return createTestClient(graphqlServer);
+    } catch (err) {
+      console.warn("Cannot create test GraphQL client!", err);
+    }
+  }
+
   const { restApi } = require("../../rest")(db);
-  const { oauthApi, verifyAccessToken } = require("../../oauth")(db);
+  const { oauthApi } = require("../../oauth")(db);
 
   const app = express();
 
@@ -26,28 +65,6 @@ module.exports = (db) => {
   app.use("/api/", cors({ origin: "https://qhacks.io" }), restApi());
 
   app.use("/oauth/", oauthApi());
-
-  const graphqlServer = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: async ({ req }) => {
-      try {
-        const { user, access } = await verifyAccessToken(req);
-
-        return {
-          db,
-          user,
-          access
-        };
-      } catch (err) {
-        return { db };
-      }
-    }
-  });
-
-  graphqlServer.applyMiddleware({ app });
-
-  const graphqlClient = createTestClient(graphqlServer);
 
   return {
     request: request(app),

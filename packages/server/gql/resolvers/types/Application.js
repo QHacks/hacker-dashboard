@@ -1,7 +1,8 @@
 const { combineResolvers } = require("graphql-resolvers");
 
-const { isAuthenticatedAndAuthorized } = require("../generics");
+const { GraphQLForbiddenError } = require("../../../errors");
 const { sendEmails } = require("../../../emails")();
+const { isAuthenticated } = require("../generics");
 
 const {
   GraphQLNotFoundError,
@@ -11,7 +12,7 @@ const {
 // Query Root Resolvers
 
 const application = combineResolvers(
-  isAuthenticatedAndAuthorized(),
+  isAuthenticated,
   async (parent, args, ctx, info) => {
     const { eventSlug } = args;
     const { db, user } = ctx;
@@ -48,8 +49,8 @@ const application = combineResolvers(
 
 // Mutation Root Resolvers
 
-const createApplication = combineResolvers(
-  isAuthenticatedAndAuthorized(),
+const applicationCreate = combineResolvers(
+  isAuthenticated,
   async (parent, args, ctx, info) => {
     const { eventSlug, input } = args;
     const { user, db } = ctx;
@@ -98,18 +99,18 @@ const createApplication = combineResolvers(
       }
 
       const applicationTable = {};
+      event.ApplicationFields.forEach(
+        (field) =>
+          (applicationTable[field.shortLabel] = {
+            applicationFieldId: field.id,
+            required: field.required
+          })
+      );
 
-      event.ApplicationFields.forEach((field) => {
-        applicationTable[field.shortLabel] = {
-          applicationFieldId: field.id,
-          required: field.required
-        };
-      });
-
-      input.responses.forEach((response) => {
-        if (!applicationTable[response.label]) {
+      input.responses.forEach(({ label, answer }) => {
+        if (!applicationTable[label]) {
           throw new GraphQLUserInputError(
-            `${response.label} is not a valid field for ${eventSlug}!`
+            `${label} is not a valid field for ${eventSlug}`
           );
         }
 
@@ -117,6 +118,7 @@ const createApplication = combineResolvers(
         applicationTable[label].applicationId = application.id;
       });
 
+      // Filter out any unanswered fields that are not required
       const userResponse = Object.values(applicationTable).filter(
         (field, i) => {
           if (field.required && !field.answer) {
@@ -124,8 +126,7 @@ const createApplication = combineResolvers(
               `${Object.keys(applicationTable)[i]} is a required field!`
             );
           }
-
-          return field["answer"];
+          return "answer" in field;
         }
       );
 
@@ -135,20 +136,18 @@ const createApplication = combineResolvers(
       );
 
       if (!fieldResponse) {
-        throw new DatabaseError(
-          "Could not create an application at this time!"
-        );
+        throw new DatabaseError("Could not create an application at this time");
       }
 
-      await sendEmails("application-success", [
-        {
-          to: user.email,
-          dataForTemplate: {
-            firstName: user.firstName,
-            email: user.email
-          }
-        }
-      ]);
+      // await sendEmails("application-success", [
+      //   {
+      //     to: user.email,
+      //     dataForTemplate: {
+      //       firstName: user.firstName,
+      //       email: user.email
+      //     }
+      //   }
+      // ]);
 
       return {
         application: {
@@ -158,6 +157,8 @@ const createApplication = combineResolvers(
         }
       };
     });
+
+    return newApplication;
   }
 );
 
@@ -168,6 +169,6 @@ module.exports = {
     application
   },
   MutationRoot: {
-    createApplication
+    applicationCreate
   }
 };

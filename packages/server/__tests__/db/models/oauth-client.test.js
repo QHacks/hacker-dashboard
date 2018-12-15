@@ -15,14 +15,16 @@ describe("OAuthClient Model", () => {
   });
 
   it("validates redirect uri", async () => {
-    await db.OAuthClient.create({
-      name: "test-client",
-      clientSecret: "ABC123",
-      firstParty: false,
-      redirectUri: "ayyy lmao"
-    });
-
-    expect(message).toBe("Validation isUrl on redirectUri failed");
+    try {
+      await db.OAuthClient.create({
+        name: "test-client",
+        clientSecret: "ABC123",
+        firstParty: false,
+        redirectUri: "ayyy lmao"
+      });
+    } catch ({ errors: [{ message }] }) {
+      expect(message).toBe("Validation isUrl on redirectUri failed");
+    }
   });
 
   it("has a unique index on host", async () => {

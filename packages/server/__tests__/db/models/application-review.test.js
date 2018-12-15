@@ -3,7 +3,7 @@ const { db } = global;
 describe("ApplicationReview Model", () => {
   it("validates minimum on score attribute", async () => {
     const { id: reviewerId } = await db.User.findOne({
-      where: { email: "ross.hill@rosshill.ca" }
+      where: { email: "admin@test.com" }
     });
     const { id: applicationId } = await db.Application.findOne({});
 
@@ -20,7 +20,7 @@ describe("ApplicationReview Model", () => {
 
   it("validates maximum on score attribute", async () => {
     const { id: reviewerId } = await db.User.findOne({
-      where: { email: "ross.hill@rosshill.ca" }
+      where: { email: "admin@test.com" }
     });
     const { id: applicationId } = await db.Application.findOne({});
 
@@ -37,7 +37,7 @@ describe("ApplicationReview Model", () => {
 
   it("has a unique index on reviewer and application", async () => {
     const { id: reviewerId } = await db.User.findOne({
-      where: { email: "ross.hill@rosshill.ca" }
+      where: { email: "admin@test.com" }
     });
     const { id: applicationId } = await db.Application.findOne({});
 
