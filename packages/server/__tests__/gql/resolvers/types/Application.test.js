@@ -2,10 +2,6 @@ const { gql } = require("apollo-server-express");
 
 const { db, graphqlClient } = global;
 
-process.env.SENDGRID_API_KEY = "123ABC";
-
-jest.mock("@sendgrid/mail");
-
 const GET_USER_APPLICATION_FOR_EVENT = gql`
   query GetUserApplication($eventSlug: String!) {
     application(eventSlug: $eventSlug) {

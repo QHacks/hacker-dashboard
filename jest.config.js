@@ -10,7 +10,7 @@ module.exports = {
     {
       displayName: "server",
       testEnvironment: "./packages/server/__tests__/config/test-environment",
-      setupTestFrameworkScriptFile: "./packages/server/__tests__/config/test-setup",
+      setupTestFrameworkScriptFile: "./packages/server/__tests__/config/test-framework",
       testRegex: "./packages/server/__tests__\/.*\.test\.js$"
     }
   ],

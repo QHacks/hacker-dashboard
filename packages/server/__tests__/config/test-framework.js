@@ -7,7 +7,3 @@ beforeEach(async () => {
 
   await seedTestDatabase();
 });
-
-afterAll(async () => {
-  jest.clearAllMocks();
-});
