@@ -30,13 +30,7 @@ class Dashboard extends Component {
       >
         <DashboardMenu />
         <ContentWrapper>
-          <div
-            css="
-            margin-bottom: 30px;
-          "
-          >
-            {this.renderAlerts()}
-          </div>
+          <div css="margin-bottom: 30px;">{this.renderAlerts()}</div>
           <Events />
         </ContentWrapper>
       </div>

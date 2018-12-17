@@ -6,7 +6,7 @@ import axios from "axios";
 
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 import { steel } from "../../assets/colors";
-import { mobileBreakpoint } from "../../assets/constants";
+import { mobileMaxWidth } from "../../assets/constants";
 import { SERVER_HOST } from "../../Client";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
@@ -488,14 +488,14 @@ class ApplicationForm extends Component {
       padding-top: 24px;
       font-weight: 600;
       text-transform: uppercase;
-      @media (max-width: ${mobileBreakpoint}) {
+      @media (max-width: ${mobileMaxWidth}) {
         display: none;
       }
     `;
 
     const subsectionContentStyles = `
       width: 70%;
-      @media (max-width: ${mobileBreakpoint}) {
+      @media (max-width: ${mobileMaxWidth}) {
         width: 100%;
       }
     `;

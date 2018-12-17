@@ -6,7 +6,7 @@ import ApplicationAuthSlider from "../ApplicationAuthSlider/ApplicationAuthSlide
 import ActionButton from "../ActionButton/ActionButton";
 import FinePrint from "../FinePrint/FinePrint";
 import { grey } from "../../assets/colors";
-import { mobileBreakpoint } from "../../assets/constants";
+import { mobileMaxWidth, desktopMinWidth } from "../../assets/constants";
 import Alert from "../Alert/Alert";
 import MediaQuery from "react-responsive";
 
@@ -16,10 +16,10 @@ const Step1 = (props) => (
       ${props.formStyle} text-align: center;
     `}
   >
-    <MediaQuery query={`(max-width: ${mobileBreakpoint})`}>
+    <MediaQuery maxWidth={mobileMaxWidth}>
       <h3>What type of Hacker are you?</h3>
     </MediaQuery>
-    <MediaQuery query={`(min-width: ${mobileBreakpoint})`}>
+    <MediaQuery minWidth={desktopMinWidth}>
       <h3>
         {props.returningHacker ? "Welcome back!" : "Join the QHacks family!"}
       </h3>
@@ -34,9 +34,9 @@ const Step1 = (props) => (
         <h2 css={props.authHeadingStyle}>Login to Account</h2>
         <div css={props.subsectionStyle}>
           <div
-            css="
-                width: 100%;
-              "
+            css={`
+              width: 100%;
+            `}
           >
             <section css={props.inputRowStyle}>
               <div>
@@ -99,9 +99,9 @@ const Step1 = (props) => (
         <h2 css={props.authHeadingStyle}>Create an Account</h2>
         <div css={props.subsectionStyle}>
           <div
-            css="
-                width: 100%;
-              "
+            css={`
+              width: 100%;
+            `}
           >
             <section css={props.inputRowStyle}>
               <div>

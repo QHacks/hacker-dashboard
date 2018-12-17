@@ -58,9 +58,7 @@ class UpdatePassword extends Component {
       <Landing>
         <img
           src="../../assets/img/qhacks-wordmark-colored.svg"
-          css="
-            max-height: 40px;
-          "
+          css="max-height: 40px;"
           alt="QHacks"
         />
         <h3
@@ -74,19 +72,15 @@ class UpdatePassword extends Component {
         </h3>
         <p
           className="blurb"
-          css="
+          css={`
             line-height: 1.6;
             margin-top: 16px;
             color: #8a929f;
-          "
+          `}
         >
           Please enter your new password.
         </p>
-        <div
-          css="
-            margin-top: 64px;
-          "
-        >
+        <div css="margin-top: 64px;">
           <input
             id="password"
             type="password"
@@ -122,11 +116,7 @@ class UpdatePassword extends Component {
             }
           />
         </div>
-        <div
-          css="
-            margin: 30px 0;
-          "
-        >
+        <div css="margin: 30px 0;">
           <Link className="landingLink" to="/login">
             Know you password? Login here!
           </Link>
@@ -139,11 +129,7 @@ class UpdatePassword extends Component {
             Reset password
           </ActionButton>
         </div>
-        <div
-          css="
-          margin: 30px 0px 0px;
-        "
-        >
+        <div css="margin: 30px 0px 0px;">
           {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
         </div>
       </Landing>

@@ -8,7 +8,7 @@ import { blue } from "../../assets/colors";
 
 const MenuBar = ({ hideItems, showLogin }) => (
   <header
-    css="
+    css={`
       width: 100%;
       height: 84px;
       line-height: 44px;
@@ -16,14 +16,10 @@ const MenuBar = ({ hideItems, showLogin }) => (
       position: absolute;
       top: 0;
       left: 0;
-    "
+    `}
   >
     <ContentWrapper>
-      <div
-        css="
-          display: inline-block;
-        "
-      >
+      <div css="display: inline-block;">
         <img src={crown} alt="QHacks logo" />
       </div>
       <ul

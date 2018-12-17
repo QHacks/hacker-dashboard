@@ -254,9 +254,9 @@ const Step2 = (props) => {
                 placeholder="Year"
                 type="text"
                 value={props.applicationAnswers.graduationYear}
-                css="
+                css={`
                   margin-top: 28px !important;
-                "
+                `}
                 onChange={(e) =>
                   props.setApplicationAnswer("graduationYear", e.target.value)
                 }

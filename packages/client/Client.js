@@ -82,23 +82,23 @@ class Client extends Component {
     if (!loaded) {
       return (
         <div
-          css="
-          min-height:100vh;
-          text-align: center;
-        "
+          css={`
+            min-height: 100vh;
+            text-align: center;
+          `}
         >
           <div>
             <img
               src={loader}
-              css="
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              width: 70px;
-              height: 70px;
-              margin-top: -35px;
-              margin-left: -35px;
-            "
+              css={`
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 70px;
+                height: 70px;
+                margin-top: -35px;
+                margin-left: -35px;
+              `}
             />
           </div>
         </div>

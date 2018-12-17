@@ -1,5 +1,5 @@
 import React from "react";
-import { mobileBreakpoint } from "../../assets/constants";
+import { mobileMaxWidth, desktopMinWidth } from "../../assets/constants";
 
 export default ({ children }) => (
   <div
@@ -9,11 +9,11 @@ export default ({ children }) => (
       margin-right: auto;
       padding: 0 80px;
       height: 100%;
-      @media screen and (max-width: 1200px) and (min-width: ${mobileBreakpoint}) {
+      @media (max-width: 1200px) and (min-width: ${desktopMinWidth}) {
         padding-left: 80px;
         padding-right: 80px;
       }
-      @media screen and (max-width: ${mobileBreakpoint}) {
+      @media (max-width: ${mobileMaxWidth}) {
         padding-left: 5vw;
         padding-right: 5vw;
       }

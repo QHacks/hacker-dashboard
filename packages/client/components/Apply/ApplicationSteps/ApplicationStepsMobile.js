@@ -14,7 +14,7 @@ class ApplicationStepsMobile extends PureComponent {
     const pages = ["Introduction", "About You", "Why QHacks?", "Next Steps"];
     return (
       <div
-        css="
+        css={`
           width: 100%;
           max-width: 350px;
           margin: -75px auto 75px;
@@ -22,7 +22,7 @@ class ApplicationStepsMobile extends PureComponent {
           display: flex;
           flex-direction: row;
           justify-content: center;
-        "
+        `}
       >
         {pages.map((text, i) => (
           <div
@@ -48,11 +48,11 @@ class ApplicationStepsMobile extends PureComponent {
             >
               {this.props.stepNum > i ? (
                 <img
-                  css="
+                  css={`
                     width: 30px;
                     height: 30px;
                     margin: 0;
-                  "
+                  `}
                   alt={`Step ${i + 1} completed`}
                   src={check}
                 />

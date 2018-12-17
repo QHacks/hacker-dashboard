@@ -73,34 +73,28 @@ class Login extends Component {
       <Landing>
         <img
           src="../../assets/img/qhacks-wordmark-colored.svg"
-          css="
-            max-height: 40px;
-          "
+          css="max-height: 40px;"
           alt="QHacks"
         />
         <p
           className="blurb"
-          css="
+          css={`
             margin-top: 24px;
             color: #8a929f;
-          "
+          `}
         >
           Welcome back.
         </p>
         <p
           className="blurb"
-          css="
+          css={`
             margin-top: 12px;
             color: #8a929f;
-          "
+          `}
         >
           Please login to your account.
         </p>
-        <div
-          css="
-            margin-top: 64px;
-          "
-        >
+        <div css="margin-top: 64px;">
           <input
             id="email"
             type="text"
@@ -117,16 +111,12 @@ class Login extends Component {
           />
         </div>
         <div
-          css="
+          css={`
             margin: 40px 0;
             display: flex;
-          "
+          `}
         >
-          <div
-            css="
-              flex-grow: 1;
-            "
-          >
+          <div css="flex-grow: 1;">
             <input
               type="checkbox"
               id="rememberMe"
@@ -134,11 +124,7 @@ class Login extends Component {
             />{" "}
             <label htmlFor="rememberMe">Remember me</label>
           </div>
-          <div
-            css="
-              flex-grow: 1;
-            "
-          >
+          <div css="flex-grow: 1;">
             <Link className="landingLink" to="/forgot-password">
               Forgot password
             </Link>
@@ -152,11 +138,7 @@ class Login extends Component {
             Apply
           </ActionButton>
         </div>
-        <div
-          css="
-          margin: 30px 0px 0px;
-        "
-        >
+        <div css="margin: 30px 0px 0px;">
           {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
         </div>
       </Landing>

@@ -110,17 +110,17 @@ class Alert extends Component {
           <img
             src={this.getIcon()}
             alt={this.getStatus()}
-            css="
+            css={`
               height: 24px;
               width: 24px;
-            "
+            `}
           />
         </div>
         <div>
           <strong
-            css="
+            css={`
               margin-right: 6px;
-            "
+            `}
           >
             {this.getStatus()}
           </strong>

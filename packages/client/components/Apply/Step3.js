@@ -24,9 +24,9 @@ const Step3 = (props) => {
       <h2>Hackathon Information</h2>
       <div css={props.subsectionStyle}>
         <div
-          css="
+          css={`
             width: 100%;
-          "
+          `}
         >
           <section css={props.inputRowStyle}>
             <div>
@@ -67,9 +67,9 @@ const Step3 = (props) => {
                 type="text"
                 placeholder="#"
                 value={props.applicationAnswers.numberOfHackathons}
-                css="
+                css={`
                   max-width: 125px;
-                "
+                `}
                 onChange={(e) =>
                   props.setApplicationAnswer(
                     "numberOfHackathons",

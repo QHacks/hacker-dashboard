@@ -1,16 +1,16 @@
 import React, { Fragment } from "react";
 import MediaQuery from "react-responsive";
-import { mobileBreakpoint } from "../../assets/constants";
+import { mobileMaxWidth, desktopMinWidth } from "../../assets/constants";
 import Desktop from "./Desktop";
 import Mobile from "./Mobile";
 
 const ApplicationAuthSlider = (props) => {
   return (
     <Fragment>
-      <MediaQuery query={`(max-width: ${mobileBreakpoint})`}>
+      <MediaQuery maxWidth={mobileMaxWidth}>
         <Mobile {...props} />
       </MediaQuery>
-      <MediaQuery query={`(min-width: ${mobileBreakpoint})`}>
+      <MediaQuery minWidth={desktopMinWidth}>
         <Desktop {...props} />
       </MediaQuery>
     </Fragment>

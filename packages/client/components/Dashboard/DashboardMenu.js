@@ -15,7 +15,7 @@ const LOGOUT_MUTATION = gql`
 
 const DashboardMenu = (props) => (
   <header
-    css="
+    css={`
       width: 100%;
       height: 84px;
       line-height: 44px;
@@ -24,37 +24,33 @@ const DashboardMenu = (props) => (
       top: 0;
       left: 0;
       border-bottom: 1px solid #a4b3bf;
-    "
+    `}
   >
     <ContentWrapper>
-      <div
-        css="
-          display: inline-block;
-        "
-      >
+      <div css="display: inline-block;">
         <img
           src={crown}
-          css="
+          css={`
             max-height: 32px;
             margin-right: 6px;
             margin-top: 5px;
-          "
+          `}
           alt="QHacks crown"
         />
         <img
           src={wordmark}
-          css="
+          css={`
             max-height: 24px;
-          "
+          `}
           alt="QHacks wordmark"
         />
       </div>
       <div
-        css="
+        css={`
           display: inline-block;
           float: right;
           line-height: 44px;
-        "
+        `}
       >
         <ActionButton
           style="font-size: 16px;"

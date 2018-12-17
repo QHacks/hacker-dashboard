@@ -1,7 +1,7 @@
 import React from "react";
 import { offWhite, steel } from "../../assets/colors";
 import circuits from "../../assets/img/circuits.png";
-import { mobileBreakpoint } from "../../assets/constants";
+import { mobileMaxWidth } from "../../assets/constants";
 
 const ApplicationHeader = () => (
   <div
@@ -13,7 +13,7 @@ const ApplicationHeader = () => (
       background: url(${circuits}) no-repeat center center;
       background-size: cover;
       text-transform: uppercase;
-      @media (max-width: ${mobileBreakpoint}) {
+      @media (max-width: ${mobileMaxWidth}) {
         height: 380px;
         border-bottom: 1px solid ${steel};
       }
