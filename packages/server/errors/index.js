@@ -51,6 +51,12 @@ const GraphQLForbiddenError = ForbiddenError;
 
 const GraphQLUserInputError = UserInputError;
 
+class GraphQLNotFoundError extends ApolloError {
+  constructor(message) {
+    super(message || "Unable to retrieve the requested resource!");
+  }
+}
+
 // REST API Errors
 
 class RestApiError extends Error {
@@ -126,12 +132,6 @@ class OAuthInvalidRefreshTokenError extends RestApiError {
       401,
       code || ERROR_CODES.INVALID_GRANT_TYPE
     );
-  }
-}
-
-class GraphQLNotFoundError extends ApolloError {
-  constructor(message) {
-    super(message || "Unable to retrieve the requested resource!");
   }
 }
 

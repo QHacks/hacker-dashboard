@@ -9,7 +9,7 @@ extend type MutationRoot {
   """
   Creates a new application to an event for the current user.
   """
-  createApplication(
+  applicationCreate(
     eventSlug: String!
     input: ApplicationInput!
   ): ApplicationCreatePayload!

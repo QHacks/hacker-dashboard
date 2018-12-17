@@ -1,38 +1,39 @@
-const { gql } = require("../../../config/mock-api");
-const { User } = require("../../../config/mock-db");
+const { gql } = require("apollo-server-express");
+
+const { db, graphqlClient } = global;
+
+const GET_HACKER_BY_ID = gql`
+  query GetHackerById($id: ID!) {
+    hacker(id: $id) {
+      firstName
+      lastName
+      email
+    }
+  }
+`;
 
 describe("Hacker Type", () => {
-  it("queries individual hackers", async () => {
-    const { id: userId } = await User.findOne({
+  it("queries individual hackers by id", async () => {
+    const { query } = await graphqlClient();
+
+    const { id } = await db.User.findOne({
       where: {
-        email: "jmichaelt98@gmail.com"
+        email: "hacker1@test.com"
       }
     });
 
-    const { id: hackerId } = await User.findOne({
-      where: {
-        email: "hacker1@gmail.com"
+    const res = await query({
+      query: GET_HACKER_BY_ID,
+      variables: {
+        id
       }
     });
 
-    const { data } = await gql(
-      userId,
-      `
-        {
-          hacker(id: "${hackerId}") {
-            firstName
-            lastName
-            email
-          }
-        }
-      `
-    );
-
-    expect(data).toEqual({
+    expect(res.data).toEqual({
       hacker: {
-        firstName: "Hacker",
-        lastName: "1",
-        email: "hacker1@gmail.com"
+        firstName: "Vinith",
+        lastName: "Suriyakumar",
+        email: "hacker1@test.com"
       }
     });
   });

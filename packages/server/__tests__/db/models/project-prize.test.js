@@ -1,15 +1,17 @@
-const { Project, Prize, ProjectPrize, Event } = require("../../config/mock-db");
+const { db } = global;
 
 describe("ProjectPrize Model", () => {
   beforeEach(async () => {
-    const { id: eventId } = await Event.findOne({});
-    await Project.create({
+    const { id: eventId } = await db.Event.findOne({});
+
+    await db.Project.create({
       eventId,
       name: "QHacks Dashboard Unit Tests",
       description:
         "Tests written to ensure the security of the QHacks Dashboard"
     });
-    await Prize.create({
+
+    await db.Prize.create({
       eventId,
       title: "Nobel Prize for Technology",
       description:
@@ -17,21 +19,23 @@ describe("ProjectPrize Model", () => {
     });
   });
 
-  it("prevents duplicates", async (done) => {
-    const { id: projectId } = await Project.findOne({});
-    const { id: prizeId } = await Prize.findOne({});
-    ProjectPrize.bulkCreate([
-      {
-        projectId,
-        prizeId
-      },
-      {
-        projectId,
-        prizeId
-      }
-    ]).catch(({ errors: [{ message }] }) => {
+  it("prevents duplicate records", async () => {
+    const { id: projectId } = await db.Project.findOne({});
+    const { id: prizeId } = await db.Prize.findOne({});
+
+    try {
+      await db.ProjectPrize.bulkCreate([
+        {
+          projectId,
+          prizeId
+        },
+        {
+          projectId,
+          prizeId
+        }
+      ]);
+    } catch ({ errors: [{ message }] }) {
       expect(message).toBe("prizeId must be unique");
-      done();
-    });
+    }
   });
 });

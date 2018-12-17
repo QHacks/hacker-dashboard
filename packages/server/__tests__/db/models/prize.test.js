@@ -1,15 +1,17 @@
-const { Event, Sponsor, Prize } = require("../../config/mock-db");
+const { db } = global;
 
 describe("Prize Model", () => {
   it("saves with a uuid", async () => {
-    const { id: eventId } = await Event.findOne({});
-    const { id: sponsorId } = await Sponsor.create({
+    const { id: eventId } = await db.Event.findOne({});
+
+    const { id: sponsorId } = await db.Sponsor.create({
       name: "Pied Piper",
       sponsorshipLevel: "TERA",
       contactEmail: "richard@piedpiper.com",
       contactAddress: "123 Fake Street"
     });
-    const { id } = await Prize.create({
+
+    const { id } = await db.Prize.create({
       eventId,
       sponsorId,
       title: "Amazon Prime Gift Card",

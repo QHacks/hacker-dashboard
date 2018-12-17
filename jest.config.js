@@ -2,18 +2,15 @@ module.exports = {
   projects: [
     {
       displayName: "client",
-      setupFiles: ["./packages/client/__tests__/config/Setup"],
       snapshotSerializers: ["enzyme-to-json/serializer"],
+      setupFiles: ["./packages/client/__tests__/config/Setup"],
       testRegex: "./packages/client/__tests__\/.*\.test\.js$",
       testURL: "http://localhost/"
     },
     {
       displayName: "server",
-      globals: {
-        dbName: "qhacks-dashboard-test"
-      },
+      testEnvironment: "./packages/server/__tests__/config/test-environment",
       setupTestFrameworkScriptFile: "./packages/server/__tests__/config/test-framework",
-      setupFiles: ["./packages/server/__tests__/config/set-up"],
       testRegex: "./packages/server/__tests__\/.*\.test\.js$"
     }
   ],

@@ -1,5 +1,6 @@
 const validator = require("validator");
 const _ = require("lodash");
+
 const { ValidationError } = require("../errors");
 
 const NAME_REGEX = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]+$/;
@@ -16,6 +17,7 @@ function validatePassword(password) {
   if (!_.isEmpty(password) && validator.isLength(password, { min: 8 })) {
     return Promise.resolve();
   }
+
   return Promise.reject(
     new ValidationError(
       "The password provided is invalid! Must be at least 8 characters long!"

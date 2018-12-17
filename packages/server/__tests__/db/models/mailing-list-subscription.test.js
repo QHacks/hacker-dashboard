@@ -1,14 +1,10 @@
-const {
-  MailingList,
-  MailingListSubscription,
-  Event,
-  User
-} = require("../../config/mock-db");
+const { db } = global;
 
-describe("MailingListSubscription", () => {
+describe("MailingListSubscription Model", () => {
   beforeEach(async () => {
-    const { id: eventId } = await Event.findOne({});
-    return MailingList.create({
+    const { id: eventId } = await db.Event.findOne({});
+
+    await db.MailingList.create({
       name: "test",
       slug: "test",
       eventId
@@ -16,9 +12,9 @@ describe("MailingListSubscription", () => {
   });
 
   it("saves with a uuid", async () => {
-    const { id: mailingListId } = await MailingList.findOne({});
-    const { id: userId } = await User.findOne({});
-    const { id } = await MailingListSubscription.create({
+    const { id: mailingListId } = await db.MailingList.findOne({});
+    const { id: userId } = await db.User.findOne({});
+    const { id } = await db.MailingListSubscription.create({
       mailingListId,
       userId,
       email: "joey@yopmail.com"
@@ -27,21 +23,22 @@ describe("MailingListSubscription", () => {
     expect(id).toBeDefined();
   });
 
-  it("prevents duplicates", async (done) => {
-    const { id: mailingListId } = await MailingList.findOne({});
+  it("prevents duplicate records", async () => {
+    const { id: mailingListId } = await db.MailingList.findOne({});
 
-    MailingListSubscription.bulkCreate([
-      {
-        mailingListId,
-        email: "joey@yopmail.com"
-      },
-      {
-        mailingListId,
-        email: "joey@yopmail.com"
-      }
-    ]).catch(({ errors: [{ message }] }) => {
+    try {
+      await db.MailingListSubscription.bulkCreate([
+        {
+          mailingListId,
+          email: "joey@yopmail.com"
+        },
+        {
+          mailingListId,
+          email: "joey@yopmail.com"
+        }
+      ]);
+    } catch ({ errors: [{ message }] }) {
       expect(message).toBe("mailingListId must be unique");
-      done();
-    });
+    }
   });
 });
