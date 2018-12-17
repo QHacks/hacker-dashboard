@@ -19,8 +19,6 @@ import {
 } from "../../assets/colors";
 
 const globalStyles = `
-min-width: 800px;
-
 * {
   font-family: "Encode Sans", sans-serif !important;
   box-sizing: border-box;

@@ -17,7 +17,7 @@ class ApplicationStepsMobile extends PureComponent {
         css="
           width: 100%;
           max-width: 350px;
-          margin: -45px auto 0;
+          margin: -75px auto 75px;
           height: 30px;
           display: flex;
           flex-direction: row;

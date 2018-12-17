@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import React from "react";
 
 import ValidationError from "../ValidationError/ValidationError";
-import ApplicationAuthSlider from "./ApplicationAuthSlider";
+import ApplicationAuthSlider from "../ApplicationAuthSlider/ApplicationAuthSlider";
 import ActionButton from "../ActionButton/ActionButton";
 import FinePrint from "../FinePrint/FinePrint";
 import { grey } from "../../assets/colors";
+import { mobileBreakpoint } from "../../assets/constants";
 import Alert from "../Alert/Alert";
+import MediaQuery from "react-responsive";
 
 const Step1 = (props) => (
   <div
@@ -14,9 +16,14 @@ const Step1 = (props) => (
       ${props.formStyle} text-align: center;
     `}
   >
-    <h3>
-      {props.returningHacker ? "Welcome back!" : "Join the QHacks family!"}
-    </h3>
+    <MediaQuery query={`(max-width: ${mobileBreakpoint})`}>
+      <h3>What type of Hacker are you?</h3>
+    </MediaQuery>
+    <MediaQuery query={`(min-width: ${mobileBreakpoint})`}>
+      <h3>
+        {props.returningHacker ? "Welcome back!" : "Join the QHacks family!"}
+      </h3>
+    </MediaQuery>
     <ApplicationAuthSlider
       items={["new hacker", "returning hacker"]}
       changeSelected={(i) => props.changeSelected(i)}

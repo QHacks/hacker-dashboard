@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 
-import { orange, red, green, cyan } from "../../assets/colors";
+import {
+  orange,
+  orangeWhite,
+  red,
+  redWhite,
+  green,
+  greenWhite,
+  cyan,
+  cyanWhite
+} from "../../assets/colors";
 
 class Alert extends Component {
   getBorderColor() {
@@ -23,16 +32,16 @@ class Alert extends Component {
   getBackgroundColor() {
     switch (this.props.type.toLowerCase()) {
       case "caution": {
-        return "#fffbf6";
+        return orangeWhite;
       }
       case "danger": {
-        return "#fffbfc";
+        return redWhite;
       }
       case "success": {
-        return "#f5fdf7";
+        return greenWhite;
       }
       default: {
-        return "#fcfeff";
+        return cyanWhite;
       }
     }
   }

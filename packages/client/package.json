@@ -27,7 +27,6 @@
     "escape-string-regexp": "^1.0.5",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
-    "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "normalize.css": "^8.0.1",
     "querystring": "^0.2.0",
@@ -38,9 +37,7 @@
     "react-responsive": "^6.0.1",
     "react-router-dom": "^4.2.2",
     "react-select": "^2.1.2",
-    "tinycolor2": "^1.4.1",
-    "uuid": "^3.3.2",
-    "winston": "^3.1.0"
+    "unitransform": "^1.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",

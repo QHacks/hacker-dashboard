@@ -1,6 +1,8 @@
 export const boxShadow =
   "0 2px 4px rgba(10,10,10,0.1), 0 2px 4px rgba(10,10,10,0.15);";
 
+export const mobileBreakpoint = "775px";
+
 export const linkExternalTrusted = {
   rel: "external noopener",
   target: "_blank"

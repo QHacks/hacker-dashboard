@@ -6,6 +6,7 @@ import axios from "axios";
 
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 import { steel } from "../../assets/colors";
+import { mobileBreakpoint } from "../../assets/constants";
 import { SERVER_HOST } from "../../Client";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
@@ -194,9 +195,9 @@ class ApplicationForm extends Component {
 
         if (!newHackerInfo.githubLink) delete newHackerInfo.githubLink;
         if (!newHackerInfo.linkedinLink) delete newHackerInfo.linkedinLink;
-        if (!newHackerInfo.personalWebsite)
+        if (!newHackerInfo.personalWebsite) {
           delete newHackerInfo.personalWebsite;
-
+        }
         await this.props.updateHacker({
           variables: {
             input: {
@@ -487,10 +488,16 @@ class ApplicationForm extends Component {
       padding-top: 24px;
       font-weight: 600;
       text-transform: uppercase;
+      @media (max-width: ${mobileBreakpoint}) {
+        display: none;
+      }
     `;
 
     const subsectionContentStyles = `
       width: 70%;
+      @media (max-width: ${mobileBreakpoint}) {
+        width: 100%;
+      }
     `;
 
     const inputRowStyle = `

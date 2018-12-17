@@ -1,6 +1,7 @@
 import React from "react";
-import { offWhite } from "../../assets/colors";
+import { offWhite, steel } from "../../assets/colors";
 import circuits from "../../assets/img/circuits.png";
+import { mobileBreakpoint } from "../../assets/constants";
 
 const ApplicationHeader = () => (
   <div
@@ -12,6 +13,10 @@ const ApplicationHeader = () => (
       background: url(${circuits}) no-repeat center center;
       background-size: cover;
       text-transform: uppercase;
+      @media (max-width: ${mobileBreakpoint}) {
+        height: 380px;
+        border-bottom: 1px solid ${steel};
+      }
     `}
   >
     <h1>QHacks 2019</h1>
