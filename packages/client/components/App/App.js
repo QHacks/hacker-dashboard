@@ -75,7 +75,7 @@ button:focus, input:focus {
   outline: none;
 }
 
-input:not([type="checkbox"]) {
+input:not([type="checkbox"]):not([type="image"]) {
   height: 42.4px;
   border: 1px solid ${steel};
   border-radius: 4px;
@@ -93,7 +93,7 @@ input:not([type="checkbox"]) {
   background-color: ${offWhite};
 }
 
-input:not([type="checkbox"]):only-of-type {
+input:not([type="checkbox"]):not([type="image"]):only-of-type {
   width: 100%;
   margin: 6px 0;
 }
