@@ -35,7 +35,8 @@ const Landing = ({ children }) => (
           }
           @media screen and (max-width: ${mobileMaxWidth}) {
             padding-left: 5vw;
-            padding-top: 80px;
+            background: url(${circuits}) no-repeat center center;
+            background-size: cover;
           }
           > input {
             margin: 12px 4px !important;

@@ -104,8 +104,8 @@ div.select > div {
 }
 
 div.select input {
-  height: unset;
-  line-height: unset;
+  height: unset !important;
+  line-height: unset !important;
   margin: unset;
   padding: unset;
   box-shadow: none !important;

@@ -28,7 +28,14 @@ class Mobile extends Component {
       margin-bottom: 24px;
     `;
     return (
-      <div>
+      <div
+        css={`
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+        `}
+      >
         <ContentWrapper>
           <div
             css={`
