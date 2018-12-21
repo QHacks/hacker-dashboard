@@ -1,0 +1,25 @@
+"""
+Represents an event.
+"""
+type Event {
+  """
+  The events identifier.
+  """
+  id: ID!
+  """
+  The name of the event.
+  """
+  name: String!
+  """
+  The event slug.
+  """
+  slug: String!
+  """
+  The event start date.
+  """
+  startDate: Date!
+  """
+  The event end date.
+  """
+  endDate: Date!
+}

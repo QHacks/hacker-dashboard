@@ -1,0 +1,9 @@
+"""
+Represents the response when a hacker is deleted.
+"""
+type HackerDeletePayload {
+  """
+  The identifier of the hacker that was deleted.
+  """
+  deletedHackerId: ID
+}

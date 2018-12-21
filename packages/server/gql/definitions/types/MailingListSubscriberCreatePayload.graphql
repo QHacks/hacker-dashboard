@@ -1,0 +1,9 @@
+"""
+Represents the response when a subscriber is created on a mailing list.
+"""
+type MailingListSubscriberCreatePayload {
+  """
+  The subscriber to the mailing list.
+  """
+  subscriber: MailingListSubscriber!
+}

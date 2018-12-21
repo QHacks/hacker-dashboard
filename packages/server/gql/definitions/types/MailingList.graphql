@@ -1,0 +1,21 @@
+"""
+Represents a mailing list resource.
+"""
+type MailingList {
+  """
+  The mailing list identifier.
+  """
+  id: ID!
+  """
+  Name of the mailing list.
+  """
+  name: String!
+  """
+  Event the mailing list belongs to.
+  """
+  event: Event!
+  """
+  Subscriptions to the mailing list.
+  """
+  subscribers: [MailingListSubscriber!]!
+}

@@ -104,8 +104,5 @@ db()
     });
   })
   .catch((err) => {
-    logger.error(
-      "Could not connect to the database. Cannot start server!",
-      err
-    );
+    logger.error("Error! Cannot start server.", err);
   });

@@ -1,0 +1,9 @@
+"""
+Represents information to create and update an application.
+"""
+input ApplicationInput {
+  """
+  Responses to the application's fields.
+  """
+  responses: [ApplicationFieldInput!]!
+}

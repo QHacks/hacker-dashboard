@@ -2,7 +2,7 @@
 Represents an admin, including the admins auth info,
 contact information, and applications.
 """
-type Admin implements User {
+type Admin implements User & MailingListSubscriber {
   """
   The admins first name.
   """

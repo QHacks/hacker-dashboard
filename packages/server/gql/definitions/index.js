@@ -3,7 +3,14 @@ const fs = require("fs");
 
 const GRAPHQL_FILE_REGEX = /.+\.graphql$/;
 
-const directories = ["schema", "enums", "interfaces", "scalars", "types"];
+const directories = [
+  "schema",
+  "enums",
+  "interfaces",
+  "scalars",
+  "types",
+  "inputs"
+];
 
 let schemaString = "";
 
