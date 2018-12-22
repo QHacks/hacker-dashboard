@@ -1,0 +1,13 @@
+"""
+Thing
+"""
+input MailingListInput {
+  """
+  Name of the mailing list.
+  """
+  name: String!
+  """
+  Slug of the mailing list.
+  """
+  slug: String!
+}

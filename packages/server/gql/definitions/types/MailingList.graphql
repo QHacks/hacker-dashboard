@@ -1,3 +1,61 @@
+extend type QueryRoot {
+  """
+  Returns a list of all mailing lists.
+  """
+  mailingLists: [MailingList!]!
+
+  """
+  Returns a list of mailing lists by event slug.
+  """
+  mailingListsByEvent(eventSlug: String!): [MailingList!]!
+
+  """
+  Returns a mailing list by its identifier.
+  """
+  mailingList(id: ID!): MailingList
+
+  """
+  Returns a mailing list but its slug.
+  """
+  mailingListBySlug(slug: String!): MailingList
+}
+
+extend type MutationRoot {
+  """
+  Creates a mailing list for an event.
+  """
+  mailingListCreate(
+    eventSlug: String!
+    input: MailingListInput!
+  ): MailingListCreatePayload!
+
+  """
+  Updates a mailing list by its identifier.
+  """
+  mailingListUpdate(
+    id: ID!
+    input: MailingListInput!
+  ): MailingListUpdatePayload!
+
+  """
+  Updates a mailing list by its slug.
+  """
+  mailingListUpdateBySlug(
+    slug: String!
+    input: MailingListInput!
+  ): MailingListUpdatePayload!
+
+  """
+  Deletes a mailing list by its identifier.
+  """
+  mailingListDelete(id: ID!): MailingListDeleteByIdPayload!
+
+  """
+  Deletes a mailing list by its slug.
+  """
+  mailingListDeleteBySlug(slug: String!): MailingListDeleteBySlugPayload!
+}
+
 """
 Represents a mailing list resource.
 """
@@ -10,6 +68,10 @@ type MailingList {
   Name of the mailing list.
   """
   name: String!
+  """
+  The mailing list slug.
+  """
+  slug: String!
   """
   Event the mailing list belongs to.
   """

@@ -1,0 +1,9 @@
+"""
+Thing
+"""
+type MailingListDeleteByIdPayload {
+  """
+  Thing
+  """
+  deletedMailingListId: ID!
+}

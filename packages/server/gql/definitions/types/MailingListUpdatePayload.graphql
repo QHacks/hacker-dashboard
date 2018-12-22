@@ -1,0 +1,9 @@
+"""
+Thing
+"""
+type MailingListUpdatePayload {
+  """
+  Thing
+  """
+  mailingList: MailingList
+}

@@ -1,8 +1,8 @@
 // Query Root Resolvers
 
-const events = (parent, args, ctx, info) => {};
+const event = (parent, args, ctx, info) => {};
 
-const eventById = (parent, args, ctx, info) => {};
+const events = (parent, args, ctx, info) => {};
 
 const eventBySlug = (parent, args, ctx, info) => {};
 
@@ -10,11 +10,11 @@ const eventBySlug = (parent, args, ctx, info) => {};
 
 const eventCreate = (parent, args, ctx, info) => {};
 
-const eventUpdateById = (parent, args, ctx, info) => {};
+const eventUpdate = (parent, args, ctx, info) => {};
 
 const eventUpdateBySlug = (parent, args, ctx, info) => {};
 
-const eventDeleteById = (parent, args, ctx, info) => {};
+const eventDelete = (parent, args, ctx, info) => {};
 
 const eventDeleteBySlug = (parent, args, ctx, info) => {};
 
@@ -22,15 +22,15 @@ const eventDeleteBySlug = (parent, args, ctx, info) => {};
 
 module.exports = {
   QueryRoot: {
+    event,
     events,
-    eventById,
     eventBySlug
   },
   MutationRoot: {
     eventCreate,
-    eventUpdateById,
+    eventUpdate,
     eventUpdateBySlug,
-    eventDeleteById,
+    eventDelete,
     eventDeleteBySlug
   }
 };

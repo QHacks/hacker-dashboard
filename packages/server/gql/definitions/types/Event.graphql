@@ -7,7 +7,7 @@ extend type QueryRoot {
   """
   Finds an event by its identifier.
   """
-  eventById(id: ID!): Event
+  event(id: ID!): Event
 
   """
   Finds an event by its slug.
@@ -24,7 +24,7 @@ extend type MutationRoot {
   """
   Updates an event by its identifier.
   """
-  eventUpdateById(id: ID!, input: EventInput!): EventUpdatePayload!
+  eventUpdate(id: ID!, input: EventInput!): EventUpdatePayload!
 
   """
   Updates an event by its slug.
@@ -34,7 +34,7 @@ extend type MutationRoot {
   """
   Deletes an event by its identifier.
   """
-  eventDeleteById(id: ID!): EventDeleteByIdPayload!
+  eventDelete(id: ID!): EventDeleteByIdPayload!
 
   """
   Deletes an event by its slug.
