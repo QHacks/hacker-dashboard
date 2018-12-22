@@ -1,0 +1,9 @@
+"""
+Represents the response when a subscriber is deleted from a mailing list.
+"""
+type MailingListSubscriberDeletePayload {
+  """
+  The email of the subscriber deleted from the mailing list.
+  """
+  deletedSubscriberEmail: String!
+}

@@ -32,7 +32,7 @@ const hacker = combineResolvers(
     });
 
     if (!oauthUser || !oauthUser.User) {
-      throw new GraphQLNotFoundError("Hacker not found");
+      throw new GraphQLNotFoundError("Hacker not found!");
     }
 
     return oauthUser.User;

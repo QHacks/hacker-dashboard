@@ -5,5 +5,5 @@ type MailingListSubscriberCreatePayload {
   """
   The subscriber to the mailing list.
   """
-  subscriber: MailingListSubscriber!
+  subscriber: MailingListSubscriber
 }

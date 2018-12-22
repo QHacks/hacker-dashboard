@@ -2,10 +2,20 @@ extend type MutationRoot {
   """
   Creates a new mailing list subscriber.
   """
-  mailingListSubcriberCreate(
+  mailingListSubscriberCreate(
+    eventSlug: String!
     mailingListSlug: String!
     input: MailingListSubscriberInput!
   ): MailingListSubscriberCreatePayload!
+
+  """
+  Deletes a mailing list subscriber.
+  """
+  mailingListSubscriberDelete(
+    eventSlug: String!
+    mailingListSlug: String!
+    email: String!
+  ): MailingListSubscriberDeletePayload!
 }
 
 """

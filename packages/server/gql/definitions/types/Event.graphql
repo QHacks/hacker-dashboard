@@ -1,3 +1,47 @@
+extend type QueryRoot {
+  """
+  List of all events.
+  """
+  events: [Event!]!
+
+  """
+  Finds an event by its identifier.
+  """
+  eventById(id: ID!): Event
+
+  """
+  Finds an event by its slug.
+  """
+  eventBySlug(slug: String!): Event
+}
+
+extend type MutationRoot {
+  """
+  Creates an event.
+  """
+  eventCreate(input: EventInput!): EventCreatePayload!
+
+  """
+  Updates an event by its identifier.
+  """
+  eventUpdateById(id: ID!, input: EventInput!): EventUpdatePayload!
+
+  """
+  Updates an event by its slug.
+  """
+  eventUpdateBySlug(slug: String!, input: EventInput!): EventUpdatePayload!
+
+  """
+  Deletes an event by its identifier.
+  """
+  eventDeleteById(id: ID!): EventDeleteByIdPayload!
+
+  """
+  Deletes an event by its slug.
+  """
+  eventDeleteBySlug(slug: String!): EventDeleteBySlugPayload!
+}
+
 """
 Represents an event.
 """

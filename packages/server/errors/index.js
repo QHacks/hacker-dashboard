@@ -8,8 +8,9 @@ const {
 
 // Error codes
 const ERROR_CODES = {
+  NOT_FOUND: "NOT_FOUND",
+  EVENT_NOT_FOUND: "EVENT_NOT_FOUND",
   UNKNOWN_ERROR: "UNKNOWN_ERROR",
-  NOT_FOUND_ERROR: "NOT_FOUND_ERROR",
   VALIDATION_ERROR: "VALIDATION_ERROR",
   INVALID_CREDENTIALS: "INVALID_CREDENTIALS",
   CLIENT_NOT_REGISTERED: "CLIENT_NOT_REGISTERED",
@@ -52,8 +53,11 @@ const GraphQLForbiddenError = ForbiddenError;
 const GraphQLUserInputError = UserInputError;
 
 class GraphQLNotFoundError extends ApolloError {
-  constructor(message) {
-    super(message || "Unable to retrieve the requested resource!");
+  constructor(message, code) {
+    super(
+      message || "Unable to retrieve the requested resource!",
+      code || ERROR_CODES.NOT_FOUND
+    );
   }
 }
 
