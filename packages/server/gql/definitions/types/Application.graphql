@@ -24,6 +24,10 @@ Represents an application to an event.
 """
 type Application {
   """
+  The id of the application.
+  """
+  id: ID!
+  """
   The user has applied to the application.
   """
   status: ApplicationStatus!

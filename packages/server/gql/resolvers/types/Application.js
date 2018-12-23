@@ -1,7 +1,7 @@
 const { combineResolvers } = require("graphql-resolvers");
 
 const { sendEmails } = require("../../../emails")();
-const { isAuthenticated } = require("../generics");
+const { isAuthenticated, isAuthorized } = require("../generics");
 
 const {
   GRAPHQL_ERROR_CODES,
@@ -47,6 +47,24 @@ const application = combineResolvers(
     };
 
     return applicationResponse;
+  }
+);
+
+const applications = combineResolvers(
+  isAuthorized(null, "ADMIN"),
+  async (parent, args, ctx, info) => {
+    const { db } = ctx;
+    const { eventSlug: slug } = args;
+    const applicationsFromDB = await db.Application.findAll({
+      include: [
+        {
+          model: db.Event,
+          where: { slug }
+        }
+      ]
+    });
+
+    return applicationsFromDB;
   }
 );
 
@@ -181,7 +199,8 @@ const applicationCreate = combineResolvers(
 
 module.exports = {
   QueryRoot: {
-    application
+    application,
+    applications
   },
   MutationRoot: {
     applicationCreate

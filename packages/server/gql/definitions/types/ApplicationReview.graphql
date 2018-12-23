@@ -17,7 +17,8 @@ type ApplicationReview {
 }
 
 extend type MutationRoot {
-  ApplicationReviewCreate(
+  applicationReviewCreate(
+    applicationId: ID!
     input: ApplicationReviewInput!
   ): ApplicationReviewCreatePayload!
 }
