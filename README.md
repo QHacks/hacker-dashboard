@@ -13,11 +13,11 @@ dashboard implements a suite of features to make the process and experience of
 attending a hackathon a richer and more pleasant one for all parties.
 
 The back end application is built with [Node](https://nodejs.org/en/) using
-[Express](https://expressjs.com/) to serve a RESTful API. For persistence we use
-[MongoDB](https://www.mongodb.com/) and [Mongoose](https://mongoosejs.com/) as
-our ODM to interact with that database. The front end is implemented using
+[Express](https://expressjs.com/) and [Apollo Server](https://github.com/apollographql/apollo-server) to serve a GraphQL API, in conjunction with a RESTful API for authentication. For persistence we use
+[PostgreSQL](https://www.postgresql.org/) and [Sequelize](https://github.com/sequelize/sequelize) as
+our ORM to interact with the database. The front end is implemented using
 [ReactJS](https://reactjs.org/), and
-[Redux](http://redux.js.org/docs/introduction/) for state management, all of
+[Appollo Client](https://github.com/apollographql/apollo-client) for interacting with our GraphQL API and local state management, all of
 which are bundled with [Webpack](https://webpack.github.io/). For more
 information about the technical specifications please refer to the
 [wiki](https://github.com/qhacks/qhacks-dashboard/wiki).
