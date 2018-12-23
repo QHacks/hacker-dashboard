@@ -1,13 +1,15 @@
 const { combineResolvers } = require("graphql-resolvers");
 
-const { GraphQLForbiddenError } = require("../../../errors");
 const { sendEmails } = require("../../../emails")();
 const { isAuthenticated } = require("../generics");
 
 const {
+  GRAPHQL_ERROR_CODES,
   GraphQLNotFoundError,
-  GraphQLUserInputError
-} = require("../../../errors");
+  GraphQLUserInputError,
+  GraphQLForbiddenError,
+  GraphQLInternalServerError
+} = require("../../../errors/graphql-errors");
 
 // Query Root Resolvers
 
@@ -27,7 +29,8 @@ const application = combineResolvers(
 
     if (!application) {
       throw new GraphQLNotFoundError(
-        `No application found for the event with the slug: ${eventSlug}!`
+        `No application found for the event with the slug ${eventSlug}!`,
+        GRAPHQL_ERROR_CODES.APPLICATION_NOT_FOUND
       );
     }
 
@@ -63,13 +66,15 @@ const applicationCreate = combineResolvers(
 
       if (!event) {
         throw new GraphQLNotFoundError(
-          `Could not find an event with the slug: ${eventSlug}!`
+          `Could not find an event with the slug ${eventSlug}!`,
+          GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
         );
       }
 
       if (!event.requiresApplication) {
-        throw new GraphQLUserInputError(
-          `${event.name} does not require applications!`
+        throw new GraphQLForbiddenError(
+          `The event with the slug ${eventSlug} does not require applications!`,
+          GRAPHQL_ERROR_CODES.EVENT_APPLICATIONS_NOT_REQUIRED
         );
       }
 
@@ -80,7 +85,8 @@ const applicationCreate = combineResolvers(
         currentDate < event.applicationOpenDate
       ) {
         throw new GraphQLForbiddenError(
-          `${event.name} is not accepting applications at this time!`
+          `The event with the slug ${eventSlug} is not accepting applications at this time!`,
+          GRAPHQL_ERROR_CODES.EVENT_NOT_ACCEPTING_APPLICATIONS
         );
       }
 
@@ -93,8 +99,8 @@ const applicationCreate = combineResolvers(
       );
 
       if (!application) {
-        throw new DatabaseError(
-          "Could not create an application at this time!"
+        throw new GraphQLInternalServerError(
+          `Could not create an application for the event with the slug ${eventSlug} at this time!`
         );
       }
 
@@ -110,7 +116,10 @@ const applicationCreate = combineResolvers(
       input.responses.forEach(({ label, answer }) => {
         if (!applicationTable[label]) {
           throw new GraphQLUserInputError(
-            `${label} is not a valid field for ${eventSlug}`
+            `${label} is not a valid field for the event with the slug ${eventSlug}!`,
+            {
+              invalidApplicationField: label
+            }
           );
         }
 
@@ -118,12 +127,16 @@ const applicationCreate = combineResolvers(
         applicationTable[label].applicationId = application.id;
       });
 
-      // Filter out any unanswered fields that are not required
       const userResponse = Object.values(applicationTable).filter(
         (field, i) => {
           if (field.required && !field.answer) {
+            const requiredField = Object.keys(applicationTable)[i];
+
             throw new GraphQLUserInputError(
-              `${Object.keys(applicationTable)[i]} is a required field!`
+              `${requiredField} is a required field!`,
+              {
+                requiredApplicationField: requiredField
+              }
             );
           }
           return "answer" in field;
@@ -136,7 +149,9 @@ const applicationCreate = combineResolvers(
       );
 
       if (!fieldResponse) {
-        throw new DatabaseError("Could not create an application at this time");
+        throw new GraphQLInternalServerError(
+          `Could not create an application for the event with the slug ${eventSlug} at this time!`
+        );
       }
 
       if (process.env.NODE_ENV !== "test") {

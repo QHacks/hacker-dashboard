@@ -1,4 +1,7 @@
-const { ERROR_CODES, GraphQLNotFoundError } = require("../../../errors");
+const {
+  GRAPHQL_ERROR_CODES,
+  GraphQLNotFoundError
+} = require("../../../errors/graphql-errors");
 
 // Mutation Root Resolvers
 
@@ -14,7 +17,7 @@ const mailingListSubscriberCreate = async (parent, args, ctx, info) => {
   if (!event) {
     throw new GraphQLNotFoundError(
       `Cannot find a mailing list with the slug ${mailingListSlug} associated to an event with the slug ${eventSlug}!`,
-      ERROR_CODES.EVENT_NOT_FOUND
+      GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
     );
   }
 

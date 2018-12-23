@@ -1,6 +1,6 @@
 const uuid = require("uuid");
 
-const { getDefaultScopes } = require("../../oauth/scopes");
+const { getDefaultScopesForRole, ROLES } = require("../../oauth/authorization");
 
 const QHACKS_CLIENT_ID = uuid.v4();
 const QHACKS_EVENT_ID = uuid.v4();
@@ -65,20 +65,20 @@ async function createUsers() {
 
   const usersOAuthInfo = [
     {
-      role: "ADMIN",
-      scopes: JSON.stringify(getDefaultScopes("ADMIN"))
+      role: ROLES.ADMIN,
+      scopes: JSON.stringify(getDefaultScopesForRole(ROLES.ADMIN))
     },
     {
-      role: "VOLUNTEER",
-      scopes: JSON.stringify(getDefaultScopes("VOLUNTEER"))
+      role: ROLES.VOLUNTEER,
+      scopes: JSON.stringify(getDefaultScopesForRole(ROLES.VOLUNTEER))
     },
     {
-      role: "HACKER",
-      scopes: JSON.stringify(getDefaultScopes("HACKER"))
+      role: ROLES.HACKER,
+      scopes: JSON.stringify(getDefaultScopesForRole(ROLES.HACKER))
     },
     {
-      role: "HACKER",
-      scopes: JSON.stringify(getDefaultScopes("HACKER"))
+      role: ROLES.HACKER,
+      scopes: JSON.stringify(getDefaultScopesForRole(ROLES.HACKER))
     }
   ];
 

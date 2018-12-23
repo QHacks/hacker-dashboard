@@ -1,10 +1,12 @@
+const { ROLES } = require("../../../oauth/authorization");
+
 const { db } = global;
 
 describe("OAuthRefreshToken Model", () => {
   it("saves with a uuid", async () => {
     const { dataValues: oauthUser } = await db.OAuthUser.create({
       scopes: JSON.stringify([{ user: "read", user: "write" }]),
-      role: "ADMIN"
+      role: ROLES.ADMIN
     });
 
     const { dataValues: oauthClient } = await db.OAuthClient.create({

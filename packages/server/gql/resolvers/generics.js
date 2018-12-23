@@ -1,20 +1,21 @@
 const { skip, combineResolvers } = require("graphql-resolvers");
 
-const scopeUtils = require("../../oauth/scopes");
+const {
+  isAuthorizedFromRole,
+  isAuthorizedFromScopes
+} = require("../../oauth/authorization");
 const logger = require("../../utils/logger");
 
 const {
-  GraphQLAuthenticationError,
-  GraphQLForbiddenError
-} = require("../../errors");
+  GraphQLAuthorizationError,
+  GraphQLAuthenticationError
+} = require("../../errors/graphql-errors");
 
 const isAuthenticated = (parent, args, ctx, info) => {
   const { user } = ctx;
 
   if (!user) {
-    throw new GraphQLAuthenticationError(
-      "Invalid authentication information! You must be authenticated to perform this operation."
-    );
+    throw new GraphQLAuthenticationError();
   }
 
   skip;
@@ -29,7 +30,7 @@ const isAuthorized = (scopes = null, requiredRole = null) => (
   if (!scopes && !requiredRole) {
     logger.warn(
       `Using 'isAuthorized' without scopes or a requiredRole is the same thing as performing
-      no authorization checks. Consider removing the function call with no parameters to
+      no authorization check at all. Consider removing the function call with no parameters to
       'isAuthorized' if this is intended.`
     );
 
@@ -39,13 +40,11 @@ const isAuthorized = (scopes = null, requiredRole = null) => (
   const { access } = ctx;
 
   if (!access) {
-    throw new GraphQLForbiddenError(
-      "Invalid authorization information! You must be authorized to perform this operation."
-    );
+    throw new GraphQLAuthorizationError();
   }
 
-  if (requiredRole && requiredRole !== access.role) {
-    throw new GraphQLForbiddenError(
+  if (requiredRole && isAuthorizedFromRole(requiredRole, access.role)) {
+    throw new GraphQLAuthorizationError(
       "Not authorized! You are not the required user role to perform this operation."
     );
   }
@@ -53,10 +52,10 @@ const isAuthorized = (scopes = null, requiredRole = null) => (
   if (scopes) {
     scopes.forEach((scope) => {
       if (
-        !scopeUtils.isAuthorized(scope.entity, scope.permission, access.scopes)
+        !isAuthorizedFromScopes(scope.entity, scope.permission, access.scopes)
       ) {
-        throw new GraphQLForbiddenError(
-          "Not authorized! You do not have the required scopes to perform this operation."
+        throw new GraphQLAuthorizationError(
+          "Not authorized! You do not have the required access scopes to perform this operation."
         );
       }
     });

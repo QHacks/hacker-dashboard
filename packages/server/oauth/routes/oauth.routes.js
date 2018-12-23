@@ -8,16 +8,13 @@ const {
 } = require("../../utils/custom-validator");
 
 const {
-  ERROR_CODES,
   RestApiError,
   ValidationError,
   OAuthInvalidGrantTypeError
-} = require("../../errors");
-
-// Error Catch
+} = require("../../errors/rest-errors");
 
 function sendError(res, err) {
-  if (!err.status) {
+  if (!err.status || !err.code) {
     const apiErr = new RestApiError(err);
     return res.status(apiErr.status).json(apiErr);
   }
@@ -31,21 +28,25 @@ function validateSessionRequest(email, password, grantType) {
   if (!email || !password || !grantType) {
     return Promise.reject(
       new ValidationError(
-        "The request does not have all the required fields! Please make sure to pass a email, password, and valid grantType.",
-        ERROR_CODES.INVALID_CREDENTIALS
+        "The request does not have all the required fields! Please make sure to supply a email, password, and a valid grantType in the request body."
       )
     );
   }
 
-  return Promise.all([validateEmail(email), validatePassword(password)]);
+  return Promise.all([validateEmail(email), validatePassword(password)])
+    .then(() => {
+      return Promise.resolve();
+    })
+    .catch((err) => {
+      return Promise.reject(new ValidationError(err));
+    });
 }
 
 function validateSignupRequest(firstName, lastName, email, password) {
   if (!firstName || !lastName || !email || !password) {
     return Promise.reject(
       new ValidationError(
-        "The request does not have all the required fields! Please make sure to pass a firstName, lastName, email, and password!",
-        ERROR_CODES.INVALID_CREDENTIALS
+        "The request does not have all the required fields! Please make sure to supply a firstName, lastName, email, and a password in the request body."
       )
     );
   }
@@ -54,15 +55,20 @@ function validateSignupRequest(firstName, lastName, email, password) {
     validateEmail(email),
     validatePassword(password),
     validateName(firstName, lastName)
-  ]);
+  ])
+    .then(() => {
+      return Promise.resolve();
+    })
+    .catch((err) => {
+      return Promise.reject(new ValidationError(err));
+    });
 }
 
 function validateRefreshRequest(refreshToken, grantType) {
   if (!refreshToken || !grantType) {
     return Promise.reject(
       new ValidationError(
-        "The request does not have all the required fields! Please make sure to pass a refreshToken and a valid grantType!",
-        ERROR_CODES.INVALID_GRANT_TYPE
+        "The request does not have all the required fields! Please make sure to supply a refreshToken and a valid grantType in the request body."
       )
     );
   }
@@ -74,25 +80,36 @@ function validateResetHashRequest(email) {
   if (!email) {
     return Promise.reject(
       new ValidationError(
-        "The request does not have all the required fields! Please make sure to pass a email!"
+        "The request does not have all the required fields! Please make sure to supply a email in the request body!"
       )
     );
   }
 
-  return validateEmail(email);
+  return validateEmail(email)
+    .then(() => {
+      return Promise.resolve();
+    })
+    .catch((err) => {
+      return Promise.reject(new ValidationError(err));
+    });
 }
 
 function validateUpdatePasswordRequest(password, resetHash) {
   if (!password || !resetHash) {
     return Promise.reject(
       new ValidationError(
-        "The request does not have all the required fields! Please make sure to pass email and resetHash!",
-        ERROR_CODES.INVALID_CREDENTIALS
+        "The request does not have all the required fields! Please make sure to pass email and resetHash!"
       )
     );
   }
 
-  return validatePassword(password);
+  return validatePassword(password)
+    .then(() => {
+      return Promise.resolve();
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
 }
 
 // Route Implementation

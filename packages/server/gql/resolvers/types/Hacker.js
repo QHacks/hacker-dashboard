@@ -1,13 +1,13 @@
 const { combineResolvers } = require("graphql-resolvers");
 const { isEmpty } = require("lodash");
 
-const { hasPermission, formatScopes } = require("../../../oauth/scopes");
+const { formatScopes, ROLES } = require("../../../oauth/authorization");
 const { isAuthenticatedAndAuthorized } = require("../generics");
 
 const {
-  GraphQLNotFoundError,
-  GraphQLUserInputError
-} = require("../../../errors");
+  GRAPHQL_ERROR_CODES,
+  GraphQLNotFoundError
+} = require("../../../errors/graphql-errors");
 
 const scopes = [
   {
@@ -24,7 +24,7 @@ const hacker = combineResolvers(
     const { db } = ctx;
 
     const oauthUser = await db.OAuthUser.findOne({
-      where: { role: "HACKER" },
+      where: { role: ROLES.HACKER },
       include: {
         model: db.User,
         where: { id: args.id }
@@ -32,7 +32,10 @@ const hacker = combineResolvers(
     });
 
     if (!oauthUser || !oauthUser.User) {
-      throw new GraphQLNotFoundError("Hacker not found!");
+      throw new GraphQLNotFoundError(
+        `No hacker found with the identifier ${args.id}!`,
+        GRAPHQL_ERROR_CODES.HACKER_NOT_FOUND
+      );
     }
 
     return oauthUser.User;
@@ -44,38 +47,29 @@ const hacker = combineResolvers(
 const hackerUpdate = combineResolvers(
   isAuthenticatedAndAuthorized(scopes),
   async (parent, args, ctx, info) => {
-    if (!args.id && ctx.access.role !== "HACKER") {
-      throw new GraphQLUserInputError(
-        "Must provide an id to update another hacker!"
-      );
-    }
-
     const { input: hackerInput } = args;
 
-    return await ctx.user
-      .update(hackerInput)
-      .catch(() => {
-        new GraphQLUserInputError("Could not update hacker!");
-      })
-      .then((hacker) => ({ hacker }));
+    const updatedHacker = await ctx.user.update(hackerInput);
+
+    return {
+      hacker: updatedHacker
+    };
   }
 );
 
 const hackerDelete = combineResolvers(
   isAuthenticatedAndAuthorized(scopes),
   async (parent, args, ctx, info) => {
-    if (!hasPermission("hacker", "write", ctx.access.scopes)) {
-      throw new GraphQLForbiddenError("Invalid permissions!");
-    }
-
     const { db } = ctx;
     const { id } = args;
 
-    await db.User.findOne({ where: { id } })
-      .then((hacker) => hacker.destroy())
-      .then(() => ({
-        deletedHackerId: id
-      }));
+    const hacker = await db.User.findOne({ where: { id } });
+
+    await hacker.destroy();
+
+    return {
+      deletedHackerId: id
+    };
   }
 );
 
@@ -98,7 +92,7 @@ const oauthInfo = combineResolvers(
         if (!oauthUser) {
           return Promise.reject(
             new GraphQLNotFoundError(
-              "Could not find OAuth information for user"
+              "Could not find OAuth information for user!"
             )
           );
         }

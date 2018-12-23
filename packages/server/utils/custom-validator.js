@@ -1,8 +1,6 @@
 const validator = require("validator");
 const _ = require("lodash");
 
-const { ValidationError } = require("../errors");
-
 const NAME_REGEX = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]+$/;
 
 function validateEmail(email) {
@@ -10,7 +8,7 @@ function validateEmail(email) {
     return Promise.resolve();
   }
 
-  return Promise.reject(new ValidationError("The email provided is invalid!"));
+  return Promise.reject("The email provided is invalid!");
 }
 
 function validatePassword(password) {
@@ -19,9 +17,7 @@ function validatePassword(password) {
   }
 
   return Promise.reject(
-    new ValidationError(
-      "The password provided is invalid! Must be at least 8 characters long!"
-    )
+    "The password provided is invalid! Must be at least 8 characters long."
   );
 }
 
@@ -36,7 +32,7 @@ function validateName(firstName, lastName) {
     return Promise.resolve();
   }
 
-  return Promise.reject(new ValidationError("The name provided is invalid!"));
+  return Promise.reject("The name provided is invalid!");
 }
 
 module.exports = {

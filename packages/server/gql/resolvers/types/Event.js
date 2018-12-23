@@ -1,8 +1,22 @@
+const { combineResolvers } = require("graphql-resolvers");
+
+const { isAuthenticatedAndAuthorized } = require("../generics");
+const { ROLES } = require("../../../oauth/authorization");
+
 // Query Root Resolvers
 
 const event = (parent, args, ctx, info) => {};
 
-const events = (parent, args, ctx, info) => {};
+const events = combineResolvers(
+  isAuthenticatedAndAuthorized(null, ROLES.HACKER),
+  async (parent, args, ctx, info) => {
+    const { db } = ctx;
+
+    const events = await db.Event.findAll();
+
+    return events;
+  }
+);
 
 const eventBySlug = (parent, args, ctx, info) => {};
 
