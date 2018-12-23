@@ -3,6 +3,10 @@ extend type QueryRoot {
   Returns a user's application to a specific event.
   """
   application(eventSlug: String!): Application
+  """
+  Returns all applications for a specific event
+  """
+  applications(eventSlug: String!): [Application!]
 }
 
 extend type MutationRoot {
@@ -30,5 +34,43 @@ type Application {
   """
   The date that the application was submitted.
   """
-  submissionDate: Date!
+  submissionDate: Date
+  """
+  The reviews of the application.
+  """
+  reviews: [ApplicationReview!]!
+}
+
+type ApplicationFieldResponse {
+  """
+  The label of the application field.
+  """
+  type: ApplicationFieldType!
+  """
+  The label of the application field.
+  """
+  label: String!
+  """
+  The response of the applicant to the field.
+  """
+  answer: String!
+}
+
+type ApplicationCreatePayload {
+  application: Application
+}
+
+input ApplicationInput {
+  responses: [ApplicationFieldInput!]!
+}
+
+input ApplicationFieldInput {
+  """
+  The label of the application field.
+  """
+  label: String!
+  """
+  The response of the applicant to the field.
+  """
+  answer: String!
 }

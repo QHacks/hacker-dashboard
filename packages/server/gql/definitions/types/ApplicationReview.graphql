@@ -1,0 +1,34 @@
+"""
+Represents a review of an application.
+"""
+type ApplicationReview {
+  """
+  The score awarded in the review.
+  """
+  score: Int!
+  """
+  The date at which the review was performed.
+  """
+  reviewedAt: Date!
+  """
+  The admin who performed the review.
+  """
+  reviewedBy: Admin!
+}
+
+extend type MutationRoot {
+  ApplicationReviewCreate(
+    input: ApplicationReviewInput!
+  ): ApplicationReviewCreatePayload!
+}
+
+input ApplicationReviewInput {
+  """
+  The score awarded in the review.
+  """
+  score: Int!
+}
+
+type ApplicationReviewCreatePayload {
+  applicationReview: ApplicationReview
+}
