@@ -47,6 +47,9 @@ const Landing = ({ children }) => (
               border: 1px solid ${blue} !important;
             }
           }
+          label {
+            text-transform: unset;
+          }
           p.blurb {
             max-width: 300px;
             font-size: 18px;

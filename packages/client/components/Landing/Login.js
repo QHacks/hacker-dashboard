@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import axios from "axios";
-
+import Checkbox from "react-simple-checkbox";
 import ActionButton from "../ActionButton/ActionButton";
 import { SERVER_HOST } from "../../Client";
 import Alert from "../Alert/Alert";
 import Landing from "./Landing";
+import { checkboxOptions } from "../../assets/constants";
 
 const LOGIN_MUTATION = gql`
   mutation LoginUser($input: LoginInput!) {
@@ -117,10 +118,11 @@ class Login extends Component {
           `}
         >
           <div css="flex-grow: 1;">
-            <input
-              type="checkbox"
+            <Checkbox
+              checked={this.state.rememberMe}
               id="rememberMe"
-              onChange={(e) => this.setState({ rememberMe: e.target.checked })}
+              {...checkboxOptions}
+              onChange={(bool) => this.setState({ rememberMe: bool })}
             />{" "}
             <label htmlFor="rememberMe">Remember me</label>
           </div>

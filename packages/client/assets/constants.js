@@ -1,5 +1,18 @@
+import { blue } from "./colors";
+
 export const boxShadow =
   "0 2px 4px rgba(10,10,10,0.1), 0 2px 4px rgba(10,10,10,0.15);";
+
+export const checkboxOptions = {
+  color: {
+    backgroundColor: blue,
+    borderColor: blue,
+    uncheckedBorderColor: blue,
+    tickColor: "#FFFFFF"
+  },
+  tickSize: 3,
+  size: 2
+};
 
 export const mobileMaxWidth = "774px";
 export const desktopMinWidth = "775px";
