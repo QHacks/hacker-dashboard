@@ -6,7 +6,7 @@ extend type QueryRoot {
   """
   Returns all applications for a specific event
   """
-  applications(eventSlug: String!, first: Int, after: ID): [Application!]
+  applications(eventSlug: String!, first: Int, after: Date): [Application!]
 }
 
 extend type MutationRoot {

@@ -30,26 +30,36 @@ const applicationReviewCreate = combineResolvers(
 const reviews = combineResolvers(
   isAuthorized(null, "ADMIN"),
   async (parent, args, ctx, info) => {
-    const { db } = ctx;
-    const reviews = await db.ApplicationReview.findAll({
-      where: {
-        applicationId: parent.id
-      }
-    });
+    try {
+      const { db } = ctx;
+      const applicationReviews = await db.ApplicationReview.findAll({
+        where: {
+          applicationId: parent.id
+        }
+      });
 
-    return reviews;
+      return applicationReviews;
+    } catch (err) {
+      throw new DatabaseError(
+        "Unable to retrieve application reviews at this time!"
+      );
+    }
   }
 );
 
 // ApplicationField reviewedBy resolver
 
 const reviewedBy = async (parent, args, ctx, info) => {
-  const { db } = ctx;
-  const reviewedBy = await db.User.findOne({
-    where: { id: parent.reviewerId }
-  });
+  try {
+    const { db } = ctx;
+    const reviewer = await db.User.findOne({
+      where: { id: parent.reviewerId }
+    });
 
-  return reviewedBy;
+    return reviewer;
+  } catch (err) {
+    throw new DatabaseError("Unable to retrieve reviewers at this time!");
+  }
 };
 
 module.exports = {

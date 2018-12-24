@@ -59,7 +59,7 @@ const applications = combineResolvers(
 
     if (args.after) {
       pagination.where = {
-        id: {
+        createdAt: {
           [db.Sequelize.Op.gt]: args.after
         }
       };
@@ -77,7 +77,8 @@ const applications = combineResolvers(
             where: { slug }
           }
         ],
-        ...pagination
+        ...pagination,
+        order: [["createdAt", "ASC"]]
       });
 
       return applicationsFromDB;

@@ -15,7 +15,7 @@ const GET_USER_APPLICATION_FOR_EVENT = gql`
 `;
 
 const GET_ALL_APPLICATIONS_FOR_EVENT = gql`
-  query GetAllApplications($eventSlug: String!, $after: ID, $first: Int) {
+  query GetAllApplications($eventSlug: String!, $after: Date, $first: Int) {
     applications(eventSlug: $eventSlug, after: $after, first: $first) {
       id
       status
@@ -286,13 +286,20 @@ describe("Application Type", () => {
 
     const { data: response1 } = await query({
       query: GET_ALL_APPLICATIONS_FOR_EVENT,
-      variables: { eventSlug: "qhacks-2019", first: 1, after: null }
+      variables: {
+        eventSlug: "qhacks-2019",
+        first: 1,
+        after: new Date(1, 1, 1)
+      }
     });
 
     expect(response1.applications).toBeDefined();
     expect(response1.applications).toHaveLength(1);
     expect(response1.applications[0]).toEqual(
-      expect.objectContaining({ status: "APPLIED", id: existingApplication.id })
+      expect.objectContaining({
+        status: "APPLIED",
+        id: existingApplication.id
+      })
     );
 
     // Query for the newly created application
@@ -302,7 +309,7 @@ describe("Application Type", () => {
       variables: {
         eventSlug: "qhacks-2019",
         first: 1,
-        after: existingApplication.id
+        after: existingApplication.createdAt
       }
     });
 
