@@ -50,6 +50,8 @@ const Landing = ({ children }) => (
           }
           label {
             text-transform: unset;
+            font-weight: normal;
+            font-size: 14px;
           }
           p.blurb {
             max-width: 300px;
@@ -59,6 +61,7 @@ const Landing = ({ children }) => (
           a.landingLink {
             font-weight: 600;
             color: ${grey};
+            font-size: 14px;
             text-decoration: underline;
           }
         `}

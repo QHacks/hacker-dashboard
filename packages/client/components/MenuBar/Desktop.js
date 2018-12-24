@@ -5,6 +5,7 @@ import crown from "../../assets/img/qhacks-tricolor-logo.svg";
 import { linkExternalTrusted } from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import { blue } from "../../assets/colors";
+import DropdownMenu from "../DropdownMenu/DropdownMenu";
 
 const Desktop = ({ hideItems, showLogin }) => (
   <header
@@ -30,10 +31,13 @@ const Desktop = ({ hideItems, showLogin }) => (
           width: ${showLogin ? "590px" : "490px"};
           justify-content: space-between;
           line-height: 44px;
-          text-transform: uppercase;
           list-style-type: none;
-          a:not(.actionButton) {
+          a:not(.actionButton),
+          button:not(.actionButton) {
+            cursor: pointer;
+            background: none;
             color: ${blue};
+            text-transform: uppercase;
             font-weight: 600;
             padding-bottom: 2px;
             padding-top: 2px;
@@ -56,9 +60,23 @@ const Desktop = ({ hideItems, showLogin }) => (
           </a>
         </li>
         <li>
-          <a {...linkExternalTrusted} href="https://2018.qhacks.io">
-            Past Events
-          </a>
+          <DropdownMenu
+            title="Past Events"
+            links={[
+              {
+                href: "https://2018.qhacks.io",
+                text: "QHacks 2018"
+              },
+              {
+                href: "https://2017.qhacks.io",
+                text: "QHacks 2017"
+              },
+              {
+                href: "https://2016.qhacks.io",
+                text: "QHacks 2016"
+              }
+            ]}
+          />
         </li>
         <li>
           <a {...linkExternalTrusted} href="https://medium.com/qhacks">

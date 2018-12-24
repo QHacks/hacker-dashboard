@@ -1,4 +1,4 @@
-import { blue } from "./colors";
+import { blue, grey } from "./colors";
 
 export const boxShadow =
   "0 2px 4px rgba(10,10,10,0.1), 0 2px 4px rgba(10,10,10,0.15);";
@@ -10,10 +10,12 @@ export const checkboxOptions = {
     backgroundColor: blue,
     borderColor: blue,
     uncheckedBorderColor: blue,
-    tickColor: "#FFFFFF"
+    tickColor: "#FFFFFF",
+    uncheckedBorderColor: grey
   },
   tickSize: 3,
-  size: 2
+  size: 2,
+  borderThickness: 1
 };
 
 export const mobileMaxWidth = "774px";
