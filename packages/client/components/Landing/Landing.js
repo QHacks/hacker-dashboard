@@ -77,7 +77,7 @@ const Landing = ({ children }) => (
           align-items: flex-start;
           height: 100%;
           border-left: 1px solid ${steel};
-          padding-top: 30vh;
+          padding-top: 20vh;
           overflow: hidden;
         `}
       >

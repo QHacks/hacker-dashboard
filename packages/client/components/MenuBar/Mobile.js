@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import crown from "../../assets/img/qhacks-tricolor-logo.svg";
 import menuClose from "../../assets/img/mobileMenuClose.svg";
 import hamburger from "../../assets/img/mobileMenuOpen.svg";
-import word from "../../assets/img/qhacks-wordmark-white.svg";
-import cubespng from "../../assets/img/mobileMenuCubes.png";
-import logo from "../../assets/img/qhacks-crown-white.svg";
+import word from "../../assets/img/qhacks-wordmark-colored.svg";
 import { linkExternalTrusted } from "../../assets/constants";
+import { blue, blueLight } from "../../assets/colors";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
+import { Link } from "react-router-dom";
+import DropdownMenu from "../DropdownMenu/Mobile";
 
 class Mobile extends Component {
   constructor(props) {
@@ -22,11 +23,6 @@ class Mobile extends Component {
   }
 
   render() {
-    const linkStyle = `
-      font-weight: bold;
-      display: block;
-      margin-bottom: 24px;
-    `;
     return (
       <div
         css={`
@@ -66,7 +62,7 @@ class Mobile extends Component {
             top: "0px",
             left: "0px",
             zIndex: "5",
-            background: "#11213f"
+            backgroundColor: "white"
           }}
         >
           <input
@@ -82,6 +78,7 @@ class Mobile extends Component {
               marginTop: "100px",
               color: "white",
               display: "grid",
+              width: "100%",
               gridTemplateColumns: "1fr"
             }}
           >
@@ -90,19 +87,28 @@ class Mobile extends Component {
                 marginLeft: "auto",
                 marginRight: "auto",
                 textAlign: "center",
-                " a": {
-                  color: "white",
+                width: "100%",
+                "a, button": {
+                  fontWeight: 600,
+                  width: "100%",
+                  color: `${blue} !important`,
                   textTransform: "uppercase",
-                  ":hover": {
-                    color: "#fedb01"
-                  }
+                  ":active": {
+                    color: `${blueLight} !important`
+                  },
+                  display: "block",
+                  padding: "12px 0",
+                  border: "none",
+                  background: "none"
                 }
               }}
             >
               <div>
                 <img
-                  src={logo}
-                  css={{ paddingBottom: "11px" }}
+                  src={crown}
+                  width="150"
+                  height="77.59"
+                  css={{ paddingBottom: "20px" }}
                   alt="QHacks Crown"
                 />
               </div>
@@ -123,23 +129,30 @@ class Mobile extends Component {
                 {...linkExternalTrusted}
                 href="https://qhacks.io"
                 onClick={() => this.toggleMenu()}
-                css={linkStyle}
               >
                 QHacks 2019
               </a>
-              <a
-                {...linkExternalTrusted}
-                href="https://2018.qhacks.io"
-                onClick={() => this.toggleMenu()}
-                css={linkStyle}
-              >
-                Past Events
-              </a>
+              <DropdownMenu
+                title="Past Events"
+                links={[
+                  {
+                    href: "https://2018.qhacks.io",
+                    text: "QHacks 2018"
+                  },
+                  {
+                    href: "https://2017.qhacks.io",
+                    text: "QHacks 2017"
+                  },
+                  {
+                    href: "https://2016.qhacks.io",
+                    text: "QHacks 2016"
+                  }
+                ]}
+              />
               <a
                 {...linkExternalTrusted}
                 href="https://medium.com/qhacks"
                 onClick={() => this.toggleMenu()}
-                css={linkStyle}
               >
                 Blog
               </a>
@@ -147,14 +160,13 @@ class Mobile extends Component {
                 {...linkExternalTrusted}
                 href="https://github.com/qhacks"
                 onClick={() => this.toggleMenu()}
-                css={linkStyle}
               >
                 Code
               </a>
+              <Link to="/qhacks-2019/apply" onClick={() => this.toggleMenu()}>
+                Apply
+              </Link>
               {/* end menu items */}
-              <div css={{ marginTop: "-100px", pointerEvents: "none" }}>
-                <img src={cubespng} alt="Floating cubes" />
-              </div>
             </div>
           </div>
         </div>
