@@ -1,6 +1,6 @@
 import React from "react";
 import { mobileMaxWidth, desktopMinWidth } from "../../assets/constants";
-import { decorativeElement } from "../../assets/constants";
+import { decorativeElement, subtleBoxShadow } from "../../assets/constants";
 import circuits from "../../assets/img/circuits-landing.png";
 import { grey, steel, blue } from "../../assets/colors";
 import MenuBar from "../MenuBar/MenuBar";
@@ -43,6 +43,7 @@ const Landing = ({ children }) => (
             display: block;
             max-width: 375px;
             background-color: white !important;
+            box-shadow: ${subtleBoxShadow};
             &:focus {
               border: 1px solid ${blue} !important;
             }
