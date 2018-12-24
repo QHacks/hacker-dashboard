@@ -131,9 +131,13 @@ class Login extends Component {
           </div>
         </div>
         <div>
-          <ActionButton color="blue" onClick={() => this.login()}>
-            Login
-          </ActionButton>{" "}
+          <ActionButton
+            style="margin-right: 6px;"
+            color="blue"
+            onClick={() => this.login()}
+          >
+            Log in
+          </ActionButton>
           <ActionButton internal link="/qhacks-2019/apply">
             Apply
           </ActionButton>
