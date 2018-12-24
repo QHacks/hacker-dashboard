@@ -1,8 +1,8 @@
 import React from "react";
 import { mobileMaxWidth, desktopMinWidth } from "../../assets/constants";
 import { decorativeElement } from "../../assets/constants";
-import circuits from "../../assets/img/circuits.png";
-import { grey, steel } from "../../assets/colors";
+import circuits from "../../assets/img/circuits-landing.png";
+import { grey, steel, blue } from "../../assets/colors";
 import MenuBar from "../MenuBar/MenuBar";
 
 const Landing = ({ children }) => (
@@ -38,10 +38,14 @@ const Landing = ({ children }) => (
             background: url(${circuits}) no-repeat center center;
             background-size: cover;
           }
-          > input {
+          input:not([type="checkbox"]):not([type="image"]) {
             margin: 12px 4px !important;
             display: block;
             max-width: 375px;
+            background-color: white !important;
+            &:focus {
+              border: 1px solid ${blue} !important;
+            }
           }
           p.blurb {
             max-width: 300px;
@@ -65,20 +69,15 @@ const Landing = ({ children }) => (
           align-items: flex-start;
           height: 100%;
           border-left: 1px solid ${steel};
-          padding: 175px calc(50vw - 615px) 100px 64px;
-          @media screen and (max-width: 1400px) and (min-width: ${desktopMinWidth}) {
-            padding-right: 80px;
-          }
-          @media screen and (max-width: ${mobileMaxWidth}) {
-            padding-right: 5vw;
-          }
+          padding-top: 30vh;
+          overflow: hidden;
         `}
       >
         <img
           src=".././assets/img/queens-building.svg"
           css={`
-            width: 500px;
-            max-width: 100%;
+            width: 800px;
+            max-width: 90%;
           `}
           alt=""
           {...decorativeElement}

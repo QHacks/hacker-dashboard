@@ -44,7 +44,9 @@ const degreeOptions = [
   "Bachelor of Social Work",
   "Bachelor of Technology",
   "Bachelor of Accountancy",
-  "Bachelor of Science"
+  "Bachelor of Science",
+  "Master's degree",
+  "PhD"
 ].map((str) => toOptions(str));
 
 const monthOptions = [
@@ -114,7 +116,8 @@ const Step2 = (props) => {
               <input
                 id="birthday"
                 key="birthday"
-                type="date"
+                type="text"
+                placeholder="YYYY-MM-DD"
                 value={props.applicationAnswers.birthday}
                 onChange={(e) =>
                   props.setApplicationAnswer("birthday", e.target.value)

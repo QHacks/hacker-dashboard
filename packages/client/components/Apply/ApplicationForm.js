@@ -277,7 +277,7 @@ class ApplicationForm extends Component {
       birthday: {
         regex: /^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/,
         stepNum: 1,
-        message: "Please enter a valid date"
+        message: "Please enter a valid date in the form YYYY-MM-DD"
       },
       race: {
         regex: /^[^0-9]+$/,
