@@ -81,7 +81,6 @@ class Login extends Component {
           className="blurb"
           css={`
             margin-top: 24px;
-            color: #8a929f;
           `}
         >
           Welcome back.
@@ -90,7 +89,6 @@ class Login extends Component {
           className="blurb"
           css={`
             margin-top: 12px;
-            color: #8a929f;
           `}
         >
           Please login to your account.

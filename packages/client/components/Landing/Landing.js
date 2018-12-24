@@ -52,7 +52,8 @@ const Landing = ({ children }) => (
           }
           p.blurb {
             max-width: 300px;
-            font-size: 18px;
+            font-size: 20px;
+            color: #8a929f;
           }
           a.landingLink {
             font-weight: 600;
