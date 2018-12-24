@@ -14,6 +14,15 @@ const GET_USER_APPLICATION_FOR_EVENT = gql`
   }
 `;
 
+const GET_ALL_APPLICATIONS_FOR_EVENT = gql`
+  query GetAllApplications($eventSlug: String!, $after: ID, $first: Int) {
+    applications(eventSlug: $eventSlug, after: $after, first: $first) {
+      id
+      status
+    }
+  }
+`;
+
 const CREATE_APPLICATION_FOR_EVENT = gql`
   mutation CreateApplicationForEvent(
     $eventSlug: String!
@@ -253,5 +262,54 @@ describe("Application Type", () => {
     expect(data).toBeNull();
     expect(errors).toHaveLength(1);
     expect(errors[0].message).toBe("Field 3 is a required field!");
+  });
+
+  it("finds all applications for an event, with pagination", async () => {
+    const event = await db.Event.findOne({});
+    const hacker = await db.User.findOne({
+      where: { email: "hacker1@test.com" }
+    });
+    const admin = await db.User.findOne({
+      where: { email: "admin@test.com" }
+    });
+
+    const existingApplication = await db.Application.findOne({});
+    const newApplication = await db.Application.create({
+      userId: hacker.id,
+      eventId: event.id,
+      status: "APPLIED"
+    });
+
+    const { query } = await graphqlClient(admin);
+
+    // Query for the existing application
+
+    const { data: response1 } = await query({
+      query: GET_ALL_APPLICATIONS_FOR_EVENT,
+      variables: { eventSlug: "qhacks-2019", first: 1, after: null }
+    });
+
+    expect(response1.applications).toBeDefined();
+    expect(response1.applications).toHaveLength(1);
+    expect(response1.applications[0]).toEqual(
+      expect.objectContaining({ status: "APPLIED", id: existingApplication.id })
+    );
+
+    // Query for the newly created application
+
+    const { data: response2 } = await query({
+      query: GET_ALL_APPLICATIONS_FOR_EVENT,
+      variables: {
+        eventSlug: "qhacks-2019",
+        first: 1,
+        after: existingApplication.id
+      }
+    });
+
+    expect(response2.applications).toBeDefined();
+    expect(response2.applications).toHaveLength(1);
+    expect(response2.applications[0]).toEqual(
+      expect.objectContaining({ status: "APPLIED", id: newApplication.id })
+    );
   });
 });

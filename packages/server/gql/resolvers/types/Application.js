@@ -55,16 +55,35 @@ const applications = combineResolvers(
   async (parent, args, ctx, info) => {
     const { db } = ctx;
     const { eventSlug: slug } = args;
-    const applicationsFromDB = await db.Application.findAll({
-      include: [
-        {
-          model: db.Event,
-          where: { slug }
-        }
-      ]
-    });
+    const pagination = {};
 
-    return applicationsFromDB;
+    if (args.after) {
+      pagination.where = {
+        id: {
+          [db.Sequelize.Op.gt]: args.after
+        }
+      };
+    }
+
+    if (args.first) {
+      pagination.limit = args.first;
+    }
+
+    try {
+      const applicationsFromDB = await db.Application.findAll({
+        include: [
+          {
+            model: db.Event,
+            where: { slug }
+          }
+        ],
+        ...pagination
+      });
+
+      return applicationsFromDB;
+    } catch (err) {
+      throw new DatabaseError("Unable to retrieve applications at this time!");
+    }
   }
 );
 

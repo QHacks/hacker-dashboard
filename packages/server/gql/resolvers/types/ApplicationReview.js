@@ -1,6 +1,6 @@
 const { combineResolvers } = require("graphql-resolvers");
 
-const { GraphQLUserInputError } = require("../../../errors");
+const { DatabaseError } = require("../../../errors");
 
 const { isAuthorized } = require("../generics");
 
@@ -18,7 +18,9 @@ const applicationReviewCreate = combineResolvers(
       });
       return { applicationReview: res };
     } catch (err) {
-      throw new GraphQLUserInputError(err.message);
+      throw new DatabaseError(
+        "Unable to create an application review at this time!"
+      );
     }
   }
 );
