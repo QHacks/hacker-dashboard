@@ -13,6 +13,11 @@ const db = require("./db");
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const FORCE_SSL = process.env.FORCE_SSL === "true";
+const TRUSTED_REQUEST_ORIGINS = {
+  staging: "https://staging.qhacks.io",
+  production: "https://app.qhacks.io",
+  development: "http://localhost:8080"
+};
 
 IS_PROD
   ? logger.info("Running production server!")
@@ -58,7 +63,11 @@ db()
     app.use("/api/", cors({ origin: "https://qhacks.io" }), restApi());
 
     // Public OAuth Endpoints
-    app.use("/oauth/", oauthApi());
+    app.use(
+      "/oauth/",
+      cors({ origin: TRUSTED_REQUEST_ORIGINS[process.env.NODE_ENV] }),
+      oauthApi()
+    );
 
     // GraphQL Endpoint
     const graphqlServer = new ApolloServer({
