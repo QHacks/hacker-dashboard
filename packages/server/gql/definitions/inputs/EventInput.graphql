@@ -1,3 +1,45 @@
+"""
+Represents information to create and update an event.
+"""
 input EventInput {
-  name: String!
+  """
+  The name of the event.
+  """
+  name: String
+  """
+  The slug of the event.
+  """
+  slug: String
+  """
+  The start date of the event.
+  """
+  startDate: Date
+  """
+  The end date of the event.
+  """
+  endDate: Date
+  """
+  Whether or not attending the event requires an application.
+  """
+  requiresApplication: Boolean
+  """
+  The opening date of application submission.
+  """
+  applicationOpenDate: Date
+  """
+  The closing date of application submission.
+  """
+  applicationCloseDate: Date
+  """
+  Whether or not the event includes projects.
+  """
+  hasProjects: Boolean
+  """
+  The submission date of the projects.
+  """
+  projectSubmissionDate: Date
+  """
+  The URL for the event logo
+  """
+  eventLogoUrl: String
 }

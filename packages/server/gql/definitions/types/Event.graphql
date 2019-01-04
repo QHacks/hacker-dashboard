@@ -66,4 +66,28 @@ type Event {
   The event end date.
   """
   endDate: Date!
+  """
+  Whether or not attending the event requires an application.
+  """
+  requiresApplication: Boolean!
+  """
+  The opening date of application submission.
+  """
+  applicationOpenDate: Date
+  """
+  The closing date of application submission.
+  """
+  applicationCloseDate: Date
+  """
+  Whether or not the event includes projects.
+  """
+  hasProjects: Boolean!
+  """
+  The submission date of the projects.
+  """
+  projectSubmissionDate: Date!
+  """
+  The URL for the event logo
+  """
+  eventLogoUrl: String
 }

@@ -1,9 +1,9 @@
 """
-Thing
+Represents the response when a mailing list is deleted by slug.
 """
 type MailingListDeleteBySlugPayload {
   """
-  Thing
+  The slug of the deleted mailing list.
   """
   deletedMailingListSlug: String!
 }

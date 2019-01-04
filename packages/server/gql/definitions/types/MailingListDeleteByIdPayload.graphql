@@ -1,9 +1,9 @@
 """
-Thing
+Represents the response when a mailing list is deleted by ID.
 """
 type MailingListDeleteByIdPayload {
   """
-  Thing
+  The ID of the deleted mailing list.
   """
   deletedMailingListId: ID!
 }

@@ -1,9 +1,9 @@
 """
-Thing
+Represents the response when a new mailing list is created.
 """
 type MailingListCreatePayload {
   """
-  Thing
+  The newly created mailing list.
   """
   mailingList: MailingList
 }
