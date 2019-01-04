@@ -11,7 +11,7 @@ const {
   GraphQLAuthenticationError
 } = require("../../errors/graphql-errors");
 
-const isAuthenticated = (parent, args, ctx, info) => {
+const isAuthenticated = () => (parent, args, ctx, info) => {
   const { user } = ctx;
 
   if (!user) {
@@ -43,7 +43,7 @@ const isAuthorized = (scopes = null, requiredRole = null) => (
     throw new GraphQLAuthorizationError();
   }
 
-  if (requiredRole && isAuthorizedFromRole(requiredRole, access.role)) {
+  if (requiredRole && !isAuthorizedFromRole(requiredRole, access.role)) {
     throw new GraphQLAuthorizationError(
       "Not authorized! You are not the required user role to perform this operation."
     );
@@ -73,7 +73,10 @@ const isAuthenticatedAndAuthorized = (scopes = null, requiredRole = null) => {
     );
   }
 
-  return combineResolvers(isAuthenticated, isAuthorized(scopes, requiredRole));
+  return combineResolvers(
+    isAuthenticated(),
+    isAuthorized(scopes, requiredRole)
+  );
 };
 
 module.exports = {

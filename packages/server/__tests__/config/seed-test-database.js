@@ -104,19 +104,31 @@ async function createUsers() {
 // Seed Events
 
 async function createEvents() {
-  await db.Event.create({
-    id: QHACKS_EVENT_ID,
-    name: "qhacks-2019",
-    slug: "qhacks-2019",
-    startDate: new Date("2019-02-01T19:00Z"),
-    endDate: new Date("2019-02-03T19:00Z"),
-    requiresApplication: true,
-    applicationOpenDate: new Date("1970-01-01"),
-    applicationCloseDate: new Date("2025-02-01"),
-    hasProjectSubmissions: true,
-    projectSubmissionDate: new Date("2018-02-03T14:00Z"),
-    eventLogoUrl: "http://digitalocean.com/qhacks.jpg"
-  });
+  await db.Event.bulkCreate([
+    {
+      id: QHACKS_EVENT_ID,
+      name: "qhacks-2019",
+      slug: "qhacks-2019",
+      startDate: new Date("2019-02-01T19:00Z"),
+      endDate: new Date("2019-02-03T19:00Z"),
+      requiresApplication: true,
+      applicationOpenDate: new Date("1970-01-01"),
+      applicationCloseDate: new Date("2025-02-01"),
+      hasProjectSubmissions: true,
+      projectSubmissionDate: new Date("2018-02-03T14:00Z"),
+      eventLogoUrl: "http://digitalocean.com/qhacks.jpg"
+    },
+    {
+      name: "yophacks-2019",
+      slug: "yophacks-2019",
+      startDate: new Date("2019-02-01T19:00Z"),
+      endDate: new Date("2019-02-03T19:00Z"),
+      requiresApplication: false,
+      hasProjectSubmissions: true,
+      projectSubmissionDate: new Date("2018-02-03T14:00Z"),
+      eventLogoUrl: "http://digitalocean.com/yophacks.jpg"
+    }
+  ]);
 }
 
 // Seed Applications

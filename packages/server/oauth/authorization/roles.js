@@ -10,10 +10,11 @@ function isAuthorizedFromRole(requiredRole, userRole) {
     return true;
   }
 
-  if (
-    userRole === (ROLES.ADMIN || ROLES.SUPER_ADMIN) &&
-    requiredRole === ROLES.VOLUNTEER
-  ) {
+  if (userRole === ROLES.ADMIN && requiredRole === ROLES.VOLUNTEER) {
+    return true;
+  }
+
+  if (userRole === ROLES.ADMIN && requiredRole === ROLES.HACKER) {
     return true;
   }
 
@@ -30,6 +31,5 @@ function isAuthorizedFromRole(requiredRole, userRole) {
 
 module.exports = {
   ROLES,
-
   isAuthorizedFromRole
 };

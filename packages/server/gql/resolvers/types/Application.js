@@ -14,7 +14,7 @@ const {
 // Query Root Resolvers
 
 const application = combineResolvers(
-  isAuthenticated,
+  isAuthenticated(),
   async (parent, args, ctx, info) => {
     const { eventSlug } = args;
     const { db, user } = ctx;
@@ -53,7 +53,7 @@ const application = combineResolvers(
 // Mutation Root Resolvers
 
 const applicationCreate = combineResolvers(
-  isAuthenticated,
+  isAuthenticated(),
   async (parent, args, ctx, info) => {
     const { eventSlug, input } = args;
     const { user, db } = ctx;
