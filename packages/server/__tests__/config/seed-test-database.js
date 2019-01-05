@@ -2,6 +2,7 @@ const uuid = require("uuid");
 
 const { getDefaultScopesForRole, ROLES } = require("../../oauth/authorization");
 
+const YOPHACKS_EVENT_ID = uuid.v4();
 const QHACKS_CLIENT_ID = uuid.v4();
 const QHACKS_EVENT_ID = uuid.v4();
 const HACKER_ID = uuid.v4();
@@ -119,6 +120,7 @@ async function createEvents() {
       eventLogoUrl: "http://digitalocean.com/qhacks.jpg"
     },
     {
+      id: YOPHACKS_EVENT_ID,
       name: "yophacks-2019",
       slug: "yophacks-2019",
       startDate: new Date("2019-02-01T19:00Z"),
@@ -196,6 +198,23 @@ async function createApplicationFieldResponses(
   });
 }
 
+// Seed Mailing Lists
+
+async function createMailingLists() {
+  await db.MailingList.bulkCreate([
+    {
+      slug: "qhacks-list",
+      name: "qhacks-list",
+      eventId: QHACKS_EVENT_ID
+    },
+    {
+      slug: "yophacks-list",
+      name: "yophacks-list",
+      eventId: YOPHACKS_EVENT_ID
+    }
+  ]);
+}
+
 module.exports = async () => {
   await createOAuthClients();
   await createUsers();
@@ -204,4 +223,5 @@ module.exports = async () => {
   const applicationIds = await createApplications();
   const applicationFieldIds = await createApplicationFields();
   await createApplicationFieldResponses(applicationFieldIds, applicationIds);
+  await createMailingLists();
 };

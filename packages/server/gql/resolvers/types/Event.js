@@ -124,20 +124,12 @@ const eventDelete = combineResolvers(
     const event = await db.Event.findByPk(args.id);
 
     if (!event) {
-      throw new GraphQLUserInputError(
+      throw new GraphQLNotFoundError(
         `Unable to find event with identifier ${args.id}`
       );
     }
 
-    try {
-      await db.Event.destroy({
-        where: { id: args.id }
-      });
-    } catch (err) {
-      throw new GraphQLInternalServerError(
-        "Unable to delete event at this time."
-      );
-    }
+    await event.destroy();
 
     return { deletedEventId: event.id };
   }
@@ -151,20 +143,12 @@ const eventDeleteBySlug = combineResolvers(
     const event = await db.Event.findOne({ where: { slug: args.slug } });
 
     if (!event) {
-      throw new GraphQLUserInputError(
+      throw new GraphQLNotFoundError(
         `Unable to find event with slug ${args.slug}`
       );
     }
 
-    try {
-      await db.Event.destroy({
-        where: { slug: args.slug }
-      });
-    } catch (err) {
-      throw new GraphQLInternalServerError(
-        "Unable to delete event at this time."
-      );
-    }
+    await event.destroy();
 
     return { deletedEventSlug: event.slug };
   }

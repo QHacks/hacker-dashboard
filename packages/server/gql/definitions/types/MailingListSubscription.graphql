@@ -1,0 +1,9 @@
+"""
+Represents fields required to be a mailing list subscription.
+"""
+type MailingListSubscription implements MailingListSubscriber {
+  """
+  Email that is subscribed to the mailing list.
+  """
+  email: String!
+}

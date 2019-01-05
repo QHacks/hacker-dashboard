@@ -49,7 +49,7 @@ const mailingListSubscriberDelete = async (parent, args, ctx, info) => {
 module.exports = {
   MailingListSubscriber: {
     __resolveType(mailingListSubscriber, ctx, info) {
-      return "MailingListSubscriber";
+      return "MailingListSubscription";
     }
   },
   MutationRoot: {

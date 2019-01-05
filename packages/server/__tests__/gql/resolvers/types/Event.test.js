@@ -85,11 +85,7 @@ const DELETE_EVENT_BY_SLUG_MUTATION = gql`
 
 describe("Event Type", () => {
   it("retrieves all events through the events query", async () => {
-    const hacker = await db.User.findOne({
-      where: { email: "hacker1@test.com" }
-    });
-
-    const { query } = await graphqlClient(hacker);
+    const { query } = await graphqlClient();
 
     const res = await query({ query: GET_ALL_EVENTS_QUERY });
     const expectedEvents = [
@@ -115,11 +111,7 @@ describe("Event Type", () => {
       where: { slug: "qhacks-2019" }
     });
 
-    const hacker = await db.User.findOne({
-      where: { email: "hacker1@test.com" }
-    });
-
-    const { query } = await graphqlClient(hacker);
+    const { query } = await graphqlClient();
 
     const res = await query({
       query: GET_EVENT_BY_ID_QUERY,
@@ -134,11 +126,7 @@ describe("Event Type", () => {
   });
 
   it("retrieves an event by slug through eventBySlug query", async () => {
-    const hacker = await db.User.findOne({
-      where: { email: "hacker1@test.com" }
-    });
-
-    const { query } = await graphqlClient(hacker);
+    const { query } = await graphqlClient();
 
     const res = await query({
       query: GET_EVENT_BY_SLUG_QUERY,
@@ -272,7 +260,6 @@ describe("Event Type", () => {
       variables: { id: qhacks.id }
     });
 
-    console.log(res);
     expect(res.data.eventDelete.deletedEventId).toBe(qhacks.id);
 
     const deletedEvent = await db.Event.findByPk(qhacks.id);
