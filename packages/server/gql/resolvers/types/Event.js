@@ -4,7 +4,7 @@ const { isAuthenticatedAndAuthorized } = require("../generics");
 const {
   GraphQLNotFoundError,
   GraphQLUserInputError,
-  GraphQLInternalServerError
+  GRAPHQL_ERROR_CODES
 } = require("../../../errors/graphql-errors");
 const { ROLES } = require("../../../oauth/authorization");
 
@@ -19,7 +19,8 @@ const event = combineResolvers(
 
     if (!event) {
       throw new GraphQLNotFoundError(
-        `Unable to find hacker with id ${args.id}`
+        `Unable to find hacker with id ${args.id}`,
+        GRAPHQL_ERROR_CODES.NOT_FOUND
       );
     }
 
@@ -47,7 +48,8 @@ const eventBySlug = combineResolvers(
 
     if (!event) {
       throw new GraphQLNotFoundError(
-        `Unable to find hacker with id ${args.id}`
+        `Unable to find hacker with id ${args.id}`,
+        GRAPHQL_ERROR_CODES.NOT_FOUND
       );
     }
 
@@ -74,7 +76,10 @@ const eventCreate = combineResolvers(
 
     requiredFields.forEach((field) => {
       if (!(field in input)) {
-        throw new GraphQLUserInputError(`${field} must be provided!`);
+        throw new GraphQLUserInputError(
+          `${field} must be provided!`,
+          GRAPHQL_ERROR_CODES.MISSING_REQUIRED_FIELD
+        );
       }
     });
 
@@ -125,7 +130,8 @@ const eventDelete = combineResolvers(
 
     if (!event) {
       throw new GraphQLNotFoundError(
-        `Unable to find event with identifier ${args.id}`
+        `Unable to find event with identifier ${args.id}`,
+        GRAPHQL_ERROR_CODES.NOT_FOUND
       );
     }
 
@@ -144,7 +150,8 @@ const eventDeleteBySlug = combineResolvers(
 
     if (!event) {
       throw new GraphQLNotFoundError(
-        `Unable to find event with slug ${args.slug}`
+        `Unable to find event with slug ${args.slug}`,
+        GRAPHQL_ERROR_CODES.NOT_FOUND
       );
     }
 

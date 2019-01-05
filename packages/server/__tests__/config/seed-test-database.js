@@ -2,6 +2,7 @@ const uuid = require("uuid");
 
 const { getDefaultScopesForRole, ROLES } = require("../../oauth/authorization");
 
+const QHACKS_MAILING_LIST_ID = uuid.v4();
 const YOPHACKS_EVENT_ID = uuid.v4();
 const QHACKS_CLIENT_ID = uuid.v4();
 const QHACKS_EVENT_ID = uuid.v4();
@@ -203,6 +204,7 @@ async function createApplicationFieldResponses(
 async function createMailingLists() {
   await db.MailingList.bulkCreate([
     {
+      id: QHACKS_MAILING_LIST_ID,
       slug: "qhacks-list",
       name: "qhacks-list",
       eventId: QHACKS_EVENT_ID
@@ -213,6 +215,11 @@ async function createMailingLists() {
       eventId: YOPHACKS_EVENT_ID
     }
   ]);
+
+  await db.MailingListSubscription.create({
+    email: "subscriber@test.com",
+    mailingListId: QHACKS_MAILING_LIST_ID
+  });
 }
 
 module.exports = async () => {

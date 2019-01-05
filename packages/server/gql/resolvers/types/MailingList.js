@@ -188,11 +188,7 @@ const subscribers = combineResolvers(
       where: { mailingListId: parent.id }
     });
 
-    const res = subscriptions.map((sub) => ({
-      email: sub.email
-    }));
-
-    return res;
+    return subscriptions;
   }
 );
 

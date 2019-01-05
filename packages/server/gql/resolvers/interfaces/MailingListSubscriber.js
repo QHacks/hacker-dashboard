@@ -1,7 +1,11 @@
+const { combineResolvers } = require("graphql-resolvers");
+
 const {
   GRAPHQL_ERROR_CODES,
-  GraphQLNotFoundError
+  GraphQLNotFoundError,
+  GraphQLForbiddenError
 } = require("../../../errors/graphql-errors");
+const { isAuthenticatedAndAuthorized } = require("../generics");
 
 // Mutation Root Resolvers
 
@@ -25,23 +29,42 @@ const mailingListSubscriberCreate = async (parent, args, ctx, info) => {
     where: { email: input.email.toLowerCase() }
   });
 
-  await MailingListSubscription.create({
+  const subscriber = await db.MailingListSubscription.create({
     mailingListId: event.MailingLists[0].id,
     userId: user && user.id ? user.id : null,
-    email: email.toLowerCase()
+    email: input.email.toLowerCase()
   });
 
   return {
-    subscriber: {
-      email: "bob"
-    }
+    subscriber
   };
 };
 
 const mailingListSubscriberDelete = async (parent, args, ctx, info) => {
-  return {
-    email: "Bob"
-  };
+  const { db } = ctx;
+
+  const subscription = await db.MailingListSubscription.findOne({
+    where: { email: args.email },
+    include: {
+      model: db.MailingList,
+      where: { slug: args.mailingListSlug },
+      include: {
+        model: db.Event,
+        where: { slug: args.eventSlug }
+      }
+    }
+  });
+
+  if (!subscription) {
+    throw new GraphQLNotFoundError(
+      "Unable to find requested mailing list subscriber!",
+      GRAPHQL_ERROR_CODES.NOT_FOUND
+    );
+  }
+
+  await subscription.destroy();
+
+  return { deletedSubscriberEmail: subscription.email };
 };
 
 // Resolver Map
