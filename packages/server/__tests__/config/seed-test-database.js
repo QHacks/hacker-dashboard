@@ -16,7 +16,7 @@ async function createOAuthClients() {
   await db.OAuthClient.create({
     id: QHACKS_CLIENT_ID,
     name: "test-client",
-    host: "qhacks-host",
+    host: "127.0.0.1",
     firstParty: true,
     redirectUri: "https://qhacks.io"
   });

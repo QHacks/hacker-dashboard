@@ -154,17 +154,15 @@ const applicationCreate = combineResolvers(
         );
       }
 
-      if (process.env.NODE_ENV !== "test") {
-        await sendEmails("application-success", [
-          {
-            to: user.email,
-            dataForTemplate: {
-              firstName: user.firstName,
-              email: user.email
-            }
+      await sendEmails("application-success", [
+        {
+          to: user.email,
+          dataForTemplate: {
+            firstName: user.firstName,
+            email: user.email
           }
-        ]);
-      }
+        }
+      ]);
 
       return {
         application: {

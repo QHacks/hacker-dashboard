@@ -8,6 +8,9 @@ const GET_ADMIN_INFO_QUERY = gql`
       firstName
       lastName
       email
+      oauthInfo {
+        role
+      }
     }
   }
 `;
@@ -22,7 +25,10 @@ describe("Admin Type", () => {
     expect(res.data.user).toEqual({
       firstName: "Ross",
       lastName: "Hill",
-      email: "admin@test.com"
+      email: "admin@test.com",
+      oauthInfo: {
+        role: "ADMIN"
+      }
     });
   });
 });

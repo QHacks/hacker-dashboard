@@ -61,7 +61,7 @@ const mailingListBySlug = combineResolvers(
   async (parent, args, ctx, info) => {
     const { db } = ctx;
 
-    const mailingList = await db.MailingList.find({
+    const mailingList = await db.MailingList.findOne({
       where: { slug: args.slug }
     });
 
