@@ -1,11 +1,7 @@
-const { combineResolvers } = require("graphql-resolvers");
-
 const {
   GRAPHQL_ERROR_CODES,
-  GraphQLNotFoundError,
-  GraphQLForbiddenError
+  GraphQLNotFoundError
 } = require("../../../errors/graphql-errors");
-const { isAuthenticatedAndAuthorized } = require("../generics");
 
 // Mutation Root Resolvers
 

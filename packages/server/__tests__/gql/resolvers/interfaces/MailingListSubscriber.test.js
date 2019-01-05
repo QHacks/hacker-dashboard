@@ -85,6 +85,14 @@ describe("MailingListSubscriber Interface", () => {
     const deletedSubscriber = await db.MailingListSubscription.findOne({
       where: {
         email: "subscriber@test.com"
+      },
+      include: {
+        model: db.MailingList,
+        where: { slug: "qhacks-list" },
+        include: {
+          model: db.Event,
+          where: { slug: "qhacks-2019" }
+        }
       }
     });
 

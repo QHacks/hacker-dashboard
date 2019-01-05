@@ -2,9 +2,10 @@ const { combineResolvers } = require("graphql-resolvers");
 
 const { isAuthenticatedAndAuthorized } = require("../generics");
 const {
+  GRAPHQL_ERROR_CODES,
   GraphQLNotFoundError,
   GraphQLUserInputError,
-  GRAPHQL_ERROR_CODES
+  GraphQLInternalServerError
 } = require("../../../errors/graphql-errors");
 const { ROLES } = require("../../../oauth/authorization");
 
@@ -135,9 +136,27 @@ const eventDelete = combineResolvers(
       );
     }
 
-    await event.destroy();
+    // TODO: add a migration for onDelete: "CASCADE" to avoid this transaction
+    try {
+      const deleteEventAndSubscriptions = db.sequelize.transaction(
+        async (t) => {
+          await db.MailingListSubscription.destroy({
+            where: {},
+            include: { model: db.MailingList, where: { eventId: event.id } }
+          });
+          await event.destroy();
 
-    return { deletedEventId: event.id };
+          return { deletedEventId: event.id };
+        }
+      );
+
+      return deleteEventAndSubscriptions;
+    } catch (err) {
+      throw new GraphQLInternalServerError(
+        "Unable to delete event at this time",
+        GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 );
 
@@ -155,9 +174,27 @@ const eventDeleteBySlug = combineResolvers(
       );
     }
 
-    await event.destroy();
+    // TODO: add a migration for onDelete: "CASCADE" to avoid this transaction
+    try {
+      const deleteEventAndSubscriptions = db.sequelize.transaction(
+        async (t) => {
+          await db.MailingListSubscription.destroy({
+            where: {},
+            include: { model: db.MailingList, where: { eventId: event.id } }
+          });
+          await event.destroy();
 
-    return { deletedEventSlug: event.slug };
+          return { deletedEventSlug: event.slug };
+        }
+      );
+
+      return deleteEventAndSubscriptions;
+    } catch (err) {
+      throw new GraphQLInternalServerError(
+        "Unable to delete event at this time.",
+        GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 );
 

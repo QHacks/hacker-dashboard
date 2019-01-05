@@ -2,8 +2,9 @@ const { combineResolvers } = require("graphql-resolvers");
 
 const { isAuthenticatedAndAuthorized } = require("../generics");
 const {
+  GRAPHQL_ERROR_CODES,
   GraphQLNotFoundError,
-  GraphQLUserInputError
+  GraphQLInternalServerError
 } = require("../../../errors/graphql-errors");
 const { ROLES } = require("../../../oauth/authorization");
 // Query Root Resolvers
@@ -46,7 +47,8 @@ const mailingList = combineResolvers(
 
     if (!mailingList) {
       throw new GraphQLNotFoundError(
-        `Unable to find mailing list with identifier ${args.id}`
+        `Unable to find mailing list with identifier ${args.id}`,
+        GRAPHQL_ERROR_CODES.NOT_FOUND
       );
     }
 
@@ -65,7 +67,8 @@ const mailingListBySlug = combineResolvers(
 
     if (!mailingList) {
       throw new GraphQLNotFoundError(
-        `Unable to find mailing list with slug ${args.slug}`
+        `Unable to find mailing list with slug ${args.slug}`,
+        GRAPHQL_ERROR_CODES.NOT_FOUND
       );
     }
 
@@ -85,7 +88,8 @@ const mailingListCreate = combineResolvers(
 
     if (!event) {
       throw new GraphQLNotFoundError(
-        `unable to find event with slug ${eventSlug}`
+        `unable to find event with slug ${eventSlug}`,
+        GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
       );
     }
 
@@ -137,13 +141,34 @@ const mailingListDelete = combineResolvers(
 
     if (!mailingList) {
       throw new GraphQLNotFoundError(
-        `Unable to find mailing list with identifier ${id}!`
+        `Unable to find mailing list with identifier ${id}!`,
+        GRAPHQL_ERROR_CODES.NOT_FOUND
       );
     }
 
-    await mailingList.destroy();
+    // TODO: Add a migration for onDelete: "CASCADE" to avoid this
+    try {
+      const destroyMailingListAndSubscriptions = db.sequelize.transaction(
+        async (t) => {
+          await db.MailingListSubscription.destroy(
+            {
+              where: { mailingListId: mailingList.id }
+            },
+            { transaction: t }
+          );
+          await mailingList.destroy({ transaction: t });
 
-    return { deletedMailingListId: mailingList.id };
+          return { deletedMailingListId: mailingList.id };
+        }
+      );
+
+      return destroyMailingListAndSubscriptions;
+    } catch (e) {
+      throw new GraphQLInternalServerError(
+        "Unable to delete mailing list at this time.",
+        GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 );
 
@@ -161,9 +186,29 @@ const mailingListDeleteBySlug = combineResolvers(
       );
     }
 
-    await mailingList.destroy();
+    // TODO: Add a migration for onDelete: "CASCADE" to avoid this
+    try {
+      const destroyMailingListAndSubscriptions = db.sequelize.transaction(
+        async (t) => {
+          await db.MailingListSubscription.destroy(
+            {
+              where: { mailingListId: mailingList.id }
+            },
+            { transaction: t }
+          );
+          await mailingList.destroy({ transaction: t });
 
-    return { deletedMailingListSlug: mailingList.slug };
+          return { deletedMailingListSlug: mailingList.slug };
+        }
+      );
+
+      return destroyMailingListAndSubscriptions;
+    } catch (err) {
+      throw new GraphQLInternalServerError(
+        "Unable to delete mailing list at this time.",
+        GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 );
 

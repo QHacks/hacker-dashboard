@@ -346,7 +346,11 @@ describe("MailingList Type", () => {
     );
 
     const deletedMailingList = await db.MailingList.findOne({
-      where: { slug: "yophacks-list" }
+      where: { slug: "yophacks-list" },
+      include: {
+        model: db.Event,
+        where: { slug: "yophacks-2019" }
+      }
     });
 
     expect(deletedMailingList).toBeNull();
