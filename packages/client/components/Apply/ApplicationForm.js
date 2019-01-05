@@ -275,7 +275,7 @@ class ApplicationForm extends Component {
         message: "Please enter a valid phone number"
       },
       birthday: {
-        regex: /^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/,
+        regex: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
         stepNum: 1,
         message: "Please enter a valid date"
       },

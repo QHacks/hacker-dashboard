@@ -115,6 +115,8 @@ const Step2 = (props) => {
                 id="birthday"
                 key="birthday"
                 type="date"
+                placeholder="YYYY-MM-DD"
+                pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
                 value={props.applicationAnswers.birthday}
                 onChange={(e) =>
                   props.setApplicationAnswer("birthday", e.target.value)
