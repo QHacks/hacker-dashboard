@@ -1,6 +1,8 @@
 const {
   GRAPHQL_ERROR_CODES,
-  GraphQLNotFoundError
+  GraphQLNotFoundError,
+  GraphQLForbiddenError,
+  GraphQLInternalServerError
 } = require("../../../errors/graphql-errors");
 
 // Mutation Root Resolvers
@@ -25,15 +27,34 @@ const mailingListSubscriberCreate = async (parent, args, ctx, info) => {
     where: { email: input.email.toLowerCase() }
   });
 
-  const subscriber = await db.MailingListSubscription.create({
-    mailingListId: event.MailingLists[0].id,
-    userId: user && user.id ? user.id : null,
-    email: input.email.toLowerCase()
-  });
+  try {
+    const subscriber = await db.MailingListSubscription.create({
+      mailingListId: event.MailingLists[0].id,
+      userId: user && user.id ? user.id : null,
+      email: input.email.toLowerCase()
+    });
 
-  return {
-    subscriber
-  };
+    return {
+      subscriber
+    };
+  } catch (err) {
+    if (
+      err.errors &&
+      err.errors[0] &&
+      err.errors[0].type &&
+      err.errors[0].type === "unique violation"
+    ) {
+      throw new GraphQLForbiddenError(
+        `${input.email} has already been signed up!`,
+        GRAPHQL_ERROR_CODES.EMAIL_ALREADY_SUBSCRIBED
+      );
+    }
+
+    throw new GraphQLInternalServerError(
+      "Cannot create subscription at this time",
+      GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
+    );
+  }
 };
 
 const mailingListSubscriberDelete = async (parent, args, ctx, info) => {

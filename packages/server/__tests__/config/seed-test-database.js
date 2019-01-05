@@ -215,7 +215,11 @@ async function createMailingLists() {
       eventId: YOPHACKS_EVENT_ID
     }
   ]);
+}
 
+// Seed Mailing List Subscriptions
+
+async function createMailingListSubscriptions() {
   await db.MailingListSubscription.create({
     email: "subscriber@test.com",
     mailingListId: QHACKS_MAILING_LIST_ID
@@ -230,5 +234,7 @@ module.exports = async () => {
   const applicationIds = await createApplications();
   const applicationFieldIds = await createApplicationFields();
   await createApplicationFieldResponses(applicationFieldIds, applicationIds);
+
   await createMailingLists();
+  await createMailingListSubscriptions();
 };

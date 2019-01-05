@@ -34,7 +34,7 @@ extend type MutationRoot {
   """
   Deletes an event by its identifier.
   """
-  eventDelete(id: ID!): EventDeleteByIdPayload!
+  eventDelete(id: ID!): EventDeletePayload!
 
   """
   Deletes an event by its slug.

@@ -77,10 +77,9 @@ const eventCreate = combineResolvers(
 
     requiredFields.forEach((field) => {
       if (!(field in input)) {
-        throw new GraphQLUserInputError(
-          `${field} must be provided!`,
-          GRAPHQL_ERROR_CODES.MISSING_REQUIRED_FIELD
-        );
+        throw new GraphQLUserInputError(`${field} must be provided!`, {
+          requiredField: field
+        });
       }
     });
 

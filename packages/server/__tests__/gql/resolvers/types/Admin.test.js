@@ -1,6 +1,7 @@
 const { gql } = require("apollo-server-express");
 
 const { db, graphqlClient } = global;
+const { ROLES } = require("../../../../oauth/authorization");
 
 const GET_ADMIN_INFO_QUERY = gql`
   query GetAdminInfo {
@@ -27,7 +28,7 @@ describe("Admin Type", () => {
       lastName: "Hill",
       email: "admin@test.com",
       oauthInfo: {
-        role: "ADMIN"
+        role: ROLES.ADMIN
       }
     });
   });

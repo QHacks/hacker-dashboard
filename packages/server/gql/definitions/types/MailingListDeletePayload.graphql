@@ -1,7 +1,7 @@
 """
 Represents the response when a mailing list is deleted by ID.
 """
-type MailingListDeleteByIdPayload {
+type MailingListDeletePayload {
   """
   The ID of the deleted mailing list.
   """

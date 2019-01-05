@@ -1,12 +1,14 @@
 const { combineResolvers } = require("graphql-resolvers");
 
 const { isAuthenticatedAndAuthorized } = require("../generics");
+const { ROLES } = require("../../../oauth/authorization");
+
 const {
   GRAPHQL_ERROR_CODES,
   GraphQLNotFoundError,
   GraphQLInternalServerError
 } = require("../../../errors/graphql-errors");
-const { ROLES } = require("../../../oauth/authorization");
+
 // Query Root Resolvers
 
 const mailingLists = combineResolvers(

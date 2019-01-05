@@ -1,8 +1,9 @@
-const { db, graphqlClient } = global;
 const { gql } = require("apollo-server-express");
 
+const { db, graphqlClient } = global;
+
 const GET_ALL_EVENTS_QUERY = gql`
-  query getAllEvents {
+  query GetAllEvents {
     events {
       name
       slug
@@ -12,7 +13,7 @@ const GET_ALL_EVENTS_QUERY = gql`
 `;
 
 const GET_EVENT_BY_ID_QUERY = gql`
-  query getEventByID($id: ID!) {
+  query GetEventByID($id: ID!) {
     event(id: $id) {
       name
       slug
@@ -22,7 +23,7 @@ const GET_EVENT_BY_ID_QUERY = gql`
 `;
 
 const GET_EVENT_BY_SLUG_QUERY = gql`
-  query getEventBySlug($slug: String!) {
+  query GetEventBySlug($slug: String!) {
     eventBySlug(slug: $slug) {
       name
       slug
@@ -32,7 +33,7 @@ const GET_EVENT_BY_SLUG_QUERY = gql`
 `;
 
 const CREATE_NEW_EVENT_MUTATION = gql`
-  mutation createNewEvent($input: EventInput!) {
+  mutation CreateNewEvent($input: EventInput!) {
     eventCreate(input: $input) {
       event {
         name
@@ -44,7 +45,7 @@ const CREATE_NEW_EVENT_MUTATION = gql`
 `;
 
 const UPDATE_EVENT_BY_ID_MUTATION = gql`
-  mutation updateEventByID($id: ID!, $input: EventInput!) {
+  mutation UpdateEventByID($id: ID!, $input: EventInput!) {
     eventUpdate(id: $id, input: $input) {
       event {
         name
@@ -56,7 +57,7 @@ const UPDATE_EVENT_BY_ID_MUTATION = gql`
 `;
 
 const UPDATE_EVENT_BY_SLUG_MUTATION = gql`
-  mutation udpateEventBySlug($slug: String!, $input: EventInput!) {
+  mutation UdpateEventBySlug($slug: String!, $input: EventInput!) {
     eventUpdateBySlug(slug: $slug, input: $input) {
       event {
         name
@@ -68,7 +69,7 @@ const UPDATE_EVENT_BY_SLUG_MUTATION = gql`
 `;
 
 const DELETE_EVENT_BY_ID_MUTATION = gql`
-  mutation deleteEventByID($id: ID!) {
+  mutation DeleteEventByID($id: ID!) {
     eventDelete(id: $id) {
       deletedEventId
     }
@@ -76,7 +77,7 @@ const DELETE_EVENT_BY_ID_MUTATION = gql`
 `;
 
 const DELETE_EVENT_BY_SLUG_MUTATION = gql`
-  mutation deleteEventBySlug($slug: String!) {
+  mutation DeleteEventBySlug($slug: String!) {
     eventDeleteBySlug(slug: $slug) {
       deletedEventSlug
     }

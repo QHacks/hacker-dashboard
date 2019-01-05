@@ -3,7 +3,7 @@ const { gql } = require("apollo-server-express");
 const { db, graphqlClient } = global;
 
 const GET_ALL_MAILING_LISTS_QUERY = gql`
-  query getAllMailingLists {
+  query GetAllMailingLists {
     mailingLists {
       name
       slug
@@ -12,7 +12,7 @@ const GET_ALL_MAILING_LISTS_QUERY = gql`
 `;
 
 const GET_MAILING_LISTS_BY_EVENT_QUERY = gql`
-  query getMailingListsByEvent($eventSlug: String!) {
+  query GetMailingListsByEvent($eventSlug: String!) {
     mailingListsByEvent(eventSlug: $eventSlug) {
       name
       slug
@@ -21,7 +21,7 @@ const GET_MAILING_LISTS_BY_EVENT_QUERY = gql`
 `;
 
 const GET_MAILING_LIST_BY_ID_QUERY = gql`
-  query getMailingListById($id: ID!) {
+  query GetMailingListById($id: ID!) {
     mailingList(id: $id) {
       name
       slug
@@ -30,7 +30,7 @@ const GET_MAILING_LIST_BY_ID_QUERY = gql`
 `;
 
 const GET_MAILNG_LIST_BY_ID_WITH_EVENT_QUERY = gql`
-  query getMailingListByIdWithEvent($id: ID!) {
+  query GetMailingListByIdWithEvent($id: ID!) {
     mailingList(id: $id) {
       event {
         slug
@@ -40,7 +40,7 @@ const GET_MAILNG_LIST_BY_ID_WITH_EVENT_QUERY = gql`
 `;
 
 const GET_MAILING_LIST_BY_SLUG_QUERY = gql`
-  query getMailingListBySlug($slug: String!) {
+  query GetMailingListBySlug($slug: String!) {
     mailingListBySlug(slug: $slug) {
       name
       slug
@@ -49,7 +49,7 @@ const GET_MAILING_LIST_BY_SLUG_QUERY = gql`
 `;
 
 const GET_MAILING_LIST_BY_SLUG_WITH_SUBSCRIBERS_QUERY = gql`
-  query getMailingListBySlug($slug: String!) {
+  query GetMailingListBySlug($slug: String!) {
     mailingListBySlug(slug: $slug) {
       subscribers {
         email
@@ -59,7 +59,7 @@ const GET_MAILING_LIST_BY_SLUG_WITH_SUBSCRIBERS_QUERY = gql`
 `;
 
 const CREATE_MAILING_LIST_MUTATION = gql`
-  mutation createMailingList($eventSlug: String!, $input: MailingListInput!) {
+  mutation CreateMailingList($eventSlug: String!, $input: MailingListInput!) {
     mailingListCreate(eventSlug: $eventSlug, input: $input) {
       mailingList {
         name
@@ -70,7 +70,7 @@ const CREATE_MAILING_LIST_MUTATION = gql`
 `;
 
 const UPDATE_MAILING_LIST_BY_ID_MUTATION = gql`
-  mutation updateMailingListById($id: ID!, $input: MailingListInput!) {
+  mutation UpdateMailingListById($id: ID!, $input: MailingListInput!) {
     mailingListUpdate(id: $id, input: $input) {
       mailingList {
         name
@@ -81,7 +81,7 @@ const UPDATE_MAILING_LIST_BY_ID_MUTATION = gql`
 `;
 
 const UPDATE_MAILING_LIST_BY_SLUG_MUTATION = gql`
-  mutation updateMailingListBySlug($slug: String!, $input: MailingListInput!) {
+  mutation UpdateMailingListBySlug($slug: String!, $input: MailingListInput!) {
     mailingListUpdateBySlug(slug: $slug, input: $input) {
       mailingList {
         name
@@ -92,7 +92,7 @@ const UPDATE_MAILING_LIST_BY_SLUG_MUTATION = gql`
 `;
 
 const DELETE_MAILING_LIST_BY_ID_MUTATION = gql`
-  mutation deleteMailingListById($id: ID!) {
+  mutation DeleteMailingListById($id: ID!) {
     mailingListDelete(id: $id) {
       deletedMailingListId
     }
@@ -100,7 +100,7 @@ const DELETE_MAILING_LIST_BY_ID_MUTATION = gql`
 `;
 
 const DELETE_MAILING_LIST_BY_SLUG_MUTATION = gql`
-  mutation deleteMailingListBySlug($slug: String!) {
+  mutation DeleteMailingListBySlug($slug: String!) {
     mailingListDeleteBySlug(slug: $slug) {
       deletedMailingListSlug
     }

@@ -48,7 +48,7 @@ extend type MutationRoot {
   """
   Deletes a mailing list by its identifier.
   """
-  mailingListDelete(id: ID!): MailingListDeleteByIdPayload!
+  mailingListDelete(id: ID!): MailingListDeletePayload!
 
   """
   Deletes a mailing list by its slug.

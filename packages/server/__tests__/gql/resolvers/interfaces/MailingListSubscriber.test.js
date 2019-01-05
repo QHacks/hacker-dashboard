@@ -3,7 +3,7 @@ const { gql } = require("apollo-server-express");
 const { db, graphqlClient } = global;
 
 const CREATE_MAILING_LIST_SUBSCRIBER_MUTATION = gql`
-  mutation createMailingListSubscriber(
+  mutation CreateMailingListSubscriber(
     $eventSlug: String!
     $mailingListSlug: String!
     $input: MailingListSubscriberInput!
@@ -21,7 +21,7 @@ const CREATE_MAILING_LIST_SUBSCRIBER_MUTATION = gql`
 `;
 
 const DELETE_MAILING_LIST_SUBSCRIBER_MUTATION = gql`
-  mutation deleteMailingListSubscriber(
+  mutation DeleteMailingListSubscriber(
     $eventSlug: String!
     $mailingListSlug: String!
     $email: String!

@@ -1,7 +1,7 @@
 """
 Represents the response when an event is deleted by ID.
 """
-type EventDeleteByIdPayload {
+type EventDeletePayload {
   """
   The ID of the event that was deleted.
   """
