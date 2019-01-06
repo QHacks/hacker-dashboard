@@ -115,7 +115,17 @@ class Login extends Component {
             display: flex;
           `}
         >
-          <div css="flex-grow: 1;">
+          <div
+            css={`
+              height: 30px;
+              flex-grow: 1;
+              display: flex;
+              align-items: center;
+              * {
+                position: static;
+              }
+            `}
+          >
             <Checkbox
               checked={this.state.rememberMe}
               id="rememberMe"
@@ -124,7 +134,14 @@ class Login extends Component {
             />{" "}
             <label htmlFor="rememberMe">Remember me</label>
           </div>
-          <div css="flex-grow: 1;">
+          <div
+            css={`
+              flex-grow: 1;
+              height: 30px;
+              display: flex;
+              align-items: center;
+            `}
+          >
             <Link className="landingLink" to="/forgot-password">
               Forgot password
             </Link>
