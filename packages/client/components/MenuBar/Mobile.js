@@ -19,7 +19,14 @@ class Mobile extends Component {
   }
 
   toggleMenu() {
-    this.setState((state) => ({ isMenuVisible: !state.isMenuVisible }));
+    this.setState(
+      (state) => ({ isMenuVisible: !state.isMenuVisible }),
+      () => {
+        document.body.style.overflow = this.state.isMenuVisible
+          ? "hidden"
+          : "visible";
+      }
+    );
   }
 
   render() {

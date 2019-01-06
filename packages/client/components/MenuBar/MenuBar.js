@@ -7,10 +7,10 @@ import Mobile from "./Mobile";
 const MenuBar = (props) => {
   return (
     <Fragment>
-      <MediaQuery maxWidth={"849px"}>
+      <MediaQuery maxWidth={mobileMaxWidth}>
         <Mobile {...props} />
       </MediaQuery>
-      <MediaQuery minWidth={"850px"}>
+      <MediaQuery minWidth={desktopMinWidth}>
         <Desktop {...props} />
       </MediaQuery>
     </Fragment>
