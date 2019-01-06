@@ -504,6 +504,7 @@ class ApplicationForm extends Component {
       width: 100%;
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       margin-top:12px;
       align-items: stretch;
       label, input {
@@ -511,6 +512,9 @@ class ApplicationForm extends Component {
       }
       >div{
           flex-grow: 1;
+          @media (max-width: ${mobileMaxWidth}) {
+            min-width: 100%;
+          }
           min-width: 50%;
           padding: 4px;
       }
