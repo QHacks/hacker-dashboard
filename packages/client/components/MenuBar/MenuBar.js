@@ -1,19 +1,19 @@
-import React, { Fragment } from "react";
+import React from "react";
 import MediaQuery from "react-responsive";
 import { mobileMaxWidth, desktopMinWidth } from "../../assets/constants";
-import Desktop from "./Desktop";
-import Mobile from "./Mobile";
+import DesktopMenuBar from "./DesktopMenuBar";
+import MobileMenuBar from "./MobileMenuBar";
 
 const MenuBar = (props) => {
   return (
-    <Fragment>
+    <>
       <MediaQuery maxWidth={mobileMaxWidth}>
-        <Mobile {...props} />
+        <MobileMenuBar {...props} />
       </MediaQuery>
       <MediaQuery minWidth={desktopMinWidth}>
-        <Desktop {...props} />
+        <DesktopMenuBar {...props} />
       </MediaQuery>
-    </Fragment>
+    </>
   );
 };
 

@@ -7,7 +7,7 @@ import { linkExternalTrusted } from "../../assets/constants";
 import { blue, blueLight } from "../../assets/colors";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 import { Link } from "react-router-dom";
-import DropdownMenu from "../DropdownMenu/Mobile";
+import DropdownMenu from "../DropdownMenu/MobileDropdownMenu";
 
 class Mobile extends Component {
   constructor(props) {

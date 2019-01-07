@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import PrivacyPolicyModal from "./PrivacyPolicyModal";
 import TOSModal from "./TOSModal";
@@ -14,7 +14,7 @@ class FinePrint extends Component {
 
   render() {
     return (
-      <Fragment>
+      <>
         <p
           css={`
             color: #6c6c6c;
@@ -57,7 +57,7 @@ class FinePrint extends Component {
           modalIsOpen={this.state.showPrivacyPolicy}
           closeModal={() => this.setState({ showPrivacyPolicy: false })}
         />
-      </Fragment>
+      </>
     );
   }
 }
