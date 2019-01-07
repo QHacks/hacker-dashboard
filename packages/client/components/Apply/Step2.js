@@ -4,6 +4,9 @@ import CreatableSelect from "react-select/lib/Creatable";
 import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
 import { races, schools } from "../../assets/constants";
+import "../../node_modules/flatpickr/dist/themes/material_red.css";
+import Flatpickr from "react-flatpickr";
+import moment from "moment";
 
 const toOptions = (str) => ({
   label: str,
@@ -64,6 +67,8 @@ const monthOptions = [
   "December"
 ].map((str) => toOptions(str));
 
+const toDate = (date) => (date ? moment(date, "YYYY-MM-DD").toDate() : null);
+
 const Step2 = (props) => {
   const setApplicationAnswerSelect = (field) => (answer) =>
     props.setApplicationAnswer(field, answer.value);
@@ -113,15 +118,15 @@ const Step2 = (props) => {
           <section css={props.inputRowStyle}>
             <div>
               <label htmlFor="birthday">Birthday</label>
-              <input
-                id="birthday"
-                key="birthday"
-                type="text"
-                placeholder="YYYY-MM-DD"
-                value={props.applicationAnswers.birthday}
-                onChange={(e) =>
-                  props.setApplicationAnswer("birthday", e.target.value)
-                }
+              <Flatpickr
+                value={toDate(props.applicationAnswers.birthday)}
+                onChange={(date) => {
+                  console.log(date);
+                  props.setApplicationAnswer(
+                    "birthday",
+                    moment(date[0]).format("YYYY-MM-DD")
+                  );
+                }}
               />
               <ValidationError message={props.errors.birthday} />
             </div>
