@@ -1,17 +1,15 @@
 const { merge } = require("lodash");
 
 // Type Resolvers
-const adminResolvers = require("./types/Admin");
-const hackerResolvers = require("./types/Hacker");
 const applicationResolvers = require("./types/Application");
+const hackerResolvers = require("./types/Hacker");
+const adminResolvers = require("./types/Admin");
 
 // Interface Resolvers
 const userResolvers = require("./interfaces/User");
 
-const resolvers = {};
-
 module.exports = merge(
-  resolvers,
+  {},
   userResolvers,
   adminResolvers,
   hackerResolvers,

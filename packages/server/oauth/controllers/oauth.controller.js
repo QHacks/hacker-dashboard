@@ -1,7 +1,8 @@
-const { getDefaultScopes } = require("../scopes");
-const { sendEmails } = require("../../emails")();
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+
+const { getDefaultScopes } = require("../scopes");
+const { sendEmails } = require("../../emails")();
 
 const {
   ERROR_CODES,

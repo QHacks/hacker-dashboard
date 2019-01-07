@@ -1,11 +1,11 @@
+const Router = require("express").Router;
+const { omit } = require("lodash");
+
 const {
   validateEmail,
   validatePassword,
   validateName
 } = require("../../utils/custom-validator");
-const { omit } = require("lodash");
-
-const Router = require("express").Router;
 
 const {
   ERROR_CODES,

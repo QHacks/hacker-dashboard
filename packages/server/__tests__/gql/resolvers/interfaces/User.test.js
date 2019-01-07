@@ -1,33 +1,36 @@
-const { gql } = require("../../../config/mock-api");
-const { User } = require("../../../config/mock-db");
+const { gql } = require("apollo-server-express");
+
+const { graphqlClient } = global;
+
+const GET_CURRENT_USER = gql`
+  query GetCurrentUser {
+    user {
+      firstName
+      lastName
+      email
+      oauthInfo {
+        role
+      }
+    }
+  }
+`;
 
 describe("User Interface", () => {
-  it("returns data about the current user", async () => {
-    const { id: userId } = await User.findOne({
-      where: { email: "ross.hill@rosshill.ca" }
-    });
-    const { data } = await gql(
-      userId,
-      `
-      {
-        user {
-          firstName
-          lastName
-          email
-          oauthInfo {
-            role
-          }
-        }
-      }
-      `
-    );
+  it("queries the current user", async () => {
+    const { query } = await graphqlClient();
 
-    expect(data).toEqual({
+    const res = await query({
+      query: GET_CURRENT_USER
+    });
+
+    expect(res.data).toEqual({
       user: {
-        firstName: "Ross",
-        lastName: "Hill",
-        email: "ross.hill@rosshill.ca",
-        oauthInfo: { role: "ADMIN" }
+        firstName: "Joey",
+        lastName: "Tepperman",
+        email: "hacker@test.com",
+        oauthInfo: {
+          role: "HACKER"
+        }
       }
     });
   });

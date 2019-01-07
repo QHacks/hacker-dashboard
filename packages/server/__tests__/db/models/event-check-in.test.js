@@ -1,22 +1,23 @@
-const { EventCheckIn, Event, User } = require("../../config/mock-db");
+const { db } = global;
 
 describe("EventCheckIn Model", () => {
-  it("prevents duplicates", async (done) => {
-    const { id: eventId } = await Event.findOne({});
-    const { id: userId } = await User.findOne({});
+  it("prevents duplicate records", async () => {
+    const { id: eventId } = await db.Event.findOne({});
+    const { id: userId } = await db.User.findOne({});
 
-    EventCheckIn.bulkCreate([
-      {
-        eventId,
-        userId
-      },
-      {
-        eventId,
-        userId
-      }
-    ]).catch(({ errors: [{ message }] }) => {
+    try {
+      await db.EventCheckIn.bulkCreate([
+        {
+          eventId,
+          userId
+        },
+        {
+          eventId,
+          userId
+        }
+      ]);
+    } catch ({ errors: [{ message }] }) {
       expect(message).toBe("userId must be unique");
-      done();
-    });
+    }
   });
 });

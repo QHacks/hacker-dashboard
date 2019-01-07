@@ -21,7 +21,7 @@ const LOGIN_MUTATION = gql`
 
 const SUBMIT_APPLICATION_MUTATION = gql`
   mutation CreateApplication($eventSlug: String!, $input: ApplicationInput!) {
-    createApplication(eventSlug: $eventSlug, input: $input) {
+    applicationCreate(eventSlug: $eventSlug, input: $input) {
       application {
         status
       }
@@ -198,6 +198,7 @@ class ApplicationForm extends Component {
         if (!newHackerInfo.personalWebsite) {
           delete newHackerInfo.personalWebsite;
         }
+
         await this.props.updateHacker({
           variables: {
             input: {
