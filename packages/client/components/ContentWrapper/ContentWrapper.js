@@ -8,7 +8,6 @@ export default ({ children }) => (
       margin-left: auto;
       margin-right: auto;
       padding: 0 80px;
-      height: 100%;
       @media (max-width: 1200px) and (min-width: ${desktopMinWidth}) {
         padding-left: 80px;
         padding-right: 80px;

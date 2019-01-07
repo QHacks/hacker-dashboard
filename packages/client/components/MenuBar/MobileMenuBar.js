@@ -72,14 +72,16 @@ class Mobile extends Component {
             backgroundColor: "white"
           }}
         >
-          <input
-            type="image"
-            align="right"
-            css={{ padding: "32px" }}
-            src={menuClose}
-            onClick={() => this.toggleMenu()}
-            alt="Close menu"
-          />
+          <ContentWrapper>
+            <input
+              type="image"
+              align="right"
+              css={{ height: "64px", width: "32px" }}
+              src={menuClose}
+              onClick={() => this.toggleMenu()}
+              alt="Close menu"
+            />
+          </ContentWrapper>
           <div
             css={{
               marginTop: "100px",
