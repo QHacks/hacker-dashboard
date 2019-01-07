@@ -19,15 +19,15 @@ const Step4 = (props) => {
         src={threeGears}
         alt=""
         {...decorativeElement}
-        css="
+        css={`
           height: 133px;
           width: 240px;
-        "
+        `}
       />
       <h2
-        css="
+        css={`
           margin: 32px 0;
-        "
+        `}
       >
         Thank you for applying to QHacks 2019!
       </h2>
@@ -36,11 +36,7 @@ const Step4 = (props) => {
         will be contacting you via email regarding the status of your
         application. So stay tuned!
       </p>
-      <div
-        css="
-          margin: 40px 0;
-        "
-      >
+      <div css="margin: 40px 0;">
         <ActionButton internal link="/profile" color="red">
           View Dashboard
         </ActionButton>
@@ -51,12 +47,7 @@ const Step4 = (props) => {
         `}
       >
         For more information regarding QHacks 2019, please visit our website at{" "}
-        <a
-          css="
-            font-weight: 600;
-          "
-          href="https://qhacks.io/"
-        >
+        <a css="font-weight: 600;" href="https://qhacks.io/">
           qhacks.io
         </a>
       </p>

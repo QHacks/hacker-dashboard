@@ -6,6 +6,7 @@ import axios from "axios";
 
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 import { steel } from "../../assets/colors";
+import { mobileMaxWidth } from "../../assets/constants";
 import { SERVER_HOST } from "../../Client";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
@@ -277,7 +278,7 @@ class ApplicationForm extends Component {
       birthday: {
         regex: /^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/,
         stepNum: 1,
-        message: "Please enter a valid date"
+        message: "Please enter a valid date in the form YYYY-MM-DD"
       },
       race: {
         regex: /^[^0-9]+$/,
@@ -488,16 +489,25 @@ class ApplicationForm extends Component {
       padding-top: 24px;
       font-weight: 600;
       text-transform: uppercase;
+      @media (max-width: ${mobileMaxWidth}) {
+        display: none;
+      }
     `;
 
     const subsectionContentStyles = `
       width: 70%;
+      @media (max-width: ${mobileMaxWidth}) {
+        width: 100%;
+      }
     `;
 
     const inputRowStyle = `
       width: 100%;
       display: flex;
       flex-direction: row;
+      @media (max-width: ${mobileMaxWidth}) {
+        flex-direction: column;
+      }
       margin-top:12px;
       align-items: stretch;
       label, input {
@@ -505,6 +515,9 @@ class ApplicationForm extends Component {
       }
       >div{
           flex-grow: 1;
+          @media (max-width: ${mobileMaxWidth}) {
+            min-width: 100%;
+          }
           min-width: 50%;
           padding: 4px;
       }

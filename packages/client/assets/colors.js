@@ -1,32 +1,28 @@
-const tinycolor = require("tinycolor2");
+import { lighten, darken, useProperties } from "unitransform";
 
-const blueBase = tinycolor("#002866");
-export const blue = blueBase.toString();
-export const blueLight = blueBase.lighten(5).toString();
-export const blueDark = blueBase.darken(10).toString();
+export const blue = "#002866";
+export const blueLight = lighten(blue, 5);
+export const blueDark = darken(blue, 10);
 
-const cyanBase = tinycolor("#00abf9");
-export const cyan = cyanBase.toString();
+export const red = "#d31f38";
+export const redLight = lighten(red, 5);
+export const redDark = darken(red, 10);
+export const redWhite = "#fffbfc";
 
-const greenBase = tinycolor("#00c139");
-export const green = greenBase.toString();
+export const cyan = "#00abf9";
+export const cyanWhite = useProperties(cyan, redWhite, "sl");
 
-const orangeBase = tinycolor("#ff8408");
-export const orange = orangeBase.toString();
+export const green = "#00c139";
+export const greenWhite = useProperties(green, redWhite, "sl");
 
-const redBase = tinycolor("#d31f38");
-export const red = redBase.toString();
-export const redLight = redBase.lighten(5).toString();
-export const redDark = redBase.darken(10).toString();
+export const orange = "#ff8408";
+export const orangeWhite = useProperties(orange, redWhite, "sl");
 
-const greyBase = tinycolor("#404554");
-export const grey = greyBase.toString();
+export const grey = "#404554";
 
-const steelBase = tinycolor("#c5c9d1");
-export const steel = steelBase.toString();
+export const steel = "#c5c9d1";
 
 export const linkUnvisited = grey;
 export const linkVisited = grey;
 
-const offWhiteBase = tinycolor("#F7F7F7");
-export const offWhite = offWhiteBase.toString();
+export const offWhite = "#F7F7F7";

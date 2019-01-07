@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import axios from "axios";
-
+import Checkbox from "react-simple-checkbox";
 import ActionButton from "../ActionButton/ActionButton";
 import { SERVER_HOST } from "../../Client";
 import Alert from "../Alert/Alert";
 import Landing from "./Landing";
+import { checkboxOptions } from "../../assets/constants";
 
 const LOGIN_MUTATION = gql`
   mutation LoginUser($input: LoginInput!) {
@@ -73,34 +74,26 @@ class Login extends Component {
       <Landing>
         <img
           src="../../assets/img/qhacks-wordmark-colored.svg"
-          css="
-            max-height: 40px;
-          "
+          css="max-height: 40px;"
           alt="QHacks"
         />
         <p
           className="blurb"
-          css="
+          css={`
             margin-top: 24px;
-            color: #8a929f;
-          "
+          `}
         >
           Welcome back.
         </p>
         <p
           className="blurb"
-          css="
+          css={`
             margin-top: 12px;
-            color: #8a929f;
-          "
+          `}
         >
           Please login to your account.
         </p>
-        <div
-          css="
-            margin-top: 64px;
-          "
-        >
+        <div css="margin-top: 64px;">
           <input
             id="email"
             type="text"
@@ -117,27 +110,40 @@ class Login extends Component {
           />
         </div>
         <div
-          css="
+          css={`
             margin: 40px 0;
             display: flex;
-          "
+            max-width: 375px;
+          `}
         >
           <div
-            css="
+            css={`
+              height: 30px;
               flex-grow: 1;
-            "
+              display: flex;
+              align-items: center;
+              * {
+                position: static;
+              }
+            `}
           >
-            <input
-              type="checkbox"
+            <Checkbox
+              checked={this.state.rememberMe}
               id="rememberMe"
-              onChange={(e) => this.setState({ rememberMe: e.target.checked })}
+              {...checkboxOptions}
+              onChange={(bool) => this.setState({ rememberMe: bool })}
             />{" "}
             <label htmlFor="rememberMe">Remember me</label>
           </div>
           <div
-            css="
+            css={`
               flex-grow: 1;
-            "
+              height: 30px;
+              display: flex;
+              align-items: center;
+              padding-right: 6px;
+              justify-content: flex-end;
+            `}
           >
             <Link className="landingLink" to="/forgot-password">
               Forgot password
@@ -145,18 +151,18 @@ class Login extends Component {
           </div>
         </div>
         <div>
-          <ActionButton color="blue" onClick={() => this.login()}>
-            Login
-          </ActionButton>{" "}
+          <ActionButton
+            style="margin-right: 6px;"
+            color="blue"
+            onClick={() => this.login()}
+          >
+            Log in
+          </ActionButton>
           <ActionButton internal link="/qhacks-2019/apply">
             Apply
           </ActionButton>
         </div>
-        <div
-          css="
-          margin: 30px 0px 0px;
-        "
-        >
+        <div css="margin: 30px 0px 0px;">
           {this.state.alertShown ? <Alert {...this.state.alert} /> : ""}
         </div>
       </Landing>

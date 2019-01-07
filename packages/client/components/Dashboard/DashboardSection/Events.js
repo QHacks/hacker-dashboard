@@ -53,11 +53,11 @@ class Events extends Component {
         </table>
         <div>
           <strong
-            css="
+            css={`
               display: block;
               margin: 25px 0 10px;
               font-size: 18px;
-            "
+            `}
           >
             {user && user.hasApplied
               ? "Thanks for applying!"
@@ -65,20 +65,16 @@ class Events extends Component {
           </strong>
           {user && user.hasApplied ? (
             <p
-              css="
-                  line-height: 1.47;
-                  font-size: 15px;
-                "
+              css={`
+                line-height: 1.47;
+                font-size: 15px;
+              `}
             >
               Your application is in and the QHacks team is working hard to
               review it carefully. Stay tuned for updates!
             </p>
           ) : (
-            <div
-              css="
-                  margin: 20px 0px 0px 0px;
-                "
-            >
+            <div css="margin: 20px 0px 0px 0px;">
               <ActionButton color="red" internal link="/qhacks-2019/apply">
                 Apply Here
               </ActionButton>

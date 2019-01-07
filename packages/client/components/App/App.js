@@ -19,8 +19,6 @@ import {
 } from "../../assets/colors";
 
 const globalStyles = `
-min-width: 800px;
-
 * {
   font-family: "Encode Sans", sans-serif !important;
   box-sizing: border-box;
@@ -77,7 +75,7 @@ button:focus, input:focus {
   outline: none;
 }
 
-input:not([type="checkbox"]) {
+input:not([type="checkbox"]):not([type="image"]) {
   height: 42.4px;
   border: 1px solid ${steel};
   border-radius: 4px;
@@ -95,7 +93,7 @@ input:not([type="checkbox"]) {
   background-color: ${offWhite};
 }
 
-input:not([type="checkbox"]):only-of-type {
+input:not([type="checkbox"]):not([type="image"]):only-of-type {
   width: 100%;
   margin: 6px 0;
 }
@@ -106,8 +104,8 @@ div.select > div {
 }
 
 div.select input {
-  height: unset;
-  line-height: unset;
+  height: unset !important;
+  line-height: unset !important;
   margin: unset;
   padding: unset;
   box-shadow: none !important;

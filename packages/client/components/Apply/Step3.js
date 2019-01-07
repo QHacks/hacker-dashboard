@@ -2,7 +2,8 @@ import React from "react";
 import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
 import Alert from "../Alert/Alert";
-import { linkExternalTrusted } from "../../assets/constants";
+import { linkExternalTrusted, checkboxOptions } from "../../assets/constants";
+import Checkbox from "react-simple-checkbox";
 
 const Step3 = (props) => {
   const mlhSectionStyle = `
@@ -24,9 +25,9 @@ const Step3 = (props) => {
       <h2>Hackathon Information</h2>
       <div css={props.subsectionStyle}>
         <div
-          css="
+          css={`
             width: 100%;
-          "
+          `}
         >
           <section css={props.inputRowStyle}>
             <div>
@@ -67,9 +68,9 @@ const Step3 = (props) => {
                 type="text"
                 placeholder="#"
                 value={props.applicationAnswers.numberOfHackathons}
-                css="
+                css={`
                   max-width: 125px;
-                "
+                `}
                 onChange={(e) =>
                   props.setApplicationAnswer(
                     "numberOfHackathons",
@@ -98,15 +99,12 @@ const Step3 = (props) => {
           </section>
           <section css={mlhSectionStyle}>
             <div>
-              <input
+              <Checkbox
                 id="agreeMlhCodeConduct"
-                type="checkbox"
-                value={props.applicationAnswers.agreeMlhCodeConduct}
-                onChange={(e) =>
-                  props.setApplicationAnswer(
-                    "agreeMlhCodeConduct",
-                    e.target.checked
-                  )
+                {...checkboxOptions}
+                checked={props.applicationAnswers.agreeMlhCodeConduct}
+                onChange={(bool) =>
+                  props.setApplicationAnswer("agreeMlhCodeConduct", bool)
                 }
               />
               <label htmlFor="agreeMlhCodeConduct">
@@ -123,14 +121,14 @@ const Step3 = (props) => {
           </section>
           <section css={mlhSectionStyle}>
             <div>
-              <input
+              <Checkbox
                 id="agreeMlhTosAndPrivacyPolicy"
-                type="checkbox"
-                value={props.applicationAnswers.agreeMlhTosAndPrivacyPolicy}
-                onChange={(e) =>
+                {...checkboxOptions}
+                checked={props.applicationAnswers.agreeMlhTosAndPrivacyPolicy}
+                onChange={(bool) =>
                   props.setApplicationAnswer(
                     "agreeMlhTosAndPrivacyPolicy",
-                    e.target.checked
+                    bool
                   )
                 }
               />
@@ -178,6 +176,8 @@ const Step3 = (props) => {
                 Submit
               </ActionButton>
             </div>
+          </section>
+          <section>
             <div css={props.inputRowStyle}>
               {props.alertShown ? <Alert {...props.alert} /> : ""}
             </div>
