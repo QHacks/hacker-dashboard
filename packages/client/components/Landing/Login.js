@@ -113,6 +113,7 @@ class Login extends Component {
           css={`
             margin: 40px 0;
             display: flex;
+            max-width: 375px;
           `}
         >
           <div
@@ -140,6 +141,8 @@ class Login extends Component {
               height: 30px;
               display: flex;
               align-items: center;
+              padding-right: 6px;
+              justify-content: flex-end;
             `}
           >
             <Link className="landingLink" to="/forgot-password">
