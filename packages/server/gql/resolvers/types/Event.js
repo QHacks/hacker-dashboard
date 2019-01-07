@@ -21,7 +21,7 @@ const event = combineResolvers(
     if (!event) {
       throw new GraphQLNotFoundError(
         `Unable to find hacker with id ${args.id}`,
-        GRAPHQL_ERROR_CODES.NOT_FOUND
+        GRAPHQL_ERROR_CODES.HACKER_NOT_FOUND
       );
     }
 
@@ -49,8 +49,8 @@ const eventBySlug = combineResolvers(
 
     if (!event) {
       throw new GraphQLNotFoundError(
-        `Unable to find hacker with id ${args.id}`,
-        GRAPHQL_ERROR_CODES.NOT_FOUND
+        `Unable to the event with identifier ${args.id}.`,
+        GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
       );
     }
 
@@ -101,6 +101,13 @@ const eventUpdate = combineResolvers(
       plain: true
     });
 
+    if (!eventUpdatePayload || !eventUpdatePayload[1]) {
+      throw new GraphQLInternalServerError(
+        `Unable to update the event with identifier ${id}.`,
+        GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
+      );
+    }
+
     return { event: eventUpdatePayload[1] };
   }
 );
@@ -117,6 +124,13 @@ const eventUpdateBySlug = combineResolvers(
       plain: true
     });
 
+    if (!eventUpdatePayload || !eventUpdatePayload[1]) {
+      throw new GraphQLInternalServerError(
+        `Unable to update the event with slug ${slug}.`,
+        GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
+      );
+    }
+
     return { event: eventUpdatePayload[1] };
   }
 );
@@ -130,8 +144,8 @@ const eventDelete = combineResolvers(
 
     if (!event) {
       throw new GraphQLNotFoundError(
-        `Unable to find event with identifier ${args.id}`,
-        GRAPHQL_ERROR_CODES.NOT_FOUND
+        `Unable to find the event with identifier ${args.id}.`,
+        GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
       );
     }
 
@@ -152,7 +166,7 @@ const eventDelete = combineResolvers(
       return deleteEventAndSubscriptions;
     } catch (err) {
       throw new GraphQLInternalServerError(
-        "Unable to delete event at this time",
+        `Unable to delete the event with identifier ${args.id} at this time`,
         GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
       );
     }
@@ -169,7 +183,7 @@ const eventDeleteBySlug = combineResolvers(
     if (!event) {
       throw new GraphQLNotFoundError(
         `Unable to find event with slug ${args.slug}`,
-        GRAPHQL_ERROR_CODES.NOT_FOUND
+        GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
       );
     }
 
@@ -190,7 +204,7 @@ const eventDeleteBySlug = combineResolvers(
       return deleteEventAndSubscriptions;
     } catch (err) {
       throw new GraphQLInternalServerError(
-        "Unable to delete event at this time.",
+        `Unable to delete the event with slug ${args.slug} at this time.`,
         GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
       );
     }

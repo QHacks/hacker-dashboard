@@ -65,6 +65,13 @@ const hackerDelete = combineResolvers(
 
     const hacker = await db.User.findOne({ where: { id } });
 
+    if (!hacker) {
+      throw new GraphQLNotFoundError(
+        `Unable to find the hacker with identifier ${id}`,
+        GRAPHQL_ERROR_CODES.HACKER_NOT_FOUND
+      );
+    }
+
     await hacker.destroy();
 
     return {

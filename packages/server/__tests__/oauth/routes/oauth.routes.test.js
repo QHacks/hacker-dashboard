@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 
-const { request, db } = global;
 const { ROLES } = require("../../../oauth/authorization");
+
+const { request, db } = global;
 
 describe("OAuth API", () => {
   it("creates a new session for an existing user", async () => {
@@ -19,7 +20,7 @@ describe("OAuth API", () => {
       grantType: "password"
     });
 
-    validateResponseBody(body);
+    validateOauthResponseBody(body);
 
     expect(body.refreshToken).not.toBe(oldRefreshToken.refreshToken);
 
@@ -38,7 +39,7 @@ describe("OAuth API", () => {
       password: "newpassword"
     });
 
-    validateResponseBody(body);
+    validateOauthResponseBody(body);
 
     const newUser = await db.User.findOne({
       where: { email: "lebron@yopmail.com" },
@@ -127,7 +128,7 @@ describe("OAuth API", () => {
   });
 });
 
-async function validateResponseBody(body) {
+async function validateOauthResponseBody(body) {
   expect(body.accessToken).toBeDefined();
   expect(body.refreshToken).toBeDefined();
   expect(body.tokenType).toBe("bearer");

@@ -53,6 +53,9 @@ const GET_MAILING_LIST_BY_SLUG_WITH_SUBSCRIBERS_QUERY = gql`
     mailingListBySlug(slug: $slug) {
       subscribers {
         email
+        ... on Admin {
+          firstName
+        }
       }
     }
   }
@@ -200,7 +203,8 @@ describe("MailingList Type", () => {
 
     await db.MailingListSubscription.create({
       mailingListId: yophacksList.id,
-      email: "admin@test.com"
+      email: "admin@test.com",
+      userId: admin.id
     });
 
     const { query } = await graphqlClient(admin);
@@ -214,6 +218,7 @@ describe("MailingList Type", () => {
     expect(res.data.mailingListBySlug.subscribers[0].email).toBe(
       "admin@test.com"
     );
+    expect(res.data.mailingListBySlug.subscribers[0].firstName).toBe("Ross");
   });
 
   it("creates a mailing list by mailingListCreate mutation", async () => {

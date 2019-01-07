@@ -1,7 +1,8 @@
 const { gql } = require("apollo-server-express");
 
-const { db, graphqlClient } = global;
 const { ROLES } = require("../../../../oauth/authorization");
+
+const { db, graphqlClient } = global;
 
 const GET_ADMIN_INFO_QUERY = gql`
   query GetAdminInfo {

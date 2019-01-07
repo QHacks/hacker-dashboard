@@ -5,6 +5,11 @@ const {
   GraphQLInternalServerError
 } = require("../../../errors/graphql-errors");
 
+// Utility method
+
+const upperCase = (str) =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
 // Mutation Root Resolvers
 
 const mailingListSubscriberCreate = async (parent, args, ctx, info) => {
@@ -30,12 +35,11 @@ const mailingListSubscriberCreate = async (parent, args, ctx, info) => {
   try {
     const subscriber = await db.MailingListSubscription.create({
       mailingListId: event.MailingLists[0].id,
-      userId: user && user.id ? user.id : null,
       email: input.email.toLowerCase()
     });
 
     return {
-      subscriber
+      subscriber: user || subscriber
     };
   } catch (err) {
     if (
@@ -74,8 +78,8 @@ const mailingListSubscriberDelete = async (parent, args, ctx, info) => {
 
   if (!subscription) {
     throw new GraphQLNotFoundError(
-      "Unable to find requested mailing list subscriber!",
-      GRAPHQL_ERROR_CODES.NOT_FOUND
+      "Unable to find the requested mailing list subscriber!",
+      GRAPHQL_ERROR_CODES.MAILNG_LIST_SUBSCRIBER_NOT_FOUND
     );
   }
 
@@ -88,8 +92,12 @@ const mailingListSubscriberDelete = async (parent, args, ctx, info) => {
 
 module.exports = {
   MailingListSubscriber: {
-    __resolveType(mailingListSubscriber, ctx, info) {
-      return "MailingListSubscription";
+    async __resolveType(mailingListSubscriber, ctx, info) {
+      if (!mailingListSubscriber.OAuthUser) return "MailingListSubscription";
+
+      if (!mailingListSubscriber.OAuthUser.role) return "Hacker";
+
+      return upperCase(mailingListSubscriber.OAuthUser.role);
     }
   },
   MutationRoot: {

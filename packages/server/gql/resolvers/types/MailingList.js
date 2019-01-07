@@ -50,7 +50,7 @@ const mailingList = combineResolvers(
     if (!mailingList) {
       throw new GraphQLNotFoundError(
         `Unable to find mailing list with identifier ${args.id}`,
-        GRAPHQL_ERROR_CODES.NOT_FOUND
+        GRAPHQL_ERROR_CODES.MAILING_LIST_NOT_FOUND
       );
     }
 
@@ -70,7 +70,7 @@ const mailingListBySlug = combineResolvers(
     if (!mailingList) {
       throw new GraphQLNotFoundError(
         `Unable to find mailing list with slug ${args.slug}`,
-        GRAPHQL_ERROR_CODES.NOT_FOUND
+        GRAPHQL_ERROR_CODES.MAILING_LIST_NOT_FOUND
       );
     }
 
@@ -90,7 +90,7 @@ const mailingListCreate = combineResolvers(
 
     if (!event) {
       throw new GraphQLNotFoundError(
-        `unable to find event with slug ${eventSlug}`,
+        `Unable to find the event with the slug ${eventSlug}.`,
         GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
       );
     }
@@ -113,6 +113,13 @@ const mailingListUpdate = combineResolvers(
       plain: true
     });
 
+    if (!mailingListUpdatePayload || !mailingListUpdatePayload[1]) {
+      throw new GraphQLInternalServerError(
+        `Unable to update the mailing list with identifier ${id} at this time`,
+        GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
+      );
+    }
+
     return { mailingList: mailingListUpdatePayload[1] };
   }
 );
@@ -129,6 +136,13 @@ const mailingListUpdateBySlug = combineResolvers(
       plain: true
     });
 
+    if (!mailingListUpdatePayload || !mailingListUpdatePayload[1]) {
+      throw new GraphQLInternalServerError(
+        `Unable to update the mailing list with slug ${slug} at this time`,
+        GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
+      );
+    }
+
     return { mailingList: mailingListUpdatePayload[1] };
   }
 );
@@ -144,7 +158,7 @@ const mailingListDelete = combineResolvers(
     if (!mailingList) {
       throw new GraphQLNotFoundError(
         `Unable to find mailing list with identifier ${id}!`,
-        GRAPHQL_ERROR_CODES.NOT_FOUND
+        GRAPHQL_ERROR_CODES.MAILING_LIST_NOT_FOUND
       );
     }
 
@@ -184,7 +198,8 @@ const mailingListDeleteBySlug = combineResolvers(
 
     if (!mailingList) {
       throw new GraphQLNotFoundError(
-        `Unable to find mailing list with slug ${slug}!`
+        `Unable to find mailing list with slug ${slug}!`,
+        GRAPHQL_ERROR_CODES.MAILING_LIST_NOT_FOUND
       );
     }
 
@@ -223,6 +238,12 @@ const event = combineResolvers(
 
     const event = await db.Event.findByPk(parent.eventId);
 
+    if (!event) {
+      throw new GraphQLNotFoundError(
+        `Cannot find the event with identifier ${parent.eventId}`
+      );
+    }
+
     return event;
   }
 );
@@ -232,10 +253,16 @@ const subscribers = combineResolvers(
   async (parent, args, ctx, info) => {
     const { db } = ctx;
     const subscriptions = await db.MailingListSubscription.findAll({
-      where: { mailingListId: parent.id }
+      where: { mailingListId: parent.id },
+      include: {
+        model: db.User,
+        required: false,
+        plain: true,
+        include: db.OAuthUser
+      }
     });
 
-    return subscriptions;
+    return subscriptions.map((sub) => sub.User || sub);
   }
 );
 
