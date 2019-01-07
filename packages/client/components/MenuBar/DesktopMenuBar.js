@@ -5,7 +5,7 @@ import crown from "../../assets/img/qhacks-tricolor-logo.svg";
 import { linkExternalTrusted } from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import { blue } from "../../assets/colors";
-import DropdownMenu from "../DropdownMenu/DropdownMenu";
+import DropdownMenu from "../DropdownMenu/DesktopDropdownMenu";
 
 const Desktop = ({ hideItems, showLogin }) => (
   <header

@@ -12,16 +12,14 @@ class Dropdown extends Component {
 
   render() {
     return (
-      <div>
+      <div onMouseLeave={() => this.setState({ dropdownShown: false })}>
         <button
           css={`
             color: ${blue};
             font-weight: ${this.state.dropdownShown ? "bold" : 600};
             border: none;
           `}
-          onClick={() =>
-            this.setState((state) => ({ dropdownShown: !state.dropdownShown }))
-          }
+          onMouseOver={() => this.setState({ dropdownShown: true })}
         >
           {this.props.title}
           {"  "}
