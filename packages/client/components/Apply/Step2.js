@@ -4,7 +4,8 @@ import CreatableSelect from "react-select/lib/Creatable";
 import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
 import { races, schools } from "../../assets/constants";
-import "../../node_modules/flatpickr/dist/themes/material_red.css";
+import "../../node_modules/flatpickr/dist/themes/light.css";
+import "./flatpickr.css";
 import Flatpickr from "react-flatpickr";
 import moment from "moment";
 
@@ -120,13 +121,12 @@ const Step2 = (props) => {
               <label htmlFor="birthday">Birthday</label>
               <Flatpickr
                 value={toDate(props.applicationAnswers.birthday)}
-                onChange={(date) => {
-                  console.log(date);
+                onChange={(date) =>
                   props.setApplicationAnswer(
                     "birthday",
                     moment(date[0]).format("YYYY-MM-DD")
-                  );
-                }}
+                  )
+                }
               />
               <ValidationError message={props.errors.birthday} />
             </div>
