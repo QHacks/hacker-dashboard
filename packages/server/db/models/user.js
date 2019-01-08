@@ -1,5 +1,10 @@
-const { OAuthInvalidCredentialsError, NotFoundError } = require("../../errors");
 const bcrypt = require("bcrypt");
+
+const {
+  REST_ERROR_CODES,
+  NotFoundError,
+  OAuthInvalidCredentialsError
+} = require("../../errors/rest-errors");
 
 const PHONE_NUMBER_REGEX = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
 
@@ -186,7 +191,10 @@ module.exports = (sequelize, DataTypes) => {
       this.findOne({ where: { email } }).then((user) => {
         if (!user) {
           return reject(
-            new NotFoundError("Could not find user with that email!")
+            new NotFoundError(
+              "Could not find a user with that email!",
+              REST_ERROR_CODES.USER_NOT_FOUND
+            )
           );
         }
 

@@ -52,7 +52,6 @@ module.exports = (db) => {
     }
   }
 
-  const { restApi } = require("../../rest")(db);
   const { oauthApi } = require("../../oauth")(db);
 
   const app = express();
@@ -61,8 +60,6 @@ module.exports = (db) => {
   app.use(compression());
   app.use(bodyParser.json({ limit: "50mb" }));
   app.use(bodyParser.urlencoded({ extended: true }));
-
-  app.use("/api/", cors({ origin: "https://qhacks.io" }), restApi());
 
   app.use("/oauth/", oauthApi());
 

@@ -138,22 +138,11 @@ describe("Application Type", () => {
     expect(data).toBeNull();
     expect(errors).toHaveLength(1);
     expect(errors[0].message).toBe(
-      "Invalid Field is not a valid field for qhacks-2019"
+      "Invalid Field is not a valid field for the event with the slug qhacks-2019!"
     );
   });
 
   it("validates if an event requires applications", async () => {
-    await db.Event.create({
-      name: "yophacks-2019",
-      slug: "yophacks-2019",
-      startDate: new Date("2019-02-01T19:00Z"),
-      endDate: new Date("2019-02-03T19:00Z"),
-      requiresApplication: false,
-      hasProjectSubmissions: true,
-      projectSubmissionDate: new Date("2018-02-03T14:00Z"),
-      eventLogoUrl: "http://digitalocean.com/yophacks.jpg"
-    });
-
     const user = await db.User.findOne({
       where: { email: "hacker1@gmail.com" }
     });
@@ -186,7 +175,7 @@ describe("Application Type", () => {
     expect(data).toBeNull();
     expect(errors).toHaveLength(1);
     expect(errors[0].message).toBe(
-      "yophacks-2019 does not require applications!"
+      "The event with the slug yophacks-2019 does not require applications!"
     );
   });
 
@@ -195,18 +184,13 @@ describe("Application Type", () => {
       where: { email: "hacker1@test.com" }
     });
 
-    await db.Event.create({
-      name: "yophacks-2019",
-      slug: "yophacks-2019",
-      startDate: new Date("2019-02-01T19:00Z"),
-      endDate: new Date("2019-02-03T19:00Z"),
-      requiresApplication: true,
-      applicationOpenDate: new Date("1970-01-01"),
-      applicationCloseDate: new Date("1970-01-02"),
-      hasProjectSubmissions: true,
-      projectSubmissionDate: new Date("2018-02-03T14:00Z"),
-      eventLogoUrl: "http://digitalocean.com/yophacks.jpg"
-    });
+    await db.Event.update(
+      {
+        requiresApplication: true,
+        applicationCloseDate: new Date(1970, 1, 1)
+      },
+      { where: { slug: "yophacks-2019" } }
+    );
 
     const { mutate } = await graphqlClient(user);
 
@@ -236,7 +220,7 @@ describe("Application Type", () => {
     expect(data).toBeNull();
     expect(errors).toHaveLength(1);
     expect(errors[0].message).toBe(
-      "yophacks-2019 is not accepting applications at this time!"
+      "The event with the slug yophacks-2019 is not accepting applications at this time!"
     );
   });
 

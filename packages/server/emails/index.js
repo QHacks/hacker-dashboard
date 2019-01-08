@@ -28,6 +28,8 @@ async function sendSendgridEmail(email) {
 
 module.exports = () => {
   async function sendEmails(emailName, recipientObjects) {
+    if (process.env.NODE_ENV === "test") return Promise.resolve();
+
     if (!emails[emailName]) {
       return Promise.reject("No email with that name exists!");
     }

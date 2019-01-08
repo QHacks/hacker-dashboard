@@ -1,0 +1,41 @@
+"""
+Represents information to create and update a hacker.
+"""
+input HackerInput {
+  """
+  The hackers first name.
+  """
+  firstName: String
+  """
+  The hackers last name.
+  """
+  lastName: String
+  """
+  The hackers email.
+  """
+  email: String
+  """
+  The hackers phone number.
+  """
+  phoneNumber: String
+  """
+  The hackers date of birth.
+  """
+  dateOfBirth: String
+  """
+  The school that the hacker attends
+  """
+  schoolName: String
+  """
+  The hackers GitHub profile.
+  """
+  githubLink: String
+  """
+  The hackers LinkedIn profile.
+  """
+  linkedinLink: String
+  """
+  The hackers personal website.
+  """
+  personalWebsiteLink: String
+}

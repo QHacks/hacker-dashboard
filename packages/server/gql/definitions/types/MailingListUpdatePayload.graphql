@@ -1,0 +1,9 @@
+"""
+Represents the response when a mailing list is updated.
+"""
+type MailingListUpdatePayload {
+  """
+  The mailing list that has been updated.
+  """
+  mailingList: MailingList
+}

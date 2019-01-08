@@ -8,7 +8,6 @@ const logger = require("./utils/logger");
 const express = require("express");
 const helmet = require("helmet");
 const path = require("path");
-const cors = require("cors");
 const db = require("./db");
 
 const IS_PROD = process.env.NODE_ENV === "production";
@@ -23,7 +22,6 @@ const typeDefs = require("./gql/definitions");
 
 db()
   .then(async (db) => {
-    const { restApi } = require("./rest")(db);
     const { oauthApi, verifyAccessToken } = require("./oauth")(db);
 
     // Path to static files
@@ -52,10 +50,6 @@ db()
     app.use(compression());
     app.use(bodyParser.json({ limit: "10mb" }));
     app.use(bodyParser.urlencoded({ extended: true }));
-
-    // Public REST Endpoints
-    // TODO: Remove completely!
-    app.use("/api/", cors({ origin: "https://qhacks.io" }), restApi());
 
     // Public OAuth Endpoints
     app.use("/oauth/", oauthApi());
@@ -104,8 +98,5 @@ db()
     });
   })
   .catch((err) => {
-    logger.error(
-      "Could not connect to the database. Cannot start server!",
-      err
-    );
+    logger.error("Error! Cannot start server.", err);
   });

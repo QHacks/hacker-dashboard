@@ -1,3 +1,5 @@
+const { ROLES } = require("../../../oauth/authorization");
+
 const { db } = global;
 
 const defaultUser = {
@@ -136,7 +138,7 @@ describe("User Model", () => {
 async function createOAuthUser() {
   const { dataValues: oauthUser } = await db.OAuthUser.create({
     scopes: JSON.stringify([{ user: "read", user: "write" }]),
-    role: "HACKER"
+    role: ROLES.HACKER
   });
 
   return { oauthUserId: oauthUser.id };

@@ -1,0 +1,9 @@
+"""
+Represents the response when an event is created.
+"""
+type EventCreatePayload {
+  """
+  The newly created event.
+  """
+  event: Event
+}

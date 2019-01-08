@@ -1,5 +1,5 @@
 """
-The allowed types for application fields (subject to change).
+The allowed types for application fields.
 """
 enum ApplicationFieldType {
   """

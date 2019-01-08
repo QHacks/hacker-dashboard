@@ -1,0 +1,13 @@
+"""
+Represents information to create and update an application field.
+"""
+input ApplicationFieldInput {
+  """
+  The label of the application field.
+  """
+  label: String!
+  """
+  The response of the applicant to the field.
+  """
+  answer: String!
+}

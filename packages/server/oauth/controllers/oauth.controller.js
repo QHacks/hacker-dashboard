@@ -1,21 +1,19 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const { getDefaultScopes } = require("../scopes");
+const { getDefaultScopesForRole, ROLES } = require("../authorization");
 const { sendEmails } = require("../../emails")();
 
 const {
-  ERROR_CODES,
   RestApiError,
-  ValidationError,
   OAuthInvalidRefreshTokenError,
   OAuthClientNotRegisteredError,
-  OAuthClientNotPrivilegedError,
-  DatabaseError
-} = require("../../errors");
+  OAuthClientNotPrivilegedError
+} = require("../../errors/rest-errors");
+
+const { AUTH_SECRET } = process.env;
 
 const JWT_ISSUER = "QHacks";
-const { AUTH_SECRET } = process.env;
 
 const ACCESS_TOKEN_EXPIRE_SECONDS =
   process.env.ACCESS_TOKEN_EXPIRE_SECONDS || 300;
@@ -99,11 +97,11 @@ module.exports = (db) => {
       const oauthClient = await checkOAuthClientFirstPartyByHost(db, hostname);
 
       const newUser = await db.sequelize.transaction(async (t) => {
-        const scopes = getDefaultScopes("HACKER");
+        const scopes = getDefaultScopesForRole(ROLES.HACKER);
 
         const oauthUser = await db.OAuthUser.create(
           {
-            role: "HACKER",
+            role: ROLES.HACKER,
             scopes: JSON.stringify(scopes)
           },
           { transaction: t }
@@ -148,18 +146,8 @@ module.exports = (db) => {
         expiresIn: ACCESS_TOKEN_EXPIRE_SECONDS
       });
     } catch (err) {
-      if (err.name === "SequelizeUniqueConstraintError") {
-        return Promise.reject(
-          new DatabaseError(
-            `${email} is already signed up!`,
-            422,
-            ERROR_CODES.DUPLICATE_EMAIL
-          )
-        );
-      }
-
       return Promise.reject(
-        new RestApiError("Unable to sign up at this time.", 500)
+        new RestApiError("An error occured trying to create user account!", 500)
       );
     }
   }
@@ -204,12 +192,9 @@ module.exports = (db) => {
         expiresIn: ACCESS_TOKEN_EXPIRE_SECONDS
       });
     } catch (err) {
-      if (!err.status) {
-        return Promise.reject(
-          new ValidationError("Database validation failed!")
-        );
-      }
-      return Promise.reject(err);
+      return Promise.reject(
+        new RestApiError("An error occured trying to authenticate!", 500)
+      );
     }
   }
 
@@ -263,7 +248,7 @@ module.exports = (db) => {
         });
       } catch (err) {
         return Promise.reject(
-          new ValidationError("Database validation failed!")
+          new RestApiError("An error occured trying to refresh token!", 500)
         );
       }
     });
@@ -302,7 +287,12 @@ module.exports = (db) => {
 
       return Promise.resolve();
     } catch (err) {
-      return Promise.reject(new ValidationError("Database validation failed!"));
+      return Promise.reject(
+        new RestApiError(
+          "An error occured trying to create reset password request!",
+          500
+        )
+      );
     }
   }
 
@@ -342,7 +332,9 @@ module.exports = (db) => {
 
       return Promise.resolve();
     } catch (err) {
-      return Promise.reject(new ValidationError("Database validation failed!"));
+      return Promise.reject(
+        new RestApiError("An error occured trying to update password!", 500)
+      );
     }
   }
 

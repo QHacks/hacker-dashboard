@@ -1,0 +1,9 @@
+"""
+Represents information to create an update mailing list subscribers.
+"""
+input MailingListSubscriberInput {
+  """
+  Email to be added to the mailing list.
+  """
+  email: String!
+}

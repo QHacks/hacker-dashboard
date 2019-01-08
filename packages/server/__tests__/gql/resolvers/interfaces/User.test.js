@@ -1,5 +1,7 @@
 const { gql } = require("apollo-server-express");
 
+const { ROLES } = require("../../../../oauth/authorization");
+
 const { graphqlClient } = global;
 
 const GET_CURRENT_USER = gql`
@@ -29,7 +31,7 @@ describe("User Interface", () => {
         lastName: "Tepperman",
         email: "hacker@test.com",
         oauthInfo: {
-          role: "HACKER"
+          role: ROLES.HACKER
         }
       }
     });

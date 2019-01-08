@@ -1,0 +1,93 @@
+extend type QueryRoot {
+  """
+  List of all events.
+  """
+  events: [Event!]!
+
+  """
+  Finds an event by its identifier.
+  """
+  event(id: ID!): Event
+
+  """
+  Finds an event by its slug.
+  """
+  eventBySlug(slug: String!): Event
+}
+
+extend type MutationRoot {
+  """
+  Creates an event.
+  """
+  eventCreate(input: EventInput!): EventCreatePayload!
+
+  """
+  Updates an event by its identifier.
+  """
+  eventUpdate(id: ID!, input: EventInput!): EventUpdatePayload!
+
+  """
+  Updates an event by its slug.
+  """
+  eventUpdateBySlug(slug: String!, input: EventInput!): EventUpdatePayload!
+
+  """
+  Deletes an event by its identifier.
+  """
+  eventDelete(id: ID!): EventDeletePayload!
+
+  """
+  Deletes an event by its slug.
+  """
+  eventDeleteBySlug(slug: String!): EventDeleteBySlugPayload!
+}
+
+"""
+Represents an event.
+"""
+type Event {
+  """
+  The events identifier.
+  """
+  id: ID!
+  """
+  The name of the event.
+  """
+  name: String!
+  """
+  The event slug.
+  """
+  slug: String!
+  """
+  The event start date.
+  """
+  startDate: Date!
+  """
+  The event end date.
+  """
+  endDate: Date!
+  """
+  Whether or not attending the event requires an application.
+  """
+  requiresApplication: Boolean!
+  """
+  The opening date of application submission.
+  """
+  applicationOpenDate: Date
+  """
+  The closing date of application submission.
+  """
+  applicationCloseDate: Date
+  """
+  Whether or not the event includes projects.
+  """
+  hasProjects: Boolean!
+  """
+  The submission date of the projects.
+  """
+  projectSubmissionDate: Date!
+  """
+  The URL for the event logo
+  """
+  eventLogoUrl: String
+}

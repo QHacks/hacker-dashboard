@@ -1,0 +1,9 @@
+"""
+Represents the response when a hacker is updated.
+"""
+type HackerUpdatePayload {
+  """
+  The hacker that has been updated.
+  """
+  hacker: Hacker
+}

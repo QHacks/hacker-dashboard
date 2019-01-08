@@ -1,3 +1,10 @@
+extend type QueryRoot {
+  user: User
+}
+
+"""
+Represents fields required to be a user.
+"""
 interface User {
   """
   The users first name.
@@ -27,8 +34,4 @@ interface User {
   The users auth information.
   """
   oauthInfo: OAuthInfo!
-}
-
-extend type QueryRoot {
-  user: User
 }

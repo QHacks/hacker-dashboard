@@ -1,7 +1,9 @@
 const uuid = require("uuid");
 
-const { getDefaultScopes } = require("../../oauth/scopes");
+const { getDefaultScopesForRole, ROLES } = require("../../oauth/authorization");
 
+const QHACKS_MAILING_LIST_ID = uuid.v4();
+const YOPHACKS_EVENT_ID = uuid.v4();
 const QHACKS_CLIENT_ID = uuid.v4();
 const QHACKS_EVENT_ID = uuid.v4();
 const HACKER_ID = uuid.v4();
@@ -14,7 +16,7 @@ async function createOAuthClients() {
   await db.OAuthClient.create({
     id: QHACKS_CLIENT_ID,
     name: "test-client",
-    host: "qhacks-host",
+    host: "127.0.0.1",
     firstParty: true,
     redirectUri: "https://qhacks.io"
   });
@@ -65,20 +67,20 @@ async function createUsers() {
 
   const usersOAuthInfo = [
     {
-      role: "ADMIN",
-      scopes: JSON.stringify(getDefaultScopes("ADMIN"))
+      role: ROLES.ADMIN,
+      scopes: JSON.stringify(getDefaultScopesForRole(ROLES.ADMIN))
     },
     {
-      role: "VOLUNTEER",
-      scopes: JSON.stringify(getDefaultScopes("VOLUNTEER"))
+      role: ROLES.VOLUNTEER,
+      scopes: JSON.stringify(getDefaultScopesForRole(ROLES.VOLUNTEER))
     },
     {
-      role: "HACKER",
-      scopes: JSON.stringify(getDefaultScopes("HACKER"))
+      role: ROLES.HACKER,
+      scopes: JSON.stringify(getDefaultScopesForRole(ROLES.HACKER))
     },
     {
-      role: "HACKER",
-      scopes: JSON.stringify(getDefaultScopes("HACKER"))
+      role: ROLES.HACKER,
+      scopes: JSON.stringify(getDefaultScopesForRole(ROLES.HACKER))
     }
   ];
 
@@ -104,19 +106,32 @@ async function createUsers() {
 // Seed Events
 
 async function createEvents() {
-  await db.Event.create({
-    id: QHACKS_EVENT_ID,
-    name: "qhacks-2019",
-    slug: "qhacks-2019",
-    startDate: new Date("2019-02-01T19:00Z"),
-    endDate: new Date("2019-02-03T19:00Z"),
-    requiresApplication: true,
-    applicationOpenDate: new Date("1970-01-01"),
-    applicationCloseDate: new Date("2025-02-01"),
-    hasProjectSubmissions: true,
-    projectSubmissionDate: new Date("2018-02-03T14:00Z"),
-    eventLogoUrl: "http://digitalocean.com/qhacks.jpg"
-  });
+  await db.Event.bulkCreate([
+    {
+      id: QHACKS_EVENT_ID,
+      name: "qhacks-2019",
+      slug: "qhacks-2019",
+      startDate: new Date("2019-02-01T19:00Z"),
+      endDate: new Date("2019-02-03T19:00Z"),
+      requiresApplication: true,
+      applicationOpenDate: new Date("1970-01-01"),
+      applicationCloseDate: new Date("2025-02-01"),
+      hasProjectSubmissions: true,
+      projectSubmissionDate: new Date("2018-02-03T14:00Z"),
+      eventLogoUrl: "http://digitalocean.com/qhacks.jpg"
+    },
+    {
+      id: YOPHACKS_EVENT_ID,
+      name: "yophacks-2019",
+      slug: "yophacks-2019",
+      startDate: new Date("2019-02-01T19:00Z"),
+      endDate: new Date("2019-02-03T19:00Z"),
+      requiresApplication: false,
+      hasProjectSubmissions: true,
+      projectSubmissionDate: new Date("2018-02-03T14:00Z"),
+      eventLogoUrl: "http://digitalocean.com/yophacks.jpg"
+    }
+  ]);
 }
 
 // Seed Applications
@@ -184,6 +199,33 @@ async function createApplicationFieldResponses(
   });
 }
 
+// Seed Mailing Lists
+
+async function createMailingLists() {
+  await db.MailingList.bulkCreate([
+    {
+      id: QHACKS_MAILING_LIST_ID,
+      slug: "qhacks-list",
+      name: "qhacks-list",
+      eventId: QHACKS_EVENT_ID
+    },
+    {
+      slug: "yophacks-list",
+      name: "yophacks-list",
+      eventId: YOPHACKS_EVENT_ID
+    }
+  ]);
+}
+
+// Seed Mailing List Subscriptions
+
+async function createMailingListSubscriptions() {
+  await db.MailingListSubscription.create({
+    email: "subscriber@test.com",
+    mailingListId: QHACKS_MAILING_LIST_ID
+  });
+}
+
 module.exports = async () => {
   await createOAuthClients();
   await createUsers();
@@ -192,4 +234,7 @@ module.exports = async () => {
   const applicationIds = await createApplications();
   const applicationFieldIds = await createApplicationFields();
   await createApplicationFieldResponses(applicationFieldIds, applicationIds);
+
+  await createMailingLists();
+  await createMailingListSubscriptions();
 };
