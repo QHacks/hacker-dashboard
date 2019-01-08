@@ -8,6 +8,7 @@ const logger = require("./utils/logger");
 const express = require("express");
 const helmet = require("helmet");
 const path = require("path");
+const cors = require("cors");
 const db = require("./db");
 
 const IS_PROD = process.env.NODE_ENV === "production";
@@ -46,6 +47,7 @@ db()
     }
 
     // Third Party Middleware
+    app.use(cors());
     app.use(helmet());
     app.use(compression());
     app.use(bodyParser.json({ limit: "10mb" }));
@@ -71,9 +73,7 @@ db()
           return { db };
         }
       },
-      playground: {
-        endpoint: "/graphql"
-      },
+      playground: !IS_PROD,
       introspection: true,
       tracing: true
     });
