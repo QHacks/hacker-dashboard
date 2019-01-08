@@ -107,20 +107,25 @@ const mailingListUpdate = combineResolvers(
     const { db } = ctx;
     const { id, input } = args;
 
-    const mailingListUpdatePayload = await db.MailingList.update(input, {
-      where: { id },
-      returning: true,
-      plain: true
-    });
+    const mailingList = await db.MailingList.findByPk(id);
 
-    if (!mailingListUpdatePayload || !mailingListUpdatePayload[1]) {
+    if (!mailingList) {
+      throw new GraphQLNotFoundError(
+        `Unable to find the mailing list with identifier ${id}`,
+        GRAPHQL_ERROR_CODES.MAILING_LIST_NOT_FOUND
+      );
+    }
+
+    const mailingListUpdatePayload = await mailingList.update(input);
+
+    if (!mailingListUpdatePayload) {
       throw new GraphQLInternalServerError(
         `Unable to update the mailing list with identifier ${id} at this time`,
         GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
       );
     }
 
-    return { mailingList: mailingListUpdatePayload[1] };
+    return { mailingList: mailingListUpdatePayload };
   }
 );
 
@@ -130,20 +135,25 @@ const mailingListUpdateBySlug = combineResolvers(
     const { db } = ctx;
     const { slug, input } = args;
 
-    const mailingListUpdatePayload = await db.MailingList.update(input, {
-      where: { slug },
-      returning: true,
-      plain: true
-    });
+    const mailingList = await db.MailingList.findOne({ where: { slug } });
 
-    if (!mailingListUpdatePayload || !mailingListUpdatePayload[1]) {
+    if (!mailingList) {
+      throw new GraphQLNotFoundError(
+        `Unable to find the mailing list with slug ${slug}`,
+        GRAPHQL_ERROR_CODES.MAILING_LIST_NOT_FOUND
+      );
+    }
+
+    const mailingListUpdatePayload = await mailingList.update(input);
+
+    if (!mailingListUpdatePayload) {
       throw new GraphQLInternalServerError(
         `Unable to update the mailing list with slug ${slug} at this time`,
         GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
       );
     }
 
-    return { mailingList: mailingListUpdatePayload[1] };
+    return { mailingList: mailingListUpdatePayload };
   }
 );
 
@@ -240,7 +250,8 @@ const event = combineResolvers(
 
     if (!event) {
       throw new GraphQLNotFoundError(
-        `Cannot find the event with identifier ${parent.eventId}`
+        `Cannot find the event with identifier ${parent.eventId}`,
+        GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
       );
     }
 

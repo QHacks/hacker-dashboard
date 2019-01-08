@@ -95,20 +95,25 @@ const eventUpdate = combineResolvers(
     const { db } = ctx;
     const { input, id } = args;
 
-    const eventUpdatePayload = await db.Event.update(input, {
-      where: { id },
-      returning: true,
-      plain: true
-    });
+    const event = await db.Event.findByPk(id);
 
-    if (!eventUpdatePayload || !eventUpdatePayload[1]) {
+    if (!event) {
+      throw new GraphQLNotFoundError(
+        `Unable to find the event with identifier ${id}.`,
+        GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
+      );
+    }
+
+    const eventUpdatePayload = await event.update(input);
+
+    if (!eventUpdatePayload) {
       throw new GraphQLInternalServerError(
         `Unable to update the event with identifier ${id}.`,
         GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
       );
     }
 
-    return { event: eventUpdatePayload[1] };
+    return { event: eventUpdatePayload };
   }
 );
 
@@ -118,20 +123,25 @@ const eventUpdateBySlug = combineResolvers(
     const { db } = ctx;
     const { input, slug } = args;
 
-    const eventUpdatePayload = await db.Event.update(input, {
-      where: { slug },
-      returning: true,
-      plain: true
-    });
+    const event = await db.Event.findOne({ where: { slug } });
 
-    if (!eventUpdatePayload || !eventUpdatePayload[1]) {
+    if (!event) {
+      throw new GraphQLNotFoundError(
+        `Unable to find the event with slug ${slug}`,
+        GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
+      );
+    }
+
+    const eventUpdatePayload = await event.update(input);
+
+    if (!eventUpdatePayload) {
       throw new GraphQLInternalServerError(
         `Unable to update the event with slug ${slug}.`,
         GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
       );
     }
 
-    return { event: eventUpdatePayload[1] };
+    return { event: eventUpdatePayload };
   }
 );
 

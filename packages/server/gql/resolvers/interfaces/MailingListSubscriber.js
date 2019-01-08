@@ -1,3 +1,4 @@
+const { ROLES } = require("../../../oauth/authorization");
 const {
   GRAPHQL_ERROR_CODES,
   GraphQLNotFoundError,
@@ -5,10 +6,15 @@ const {
   GraphQLInternalServerError
 } = require("../../../errors/graphql-errors");
 
-// Utility method
+// Covert a user's role to a GraphQL Type
 
-const upperCase = (str) =>
-  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+const resolveTypeFromRole = (role) => {
+  if (role === ROLES.VOLUNTEER || role === ROLES.SUPER_ADMIN) {
+    return "Admin";
+  }
+
+  return role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
+};
 
 // Mutation Root Resolvers
 
@@ -97,7 +103,7 @@ module.exports = {
 
       if (!mailingListSubscriber.OAuthUser.role) return "Hacker";
 
-      return upperCase(mailingListSubscriber.OAuthUser.role);
+      return resolveTypeFromRole(mailingListSubscriber.OAuthUser.role);
     }
   },
   MutationRoot: {
