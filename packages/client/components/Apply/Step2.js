@@ -121,6 +121,9 @@ const Step2 = (props) => {
               <label htmlFor="birthday">Birthday</label>
               <Flatpickr
                 value={toDate(props.applicationAnswers.birthday)}
+                options={{
+                  defaultDate: `${new Date().getFullYear() - 20}-01-01`
+                }}
                 onChange={(date) =>
                   props.setApplicationAnswer(
                     "birthday",
