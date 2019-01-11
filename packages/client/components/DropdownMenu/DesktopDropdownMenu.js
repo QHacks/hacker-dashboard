@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { blue, blueLight } from "../../assets/colors";
+import { blue, offWhite } from "../../assets/colors";
 import { linkExternalTrusted } from "../../assets/constants";
 
 class Dropdown extends Component {
@@ -16,8 +16,11 @@ class Dropdown extends Component {
         <button
           css={`
             color: ${blue};
-            font-weight: ${this.state.dropdownShown ? "bold" : 600};
+            font-weight: ${this.state.dropdownShown ? 800 : 600};
             border: none;
+            &:hover {
+              border-bottom: none !important;
+            }
           `}
           onMouseOver={() => this.setState({ dropdownShown: true })}
         >
@@ -40,7 +43,7 @@ class Dropdown extends Component {
                 margin: 0;
                 border-bottom: none !important;
                 &:hover {
-                  color: ${blueLight};
+                  background-color: ${offWhite};
                 }
               }
             `}
