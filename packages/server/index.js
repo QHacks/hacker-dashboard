@@ -99,4 +99,5 @@ db()
   })
   .catch((err) => {
     logger.error("Error! Cannot start server.", err);
+    console.log(err);
   });

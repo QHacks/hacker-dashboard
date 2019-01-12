@@ -36,14 +36,7 @@ const application = combineResolvers(
 
     const applicationResponse = {
       status: application.status,
-      submissionDate: application.submissionDate,
-      responses: application.ApplicationFields.map(
-        ({ dataValues, ApplicationFieldResponse }) => ({
-          type: dataValues.type,
-          label: dataValues.shortLabel,
-          answer: ApplicationFieldResponse.answer
-        })
-      )
+      submissionDate: application.submissionDate
     };
 
     return applicationResponse;
@@ -75,6 +68,9 @@ const applications = combineResolvers(
           {
             model: db.Event,
             where: { slug }
+          },
+          {
+            model: db.ApplicationField
           }
         ],
         ...pagination,
@@ -215,9 +211,23 @@ const applicationCreate = combineResolvers(
   }
 );
 
+// responses resolver
+const responses = (parent, ctx, args) => {
+  return parent.ApplicationFields.map(
+    ({ dataValues, ApplicationFieldResponse }) => ({
+      type: dataValues.type,
+      label: dataValues.shortLabel,
+      answer: ApplicationFieldResponse.answer
+    })
+  );
+};
+
 // Resolver Map
 
 module.exports = {
+  Application: {
+    responses
+  },
   QueryRoot: {
     application,
     applications

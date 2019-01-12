@@ -1,7 +1,9 @@
 const { combineResolvers } = require("graphql-resolvers");
 
-const { DatabaseError } = require("../../../errors");
-
+const {
+  GraphQLInternalServerError,
+  GRAPHQL_ERROR_CODES
+} = require("../../../errors/graphql-errors");
 const { isAuthorized } = require("../generics");
 
 // Mutation Root Resolver
@@ -18,8 +20,9 @@ const applicationReviewCreate = combineResolvers(
       });
       return { applicationReview: res };
     } catch (err) {
-      throw new DatabaseError(
-        "Unable to create an application review at this time!"
+      throw new GraphQLInternalServerError(
+        "Unable to create an application review at this time!",
+        GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
       );
     }
   }
@@ -40,8 +43,9 @@ const reviews = combineResolvers(
 
       return applicationReviews;
     } catch (err) {
-      throw new DatabaseError(
-        "Unable to retrieve application reviews at this time!"
+      throw new GraphQLInternalServerError(
+        "Unable to retrieve application reviews at this time!",
+        GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
       );
     }
   }
@@ -58,7 +62,10 @@ const reviewedBy = async (parent, args, ctx, info) => {
 
     return reviewer;
   } catch (err) {
-    throw new DatabaseError("Unable to retrieve reviewers at this time!");
+    throw new GraphQLInternalServerError(
+      "Unable to retrieve reviewers at this time!",
+      GRAPHQL_ERROR_CODES.INTERNAL_SERVER_ERROR
+    );
   }
 };
 
