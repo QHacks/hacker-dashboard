@@ -1,7 +1,8 @@
 import { Switch } from "react-router-dom";
 import React from "react";
 import "normalize.css";
-
+import Rsvp from "../rsvp";
+import ReviewApplications from "../Admin/reviewApplications";
 import ForgotPassword from "../Landing/ForgotPassword";
 import UpdatePassword from "../Landing/UpdatePassword";
 import { boxShadow } from "../../assets/constants";
@@ -75,7 +76,7 @@ button:focus, input:focus {
   outline: none;
 }
 
-input:not([type="checkbox"]):not([type="image"]) {
+input:not([type="checkbox"]):not([type="radio"]):not([type="image"]) {
   height: 42.4px;
   border: 1px solid ${steel};
   border-radius: 4px;
@@ -93,7 +94,7 @@ input:not([type="checkbox"]):not([type="image"]) {
   background-color: ${offWhite};
 }
 
-input:not([type="checkbox"]):not([type="image"]):only-of-type {
+input:not([type="checkbox"]):not([type="radio"]):not([type="image"]):only-of-type {
   width: 100%;
   margin: 6px 0;
 }
@@ -146,6 +147,8 @@ const App = () => (
 
       {/* Authenticated routes */}
       <Route path="/profile" component={Dashboard} type="private" />
+      <Route path="/rsvp" component={Rsvp} type="private" />
+      <Route path="/admin" component={ReviewApplications} />
 
       {/* Catch all routes */}
       <Route path="*" component={NotFound} />

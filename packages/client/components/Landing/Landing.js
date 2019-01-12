@@ -38,7 +38,7 @@ const Landing = ({ children }) => (
             background: url(${circuits}) no-repeat center center;
             background-size: cover;
           }
-          input:not([type="checkbox"]):not([type="image"]) {
+          input:not([type="checkbox"]):not([type="radio"]):not([type="image"]) {
             margin: 12px 4px !important;
             display: block;
             max-width: 375px;
