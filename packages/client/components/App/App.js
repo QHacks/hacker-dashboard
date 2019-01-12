@@ -1,7 +1,7 @@
 import { Switch } from "react-router-dom";
 import React from "react";
 import "normalize.css";
-import Rsvp from "../rsvp";
+import Rsvp from "../Dashboard/rsvp";
 import ReviewApplications from "../Admin/reviewApplications";
 import SingleApplication from "../Admin/singleApplication";
 import ForgotPassword from "../Landing/ForgotPassword";
@@ -148,7 +148,7 @@ const App = () => (
 
       {/* Authenticated routes */}
       <Route path="/profile" component={Dashboard} type="private" />
-      <Route path="/rsvp" component={Rsvp} type="private" />
+      <Route path="/rsvp" component={Rsvp} />
       <Route path="/admin/applications" component={ReviewApplications} />
       <Route path="/admin/application/:id" component={SingleApplication} />
 

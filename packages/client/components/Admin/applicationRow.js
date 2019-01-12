@@ -17,7 +17,7 @@ class ApplicationRow extends Component {
     }
   }
   getRsvpString() {
-    return this.props.rsvp;
+    return this.props.rsvp || "-";
   }
   render() {
     return (
