@@ -53,39 +53,38 @@ class ReviewApplications extends Component {
     ];
     return (
       <AdminWrapper>
-        <ContentWrapper>
-          <div
+        <div
+          css={`
+            display: flex;
+            justify-content: space-between;
+            padding: 0 45px;
+            align-items: center;
+            > * {
+              display: inline-block;
+            }
+          `}
+        >
+          <h1
             css={`
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              > * {
-                display: inline-block;
-              }
+              color: #252525 !important;
+              font-size: 28px !important;
             `}
           >
-            <h1
+            Applications
+          </h1>
+          <div>
+            <input
               css={`
-                color: #252525 !important;
-                font-size: 28px !important;
+                background-color: white !important;
+                min-width: 300px;
               `}
-            >
-              Applications
-            </h1>
-            <div>
-              <input
-                css={`
-                  background-color: white !important;
-                  min-width: 300px;
-                `}
-                type="text"
-                value={this.state.searchQuery}
-                onChange={(e) => this.setState({ searchQuery: e.target.value })}
-                placeholder="Search for an application"
-              />
-            </div>
+              type="text"
+              value={this.state.searchQuery}
+              onChange={(e) => this.setState({ searchQuery: e.target.value })}
+              placeholder="Search for an application"
+            />
           </div>
-        </ContentWrapper>
+        </div>
         <div
           css={`
             background-color: ${offWhite};
@@ -118,17 +117,17 @@ class ReviewApplications extends Component {
                   margin-bottom: 28px;
                   padding: 8px 32px;
                   > * {
-                    width: 16.7%;
+                    padding: 0 0.5rem;
                     font-weight: 600;
                   }
                 `}
               >
-                <div>Name</div>
-                <div>School</div>
-                <div>Status</div>
-                <div>RSVP</div>
-                <div>Score</div>
-                <div>D.O.S</div>
+                <div css="width:25%">Name</div>
+                <div css="width:25%">School</div>
+                <div css="width:15%">Status</div>
+                <div css="width:10%">RSVP</div>
+                <div css="width:10%">Score</div>
+                <div css="width:15%">D.O.S</div>
               </div>
               {applications.map((app) => (
                 <ApplicationRow key={app.id} {...app} />

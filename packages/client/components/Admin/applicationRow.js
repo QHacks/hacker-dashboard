@@ -13,7 +13,7 @@ class ApplicationRow extends Component {
       case "rejected":
         return red;
       default:
-        "#616161";
+        return "#616161";
     }
   }
   getRsvpString() {
@@ -32,33 +32,42 @@ class ApplicationRow extends Component {
           margin-bottom: 8px;
           padding: 18px 32px;
           border-radius: 8px;
+          cursor: pointer;
           > * {
-            width: 16.7%;
-            padding: 0 1rem;
+            padding: 0 0.5rem;
           }
         `}
       >
         <div
           css={`
+            width: 25%;
             font-weight: 600;
           `}
         >
           {this.props.name}
         </div>
-        <div>{this.props.school}</div>
+        <div
+          css={`
+            width: 25%;
+          `}
+        >
+          {this.props.school}
+        </div>
         <div
           css={`
             font-weight: 600;
             color: ${this.getStatusColor()};
             text-transform: uppercase;
+            width: 15%;
           `}
         >
           {this.props.status}
         </div>
-        <div>{this.getRsvpString()}</div>
+        <div css="width: 10%;">{this.getRsvpString()}</div>
         <div
           css={`
             font-weight: 600;
+            width: 10%;
           `}
         >
           {this.props.score || "-"}
@@ -66,6 +75,7 @@ class ApplicationRow extends Component {
         <div
           css={`
             color: #616161;
+            width: 15%;
           `}
         >
           {this.props.dateSubmitted}

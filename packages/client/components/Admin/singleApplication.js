@@ -4,6 +4,7 @@ import ActionButton from "../ActionButton/ActionButton";
 import { offWhite, steel } from "../../assets/colors";
 import arrow from "../../assets/img/arrow.svg";
 import DashboardSection from "../Dashboard/DashboardSection/DashboardSection";
+import { Link } from "react-router-dom";
 
 class SingleApplication extends Component {
   constructor(props) {
@@ -23,10 +24,14 @@ class SingleApplication extends Component {
         <div
           css={`
             display: flex;
+            border-top: 2px solid ${steel};
             justify-content: space-between;
             height: 100%;
             strong {
               color: #868d99;
+              text-transform: uppercase;
+              margin: 16px 0 8px;
+              display: block;
             }
           `}
         >
@@ -37,20 +42,22 @@ class SingleApplication extends Component {
               width: 380px;
               height: 100%;
               padding: 48px 32px;
+              z-index: 3;
             `}
           >
             <div
               css={`
                 border-bottom: 2px solid ${steel};
                 padding-bottom: 25px;
-              `}
-            >
-              <strong
-                css={`
+                > a {
                   display: flex;
                   align-items: center;
-                `}
-              >
+                  color: #868d99 !important;
+                  margin-bottom: 40px;
+                }
+              `}
+            >
+              <Link to="/admin/applications">
                 <img
                   src={arrow}
                   css={`
@@ -59,7 +66,7 @@ class SingleApplication extends Component {
                   `}
                 />{" "}
                 Back to application list
-              </strong>
+              </Link>
               <h1
                 css={`
                   font-size: 24px !important;
@@ -67,9 +74,23 @@ class SingleApplication extends Component {
               >
                 {this.state.name}
               </h1>
-              <p>{this.state.school}</p>
+              <p
+                css={`
+                  margin-bottom: 32px;
+                `}
+              >
+                {this.state.school}
+              </p>
               <strong>Status</strong>
               <div>{this.state.status}</div>
+              <select
+                value={this.state.setStatus}
+                onChange={(e) => this.setState({ setStatus: e.target.value })}
+              >
+                <option value="accepted">Accepted</option>
+                <option value="waitlisted">Waitlisted</option>
+                <option value="reject">Rejected</option>
+              </select>
               <strong>Average score</strong>
               <div>{this.state.score}</div>
             </div>
@@ -86,12 +107,14 @@ class SingleApplication extends Component {
                 Review application
               </h2>
               <p>
-                What score would you give {this.state.name}'s application out of
-                5?
+                What score would you give {this.state.name}&#39;s application
+                out of 5?
               </p>
               <input
                 type="number"
                 value={this.state.givenScore}
+                max={5}
+                min={0}
                 onChange={(e) =>
                   this.setState({
                     givenScore: e.target.value
@@ -111,19 +134,49 @@ class SingleApplication extends Component {
               width: calc(100% - 380px);
               background-color: ${offWhite};
               padding: 12px;
+              h3.cardHeading {
+                color: #838a99 !important;
+                text-transform: uppercase;
+                font-size: 12px;
+                margin: 24px 0 8px;
+                &:first-child {
+                  margin-top: 0;
+                }
+              }
             `}
           >
             <div>
               <DashboardSection half title="Personal Details">
-                Gender
+                <h3 className="cardHeading">Gender</h3>
+                <p>{this.props.gender}</p>
+                <h3 className="cardHeading">Phone Number</h3>
+                <p>{this.props.phoneNumber}</p>
+                <h3 className="cardHeading">Birthday</h3>
+                <p>{this.props.birthday}</p>
+                <h3 className="cardHeading">Race</h3>
+                <p>{this.props.race}</p>
               </DashboardSection>
               <DashboardSection half title="Education">
-                School
+                <h3 className="cardHeading">School</h3>
+                <p>{this.props.school}</p>
+                <h3 className="cardHeading">Program</h3>
+                <p>{this.props.program}</p>
+                <h3 className="cardHeading">Degree type</h3>
+                <p>{this.props.degree}</p>
               </DashboardSection>
             </div>
             <div>
               <DashboardSection title="Hackathon Information">
-                Answers
+                <h3 className="cardHeading">
+                  Why do you want to attend QHacks?
+                </h3>
+                <p>{this.props.gender}</p>
+                <h3 className="cardHeading">
+                  How many hackathons have you attended?
+                </h3>
+                <p>{this.props.numAttendedHackathons}</p>
+                <h3 className="cardHeading">Where are you travelling from?</h3>
+                <p>{this.props.travelOrigin}</p>
               </DashboardSection>
             </div>
           </div>

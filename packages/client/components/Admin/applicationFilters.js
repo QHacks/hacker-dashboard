@@ -15,12 +15,15 @@ class ApplicationFilters extends Component {
     return (
       <div
         css={`
-          padding: 0 64px 0 0;
+          padding: 0 48px 0 0;
           box-sizing: content-box;
           width: 280px;
           strong.heading {
             display: block;
             margin: 24px 0 14px;
+            &:first-child {
+              margin-top: 0;
+            }
           }
           label {
             color: #252525;
