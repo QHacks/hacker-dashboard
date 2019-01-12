@@ -56,7 +56,6 @@ class ReviewApplications extends Component {
         <ContentWrapper>
           <div
             css={`
-              margin-top: 120px;
               display: flex;
               justify-content: space-between;
               align-items: center;

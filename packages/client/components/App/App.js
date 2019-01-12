@@ -3,6 +3,7 @@ import React from "react";
 import "normalize.css";
 import Rsvp from "../rsvp";
 import ReviewApplications from "../Admin/reviewApplications";
+import SingleApplication from "../Admin/singleApplication";
 import ForgotPassword from "../Landing/ForgotPassword";
 import UpdatePassword from "../Landing/UpdatePassword";
 import { boxShadow } from "../../assets/constants";
@@ -148,7 +149,8 @@ const App = () => (
       {/* Authenticated routes */}
       <Route path="/profile" component={Dashboard} type="private" />
       <Route path="/rsvp" component={Rsvp} type="private" />
-      <Route path="/admin" component={ReviewApplications} />
+      <Route path="/admin/applications" component={ReviewApplications} />
+      <Route path="/admin/application/:id" component={SingleApplication} />
 
       {/* Catch all routes */}
       <Route path="*" component={NotFound} />
