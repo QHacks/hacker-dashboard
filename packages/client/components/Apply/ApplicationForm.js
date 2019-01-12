@@ -30,8 +30,8 @@ const SUBMIT_APPLICATION_MUTATION = gql`
 `;
 
 const UPDATE_HACKER_INFO_MUTATION = gql`
-  mutation UpdateHackerInformation($input: HackerInput!) {
-    hackerUpdate(input: $input) {
+  mutation UpdateHackerInformation($id: ID!, $input: HackerInput!) {
+    hackerUpdate(id: $id, input: $input) {
       hacker {
         firstName
       }
@@ -195,12 +195,13 @@ class ApplicationForm extends Component {
 
         if (!newHackerInfo.githubLink) delete newHackerInfo.githubLink;
         if (!newHackerInfo.linkedinLink) delete newHackerInfo.linkedinLink;
-        if (!newHackerInfo.personalWebsite) {
-          delete newHackerInfo.personalWebsite;
+        if (!newHackerInfo.personalWebsiteLink) {
+          delete newHackerInfo.personalWebsiteLink;
         }
 
         await this.props.updateHacker({
           variables: {
+            id: "1234",
             input: {
               ...newHackerInfo
             }
