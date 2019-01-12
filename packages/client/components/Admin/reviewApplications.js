@@ -67,8 +67,8 @@ class ReviewApplications extends Component {
           >
             <h1
               css={`
-                color: #252525;
-                font-size: 28px;
+                color: #252525 !important;
+                font-size: 28px !important;
               `}
             >
               Applications
@@ -77,6 +77,7 @@ class ReviewApplications extends Component {
               <input
                 css={`
                   background-color: white !important;
+                  min-width: 300px;
                 `}
                 type="text"
                 value={this.state.searchQuery}
@@ -89,54 +90,52 @@ class ReviewApplications extends Component {
         <div
           css={`
             background-color: ${offWhite};
-            padding: 48px 0;
+            padding: 48px;
             border-top: 2px solid ${blue};
           `}
         >
-          <ContentWrapper>
+          <div
+            css={`
+              display: flex;
+              justify-content: space-around;
+            `}
+          >
+            <ApplicationFilters
+              {...this.state}
+              setState={(state) => this.setState(state)}
+            />
             <div
               css={`
-                display: flex;
-                justify-content: space-around;
+                flex-grow: 1;
               `}
             >
-              <ApplicationFilters
-                {...this.state}
-                setState={(state) => this.setState(state)}
-              />
               <div
                 css={`
-                  flex-grow: 1;
+                  display: flex;
+                  background-color: white;
+                  border: 1px solid ${steel};
+                  border-bottom: 1px solid #252525;
+                  border-radius: 4px;
+                  margin-bottom: 28px;
+                  padding: 8px 32px;
+                  > * {
+                    width: 16.7%;
+                    font-weight: 600;
+                  }
                 `}
               >
-                <div
-                  css={`
-                    display: flex;
-                    background-color: white;
-                    border: 1px solid ${steel};
-                    border-bottom: 1px solid #252525;
-                    border-radius: 4px;
-                    margin-bottom: 28px;
-                    padding: 8px 32px;
-                    > * {
-                      width: 16.7%;
-                      font-weight: 600;
-                    }
-                  `}
-                >
-                  <div>Name</div>
-                  <div>School</div>
-                  <div>Status</div>
-                  <div>RSVP</div>
-                  <div>Score</div>
-                  <div>D.O.S</div>
-                </div>
-                {applications.map((app) => (
-                  <ApplicationRow key={app.id} {...app} />
-                ))}
+                <div>Name</div>
+                <div>School</div>
+                <div>Status</div>
+                <div>RSVP</div>
+                <div>Score</div>
+                <div>D.O.S</div>
               </div>
+              {applications.map((app) => (
+                <ApplicationRow key={app.id} {...app} />
+              ))}
             </div>
-          </ContentWrapper>
+          </div>
         </div>
       </AdminWrapper>
     );

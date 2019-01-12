@@ -20,7 +20,7 @@ class ApplicationFilters extends Component {
           width: 280px;
           strong.heading {
             display: block;
-            margin: 14px 0;
+            margin: 24px 0 14px;
           }
           label {
             color: #252525;
