@@ -3,7 +3,7 @@ const { combineResolvers } = require("graphql-resolvers");
 const { ROLES } = require("../../../oauth/authorization");
 
 const { sendEmails } = require("../../../emails")();
-const { isAuthenticated, isAuthorized } = require("../generics");
+const { isAuthenticatedAndAuthorized } = require("../generics");
 
 const {
   GRAPHQL_ERROR_CODES,
@@ -16,17 +16,14 @@ const {
 // Query Root Resolvers
 
 const application = combineResolvers(
-  isAuthenticated(),
+  isAuthenticatedAndAuthorized(null, ROLES.HACKER),
   async (parent, args, ctx, info) => {
     const { eventSlug } = args;
     const { db, user } = ctx;
 
     const application = await db.Application.findOne({
       where: { userId: user.id },
-      include: [
-        { model: db.Event, where: { slug: eventSlug } },
-        { model: db.ApplicationField }
-      ]
+      include: [{ model: db.Event, where: { slug: eventSlug } }]
     });
 
     if (!application) {
@@ -41,23 +38,14 @@ const application = combineResolvers(
 );
 
 const applications = combineResolvers(
-  isAuthorized(null, ROLES.ADMIN),
+  isAuthenticatedAndAuthorized(null, ROLES.ADMIN),
   async (parent, args, ctx, info) => {
     const { db } = ctx;
     const { eventSlug: slug } = args;
     const pagination = {};
 
-    if (args.after) {
-      pagination.where = {
-        submissionDate: {
-          [db.Sequelize.Op.gt]: new Date(args.after)
-        }
-      };
-    }
-
-    if (args.first) {
-      pagination.limit = args.first;
-    }
+    if (args.offset) pagination.offset = args.offset;
+    if (args.limit) pagination.limit = args.limit;
 
     try {
       const applicationsFromDB = await db.Application.findAll({
@@ -65,9 +53,6 @@ const applications = combineResolvers(
           {
             model: db.Event,
             where: { slug }
-          },
-          {
-            model: db.ApplicationField
           }
         ],
         ...pagination,
@@ -81,10 +66,44 @@ const applications = combineResolvers(
   }
 );
 
+const applicationsToReview = combineResolvers(
+  isAuthenticatedAndAuthorized(null, ROLES.ADMIN),
+  async (parent, args, ctx, info) => {
+    const { db } = ctx;
+
+    const event = await db.Event.findOne({ where: { slug: args.eventSlug } });
+
+    if (!event) {
+      throw new GraphQLNotFoundError(
+        `Unable to find the event with slug ${args.eventSlug}`,
+        GRAPHQL_ERROR_CODES.EVENT_NOT_FOUND
+      );
+    }
+
+    const applicationsToReview = await db.sequelize.query(
+      `
+      SELECT * FROM "Application" WHERE "eventId" = '${event.id}' EXCEPT
+      SELECT "Application".* FROM "Application"
+      JOIN "ApplicationReview" ON "Application"."id" = "ApplicationReview"."applicationId"
+      WHERE "reviewerId" = '${ctx.user.id}' AND "eventId" = '${event.id}'
+      ORDER BY "submissionDate" ASC
+      ${args.offset ? `OFFSET ${args.offset}` : ""}
+      ${args.limit ? `LIMIT ${args.limit}` : ""}
+    `,
+      {
+        model: db.Application,
+        mapToModel: true
+      }
+    );
+
+    return applicationsToReview;
+  }
+);
+
 // Mutation Root Resolvers
 
 const applicationCreate = combineResolvers(
-  isAuthenticated(),
+  isAuthenticatedAndAuthorized(null, ROLES.HACKER),
   async (parent, args, ctx, info) => {
     const { eventSlug, input } = args;
     const { user, db } = ctx;
@@ -195,8 +214,6 @@ const applicationCreate = combineResolvers(
         }
       ]);
 
-      application.responses = input.responses;
-
       return {
         application
       };
@@ -208,16 +225,17 @@ const applicationCreate = combineResolvers(
 
 // responses resolver
 
-const responses = (parent, ctx, args) => {
-  return (
-    parent.responses ||
-    parent.ApplicationFields.map(
-      ({ dataValues, ApplicationFieldResponse }) => ({
-        type: dataValues.type,
-        label: dataValues.shortLabel,
-        answer: ApplicationFieldResponse.answer
-      })
-    )
+const responses = async (parent, ctx, args) => {
+  const responses = await parent.getApplicationFields({
+    order: [["createdAt", "ASC"]]
+  });
+
+  return responses.map(
+    ({ type, label, ApplicationFieldResponse: { answer } }) => ({
+      type,
+      label,
+      answer
+    })
   );
 };
 
@@ -229,7 +247,8 @@ module.exports = {
   },
   QueryRoot: {
     application,
-    applications
+    applications,
+    applicationsToReview
   },
   MutationRoot: {
     applicationCreate

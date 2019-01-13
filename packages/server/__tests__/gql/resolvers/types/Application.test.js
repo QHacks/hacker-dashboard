@@ -15,8 +15,8 @@ const GET_USER_APPLICATION_FOR_EVENT = gql`
 `;
 
 const GET_ALL_APPLICATIONS_FOR_EVENT = gql`
-  query GetAllApplications($eventSlug: String!, $after: Date, $first: Int) {
-    applications(eventSlug: $eventSlug, after: $after, first: $first) {
+  query GetAllApplications($eventSlug: String!, $offset: Int, $limit: Int) {
+    applications(eventSlug: $eventSlug, offset: $offset, limit: $limit) {
       id
       status
     }
@@ -36,6 +36,15 @@ const CREATE_APPLICATION_FOR_EVENT = gql`
           answer
         }
       }
+    }
+  }
+`;
+
+const GET_APPLICATIONS_TO_REVIEW_QUERY = gql`
+  query GetApplicationsToReview($eventSlug: String!) {
+    applicationsToReview(eventSlug: $eventSlug) {
+      id
+      status
     }
   }
 `;
@@ -289,14 +298,15 @@ describe("Application Type", () => {
 
     // Query for the existing application
 
-    const { data: response1 } = await query({
+    const res = await query({
       query: GET_ALL_APPLICATIONS_FOR_EVENT,
       variables: {
         eventSlug: "qhacks-2019",
-        first: 1,
-        after: new Date(1, 1, 1)
+        limit: 1
       }
     });
+
+    const { data: response1 } = res;
 
     expect(response1.applications).toBeDefined();
     expect(response1.applications).toHaveLength(1);
@@ -313,8 +323,7 @@ describe("Application Type", () => {
       query: GET_ALL_APPLICATIONS_FOR_EVENT,
       variables: {
         eventSlug: "qhacks-2019",
-        first: 1,
-        after: oldApplication.submissionDate
+        offset: 1
       }
     });
 
@@ -323,5 +332,44 @@ describe("Application Type", () => {
     expect(response2.applications[0]).toEqual(
       expect.objectContaining({ status: "APPLIED", id: newApplication.id })
     );
+  });
+
+  it("finds all applications that an admin needs to review through applicationsToReview query", async () => {
+    const qhacks = await db.Event.findOne({ where: { slug: "qhacks-2019" } });
+    const hacker = await db.User.findOne({
+      where: { email: "hacker1@test.com" }
+    });
+
+    const oldApplication = await db.Application.findOne({});
+    const newApplication = await qhacks.createApplication({
+      userId: hacker.id,
+      status: "APPLIED"
+    });
+
+    const admin = await db.User.findOne({ where: { email: "admin@test.com" } });
+    await db.ApplicationReview.create({
+      score: 5,
+      reviewerId: admin.id,
+      applicationId: oldApplication.id
+    });
+
+    const { query } = await graphqlClient(admin);
+
+    const res = await query({
+      query: GET_APPLICATIONS_TO_REVIEW_QUERY,
+      variables: {
+        eventSlug: "qhacks-2019"
+      }
+    });
+
+    const {
+      data: { applicationsToReview }
+    } = res;
+
+    expect(applicationsToReview).toHaveLength(1);
+    expect(applicationsToReview[0]).toEqual({
+      id: newApplication.id,
+      status: "APPLIED"
+    });
   });
 });

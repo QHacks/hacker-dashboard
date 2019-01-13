@@ -76,8 +76,7 @@ describe("ApplicationReview Type", () => {
       variables: { eventSlug: "qhacks-2019" }
     });
 
-    expect(data).toHaveProperty("applications");
-    expect(data.applications).toBeNull();
+    expect(data).toBeNull();
     expect(errors).toHaveLength(1);
     expect(errors[0]).toEqual(
       expect.objectContaining({

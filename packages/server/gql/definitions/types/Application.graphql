@@ -4,9 +4,17 @@ extend type QueryRoot {
   """
   application(eventSlug: String!): Application
   """
-  Returns all applications for a specific event
+  Returns all applications for a specific event.
   """
-  applications(eventSlug: String!, first: Int, after: Date): [Application!]
+  applications(eventSlug: String!, offset: Int, limit: Int): [Application!]!
+  """
+  Returns all applications for a specific event, omitting ones already reviewed by the signed in admin.
+  """
+  applicationsToReview(
+    eventSlug: String!
+    offset: Int
+    limit: Int
+  ): [Application!]!
 }
 
 extend type MutationRoot {
@@ -38,7 +46,7 @@ type Application {
   """
   The date that the application was submitted.
   """
-  submissionDate: Date
+  submissionDate: Date!
   """
   The reviews of the application.
   """

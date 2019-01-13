@@ -155,6 +155,7 @@ async function createApplicationFields() {
       type: "CHECKBOX",
       label: "Field 1",
       shortLabel: "Field 1",
+      createdAt: new Date(1980, 1, 1),
       required: true
     },
     {
@@ -162,6 +163,7 @@ async function createApplicationFields() {
       type: "CHECKBOX",
       label: "Field 2",
       shortLabel: "Field 2",
+      createdAt: new Date(1980, 1, 2),
       required: false
     },
     {
@@ -169,6 +171,7 @@ async function createApplicationFields() {
       type: "CHECKBOX",
       label: "Field 3",
       shortLabel: "Field 3",
+      createdAt: new Date(1980, 1, 3),
       required: true
     }
   ]);
