@@ -277,11 +277,12 @@ describe("Application Type", () => {
       where: { email: "admin@test.com" }
     });
 
-    const existingApplication = await db.Application.findOne({});
-    const newApplication = await db.Application.create({
+    const newApplication = await db.Application.findOne({});
+    const oldApplication = await db.Application.create({
       userId: hacker.id,
       eventId: event.id,
-      status: "APPLIED"
+      status: "APPLIED",
+      submissionDate: new Date(1980, 1, 1)
     });
 
     const { query } = await graphqlClient(admin);
@@ -302,7 +303,7 @@ describe("Application Type", () => {
     expect(response1.applications[0]).toEqual(
       expect.objectContaining({
         status: "APPLIED",
-        id: existingApplication.id
+        id: oldApplication.id
       })
     );
 
@@ -313,7 +314,7 @@ describe("Application Type", () => {
       variables: {
         eventSlug: "qhacks-2019",
         first: 1,
-        after: existingApplication.createdAt
+        after: oldApplication.submissionDate
       }
     });
 

@@ -49,8 +49,8 @@ const applications = combineResolvers(
 
     if (args.after) {
       pagination.where = {
-        createdAt: {
-          [db.Sequelize.Op.gt]: args.after
+        submissionDate: {
+          [db.Sequelize.Op.gt]: new Date(args.after)
         }
       };
     }
@@ -71,7 +71,7 @@ const applications = combineResolvers(
           }
         ],
         ...pagination,
-        order: [["createdAt", "ASC"]]
+        order: [["submissionDate", "ASC"]]
       });
 
       return applicationsFromDB;
@@ -207,6 +207,7 @@ const applicationCreate = combineResolvers(
 );
 
 // responses resolver
+
 const responses = (parent, ctx, args) => {
   return (
     parent.responses ||
