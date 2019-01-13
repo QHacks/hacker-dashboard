@@ -95,16 +95,18 @@ describe("ApplicationReview Type", () => {
     });
 
     const { mutate } = await graphqlClient(admin);
-    const { data } = await mutate({
+    const res = await mutate({
       mutation: CREATE_APPLICATION_REVIEW_MUTATION,
       variables: { applicationId: application.id, input: { score: 2 } }
     });
+
+    const { data } = res;
 
     expect(data.applicationReviewCreate).toBeDefined();
     expect(data.applicationReviewCreate.applicationReview).toBeDefined();
     expect(data.applicationReviewCreate.applicationReview.score).toBe(2);
     expect(
-      data.applicationReviewCreate.applicationReview.reviewedAt.getTime()
+      data.applicationReviewCreate.applicationReview.reviewedAt
     ).toBeLessThanOrEqual(Date.now());
   });
 });

@@ -44,12 +44,14 @@ describe("Application Type", () => {
   it("queries for the current users application to an event", async () => {
     const { query } = await graphqlClient();
 
-    const { data } = await query({
+    const res = await query({
       query: GET_USER_APPLICATION_FOR_EVENT,
       variables: {
         eventSlug: "qhacks-2019"
       }
     });
+
+    const { data } = res;
 
     expect(data.application.status).toBe("APPLIED");
     expect(data.application.responses).toHaveLength(3);
@@ -69,7 +71,7 @@ describe("Application Type", () => {
 
     const { mutate } = await graphqlClient(user);
 
-    const { data } = await mutate({
+    const res = await mutate({
       mutation: CREATE_APPLICATION_FOR_EVENT,
       variables: {
         eventSlug: "qhacks-2019",
@@ -91,6 +93,8 @@ describe("Application Type", () => {
         }
       }
     });
+
+    const { data } = res;
 
     expect(data.applicationCreate.application.status).toBe("APPLIED");
     expect(data.applicationCreate.application.responses).toHaveLength(3);

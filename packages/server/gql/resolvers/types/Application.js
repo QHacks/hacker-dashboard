@@ -1,5 +1,7 @@
 const { combineResolvers } = require("graphql-resolvers");
 
+const { ROLES } = require("../../../oauth/authorization");
+
 const { sendEmails } = require("../../../emails")();
 const { isAuthenticated, isAuthorized } = require("../generics");
 
@@ -34,17 +36,12 @@ const application = combineResolvers(
       );
     }
 
-    const applicationResponse = {
-      status: application.status,
-      submissionDate: application.submissionDate
-    };
-
-    return applicationResponse;
+    return application;
   }
 );
 
 const applications = combineResolvers(
-  isAuthorized(null, "ADMIN"),
+  isAuthorized(null, ROLES.ADMIN),
   async (parent, args, ctx, info) => {
     const { db } = ctx;
     const { eventSlug: slug } = args;
@@ -198,12 +195,10 @@ const applicationCreate = combineResolvers(
         }
       ]);
 
+      application.responses = input.responses;
+
       return {
-        application: {
-          status: application.status,
-          responses: input.responses,
-          submissionDate: application.submissionDate
-        }
+        application
       };
     });
 
@@ -213,12 +208,15 @@ const applicationCreate = combineResolvers(
 
 // responses resolver
 const responses = (parent, ctx, args) => {
-  return parent.ApplicationFields.map(
-    ({ dataValues, ApplicationFieldResponse }) => ({
-      type: dataValues.type,
-      label: dataValues.shortLabel,
-      answer: ApplicationFieldResponse.answer
-    })
+  return (
+    parent.responses ||
+    parent.ApplicationFields.map(
+      ({ dataValues, ApplicationFieldResponse }) => ({
+        type: dataValues.type,
+        label: dataValues.shortLabel,
+        answer: ApplicationFieldResponse.answer
+      })
+    )
   );
 };
 
