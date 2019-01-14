@@ -114,7 +114,7 @@ const oauthInfo = combineResolvers(
 );
 
 const hasApplied = combineResolvers(
-  isAuthenticatedAndAuthorized(scopes),
+  isAuthenticatedAndAuthorized(null, ROLES.HACKER),
   async (parent, args, ctx, info) => {
     const { eventSlug } = args;
     const { db } = ctx;
