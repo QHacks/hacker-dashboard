@@ -12,12 +12,12 @@ class Rsvp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      shirtSize: "",
+      shirtSize: this.toOptions("M"),
       pronoun: "",
-      dietaryRestrictions: [],
+      dietaryRestrictions: "",
       areasOfInterest: [],
       travelOrigin: "",
-      qhacksBus: null
+      qhacksBus: this.toOptions("no")
     };
   }
   toOptions(str) {
@@ -34,13 +34,18 @@ class Rsvp extends Component {
       });
   }
 
-  // getSelectAnswer(field) {
-  //   const val = this.state[field];
-  //   return {
-  //     label: val,
-  //     value: val
-  //   };
-  // }
+  sendRsvp() {
+    // pass
+  }
+
+  setInterest(interest, bool) {
+    this.setState((state) => ({
+      areasOfInterest: bool
+        ? [...state.areasOfInterest, interest]
+        : state.areasOfInterest.filter((x) => x !== interest)
+    }));
+  }
+
   render() {
     const shirtSizeOptions = ["XS", "S", "M", "L", "XL"].map((x) =>
       this.toOptions(x)
@@ -209,10 +214,8 @@ class Rsvp extends Component {
                       <Checkbox
                         id="interest-aiMl"
                         {...checkboxOptions}
-                        checked={this.state["interest-aiMl"]}
-                        onChange={(bool) =>
-                          this.setState({ "interest-aiMl": bool })
-                        }
+                        checked={this.state.areasOfInterest.includes("aiMl")}
+                        onChange={(bool) => this.setInterest("aiMl", bool)}
                       />
                       <label htmlFor="interest-aiMl">AI/ML</label>
                     </div>
@@ -220,9 +223,11 @@ class Rsvp extends Component {
                       <Checkbox
                         id="interest-blockchain"
                         {...checkboxOptions}
-                        checked={this.state["interest-blockchain"]}
+                        checked={this.state.areasOfInterest.includes(
+                          "blockchain"
+                        )}
                         onChange={(bool) =>
-                          this.setState({ "interest-blockchain": bool })
+                          this.setInterest("blockchain", bool)
                         }
                       />
                       <label htmlFor="interest-blockchain">Blockchain</label>
@@ -231,10 +236,8 @@ class Rsvp extends Component {
                       <Checkbox
                         id="interest-arVr"
                         {...checkboxOptions}
-                        checked={this.state["interest-arVr"]}
-                        onChange={(bool) =>
-                          this.setState({ "interest-arVr": bool })
-                        }
+                        checked={this.state.areasOfInterest.includes("arVr")}
+                        onChange={(bool) => this.setInterest("arVr", bool)}
                       />
                       <label htmlFor="interest-arVr">AR/VR</label>
                     </div>
@@ -242,10 +245,8 @@ class Rsvp extends Component {
                       <Checkbox
                         id="interest-mobile"
                         {...checkboxOptions}
-                        checked={this.state["interest-mobile"]}
-                        onChange={(bool) =>
-                          this.setState({ "interest-mobile": bool })
-                        }
+                        checked={this.state.areasOfInterest.includes("mobile")}
+                        onChange={(bool) => this.setInterest("mobile", bool)}
                       />
                       <label htmlFor="interest-mobile">Mobile</label>
                     </div>
@@ -253,9 +254,11 @@ class Rsvp extends Component {
                       <Checkbox
                         id="interest-webDevelopment"
                         {...checkboxOptions}
-                        checked={this.state["interest-webDevelopment"]}
+                        checked={this.state.areasOfInterest.includes(
+                          "webDevelopment"
+                        )}
                         onChange={(bool) =>
-                          this.setState({ "interest-webDevelopment": bool })
+                          this.setInterest("webDevelopment", bool)
                         }
                       />
                       <label htmlFor="interest-webDevelopment">
@@ -268,9 +271,11 @@ class Rsvp extends Component {
                       <Checkbox
                         id="interest-productManagement"
                         {...checkboxOptions}
-                        checked={this.state["interest-productManagement"]}
+                        checked={this.state.areasOfInterest.includes(
+                          "productManagement"
+                        )}
                         onChange={(bool) =>
-                          this.setState({ "interest-productManagement": bool })
+                          this.setInterest("productManagement", bool)
                         }
                       />
                       <label htmlFor="interest-productManagement">
@@ -281,9 +286,11 @@ class Rsvp extends Component {
                       <Checkbox
                         id="interest-entrepreneurship"
                         {...checkboxOptions}
-                        checked={this.state["interest-entrepreneurship"]}
+                        checked={this.state.areasOfInterest.includes(
+                          "entrepreneurship"
+                        )}
                         onChange={(bool) =>
-                          this.setState({ "interest-entrepreneurship": bool })
+                          this.setInterest("entrepreneurship", bool)
                         }
                       />
                       <label htmlFor="interest-entrepreneurship">
@@ -294,9 +301,11 @@ class Rsvp extends Component {
                       <Checkbox
                         id="interest-openSource"
                         {...checkboxOptions}
-                        checked={this.state["interest-openSource"]}
+                        checked={this.state.areasOfInterest.includes(
+                          "openSource"
+                        )}
                         onChange={(bool) =>
-                          this.setState({ "interest-openSource": bool })
+                          this.setInterest("openSource", bool)
                         }
                       />
                       <label htmlFor="interest-openSource">Open Source</label>
@@ -305,9 +314,11 @@ class Rsvp extends Component {
                       <Checkbox
                         id="interest-interviewPrep"
                         {...checkboxOptions}
-                        checked={this.state["interest-interviewPrep"]}
+                        checked={this.state.areasOfInterest.includes(
+                          "interviewPrep"
+                        )}
                         onChange={(bool) =>
-                          this.setState({ "interest-interviewPrep": bool })
+                          this.setInterest("interviewPrep", bool)
                         }
                       />
                       <label htmlFor="interest-interviewPrep">
@@ -318,9 +329,11 @@ class Rsvp extends Component {
                       <Checkbox
                         id="interest-diversityInclusion"
                         {...checkboxOptions}
-                        checked={this.state["interest-diversityInclusion"]}
+                        checked={this.state.areasOfInterest.includes(
+                          "diversityInclusion"
+                        )}
                         onChange={(bool) =>
-                          this.setState({ "interest-diversityInclusion": bool })
+                          this.setInterest("diversityInclusion", bool)
                         }
                       />
                       <label htmlFor="interest-diversityInclusion">

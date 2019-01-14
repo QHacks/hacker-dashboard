@@ -5,6 +5,7 @@ import { offWhite, steel } from "../../assets/colors";
 import arrow from "../../assets/img/arrow.svg";
 import DashboardSection from "../Dashboard/DashboardSection/DashboardSection";
 import { Link } from "react-router-dom";
+import Select from "react-select";
 
 class SingleApplication extends Component {
   constructor(props) {
@@ -12,11 +13,18 @@ class SingleApplication extends Component {
     this.state = {
       name: "Ross Hill",
       school: "Queen's University",
-      status: "accepted",
+      status: { label: "Accepted", value: "accepted" },
       score: 4.3,
       givenScore: 0,
       comment: ""
     };
+  }
+  setSelectAnswer(field) {
+    return (answer) =>
+      this.setState((state) => {
+        state[field] = answer;
+        return state;
+      });
   }
   render() {
     return (
@@ -82,15 +90,19 @@ class SingleApplication extends Component {
                 {this.state.school}
               </p>
               <strong>Status</strong>
-              <div>{this.state.status}</div>
-              <select
-                value={this.state.setStatus}
-                onChange={(e) => this.setState({ setStatus: e.target.value })}
-              >
-                <option value="accepted">Accepted</option>
-                <option value="waitlisted">Waitlisted</option>
-                <option value="reject">Rejected</option>
-              </select>
+              <div>{this.state.status.label}</div>
+              <Select
+                options={[
+                  { label: "Accepted", value: "accepted" },
+                  { label: "Rejected", value: "rejected" },
+                  { label: "Waitlisted", value: "waitlisted" }
+                ]}
+                id="status"
+                key="status"
+                className="select"
+                value={this.state.status}
+                onChange={this.setSelectAnswer("status")}
+              />
               <strong>Average score</strong>
               <div>{this.state.score}</div>
             </div>

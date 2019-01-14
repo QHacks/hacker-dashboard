@@ -3,6 +3,7 @@ import AdminWrapper from "./adminWrapper";
 import ApplicationRow from "./applicationRow";
 import ApplicationFilters from "./applicationFilters";
 import { blue, offWhite, steel } from "../../assets/colors";
+
 // import { graphql, compose } from "react-apollo";
 // import gql from "graphql-tag";
 
@@ -12,14 +13,18 @@ class ReviewApplications extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      exportSelect: false,
+      exportSelect: { label: "All applications", value: "all" },
       reviewedFilter: false,
       showNoStatus: true,
       showAccepted: true,
       showWaitlisted: true,
       showRejected: true,
+      sort: { label: "Name (A-Z)", value: "name" },
       scoreFilter: 0
     };
+  }
+  exportApplications() {
+    // pass
   }
   getApplications() {
     return [

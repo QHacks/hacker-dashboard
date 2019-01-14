@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ActionButton from "../ActionButton/ActionButton";
 import Checkbox from "react-simple-checkbox";
 import { checkboxOptions } from "../../assets/constants";
+import Select from "react-select";
 
 class ApplicationFilters extends Component {
   constructor(props) {
@@ -10,6 +11,13 @@ class ApplicationFilters extends Component {
   }
   setParentState(newState) {
     return this.props.setState(newState);
+  }
+  setSelectAnswer(field) {
+    return (answer) =>
+      this.setParentState((state) => {
+        state[field] = answer;
+        return state;
+      });
   }
   render() {
     return (
@@ -36,17 +44,21 @@ class ApplicationFilters extends Component {
         `}
       >
         <strong className="heading">Automate Application Statuses</strong>
-        <ActionButton color="blue">Update Statuses</ActionButton>
+        <ActionButton internal link="/admin/applications/update" color="blue">
+          Update Statuses
+        </ActionButton>
         <strong className="heading">Export</strong>
-        <select
-          value={this.props.exportSelect}
-          onChange={(e) =>
-            this.setParentState({ exportSelect: e.target.value })
-          }
-        >
-          <option value="All Applications">All Applications</option>
-          <option value="All Visible">All Visible</option>
-        </select>
+        <Select
+          options={[
+            { label: "All applications", value: "all" },
+            { label: "Visible applications", value: "visible" }
+          ]}
+          id="exportSelect"
+          key="exportSelect"
+          className="select"
+          value={this.state.exportSelect}
+          onChange={this.setSelectAnswer("exportSelect")}
+        />
         <div>
           <ActionButton style={`margin-top: 8px;`} color="white">
             Export
@@ -61,11 +73,18 @@ class ApplicationFilters extends Component {
         />
         <label htmlFor="needsReviews">Needs Reviews</label>
         <strong className="heading">Sort</strong>
-        <select value={this.props.exportSelect}>
-          <option value="name">Name (A-Z)</option>
-          <option value="university">University (A-Z)</option>
-          <option value="score">Score</option>
-        </select>
+        <Select
+          options={[
+            { label: "Name (A-Z)", value: "name" },
+            { label: "School (A-Z)", value: "school" },
+            { label: "Score", value: "score" }
+          ]}
+          id="score"
+          key="score"
+          className="select"
+          value={this.state.score}
+          onChange={this.setSelectAnswer("score")}
+        />
         <strong className="heading">App Status</strong>
         <div>
           <Checkbox
@@ -105,7 +124,7 @@ class ApplicationFilters extends Component {
         </div>
         <strong className="heading">Score</strong>
         <p>
-          Displaying applications with scored greater than:{" "}
+          Displaying applications with scores greater than:{" "}
           <strong
             css={`
               display: inline;
