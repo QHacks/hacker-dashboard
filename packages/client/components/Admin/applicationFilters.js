@@ -41,6 +41,9 @@ class ApplicationFilters extends Component {
           select {
             min-width: 80%;
           }
+          .select > div {
+            background-color: white !important;
+          }
         `}
       >
         <strong className="heading">Automate Application Statuses</strong>

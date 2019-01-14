@@ -17,6 +17,9 @@ class UpdateStatuses extends Component {
       numMatched: 0
     };
   }
+  updateStatuses() {
+    // pass
+  }
   getApplications() {
     return [
       {
