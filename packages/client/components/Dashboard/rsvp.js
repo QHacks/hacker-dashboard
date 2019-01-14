@@ -6,6 +6,7 @@ import Checkbox from "react-simple-checkbox";
 import { checkboxOptions } from "../../assets/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import Select from "react-select";
+import arrow from "../../assets/img/arrow.svg";
 
 class Rsvp extends Component {
   constructor(props) {
@@ -95,9 +96,22 @@ class Rsvp extends Component {
             padding: 28px 48px;
             background-color: white;
             box-shadow: 0 2px 16px 0 rgba(212, 217, 225, 0.4);
+            a {
+              display: flex;
+              align-items: center;
+            }
           `}
         >
-          <Link to="/profile">Back to my dashboard</Link>
+          <Link to="/profile">
+            <img
+              src={arrow}
+              css={`
+                transform: rotate(180deg);
+                margin-right: 8px;
+              `}
+            />{" "}
+            Back to my dashboard
+          </Link>
           <h1>RSVP to QHacks 2019</h1>
         </div>
         <div

@@ -19,6 +19,7 @@ import {
   linkVisited,
   linkUnvisited
 } from "../../assets/colors";
+import UpdateStatuses from "../Admin/updateStatuses";
 
 const globalStyles = `
 * {
@@ -149,6 +150,7 @@ const App = () => (
       {/* Authenticated routes */}
       <Route path="/profile" component={Dashboard} type="private" />
       <Route path="/rsvp" component={Rsvp} />
+      <Route path="/admin/applications/update" component={UpdateStatuses} />
       <Route path="/admin/applications" component={ReviewApplications} />
       <Route path="/admin/application/:id" component={SingleApplication} />
 

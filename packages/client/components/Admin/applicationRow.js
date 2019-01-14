@@ -33,6 +33,7 @@ class ApplicationRow extends Component {
           padding: 18px 32px;
           border-radius: 8px;
           cursor: pointer;
+          box-shadow: 1px 2px 4px 0 rgba(183, 190, 200, 0.3);
           > * {
             padding: 0 0.5rem;
           }

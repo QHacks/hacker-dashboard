@@ -3,7 +3,10 @@ import AdminWrapper from "./adminWrapper";
 import ApplicationRow from "./applicationRow";
 import ApplicationFilters from "./applicationFilters";
 import { blue, offWhite, steel } from "../../assets/colors";
-import ContentWrapper from "../ContentWrapper/ContentWrapper";
+// import { graphql, compose } from "react-apollo";
+// import gql from "graphql-tag";
+
+// const REVIEW_APPLICATION_MUTATION = gql``;
 
 class ReviewApplications extends Component {
   constructor(props) {
@@ -18,8 +21,8 @@ class ReviewApplications extends Component {
       scoreFilter: 0
     };
   }
-  render() {
-    const applications = [
+  getApplications() {
+    return [
       {
         id: 1,
         name: "Ross Hill",
@@ -51,6 +54,9 @@ class ReviewApplications extends Component {
         email: "whatever2"
       }
     ];
+  }
+  render() {
+    const applications = this.getApplications();
     return (
       <AdminWrapper>
         <div
@@ -139,5 +145,11 @@ class ReviewApplications extends Component {
     );
   }
 }
+
+// export default compose(
+//   graphql(REVIEW_APPLICATION_MUTATION, {
+//     name: "reviewApplication"
+//   })
+// )(ReviewApplications);
 
 export default ReviewApplications;

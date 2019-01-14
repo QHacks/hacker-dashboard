@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MenuBar from "../MenuBar/MenuBar";
+import MenuBar from "../Dashboard/DashboardMenu";
 class AdminWrapper extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +11,7 @@ class AdminWrapper extends Component {
         <MenuBar />
         <div
           css={`
-            padding-top: 120px;
+            padding-top: 84px;
             height: 100vh;
             color: #252525;
             h1,
