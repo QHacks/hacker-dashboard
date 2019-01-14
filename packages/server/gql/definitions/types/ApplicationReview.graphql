@@ -22,14 +22,3 @@ extend type MutationRoot {
     input: ApplicationReviewInput!
   ): ApplicationReviewCreatePayload!
 }
-
-input ApplicationReviewInput {
-  """
-  The score awarded in the review.
-  """
-  score: Int!
-}
-
-type ApplicationReviewCreatePayload {
-  applicationReview: ApplicationReview
-}

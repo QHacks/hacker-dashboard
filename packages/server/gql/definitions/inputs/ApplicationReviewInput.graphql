@@ -1,0 +1,6 @@
+input ApplicationReviewInput {
+  """
+  The score awarded in the review.
+  """
+  score: Int!
+}

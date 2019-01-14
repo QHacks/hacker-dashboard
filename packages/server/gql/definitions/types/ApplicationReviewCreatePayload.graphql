@@ -1,0 +1,9 @@
+"""
+Represents the response when an application review is created.
+"""
+type ApplicationReviewCreatePayload {
+  """
+  The application review that was created.
+  """
+  applicationReview: ApplicationReview
+}
