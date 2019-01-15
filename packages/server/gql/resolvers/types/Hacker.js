@@ -45,7 +45,7 @@ const hacker = combineResolvers(
 // Mutation Root Resolvers
 
 const hackerUpdate = combineResolvers(
-  isAuthenticatedAndAuthorized(scopes),
+  isAuthenticatedAndAuthorized(null, ROLES.HACKER),
   async (parent, args, ctx, info) => {
     const { input: hackerInput } = args;
 
