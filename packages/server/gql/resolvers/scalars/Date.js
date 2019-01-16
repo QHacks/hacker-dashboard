@@ -5,16 +5,16 @@ module.exports = {
     name: "Date",
     description: "An ISO-8601 encoded UTC date string.",
     parseValue(value) {
-      // return new Date(value);
+      return new Date(value);
     },
     serialize(value) {
-      // return value.getTime();
+      return value.getTime();
     },
     parseLiteral(ast) {
-      // if (ast.kind === Kind.INT) {
-      //   return parseInt(ast.value, 10);
-      // }
-      // return null;
+      if (ast.kind === Kind.INT) {
+        return parseInt(ast.value, 10);
+      }
+      return null;
     }
   })
 };

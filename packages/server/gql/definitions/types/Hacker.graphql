@@ -12,16 +12,16 @@ extend type MutationRoot {
   hackerDelete(id: ID!): HackerDeletePayload!
 
   """
-  Updates a hacker by ID.
+  Updates a hacker resource by ID.
   """
-  hackerUpdate(id: ID, input: HackerInput!): HackerUpdatePayload!
+  hackerUpdate(id: ID!, input: HackerInput!): HackerUpdatePayload!
 }
 
 """
 Represents a hacker, including the hackers auth info,
 contact information, and applications.
 """
-type Hacker implements User {
+type Hacker implements User & MailingListSubscriber {
   """
   The hackers first name.
   """
@@ -51,66 +51,19 @@ type Hacker implements User {
   """
   hasApplied(eventSlug: String!): Boolean!
   """
-  The hacker's github profile.
+  The hacker's GitHub profile.
   """
   githubLink: String
   """
-  The hacker's linkedin profile
+  The hacker's LinkedIn profile.
   """
   linkedinLink: String
   """
-  The hacker's personal website
+  The hacker's personal website.
   """
   personalWebsiteLink: String
   """
   The hackers auth information.
   """
   oauthInfo: OAuthInfo!
-}
-
-input HackerInput {
-  """
-  The hackers first name.
-  """
-  firstName: String
-  """
-  The hackers last name.
-  """
-  lastName: String
-  """
-  The hackers email.
-  """
-  email: String
-  """
-  The hackers phone number.
-  """
-  phoneNumber: String
-  """
-  The hackers date of birth.
-  """
-  dateOfBirth: String
-  """
-  The school that the hacker attends
-  """
-  schoolName: String
-  """
-  The hacker's github profile.
-  """
-  githubLink: String
-  """
-  The hacker's linkedin profile
-  """
-  linkedinLink: String
-  """
-  The hacker's personal website
-  """
-  personalWebsiteLink: String
-}
-
-type HackerDeletePayload {
-  deletedHackerId: ID
-}
-
-type HackerUpdatePayload {
-  hacker: Hacker
 }

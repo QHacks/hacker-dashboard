@@ -1,0 +1,13 @@
+"""
+Represents information to create and update a mailing list.
+"""
+input MailingListInput {
+  """
+  Name of the mailing list.
+  """
+  name: String!
+  """
+  Slug of the mailing list.
+  """
+  slug: String!
+}

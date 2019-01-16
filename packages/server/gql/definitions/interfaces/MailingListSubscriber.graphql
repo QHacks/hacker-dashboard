@@ -1,0 +1,29 @@
+extend type MutationRoot {
+  """
+  Creates a new mailing list subscriber.
+  """
+  mailingListSubscriberCreate(
+    eventSlug: String!
+    mailingListSlug: String!
+    input: MailingListSubscriberInput!
+  ): MailingListSubscriberCreatePayload!
+
+  """
+  Deletes a mailing list subscriber.
+  """
+  mailingListSubscriberDelete(
+    eventSlug: String!
+    mailingListSlug: String!
+    email: String!
+  ): MailingListSubscriberDeletePayload!
+}
+
+"""
+Represents fields required to be a mailing list subscriber.
+"""
+interface MailingListSubscriber {
+  """
+  Email that is subscribed to the mailing list.
+  """
+  email: String!
+}

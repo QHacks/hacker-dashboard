@@ -1,19 +1,18 @@
 const { merge } = require("lodash");
+const fs = require("fs");
 
-// Type Resolvers
-const adminResolvers = require("./types/Admin");
-const hackerResolvers = require("./types/Hacker");
-const applicationResolvers = require("./types/Application");
+const directories = ["interfaces", "scalars", "types"];
 
-// Interface Resolvers
-const userResolvers = require("./interfaces/User");
+let resolvers = {};
 
-const resolvers = {};
+directories.forEach((directory) => {
+  const filesInDirectory = fs.readdirSync(`${__dirname}/${directory}`);
 
-module.exports = merge(
-  resolvers,
-  userResolvers,
-  adminResolvers,
-  hackerResolvers,
-  applicationResolvers
-);
+  filesInDirectory.forEach((fileName) => {
+    const module = require(`${__dirname}/${directory}/${fileName}`);
+
+    resolvers = merge(resolvers, module);
+  });
+});
+
+module.exports = resolvers;

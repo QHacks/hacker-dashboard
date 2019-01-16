@@ -1,0 +1,9 @@
+"""
+Represents the response when an event is deleted by slug.
+"""
+type EventDeleteBySlugPayload {
+  """
+  The slug of the deleted event.
+  """
+  deletedEventSlug: String!
+}

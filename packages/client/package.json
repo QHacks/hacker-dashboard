@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "The client for the QHacks Dashboard!",
   "main": "Client.js",
   "scripts": {
@@ -25,22 +25,22 @@
     "dotenv": "^6.0.0",
     "emotion": "^9.2.12",
     "escape-string-regexp": "^1.0.5",
+    "flatpickr": "^4.5.2",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
-    "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "normalize.css": "^8.0.1",
     "querystring": "^0.2.0",
     "react": "^16.6.0",
     "react-apollo": "^2.3.1",
     "react-dom": "^16.6.0",
+    "react-flatpickr": "^3.6.4",
     "react-modal": "^3.6.1",
     "react-responsive": "^6.0.1",
     "react-router-dom": "^4.2.2",
     "react-select": "^2.1.2",
-    "tinycolor2": "^1.4.1",
-    "uuid": "^3.3.2",
-    "winston": "^3.1.0"
+    "react-simple-checkbox": "^1.2.0",
+    "unitransform": "^1.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
@@ -65,6 +65,6 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.26.0",
     "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.14"
   }
 }

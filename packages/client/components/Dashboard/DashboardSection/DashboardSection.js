@@ -24,12 +24,12 @@ const DashboardSection = ({ title, children }) => (
       <h3 css="text-transform: uppercase; font-weight: 800;">{title}</h3>
     </div>
     <div
-      css="
+      css={`
         border-radius: 8px;
         padding: 40px 32px;
         overflow: hidden;
         background-color: white;
-      "
+      `}
     >
       {children}
     </div>

@@ -1,55 +1,51 @@
-// Mock Emails
-process.env.SENDGRID_API_KEY = "123ABC";
+const { gql } = require("apollo-server-express");
 
-const sendgrid = require("@sendgrid/mail");
-const emails = require("../../../../emails/emails");
+const { db, graphqlClient } = global;
 
-emails["application-success"] = ([message]) => ({
-  messages: [
-    {
-      ...message,
-      from: "hello@qhacks.io",
-      subject: "QHacks Application Received!"
+const GET_USER_APPLICATION_FOR_EVENT = gql`
+  query GetUserApplication($eventSlug: String!) {
+    application(eventSlug: $eventSlug) {
+      status
+      responses {
+        label
+        answer
+      }
     }
-  ]
-});
+  }
+`;
 
-sendgrid.setApiKey = jest.fn();
-sendgrid.send = jest.fn(() => Promise.resolve());
-
-const { gql } = require("../../../config/mock-api");
-const {
-  User,
-  Event,
-  Application,
-  ApplicationField
-} = require("../../../config/mock-db");
-
-describe("Application Type", () => {
-  it("returns the current user's application", async () => {
-    const { id: userId } = await User.findOne({
-      where: { email: "jmichaelt98@gmail.com" }
-    });
-
-    const { data: response } = await gql(
-      userId,
-      `
-      {
-        application(eventSlug: "qhacks-2019") {
-          status
-          responses {
-            label
-            answer
-          }
+const CREATE_APPLICATION_FOR_EVENT = gql`
+  mutation CreateApplicationForEvent(
+    $eventSlug: String!
+    $input: ApplicationInput!
+  ) {
+    applicationCreate(eventSlug: $eventSlug, input: $input) {
+      application {
+        status
+        responses {
+          label
+          answer
         }
       }
-      `
-    );
+    }
+  }
+`;
 
-    expect(response.application.status).toBe("APPLIED");
-    expect(response.application.responses).toHaveLength(3);
+describe("Application Type", () => {
+  it("queries for the current users application to an event", async () => {
+    const { query } = await graphqlClient();
 
-    response.application.responses.forEach(({ label, answer }) => {
+    const { data } = await query({
+      query: GET_USER_APPLICATION_FOR_EVENT,
+      variables: {
+        eventSlug: "qhacks-2019"
+      }
+    });
+
+    expect(data.application.status).toBe("APPLIED");
+    expect(data.application.responses).toHaveLength(3);
+
+    data.application.responses.forEach(({ label, answer }) => {
       expect(label).toBeDefined();
       expect(label).toContain("Field");
       expect(answer).toBeDefined();
@@ -58,310 +54,201 @@ describe("Application Type", () => {
   });
 
   it("creates a new application for a user", async () => {
-    const { id: userId } = await User.findOne({
-      where: { email: "hacker1@gmail.com" }
+    const user = await db.User.findOne({
+      where: { email: "hacker1@test.com" }
     });
 
-    const { data } = await gql(
-      userId,
-      `
-      mutation {
-        createApplication(eventSlug: "qhacks-2019", input: {
+    const { mutate } = await graphqlClient(user);
+
+    const { data } = await mutate({
+      mutation: CREATE_APPLICATION_FOR_EVENT,
+      variables: {
+        eventSlug: "qhacks-2019",
+        input: {
           responses: [
             {
               label: "Field 1",
-              answer: "answer1"
+              answer: "Answer 1"
             },
             {
               label: "Field 2",
-              answer: "answer2"
+              answer: "Answer 2"
             },
             {
               label: "Field 3",
-              answer: "answer3"
+              answer: "Answer 3"
             }
           ]
-        }) {
-          application {
-            status
-            responses {
-              label
-              answer
-            }
-          }
         }
       }
-      `
-    );
+    });
 
-    expect(data.createApplication.application.status).toBe("APPLIED");
-    expect(data.createApplication.application.responses).toHaveLength(3);
+    expect(data.applicationCreate.application.status).toBe("APPLIED");
+    expect(data.applicationCreate.application.responses).toHaveLength(3);
 
-    data.createApplication.application.responses.forEach(
+    data.applicationCreate.application.responses.forEach(
       ({ label, answer }, i) => {
         expect(label).toBe(`Field ${i + 1}`);
-        expect(answer).toBe(`answer${i + 1}`);
+        expect(answer).toBe(`Answer ${i + 1}`);
       }
     );
 
-    const dbResponse = await Application.findOne({
-      where: { userId },
-      include: ApplicationField
+    const application = await db.Application.findOne({
+      where: { userId: user.id },
+      include: db.ApplicationField
     });
 
-    expect(dbResponse.ApplicationFields).toHaveLength(3);
-    dbResponse.ApplicationFields.forEach((field) => {
-      expect(field.ApplicationFieldResponse.answer).toContain("answer");
-    });
+    expect(application.ApplicationFields).toHaveLength(3);
 
-    expect(sendgrid.send.mock.calls[0][0][0]).toEqual(
-      expect.objectContaining({
-        to: "hacker1@gmail.com",
-        from: "hello@qhacks.io",
-        subject: "QHacks Application Received!"
-      })
-    );
+    application.ApplicationFields.forEach((field) => {
+      expect(field.ApplicationFieldResponse.answer).toContain("Answer");
+    });
   });
 
   it("validates form fields when creating an applciation", async () => {
-    const { id: userId } = await User.findOne({
-      where: { email: "hacker1@gmail.com" }
+    const user = await db.User.findOne({
+      where: { email: "hacker1@test.com" }
     });
 
-    const { data, errors } = await gql(
-      userId,
-      `
-      mutation {
-        createApplication(eventSlug: "qhacks-2019", input: {
+    const { mutate } = await graphqlClient(user);
+
+    const { data, errors } = await mutate({
+      mutation: CREATE_APPLICATION_FOR_EVENT,
+      variables: {
+        eventSlug: "qhacks-2019",
+        input: {
           responses: [
             {
               label: "Field 1",
-              answer: "answer1"
+              answer: "Answer 1"
             },
             {
               label: "Field 2",
-              answer: "answer2"
+              answer: "Answer 2"
             },
             {
               label: "Invalid Field",
-              answer: "answer3"
+              answer: "Answer 3"
             }
           ]
-        }) {
-          application {
-            status
-            responses {
-              label
-              answer
-            }
-          }
         }
       }
-      `
-    );
+    });
 
     expect(data).toBeNull();
     expect(errors).toHaveLength(1);
     expect(errors[0].message).toBe(
-      "Invalid Field is not a valid field for qhacks-2019"
+      "Invalid Field is not a valid field for the event with the slug qhacks-2019!"
     );
   });
 
   it("validates if an event requires applications", async () => {
-    await Event.create({
-      name: "yophacks-2019",
-      slug: "yophacks-2019",
-      startDate: new Date("2019-02-01T19:00Z"),
-      endDate: new Date("2019-02-03T19:00Z"),
-      requiresApplication: false,
-      hasProjectSubmissions: true,
-      projectSubmissionDate: new Date("2018-02-03T14:00Z"),
-      eventLogoUrl: "http://digitalocean.com/yophacks.jpg"
-    });
-
-    const { id: userId } = await User.findOne({
+    const user = await db.User.findOne({
       where: { email: "hacker1@gmail.com" }
     });
 
-    const { data, errors } = await gql(
-      userId,
-      `
-      mutation {
-        createApplication(eventSlug: "yophacks-2019", input: {
+    const { mutate } = await graphqlClient(user);
+
+    const { data, errors } = await mutate({
+      mutation: CREATE_APPLICATION_FOR_EVENT,
+      variables: {
+        eventSlug: "yophacks-2019",
+        input: {
           responses: [
             {
               label: "Field 1",
-              answer: "answer1"
+              answer: "Answer 1"
             },
             {
               label: "Field 2",
-              answer: "answer2"
+              answer: "Answer 2"
+            },
+            {
+              label: "Field 3",
+              answer: "Answer 3"
             }
           ]
-        }) {
-          application {
-            status
-            responses {
-              label
-              answer
-            }
-          }
         }
       }
-      `
-    );
+    });
 
     expect(data).toBeNull();
     expect(errors).toHaveLength(1);
     expect(errors[0].message).toBe(
-      "yophacks-2019 does not require applications"
+      "The event with the slug yophacks-2019 does not require applications!"
     );
   });
 
   it("validates that the application has been submitted within the allowed dates", async () => {
-    const { id: userId } = await User.findOne({
-      where: { email: "hacker1@gmail.com" }
+    const user = await db.User.findOne({
+      where: { email: "hacker1@test.com" }
     });
 
-    await Event.create({
-      name: "yophacks-2019",
-      slug: "yophacks-2019",
-      startDate: new Date("2019-02-01T19:00Z"),
-      endDate: new Date("2019-02-03T19:00Z"),
-      requiresApplication: true,
-      applicationOpenDate: new Date("1970-01-01"),
-      applicationCloseDate: new Date("1970-01-02"),
-      hasProjectSubmissions: true,
-      projectSubmissionDate: new Date("2018-02-03T14:00Z"),
-      eventLogoUrl: "http://digitalocean.com/yophacks.jpg"
-    });
+    await db.Event.update(
+      {
+        requiresApplication: true,
+        applicationCloseDate: new Date(1970, 1, 1)
+      },
+      { where: { slug: "yophacks-2019" } }
+    );
 
-    const { data, errors } = await gql(
-      userId,
-      `
-      mutation {
-        createApplication(eventSlug: "yophacks-2019", input: {
+    const { mutate } = await graphqlClient(user);
+
+    const { data, errors } = await mutate({
+      mutation: CREATE_APPLICATION_FOR_EVENT,
+      variables: {
+        eventSlug: "yophacks-2019",
+        input: {
           responses: [
             {
               label: "Field 1",
-              answer: "answer1"
+              answer: "Answer 1"
             },
             {
               label: "Field 2",
-              answer: "answer2"
+              answer: "Answer 2"
+            },
+            {
+              label: "Invalid Field",
+              answer: "Answer 3"
             }
           ]
-        }) {
-          application {
-            status
-            responses {
-              label
-              answer
-            }
-          }
         }
       }
-      `
-    );
+    });
 
     expect(data).toBeNull();
     expect(errors).toHaveLength(1);
     expect(errors[0].message).toBe(
-      "yophacks-2019 is not accepting applications at this time"
+      "The event with the slug yophacks-2019 is not accepting applications at this time!"
     );
-  });
-
-  it("creates a new application for a user", async () => {
-    const { id: userId } = await User.findOne({
-      where: { email: "hacker1@gmail.com" }
-    });
-
-    const { data } = await gql(
-      userId,
-      `
-      mutation {
-        createApplication(eventSlug: "qhacks-2019", input: {
-          responses: [
-            {
-              label: "Field 1",
-              answer: "answer1"
-            },
-            {
-              label: "Field 2",
-              answer: "answer2"
-            },
-            {
-              label: "Field 3",
-              answer: "answer3"
-            }
-          ]
-        }) {
-          application {
-            status
-            responses {
-              label
-              answer
-            }
-          }
-        }
-      }
-     `
-    );
-
-    expect(data.createApplication.application.status).toBe("APPLIED");
-    expect(data.createApplication.application.responses).toHaveLength(3);
-
-    data.createApplication.application.responses.forEach(
-      ({ label, answer }, i) => {
-        expect(label).toBe(`Field ${i + 1}`);
-        expect(answer).toBe(`answer${i + 1}`);
-      }
-    );
-
-    const dbResponse = await Application.findOne({
-      where: { userId },
-      include: ApplicationField
-    });
-
-    expect(dbResponse.ApplicationFields).toHaveLength(3);
-    dbResponse.ApplicationFields.forEach((field) => {
-      expect(field.ApplicationFieldResponse.answer).toContain("answer");
-    });
   });
 
   it("validates required sign up fields", async () => {
-    const { id: userId } = await User.findOne({
-      where: { email: "hacker1@gmail.com" }
+    const user = await db.User.findOne({
+      where: { email: "hacker1@test.com" }
     });
 
-    // Missing Field 3, which is required
-    const { data, errors } = await gql(
-      userId,
-      `
-      mutation {
-        createApplication(eventSlug: "qhacks-2019", input: {
+    const { mutate } = await graphqlClient(user);
+
+    const { data, errors } = await mutate({
+      mutation: CREATE_APPLICATION_FOR_EVENT,
+      variables: {
+        eventSlug: "qhacks-2019",
+        input: {
           responses: [
             {
               label: "Field 1",
-              answer: "answer1"
+              answer: "Answer 1"
             },
             {
               label: "Field 2",
-              answer: "answer2"
+              answer: "Answer 2"
             }
           ]
-        }) {
-          application {
-            status
-            responses {
-              label
-              answer
-            }
-          }
         }
       }
-      `
-    );
+    });
 
     expect(data).toBeNull();
     expect(errors).toHaveLength(1);

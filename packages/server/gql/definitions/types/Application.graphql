@@ -9,17 +9,20 @@ extend type MutationRoot {
   """
   Creates a new application to an event for the current user.
   """
-  createApplication(
+  applicationCreate(
     eventSlug: String!
     input: ApplicationInput!
   ): ApplicationCreatePayload!
 }
 
+"""
+Represents an application to an event.
+"""
 type Application {
   """
-  The user has applied to the  application.
+  The user has applied to the application.
   """
-  status: ApplicationStatus
+  status: ApplicationStatus!
   """
   The user's responses to the application fields.
   """
@@ -27,39 +30,5 @@ type Application {
   """
   The date that the application was submitted.
   """
-  submissionDate: Date
-}
-
-type ApplicationFieldResponse {
-  """
-  The label of the application field.
-  """
-  type: ApplicationFieldType!
-  """
-  The label of the application field.
-  """
-  label: String!
-  """
-  The response of the applicant to the field.
-  """
-  answer: String!
-}
-
-type ApplicationCreatePayload {
-  application: Application
-}
-
-input ApplicationInput {
-  responses: [ApplicationFieldInput!]!
-}
-
-input ApplicationFieldInput {
-  """
-  The label of the application field.
-  """
-  label: String!
-  """
-  The response of the applicant to the field.
-  """
-  answer: String!
+  submissionDate: Date!
 }

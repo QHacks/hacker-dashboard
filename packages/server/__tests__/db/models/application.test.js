@@ -1,10 +1,11 @@
-const { Application, User, Event } = require("../../config/mock-db");
+const { db } = global;
 
-describe("Application model", () => {
+describe("Application Model", () => {
   it("saves with a uuid", async () => {
-    const { id: userId } = await User.findOne({});
-    const { id: eventId } = await Event.findOne({});
-    const { id } = await Application.create({
+    const { id: userId } = await db.User.findOne({});
+    const { id: eventId } = await db.Event.findOne({});
+
+    const { id } = await db.Application.create({
       status: "APPLIED",
       eventId,
       userId
@@ -13,23 +14,25 @@ describe("Application model", () => {
     expect(id).toBeDefined();
   });
 
-  it("has a unique index on user and event", async (done) => {
-    const { id: userId } = await User.findOne({});
-    const { id: eventId } = await Event.findOne({});
-    Application.bulkCreate([
-      {
-        status: "APPLIED",
-        eventId,
-        userId
-      },
-      {
-        status: "APPLIED",
-        eventId,
-        userId
-      }
-    ]).catch(({ errors: [{ message }] }) => {
+  it("has a unique index on user and event", async () => {
+    const { id: userId } = await db.User.findOne({});
+    const { id: eventId } = await db.Event.findOne({});
+
+    try {
+      await db.Application.bulkCreate([
+        {
+          status: "APPLIED",
+          eventId,
+          userId
+        },
+        {
+          status: "APPLIED",
+          eventId,
+          userId
+        }
+      ]);
+    } catch ({ errors: [{ message }] }) {
       expect(message).toBe("eventId must be unique");
-      done();
-    });
+    }
   });
 });

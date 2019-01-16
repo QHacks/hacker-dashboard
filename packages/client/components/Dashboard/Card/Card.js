@@ -27,11 +27,11 @@ const Card = ({ image, title, children }) => (
       `}
     >
       <h3
-        css="
+        css={`
           margin-bottom: 8px;
           margin-top: 4px;
           font-size: 24px;
-        "
+        `}
       >
         {title}
       </h3>

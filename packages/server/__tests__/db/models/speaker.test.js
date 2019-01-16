@@ -1,9 +1,9 @@
-const { Speaker, Event } = require("../../config/mock-db");
+const { db } = global;
 
 describe("Speaker Model", () => {
-  it("saves witha uuid", async () => {
-    const { id: eventId } = await Event.findOne({});
-    const { id } = await Speaker.create({
+  it("saves with a uuid", async () => {
+    const { id: eventId } = await db.Event.findOne({});
+    const { id } = await db.Speaker.create({
       firstName: "Lee",
       lastName: "Byron",
       bio: "A cool guy B-)",

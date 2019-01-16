@@ -11,7 +11,7 @@ import {
   steel,
   offWhite
 } from "../../assets/colors";
-import { boxShadow } from "../../assets/constants";
+import { boxShadow, subtleBoxShadow } from "../../assets/constants";
 
 const ActionButton = (props) => {
   const roundPadding = props.inline ? "24px" : "55px";
@@ -154,6 +154,7 @@ const ActionButton = (props) => {
     color: ${getForegroundColor()} !important;
     background-color: ${getBackgroundColor()};
     border: ${getBorder()};
+    box-shadow: ${subtleBoxShadow};
     :hover {
       background-color: ${getHoverBackgroundColor()};
       border: ${getHoverBorder()};

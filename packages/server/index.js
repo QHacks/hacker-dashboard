@@ -4,13 +4,12 @@ const { ApolloServer } = require("apollo-server-express");
 const history = require("connect-history-api-fallback");
 const compression = require("compression");
 const bodyParser = require("body-parser");
+const logger = require("./utils/logger");
 const express = require("express");
 const helmet = require("helmet");
 const path = require("path");
 const cors = require("cors");
-const logger = require("./utils/logger");
-const db = require("./db")(logger);
-const { GraphQLAuthenticationError } = require("./errors");
+const db = require("./db");
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const FORCE_SSL = process.env.FORCE_SSL === "true";
@@ -22,90 +21,75 @@ IS_PROD
 const resolvers = require("./gql/resolvers");
 const typeDefs = require("./gql/definitions");
 
-const { restApi } = require("./rest")(db);
-const { oauthApi, verifyAccessToken } = require("./oauth")(db);
+db()
+  .then(async (db) => {
+    const { oauthApi, verifyAccessToken } = require("./oauth")(db);
 
-// Path to static files
-// TODO: Remove this coupling to client package
-const BUNDLE_DIR = path.join(__dirname, "../client/bundle");
+    // Path to static files
+    // TODO: Remove this coupling to client package
+    const BUNDLE_DIR = path.join(__dirname, "../client/bundle");
 
-const app = express();
-const port = process.env.PORT || 3000;
+    const app = express();
+    const port = process.env.PORT || 3000;
 
-// HTTPS Redirect
-if (IS_PROD) {
-  if (FORCE_SSL) {
-    app.enable("trust proxy");
-    app.use((req, res, next) => {
-      if (req.secure) {
-        next();
-      } else {
-        res.redirect(`https://${req.headers.host}${req.url}`);
+    // HTTPS Redirect
+    if (IS_PROD) {
+      if (FORCE_SSL) {
+        app.enable("trust proxy");
+        app.use((req, res, next) => {
+          if (req.secure) {
+            next();
+          } else {
+            res.redirect(`https://${req.headers.host}${req.url}`);
+          }
+        });
       }
-    });
-  }
-}
-
-// Third Party Middleware
-app.use(cors());
-app.use(helmet());
-app.use(compression());
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// app.use(auth(db));
-
-// Public REST Endpoints
-// TODO: Remove completely!
-app.use("/api/", restApi());
-
-// Public OAuth Endpoints
-app.use("/oauth/", oauthApi());
-
-// Protected GraphQL Endpoint
-const graphqlServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: async ({ req, res }) => {
-    try {
-      const { user, access } = await verifyAccessToken(req);
-
-      return {
-        db,
-        user,
-        access
-      };
-    } catch (err) {
-      throw new GraphQLAuthenticationError("Invalid access token!");
     }
-  },
-  playground: {
-    endpoint: "/graphql"
-  },
-  tracing: true,
-  formatError: (error) => {
-    console.log(error);
-    return error;
-  },
-  formatResponse: (response) => {
-    console.log(response);
-    return response;
-  }
-});
 
-// Apply Express Middleware
-graphqlServer.applyMiddleware({ app });
+    // Third Party Middleware
+    app.use(cors());
+    app.use(helmet());
+    app.use(compression());
+    app.use(bodyParser.json({ limit: "10mb" }));
+    app.use(bodyParser.urlencoded({ extended: true }));
 
-// Fallback if required
-app.use(history());
+    // Public OAuth Endpoints
+    app.use("/oauth/", oauthApi());
 
-// Static Files
-app.use(express.static(BUNDLE_DIR));
+    // GraphQL Endpoint
+    const graphqlServer = new ApolloServer({
+      typeDefs,
+      resolvers,
+      context: async ({ req }) => {
+        try {
+          const { user, access } = await verifyAccessToken(req);
 
-// Database Synchronization
-db.sequelize
-  .sync()
-  .then(() => {
+          return {
+            db,
+            user,
+            access
+          };
+        } catch (err) {
+          return { db };
+        }
+      },
+      playground: !IS_PROD,
+      introspection: true,
+      tracing: true
+    });
+
+    // Apply Express Middleware
+    graphqlServer.applyMiddleware({ app });
+
+    // Fallback if required
+    app.use(history());
+
+    // Static Files
+    app.use(express.static(BUNDLE_DIR));
+
+    // Database Synchronization
+    await db.sequelize.sync();
+
     logger.info("Database has synchronized successfully!");
 
     // Start listening!
@@ -114,5 +98,5 @@ db.sequelize
     });
   })
   .catch((err) => {
-    logger.error("Database could not synchronize! Cannot start server!");
+    logger.error("Error! Cannot start server.", err);
   });

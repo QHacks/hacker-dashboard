@@ -1,0 +1,9 @@
+"""
+Represents the response when an event is deleted by ID.
+"""
+type EventDeletePayload {
+  """
+  The ID of the event that was deleted.
+  """
+  deletedEventId: ID!
+}

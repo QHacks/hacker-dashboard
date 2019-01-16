@@ -35,13 +35,13 @@ const PrivacyPolicyModal = (props) => (
       <input
         src="../../assets/img/times.svg"
         type="image"
-        css="
-            max-height: 40px;
-            max-width: 40px;
-            float: right;
-            margin-right: 24px;
-            cursor: pointer;
-          "
+        css={`
+          max-height: 40px;
+          max-width: 40px;
+          float: right;
+          margin-right: 24px;
+          cursor: pointer;
+        `}
         alt="Close modal"
         onClick={props.closeModal}
       />

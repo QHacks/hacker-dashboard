@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "The server for the QHacks Dashboard!",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,7 @@
     "start": "NODE_ENV=production node index.js",
     "build": "npm run clean && mjml --min ./emails/templates/*.mjml -o ./emails/dist/",
     "build-emails": "npm run build",
-    "clean": "rimraf ./emails/dist && mkdir ./emails/dist",
-    "db-seed": "sequelize db:seed:all"
+    "clean": "rimraf ./emails/dist && mkdir ./emails/dist"
   },
   "author": "QHacks Engineering",
   "license": "MIT",
@@ -25,14 +24,12 @@
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "graphql": "^14.0.2",
-    "graphql-relay": "^0.5.5",
-    "graphql-sequelize": "^9.2.0",
+    "graphql-resolvers": "^0.2.2",
     "graphql-tools": "^4.0.3",
     "helmet": "^3.13.0",
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.11",
     "mjml": "^4.1.2",
-    "moment": "^2.22.2",
     "mustache": "^2.3.2",
     "pg": "^7.6.1",
     "pg-hstore": "^2.3.2",
@@ -43,7 +40,7 @@
     "winston": "^3.1.0"
   },
   "devDependencies": {
-    "faker": "^4.1.0",
+    "apollo-server-testing": "^2.2.6",
     "jest": "^23.6.0",
     "jest-environment-node": "^23.4.0",
     "nodemon": "^1.18.4",

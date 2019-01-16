@@ -1,0 +1,17 @@
+"""
+Represents a application field response.
+"""
+type ApplicationFieldResponse {
+  """
+  The label of the application field.
+  """
+  type: ApplicationFieldType!
+  """
+  The label of the application field.
+  """
+  label: String!
+  """
+  The response of the applicant to the field.
+  """
+  answer: String!
+}

@@ -4,6 +4,10 @@ import CreatableSelect from "react-select/lib/Creatable";
 import ValidationError from "../ValidationError/ValidationError";
 import ActionButton from "../ActionButton/ActionButton";
 import { races, schools } from "../../assets/constants";
+import "flatpickr/dist/themes/light.css";
+import "./flatpickr.css";
+import Flatpickr from "react-flatpickr";
+import moment from "moment";
 
 const toOptions = (str) => ({
   label: str,
@@ -44,7 +48,9 @@ const degreeOptions = [
   "Bachelor of Social Work",
   "Bachelor of Technology",
   "Bachelor of Accountancy",
-  "Bachelor of Science"
+  "Bachelor of Science",
+  "Master's degree",
+  "PhD"
 ].map((str) => toOptions(str));
 
 const monthOptions = [
@@ -61,6 +67,8 @@ const monthOptions = [
   "November",
   "December"
 ].map((str) => toOptions(str));
+
+const toDate = (date) => (date ? moment(date, "YYYY-MM-DD").toDate() : null);
 
 const Step2 = (props) => {
   const setApplicationAnswerSelect = (field) => (answer) =>
@@ -111,13 +119,16 @@ const Step2 = (props) => {
           <section css={props.inputRowStyle}>
             <div>
               <label htmlFor="birthday">Birthday</label>
-              <input
-                id="birthday"
-                key="birthday"
-                type="date"
-                value={props.applicationAnswers.birthday}
-                onChange={(e) =>
-                  props.setApplicationAnswer("birthday", e.target.value)
+              <Flatpickr
+                value={toDate(props.applicationAnswers.birthday)}
+                options={{
+                  defaultDate: `${new Date().getFullYear() - 20}-01-01`
+                }}
+                onChange={(date) =>
+                  props.setApplicationAnswer(
+                    "birthday",
+                    moment(date[0]).format("YYYY-MM-DD")
+                  )
                 }
               />
               <ValidationError message={props.errors.birthday} />
@@ -254,9 +265,9 @@ const Step2 = (props) => {
                 placeholder="Year"
                 type="text"
                 value={props.applicationAnswers.graduationYear}
-                css="
+                css={`
                   margin-top: 28px !important;
-                "
+                `}
                 onChange={(e) =>
                   props.setApplicationAnswer("graduationYear", e.target.value)
                 }

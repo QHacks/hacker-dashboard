@@ -1,52 +1,67 @@
 import React from "react";
-
-import { decorativeElement } from "../../assets/constants";
-import circuits from "../../assets/img/circuits.png";
-import { grey, steel } from "../../assets/colors";
+import { mobileMaxWidth, desktopMinWidth } from "../../assets/constants";
+import { decorativeElement, subtleBoxShadow } from "../../assets/constants";
+import circuits from "../../assets/img/circuits-landing.png";
+import { grey, steel, blue } from "../../assets/colors";
 import MenuBar from "../MenuBar/MenuBar";
 
 const Landing = ({ children }) => (
   <div>
-    <MenuBar wide />
+    <MenuBar />
     <div
       css={`
         display: grid;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
         @media screen and (min-width: 2500px) {
           grid-template-columns: 50% 50%;
         }
-        @media screen and (max-width: 800px) {
+        @media screen and (max-width: ${mobileMaxWidth}) {
           grid-template-columns: 100%;
           > div:last-child {
             display: none;
           }
         }
         grid-template-columns: minmax(500px, 40%) auto;
-        height: 100vh;
       `}
     >
       <div
         css={`
           height: 100%;
-          max-height: 100vh;
           padding: 170px 64px 100px calc(50vw - 615px);
-          @media screen and (max-width: 1400px) and (min-width: 860px) {
+          @media screen and (max-width: 1400px) and (min-width: ${desktopMinWidth}) {
             padding-left: 80px;
           }
-          @media screen and (max-width: 860px) {
+          @media screen and (max-width: ${mobileMaxWidth}) {
             padding-left: 5vw;
+            background: url(${circuits}) no-repeat center center;
+            background-size: cover;
           }
-          > input {
+          input:not([type="checkbox"]):not([type="image"]) {
             margin: 12px 4px !important;
             display: block;
             max-width: 375px;
+            background-color: white !important;
+            box-shadow: ${subtleBoxShadow};
+            &:focus {
+              border: 1px solid ${blue} !important;
+            }
+          }
+          label {
+            text-transform: unset;
+            font-weight: normal;
+            font-size: 14px;
           }
           p.blurb {
             max-width: 300px;
-            font-size: 18px;
+            font-size: 20px;
+            color: #8a929f;
           }
           a.landingLink {
             font-weight: 600;
             color: ${grey};
+            font-size: 14px;
             text-decoration: underline;
           }
         `}
@@ -61,20 +76,17 @@ const Landing = ({ children }) => (
           justify-content: center;
           align-items: flex-start;
           height: 100%;
-          max-height: 100vh;
           border-left: 1px solid ${steel};
-          padding: 175px calc(50vw - 615px) 100px 64px;
-          @media screen and (max-width: 1400px) and (min-width: 860px) {
-            padding-right: 80px;
-          }
-          @media screen and (max-width: 860px) {
-            padding-right: 5vw;
-          }
+          padding-top: 20vh;
+          overflow: hidden;
         `}
       >
         <img
           src=".././assets/img/queens-building.svg"
-          css="width: 80%;"
+          css={`
+            width: 800px;
+            max-width: 90%;
+          `}
           alt=""
           {...decorativeElement}
         />

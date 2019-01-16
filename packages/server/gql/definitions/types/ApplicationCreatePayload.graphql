@@ -1,0 +1,9 @@
+"""
+Represents the response when an application is created.
+"""
+type ApplicationCreatePayload {
+  """
+  The application that was created.
+  """
+  application: Application
+}

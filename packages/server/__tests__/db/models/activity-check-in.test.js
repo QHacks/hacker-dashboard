@@ -1,15 +1,9 @@
-const {
-  ActivityCheckIn,
-  Activity,
-  Location,
-  Event,
-  User
-} = require("../../config/mock-db");
+const { db } = global;
 
 describe("ActivityCheckIn Model", () => {
   beforeEach(async () => {
-    const { id: eventId } = await Event.findOne({});
-    const { id: locationId } = await Location.create({
+    const { id: eventId } = await db.Event.findOne({});
+    const { id: locationId } = await db.Location.create({
       name: "Mitchell Hall",
       addressLine1: "69 Union St",
       addressCity: "Kingston",
@@ -22,7 +16,7 @@ describe("ActivityCheckIn Model", () => {
       addressLongitude: -76.493939
     });
 
-    return await Activity.create({
+    await db.Activity.create({
       eventId,
       locationId,
       name: "HOW TO WRITE TESTS",
@@ -32,15 +26,17 @@ describe("ActivityCheckIn Model", () => {
     });
   });
 
-  it("prevents duplicates", async (done) => {
-    const { id: activityId } = await Activity.findOne({});
-    const { id: userId } = await User.findOne({});
-    ActivityCheckIn.bulkCreate([
-      { activityId, userId },
-      { activityId, userId }
-    ]).catch(({ errors: [{ message }] }) => {
+  it("prevents duplicate records", async () => {
+    const { id: activityId } = await db.Activity.findOne({});
+    const { id: userId } = await db.User.findOne({});
+
+    try {
+      await db.ActivityCheckIn.bulkCreate([
+        { activityId, userId },
+        { activityId, userId }
+      ]);
+    } catch ({ errors: [{ message }] }) {
       expect(message).toBe("userId must be unique");
-      done();
-    });
+    }
   });
 });
