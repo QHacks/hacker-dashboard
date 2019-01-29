@@ -26,6 +26,8 @@ const CLIENT_NAME = isProd
     ? "dashboard-web-client-staging"
     : "dashboard-web-dev";
 
+const UNAUTHENTICATED_ERROR_CODE = "UNAUTHENTICATED";
+
 // Gets a new access token using an existing refresh token
 const getNewAccessToken = () => {
   console.log("[Token Refresh Info]: Attempting to refresh access token!");
@@ -65,7 +67,7 @@ const apolloClientSetup = async () => {
       if (graphQLErrors) {
         // Check for an unauthenticated error and retry with refreshed token
         graphQLErrors.forEach((err) => {
-          if (err.extensions.code === 401) {
+          if (err.extensions.code === UNAUTHENTICATED_ERROR_CODE) {
             getNewAccessToken()
               .then((res) => {
                 console.log(
