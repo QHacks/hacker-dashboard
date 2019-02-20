@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MobileMenuBar renders correctly 1`] = `
+<div
+  className="css-9zybzw"
+>
+  <_default>
+    <div
+      className="css-cd1isa"
+    >
+      <img
+        alt="QHacks logo"
+        className="css-1baulvz"
+        src="qhacks-tricolor-logo.svg"
+      />
+      <input
+        alt="Open menu"
+        onClick={[Function]}
+        src="mobileMenuOpen.svg"
+        type="image"
+      />
+    </div>
+  </_default>
+  <div
+    className="css-jxn3pw "
+  >
+    <_default>
+      <input
+        align="right"
+        alt="Close menu"
+        className="css-v04nfu"
+        onClick={[Function]}
+        src="mobileMenuClose.svg"
+        type="image"
+      />
+    </_default>
+    <div
+      className="css-1yhz2uq"
+    >
+      <div
+        className="css-1w6w8fc"
+      >
+        <div>
+          <img
+            alt="QHacks Crown"
+            className="css-vtn2l4"
+            height="77.59"
+            src="qhacks-tricolor-logo.svg"
+            width="150"
+          />
+        </div>
+        <div
+          className="css-rbiaib"
+        >
+          <img
+            alt="QHacks Wordmark"
+            height="34.8px"
+            src="qhacks-wordmark-colored.svg"
+            width="134px"
+          />
+        </div>
+        <a
+          href="https://qhacks.io"
+          onClick={[Function]}
+          rel="external noopener"
+          target="_blank"
+        >
+          QHacks 2019
+        </a>
+        <Mobile
+          links={
+            Array [
+              Object {
+                "href": "https://2018.qhacks.io",
+                "text": "QHacks 2018",
+              },
+              Object {
+                "href": "https://2017.qhacks.io",
+                "text": "QHacks 2017",
+              },
+              Object {
+                "href": "https://2016.qhacks.io",
+                "text": "QHacks 2016",
+              },
+            ]
+          }
+          title="Past Events"
+        />
+        <a
+          href="https://medium.com/qhacks"
+          onClick={[Function]}
+          rel="external noopener"
+          target="_blank"
+        >
+          Blog
+        </a>
+        <a
+          href="https://github.com/qhacks"
+          onClick={[Function]}
+          rel="external noopener"
+          target="_blank"
+        >
+          Code
+        </a>
+        <Link
+          onClick={[Function]}
+          replace={false}
+          to="/qhacks-2019/apply"
+        >
+          Apply
+        </Link>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DesktopMenuBar renders correctly 1`] = `
+<header
+  className="css-y1sdlm"
+>
+  <_default>
+    <div
+      className="css-1baulvz"
+    >
+      <img
+        alt="QHacks logo"
+        src="qhacks-tricolor-logo.svg"
+      />
+    </div>
+    <ul
+      className="css-1iq6ury"
+    >
+      <li>
+        <a
+          href="https://qhacks.io"
+          rel="external noopener"
+          target="_blank"
+        >
+          QHacks 2019
+        </a>
+      </li>
+      <li>
+        <Dropdown
+          links={
+            Array [
+              Object {
+                "href": "https://2018.qhacks.io",
+                "text": "QHacks 2018",
+              },
+              Object {
+                "href": "https://2017.qhacks.io",
+                "text": "QHacks 2017",
+              },
+              Object {
+                "href": "https://2016.qhacks.io",
+                "text": "QHacks 2016",
+              },
+            ]
+          }
+          title="Past Events"
+        />
+      </li>
+      <li>
+        <a
+          href="https://medium.com/qhacks"
+          rel="external noopener"
+          target="_blank"
+        >
+          Blog
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://github.com/qhacks"
+          rel="external noopener"
+          target="_blank"
+        >
+          Code
+        </a>
+      </li>
+      <li>
+        <ActionButton
+          inline={true}
+          internal={true}
+          link="/qhacks-2019/apply"
+          style="font-size: 16px;"
+          type="rounded"
+        >
+          Apply
+        </ActionButton>
+      </li>
+    </ul>
+  </_default>
+</header>
+`;
