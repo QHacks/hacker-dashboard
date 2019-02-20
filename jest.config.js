@@ -4,6 +4,9 @@ module.exports = {
       displayName: "client",
       snapshotSerializers: ["enzyme-to-json/serializer"],
       setupFiles: ["./packages/client/__tests__/config/Setup"],
+      transform: {
+        "packages\/client\/.*\.jsx?": "babel-jest"
+      },
       testRegex: "./packages/client/__tests__\/.*\.test\.js$",
       testURL: "http://localhost/"
     },
@@ -13,8 +16,5 @@ module.exports = {
       setupTestFrameworkScriptFile: "./packages/server/__tests__/config/test-framework",
       testRegex: "./packages/server/__tests__\/.*\.test\.js$"
     }
-  ],
-  coverageDirectory: "./coverage",
-  collectCoverageFrom: ["**/*.js", "!**/node_modules/**", "!**/*.config.js", "!**/__tests__/**", "./packages/**/*.js"],
-  coverageReporters: ["lcov"]
+  ]
 };
