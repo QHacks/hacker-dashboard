@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DesktopDropdownMenu renders correctly 1`] = `
+<div
+  onMouseLeave={[Function]}
+>
+  <button
+    className="css-mrl3g0"
+    onMouseOver={[Function]}
+  >
+      
+    ▼
+  </button>
+</div>
+`;
