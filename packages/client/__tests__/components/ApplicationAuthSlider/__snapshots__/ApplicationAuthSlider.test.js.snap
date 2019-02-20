@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApplicationAuthSlider renders correctly 1`] = `
+<Fragment>
+  <MediaQuery
+    maxWidth="774px"
+    values={Object {}}
+  >
+    <Mobile />
+  </MediaQuery>
+  <MediaQuery
+    minWidth="775px"
+    values={Object {}}
+  >
+    <Desktop />
+  </MediaQuery>
+</Fragment>
+`;
