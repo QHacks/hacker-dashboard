@@ -115,4 +115,8 @@ class Client extends Component {
   }
 }
 
-render(<Client />, document.getElementById("root"));
+// For testing purposes only
+const rootDiv = document.createElement("div");
+rootDiv.setAttribute("id", "root");
+
+render(<Client />, document.getElementById("root") || rootDiv);

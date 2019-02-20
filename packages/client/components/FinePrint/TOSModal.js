@@ -3,7 +3,9 @@ import React from "react";
 
 import { offWhite } from "../../assets/colors";
 
-Modal.setAppElement("#root");
+if (process.env.NODE_ENV !== "test") {
+  Modal.setAppElement("#root");
+}
 
 const TOSModal = (props) => (
   <Modal

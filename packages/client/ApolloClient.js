@@ -6,6 +6,7 @@ import { ApolloClient } from "apollo-client";
 import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
+import fetch from "unfetch";
 import axios from "axios";
 
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "./Client";
@@ -23,8 +24,8 @@ const CLIENT_VERSION = "1.3.4";
 const CLIENT_NAME = isProd
   ? "dashboard-web-client-prod"
   : isStaging
-    ? "dashboard-web-client-staging"
-    : "dashboard-web-dev";
+  ? "dashboard-web-client-staging"
+  : "dashboard-web-dev";
 
 // Gets a new access token using an existing refresh token
 const getNewAccessToken = () => {
@@ -155,6 +156,7 @@ const apolloClientSetup = async () => {
 
   const apolloClient = new ApolloClient({
     cache,
+    fetch,
     link: ApolloLink.from([
       errorLink,
       stateLink,

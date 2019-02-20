@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App renders correctly 1`] = `
+<div
+  className="css-xxds2c"
+>
+  <Switch>
+    <Route
+      component={[Function]}
+      path="/qhacks-2019/apply"
+    />
+    <Route
+      component={[Function]}
+      path="/login"
+      type="public"
+    />
+    <Route
+      component={[Function]}
+      path="/forgot-password"
+      type="public"
+    />
+    <Route
+      component={[Function]}
+      path="/update-password/:resetHash"
+      type="public"
+    />
+    <Route
+      component={[Function]}
+      path="/profile"
+      type="private"
+    />
+    <Route
+      component={[Function]}
+      path="*"
+    />
+  </Switch>
+</div>
+`;
