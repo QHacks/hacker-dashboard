@@ -21,5 +21,8 @@ module.exports = {
       setupTestFrameworkScriptFile: "./packages/server/__tests__/config/test-framework",
       testRegex: "./packages/server/__tests__\/.*\.test\.js$"
     }
-  ]
+  ],
+  coverageDirectory: "./coverage",
+  collectCoverageFrom: ["**/*.js", "!**/node_modules/**", "!**/*.config.js", "!**/__tests__/**", "./packages/**/*.js"],
+  coverageReporters: ["lcov"]
 };

@@ -151,7 +151,8 @@ const apolloClientSetup = async () => {
   // Terminating link to fetch data from server
   // NOTE: Reads request headers from context
   const networkLink = new HttpLink({
-    uri: GRAPHQL_ENDPOINT
+    uri: GRAPHQL_ENDPOINT,
+    fetch
   });
 
   const apolloClient = new ApolloClient({

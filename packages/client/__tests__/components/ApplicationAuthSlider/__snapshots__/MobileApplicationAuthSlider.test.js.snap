@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApplicationAuthSlider renders correctly 1`] = `
+<div
+  className="css-wmurvm"
+>
+  <button
+    className="css-1j5jfx0"
+    key="TEST"
+    onClick={[Function]}
+    type="button"
+  >
+    TEST
+  </button>
+  <hr
+    className="css-k0uucn"
+  />
+</div>
+`;
