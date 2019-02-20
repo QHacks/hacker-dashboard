@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FinePrint renders correctly 1`] = `
+<Fragment>
+  <p
+    className="css-1oftit6"
+  >
+    By signing up, you agree to QHacks’s
+     
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Terms and Conditions
+    </button>
+     
+    &
+     
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Privacy Policy
+    </button>
+  </p>
+  <TOSModal
+    closeModal={[Function]}
+  />
+  <PrivacyPolicyModal
+    closeModal={[Function]}
+  />
+</Fragment>
+`;
