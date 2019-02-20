@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Landing renders correctly 1`] = `
+<div>
+  <MenuBar />
+  <div
+    className="css-1ixjxm2"
+  >
+    <div
+      className="css-15c81dq"
+    />
+    <div
+      className="css-vlu8v"
+    >
+      <img
+        alt=""
+        aria-hidden={true}
+        className="css-1wzse3"
+        role="none presentation"
+        src=".././assets/img/queens-building.svg"
+      />
+    </div>
+  </div>
+</div>
+`;
