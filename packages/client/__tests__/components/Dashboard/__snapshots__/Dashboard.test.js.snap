@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard renders correctly 1`] = `
+<div
+  className="css-1k6iq9z"
+>
+  <Apollo(DashboardMenu) />
+  <_default>
+    <div
+      className="css-1xn3edc"
+    />
+    <Apollo(Events) />
+  </_default>
+</div>
+`;
