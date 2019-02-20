@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Alert renders correctly 1`] = `
+<div
+  className="css-1xxxnql"
+>
+  <div
+    className="css-cql480"
+  >
+    <img
+      alt="Helpful Tip:"
+      className="css-1m01c8l"
+      src="../../assets/img/info.svg"
+    />
+  </div>
+  <div>
+    <strong
+      className="css-1v994a0"
+    >
+      Helpful Tip:
+    </strong>
+    <span />
+  </div>
+</div>
+`;
